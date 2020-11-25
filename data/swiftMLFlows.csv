@@ -1,0 +1,50 @@
+DomainID,SiteName,SiteID,Site Type,flowRate,Latitude,Longitude,Elevation (m),Barometric pressure (kPa)
+1,Harvard Forest,D01_HARV,core,9.08,42.54,-72.17,348,97.21
+1,Bartlett Experimental Forest,D01_BART,relocatable,9.16,44.06,-71.29,273,98.08
+2,Blandy,D02_BLAN,relocatable,9.26,39.06,-78.07,182,99.16
+2,Smithsonian CRC (SCBI),D02_SCBI,core,9.07,38.89,-78.14,355,97.13
+2,Smithsonian ERC,D02_SERC,relocatable,9.45,38.89,-76.56,10,101.21
+3,Ordway,D03_OSBS,core,9.41,29.69,-81.99,48,100.75
+3,Jones,D03_JERC,relocatable,9.41,31.19,-84.47,47,100.77
+3,Disney,D03_DSNY,relocatable,9.44,28.13,-81.44,20,101.09
+4,Guanica,D04_GUAN,core,9.32,17.97,-66.87,126,99.82
+4,Lajas,D04_LAJA,relocatable,9.44,18.02,-67.08,16,101.13
+5,Steigerwaldt,D05_STEI,relocatable,8.94,45.51,-89.58,477,95.72
+5,Tree Haven,D05_TREE,relocatable,8.95,45.49,-89.59,461,95.91
+5,UNDERC,D05_UNDE,core,8.89,46.23,-89.54,520,95.23
+6,Konza - Core,D06_KONZ,core,9,39.1,-96.56,415,96.44
+6,Konza - Relocatable,D06_KONA,relocatable,9.1,39.11,-96.61,323,97.5
+6,U Kansas Bio Station,D06_USBS,relocatable,9.11,39.04,-95.19,321,97.53
+7,Oak Ridge,D07_ORNL,core,9.08,35.96,-84.28,342,97.29
+7,Great Smokey Mtns,D07_GRSM,relocatable,8.74,35.69,-83.5,661,93.63
+7,Mountain Lake,D07_MLBS,relocatable,8.22,37.38,-80.52,1170,88.03
+8,Talladega,D08_TALL,core,9.28,32.95,-87.39,164,99.37
+8,Dead Lake,D08_DELA,relocatable,9.42,32.54,-87.8,32,100.94
+8,Lenoir landing,D08_LENO,relocatable,9.45,31.85,-88.16,12,101.18
+9,Dakota-Coteau,D09_DCFS,relocatable,8.83,47.16,-99.11,575,94.6
+9,Northern Great Plains,D09_NOGP,relocatable,8.82,46.77,-100.92,589,94.44
+9,Woodworth,D09_WOOD,core,8.82,47.13,-99.24,590,94.43
+10,CPER,D10_CPER,core,7.75,40.82,-104.75,1653,82.97
+10,Sterling,D10_STER,relocatable,8.03,40.46,-103.03,1365,85.96
+10,RMNP Castnet,D10_RMNP,relocatable,6.76,40.28,-105.55,2742,72.43
+11,LBJ/Caddo,D11_CLBJ,core,9.16,33.4,-97.57,272,98.1
+11,Klemme,D11_OAES,relocatable,8.89,35.41,-99.06,520,95.23
+12,Bozeman,descoped,relocatable,7.89,45.66,-111.05,1503,84.51
+12,Yellowstone,D12_YELL,core,7.3,44.95,-110.54,2129,78.22
+13,Niwot,D13_NIWO,core,6.16,40.05,-105.58,3478,65.93
+13,Winter Park,descoped,relocatable,6.12,39.86,-105.86,3526,65.53
+13,Moab,D13_MOAB,relocatable,7.61,38.25,-109.39,1800,81.48
+14,Santa Rita,D14_SRER,core,8.39,31.91,-110.84,999,89.88
+14,Jornada,D14_JORN,relocatable,8.07,32.59,-106.84,1321,86.42
+15,Onaqui,D15_ONAQ,core,7.75,40.18,-112.45,1654,82.96
+16,Wind River,D16_WREF,core,9.05,45.82,-121.95,368,96.98
+16,Abby Road,D16_ABBY,relocatable,9.06,45.76,-122.33,367,96.99
+17,Soaproot,D17_SOAP,relocatable,8.18,37.03,-119.26,1210,87.6
+17,Teakettle,D17_TEAK,relocatable,7.28,37.01,-119.01,2149,78.03
+17,San Joaquin,D17_SJER,core,9.02,37.11,-119.73,397,96.65
+18,Toolik,D18_TOOL,relocatable,8.57,68.66,-149.37,827,91.77
+18,Barrow,D18_BARR,relocatable,9.45,71.28,-156.62,7,101.24
+19,Caribou-Poker,D19_BONA,core,9.19,65.15,-147.5,239,98.48
+19,Delta Junction,D19_DEJU,relocatable,8.91,63.88,-145.75,504,95.41
+19,Healy,D19_HEAL,relocatable,9.27,63.88,-149.21,171,99.29
+20,Olaa Forest Reserve,D20_PUUM,core,8.54,19.554785,-155.26,853,91.48

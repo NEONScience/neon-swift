@@ -1,0 +1,48 @@
+﻿SiteID,DomainID,SiteName,MLs,L2130
+HARV,D01,Harvard Forest,6,1
+BART,D01,Bartlett Experimental Forest,6,0
+SCBI,D02,Smithsonian Conservation Biology Institute,6,1
+SERC,D02,Smithsonian Environmental Research Center,6,0
+BLAN,D02,Blandy Experimental Farm,4,0
+OSBS,D03,Ordway-Swisher Biological Station,6,1
+DSNY,D03,Disney Wilderness Preserve,4,0
+JERC,D03,Jones Ecological Research Center,6,0
+GUAN,D04,Guanica Forest,5,1
+LAJA,D04,Lajas Experimental Station,4,0
+UNDE,D05,UNDERC,6,1
+STEI,D05,Steigerwaldt Land Services,6,0
+TREE,D05,Treehaven,6,0
+KONZ,D06,Konza Prairie Biological Station,4,1
+UKFS,D06,The University of Kansas Field Station,6,0
+KONA,D06,Konza Prairie Biological Station,4,0
+ORNL,D07,Oak Ridge,6,1
+MLBS,D07,Mountain Lake Biological Station,6,0
+GRSM,D07,"Great Smoky Mountains National Park, Twin Creeks",6,0
+TALL,D08,Talladega National Forest,5,1
+DELA,D08,Dead Lake,6,0
+LENO,D08,Lenoir Landing,6,0
+WOOD,D09,Woodworth,4,1
+DCFS,D09,Dakota Coteau Field School,4,0
+NOGP,D09,Northern Great Plains Research Laboratory,4,0
+CPER,D10,Central Plains Experimental Range,4,1
+STER,D10,"North Sterling, CO",4,0
+RMNP,D10,"Rocky Mountain National Park, CASTNET",5,0
+CLBJ,D11,LBJ National Grassland,5,1
+OAES,D11,Klemme Range Research Station,4,0
+YELL,D12,Yellowstone Northern Range (Frog Rock),6,1
+NIWO,D13,Niwot Ridge Mountain Research Station,4,1
+MOAB,D13,Moab,4,0
+SRER,D14,Santa Rita Experimental Range,4,1
+JORN,D14,Jornada LTER,4,0
+ONAQ,D15,Onaqui-Ault,4,1
+WREF,D16,Wind River Experimental Forest,8,1
+ABBY,D16,Abby Road,5,0
+SJER,D17,San Joaquin,6,1
+SOAP,D17,Soaproot Saddle,6,0
+TEAK,D17,Lower Teakettle,7,0
+TOOL,D18,Toolik Lake,4,1
+BARR,D18,Barrow Environmental Observatory,4,1
+BONA,D19,Caribou Creek - Poker Flats Watershed,5,1
+DEJU,D19,Delta Junction,5,0
+HEAL,D19,Healy (Eight Mile),4,0
+PUUM,D20,Pu'u Maka'ala Natural Area Reserve,6,1

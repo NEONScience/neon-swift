@@ -1,0 +1,152 @@
+# Server Code for LC Services Tab
+
+# R script to spread out server code into more well defined chunks
+shiny::observeEvent(input$menu, {
+  if(input$menu == "swft_lcservices_tab"){
+    
+    theme_set(theme_bw()) 
+    
+    ######################## Start of LC Services Tab ######################## 
+
+    # Filter Site Plot by Site Selected, LC Number, and date range
+    swft.lcservices.user.data <- shiny::reactive({
+      shiny::req(input$swft_lcservices_date_range, input$swft_lcservices_site)
+      
+      base::source(paste0(swft.server.folder.path, "R/read.eddy.inquiry.swift.R"))
+      
+      read.eddy.inquiry(dataType = "CnC", siteID = input$swft_lcservices_site, startDate = input$swft_lcservices_date_range[1], endDate = input$swft_lcservices_date_range[2]) %>%
+        dplyr::filter(LCNumber == input$swft_lcservices_lc_number)
+      
+      # read.eddy.inquiry(dataType = "CnC", siteID = "HOPB", startDate = Sys.Date() - 30, endDate = Sys.Date() ) %>%
+      #   dplyr::filter(LCNumber == 1)
+      
+      
+    })
+    
+    #### Plot Data ####
+    #### CnC ####
+    
+      cncPlot <- shiny::reactive({
+        # Check if there is data, else make blank plot
+        if(nrow(swft.lcservices.user.data()) != 0){
+          ggplot2::ggplot(swft.lcservices.user.data(), ggplot2::aes(x=TimeStamp, y=cnc)) +
+            ggplot2::geom_bar(stat = "identity", ggplot2::aes(fill = cnc, color = cnc)) +               # Create up/down bars for Cnc up/down time
+            ggplot2::scale_colour_gradientn(name = "cnc", colours=c("red","cyan", "limegreen")) + # Assign colors for down/up100%/up respectively
+            ggplot2::scale_fill_gradientn(name = "cnc", colours=c("red","cyan", "limegreen")) +   # Assign colors for down/up100%/up respectively
+            ggplot2::scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%b-%d") +
+            ggplot2::scale_y_continuous(breaks = c(1,0,-1)) +                                           # Set Breaks for Plot limited by potential values
+            ggplot2::facet_wrap(~Name, ncol=1) +                                                        # using Facet for easy plot labeling
+            ggplot2::theme(legend.position = "none") +                                                  # Remove Legend
+            ggplot2::expand_limits(y = -1) +                                                            # Expand limits to show bottom of plot
+            ggplot2::expand_limits(y =  1) +                                                            # Expand limits to show top of plot
+            ggplot2::labs(x= "", y= "")                                                                 # Remove GenericAxis Labels
+        } else {
+          ggplot2::ggplot()+
+            ggplot2::geom_text(label = "text")+
+            ggplot2::annotate("text", label = paste0("NO CnC DATA: ",input$swft_lcservices_site ,"\n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "black")+
+            ggplot2::theme_minimal()
+          }
+      })
+    
+    output$CnCPlot <- plotly::renderPlotly({
+      cncPlot()
+    })
+    
+    #### RTU ####
+    
+    RTUPlot <- shiny::reactive({
+      if(nrow(swft.lcservices.user.data()) != 0){
+        ggplot2::ggplot(swft.lcservices.user.data(), ggplot2::aes(x=TimeStamp, y = rtu)) +
+          ggplot2::geom_bar(stat = "identity", ggplot2::aes(fill = rtu, color = rtu)) +                   # Create up/down bars for Cnc up/down time
+          ggplot2::scale_colour_gradientn(name = "rtu", colours=c("red","cyan", "limegreen")) +     # Assign colors for down/up100%/up respectively
+          ggplot2::scale_fill_gradientn(name = "rtu", colours=c("red","cyan", "limegreen")) +       # Assign colors for down/up100%/up respectively
+          ggplot2::scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%b-%d") +
+          ggplot2::scale_y_continuous(breaks = c(1,0,-1)) +                                               # Set Breaks for Plot limited by potential values
+          ggplot2::facet_wrap(~Name, ncol=1) +                                                            # Using Facet for easy plot labeling
+          ggplot2::theme(legend.position = "none") +                                                      # Remove Legend
+          ggplot2::expand_limits(y = -1) +                                                                # Expand limits to show bottom of plot
+          ggplot2::expand_limits(y =  1) +                                                                # Expand limits to show top of plot
+          ggplot2::labs(x= "", y= "")                                                                     # Remove GenericAxis Labels 
+      } else {
+        ggplot2::ggplot()+
+          ggplot2::geom_text(label = "text")+
+          ggplot2::annotate("text", label = paste0("NO RTU DATA: ",input$swft_lcservices_site ,"\n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "black")+
+          ggplot2::theme_minimal()
+      }
+    })
+    output$RTUPlot <- plotly::renderPlotly({
+      RTUPlot()
+    })
+    
+    #### HornetQ ####
+    
+    HornetQPlot <- shiny::reactive({
+      if(nrow(swft.lcservices.user.data()) != 0){
+        ggplot2::ggplot(swft.lcservices.user.data(), ggplot2::aes(x=TimeStamp, y=hornetq)) +
+          ggplot2::geom_bar(stat = "identity", ggplot2::aes(fill = hornetq, color = hornetq)) +           # Create up/down bars for Cnc up/down time
+          ggplot2::scale_colour_gradientn(name = "hornetq", colours=c("red","cyan", "limegreen")) + # Assign colors for down/up100%/up respectively
+          ggplot2::scale_fill_gradientn(name = "hornetq", colours=c("red","cyan", "limegreen")) +   # Assign colors for down/up100%/up respectively
+          ggplot2::scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%b-%d") +
+          ggplot2::scale_y_continuous(breaks = c(1,0,-1)) +                                               # Set Breaks for Plot limited by potential values
+          ggplot2::facet_wrap(~Name, ncol=1) +                                                            # Using Facet for easy plot labeling
+          ggplot2::theme(legend.position = "none") +                                                      # Remove Legend
+          ggplot2::expand_limits(y = -1) +                                                                # Expand limits to show bottom of plot
+          ggplot2::expand_limits(y =  1) +                                                                # Expand limits to show top of plot
+          ggplot2::labs(x= "", y= "")                                                                     # Remove GenericAxis Labels 
+      } else {
+        ggplot2::ggplot()+
+          ggplot2::geom_text(label = "text")+
+          ggplot2::annotate("text", label = paste0("NO HornetQ DATA: ",input$swft_lcservices_site ,"\n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "black")+
+          ggplot2::theme_minimal()
+      }
+    })
+    output$HornetQPlot <- plotly::renderPlotly({
+      HornetQPlot()
+    })
+    
+    
+    ## Summary Panel Plots
+    
+    # Plot TIS CnC Summary
+    CnCUptimePlot <- readRDS(paste0(swft.server.folder.path, "data/plots/LCServices/swft.tis.cnc.plot.RDS"))
+    
+    output$CnCUptimePlot <- plotly::renderPlotly({
+      suppressWarnings(CnCUptimePlot)
+    })
+
+    # Plot TIS RTU Summary
+    RTUUptimePlot <- readRDS(paste0(swft.server.folder.path, "data/plots/LCServices/swft.tis.rtu.plot.RDS"))
+    
+    output$RTUUptimePlot <- plotly::renderPlotly({
+      suppressWarnings(RTUUptimePlot)
+    })
+
+    # Plot TIS HornetQ Summary
+    HQUptimePlot <- readRDS(paste0(swft.server.folder.path, "data/plots/LCServices/swft.tis.hornetq.plot.RDS"))
+    
+    output$HornetQUptimePlot <- plotly::renderPlotly({
+      suppressWarnings(HQUptimePlot)
+    })
+
+    # Plot AIS CnC Summary
+    CnCUptimePlotAquatics <- readRDS(paste0(swft.server.folder.path, "data/plots/LCServices/swft.ais.cnc.plot.RDS"))
+    
+    output$CnCUptimePlotAquatics <- plotly::renderPlotly({
+      suppressWarnings(CnCUptimePlotAquatics)
+    })
+  
+    # Plot AIS RTU Summary
+    RTUUptimePlotAquatics <- readRDS(paste0(swft.server.folder.path, "data/plots/LCServices/swft.ais.rtu.plot.RDS"))
+    
+    output$RTUUptimePlotAquatics <- plotly::renderPlotly({
+      suppressWarnings(RTUUptimePlotAquatics)
+    })
+    
+    # Summarize AIS HornetQ
+    HQUptimePlotAquatics <-  readRDS(paste0(swft.server.folder.path, "data/plots/LCServices/swft.ais.hornetq.plot.RDS"))
+    
+    output$HornetQUptimePlotAquatics <- plotly::renderPlotly({
+      suppressWarnings(HQUptimePlotAquatics)
+    })
+  }
+})

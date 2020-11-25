@@ -1,0 +1,19 @@
+﻿strm_name,Unit
+G2131_13C_isotope,permil
+G2131_CO2,ppm
+Li7200_CO2,ppm
+Li840_CO2_fwMole,ppm
+Li840_H2O_fwMole,ppm
+ML1_MFM_FlowRate,SLPM
+ML2_MFM_FlowRate,SLPM
+ML3_MFM_FlowRate,SLPM
+ML4_MFM_FlowRate,SLPM
+ML5_MFM_FlowRate,SLPM
+ML6_MFM_FlowRate,SLPM
+ML7_MFM_FlowRate,SLPM
+ML8_MFM_FlowRate,SLPM
+Li7200_H2o,mmol/mol
+G2131_H2O,%
+L2130_2H,per mill
+L2130_18O,per mill
+L2130_H2O_fwMole,ppm
