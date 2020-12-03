@@ -5,13 +5,15 @@ shiny::observeEvent(input$menu, {
       "AWS_S3_ENDPOINT"       = "neonscience.org",
       "AWS_DEFAULT_REGION"    = "s3.data"
     )
-
-  swiftCylAssay <- fst::read.fst(paste0(swft.server.folder.path, "data/fst/cval/spanGasConc.fst")) %>%
-    reshape2::dcast(date + siteID ~ name, value.var = "conc") %>%
-    dplyr::select(date,siteID,`ECSE-LOW`,`ECSE-MEDIUM`,`ECSE-HIGH`,`ECSE-Archive`,`ECTE-LOW`,`ECTE-MEDIUM`,`ECTE-HIGH`,`ECTE-Archive`)
-  
-  toListen <- shiny::reactive({
-    list(input$swft_cval_site,input$cvalDateRange,input$swft_cval_sensor, input$cvalShape)
+    
+    base::source(paste0(swft.server.folder.path, "R/read.eddy.inquiry.swift.R"))
+    
+    swiftCylAssay = read.eddy.inquiry(dataType = "meta", sensor = "spanGas")  %>%
+      reshape2::dcast(date + siteID ~ name, value.var = "conc") %>%
+      dplyr::select(date,siteID,`ECSE-LOW`,`ECSE-MEDIUM`,`ECSE-HIGH`,`ECSE-Archive`,`ECTE-LOW`,`ECTE-MEDIUM`,`ECTE-HIGH`,`ECTE-Archive`)
+    
+    toListen <- shiny::reactive({
+      list(input$swft_cval_site,input$cvalDateRange,input$swft_cval_sensor, input$cvalShape)
   })
   colorBlindPal <- c('#d73027','#f46d43','#fdae61','#fee090','#ffffbf','#e0f3f8','#abd9e9','#74add1','#4575b4') # Actual Colorblind Safe Pallette
   colorRegular <- c('#e41a1c', # Red
@@ -36,7 +38,6 @@ shiny::observeEvent(input$menu, {
       ### Grab the DATES!
       dateData <- shiny::reactive({
         
-        base::source(paste0(swft.server.folder.path, "R/read.eddy.inquiry.swift.R"))
         
         # unique(all.cvals.meta$Sensor)
         all.cvals.meta = read.eddy.inquiry(dataType = "meta", sensor = "cval") %>%
@@ -234,30 +235,6 @@ shiny::observeEvent(input$menu, {
       cvalEndTime <- Sys.time()
       cvalLoadTime <- round(difftime(cvalEndTime, cvalReadTime, units = "secs") *1000,2)
       
-      output$cvalFstFile <- shinydashboard::renderValueBox({
-        shinydashboard::valueBox(
-          value = paste0(cvalLoadTime, " milliseconds"),
-          subtitle = paste0("Load File Name: ",paste0(swft.server.folder.path, "data/AllCvalFst/",input$swft_cval_site,"/",input$swft_cval_site,"_",input$swft_cval_sensor,".fst")),
-          width = 5,
-          color = "orange"
-        )
-      })
-      output$cvalNumVals <- shinydashboard::renderValueBox({
-        shinydashboard::valueBox(
-          value = paste0(base::length(unique(dateData()$date))),
-          subtitle = paste0(" Total Unique Cal/Vals"),
-          width = 12,
-          color = "blue"
-        )
-      })
-      output$cvalDaysPercentage <- shinydashboard::renderValueBox({
-        shinydashboard::valueBox(
-          value = paste0(100 *round(length(unique(dateData()$date))/(as.numeric(Sys.Date() - as.Date("2019-11-16"))),2), " % "),
-          subtitle = paste0("of expected daily Cal/Vals occured /n From 2019-11-16 to Present."),
-          width = 12,
-          color = "aqua"
-        )
-      })
     }
   })
   }

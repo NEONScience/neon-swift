@@ -11,9 +11,35 @@ shiny::observeEvent(input$menu, {
     
     theme_set(theme_bw()) 
     
-    # Read in Timestamp data
-    timestampData <- readRDS(paste0(swft.server.folder.path, "data/swiftTimeCheck.rds"))
+    Sys.setenv("AWS_ACCESS_KEY_ID"     = "research-eddy-inquiry",
+               "AWS_S3_ENDPOINT"       = "neonscience.org",
+               "AWS_DEFAULT_REGION"    = "s3.data")
     
+    # Read in Timestamp data
+    swft_timestamp_date_list = seq.Date(from = Sys.Date()-14, to = Sys.Date(), by = 1)
+    
+    timestampData = data.table::data.table()
+    for(days in swft_timestamp_date_list){
+      days = as.Date(days, origin = "1970-01-01")
+      message(days)
+
+
+      if(aws.s3::object_exists(object = paste0("sensor_timestamp_check/", days, ".RDS"), bucket = "research-eddy-inquiry") == TRUE){
+        message("\t Exists!!!")
+        
+        swft_timestamp_data.in = aws.s3::s3readRDS(object = paste0("sensor_timestamp_check/", days, ".RDS"), bucket = "research-eddy-inquiry")
+
+        # swft_timestamp_data.in = aws.s3::s3readRDS(object = paste0("sensor_timestamp_check/", days, ".RDS"), bucket = "research-eddy-inquiry")
+        timestampData = data.table::rbindlist(l = list(timestampData, swft_timestamp_data.in))
+
+      }
+
+    }
+    
+    timestampData = timestampData %>%
+      dplyr::group_by(siteID, PullDate) %>%
+      dplyr::mutate(`Site's Median Timestamp Difference` = median(diffTime)) %>%
+      dplyr::mutate(`Sensor's Deviation from the Site's Median Timestamp` = abs(`Site's Median Timestamp Difference`-`diffTime` )) 
     
     swft_timestamp_last_update = max(timestampData$PullDate, na.rm = TRUE)
     
@@ -28,23 +54,21 @@ shiny::observeEvent(input$menu, {
     })
     
     # Give table `readable` names
-    names(timestampData) <- c(
-      "TimeStamp","MacAddress","Eeprom","StreamNumber","Data","StartTime","EndTime","PullDate","Sensor's Timestamp Difference2","siteID","Sensor's Timestamp Difference",
-      "Site's Median Timestamp Difference", "Sensor's Deviation from the Site's Median Timestamp"
-    )
+    # names(timestampData) <- c(
+    #   "TimeStamp","MacAddress","Eeprom","StreamNumber","Data","StartTime","EndTime","PullDate","Sensor's Timestamp Difference2","Sensor's Timestamp Difference",
+    #   "Site's Median Timestamp Difference", "Sensor's Deviation from the Site's Median Timestamp"
+    # )
     
     # Filter the data down a little and select only certain columns sensible to users
-    timestampData <- timestampData %>%
+    timestampData.plot <- timestampData %>%
       dplyr::filter(`Sensor's Deviation from the Site's Median Timestamp` > 10 &
                     `Sensor's Deviation from the Site's Median Timestamp` < 1000  ) %>%
-      dplyr::filter(PullDate > Sys.Date()-21) %>%
-      dplyr::filter(stringr::str_detect(string = MacAddress, pattern = "7c:e0") == FALSE) %>%
-      dplyr::select(siteID, MacAddress, Eeprom, PullDate, `Sensor's Timestamp Difference`, `Site's Median Timestamp Difference`, `Sensor's Deviation from the Site's Median Timestamp`)
+      dplyr::select(siteID, MacAddress, Eeprom, PullDate, `Site's Median Timestamp Difference`, `Sensor's Deviation from the Site's Median Timestamp`)
     
       
     # Check if there are any issues, if not, give a blank plot
-    if(nrow(timestampData) > 0) {
-      analysisPlot <- ggplot2::ggplot(data=timestampData,aes(x=`Sensor's Deviation from the Site's Median Timestamp`,SensorMac=MacAddress,fill=siteID, SiteMedianDifferenceTime = `Site's Median Timestamp Difference`))+
+    if(nrow(timestampData.plot) > 0) {
+      analysisPlot <- ggplot2::ggplot(data=timestampData.plot,aes(x=`Sensor's Deviation from the Site's Median Timestamp`,SensorMac=MacAddress,fill=siteID, SiteMedianDifferenceTime = `Site's Median Timestamp Difference`))+
         ggplot2::geom_histogram(binwidth = 1, color = "grey")+
         ggplot2::theme(axis.text.x = element_text(angle = 325))+ # Change axis text to Battelle Blue
         ggplot2::labs(x = "Sensor Delay (s)", 
@@ -66,7 +90,15 @@ shiny::observeEvent(input$menu, {
     
     # Table data from plot
     output$swft_timestamp_table <- renderDT({
-      DT::datatable(timestampData
+      
+      timestampData.table = timestampData %>%
+        dplyr::group_by(PullDate, siteID) %>%
+        dplyr::filter(`Sensor's Deviation from the Site's Median Timestamp` > 2) %>%
+        dplyr::filter(`Sensor's Deviation from the Site's Median Timestamp` == max(`Sensor's Deviation from the Site's Median Timestamp`)) %>%
+        dplyr::arrange(desc(`Sensor's Deviation from the Site's Median Timestamp`)) %>%
+        dplyr::select(siteID, PullDate, MacAddress, StartTime, EndTime, diffTime, `Site's Median Timestamp Difference`, `Sensor's Deviation from the Site's Median Timestamp`)
+      
+      DT::datatable(timestampData.table
                     ,  escape = FALSE,filter='top', options = list(pageLength = 10, autoWidth = FALSE))
     })
     

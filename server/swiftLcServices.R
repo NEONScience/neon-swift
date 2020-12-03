@@ -108,43 +108,38 @@ shiny::observeEvent(input$menu, {
     ## Summary Panel Plots
     
     # Plot TIS CnC Summary
-    CnCUptimePlot <- readRDS(paste0(swft.server.folder.path, "data/plots/LCServices/swft.tis.cnc.plot.RDS"))
+    CnCUptimePlot <- aws.s3::s3readRDS(object = "CnC/plots/swft.tis.cnc.plot.RDS", bucket = "research-eddy-inquiry")
     
     output$CnCUptimePlot <- plotly::renderPlotly({
       suppressWarnings(CnCUptimePlot)
     })
 
     # Plot TIS RTU Summary
-    RTUUptimePlot <- readRDS(paste0(swft.server.folder.path, "data/plots/LCServices/swft.tis.rtu.plot.RDS"))
-    
+    RTUUptimePlot <- aws.s3::s3readRDS(object = "CnC/plots/swft.tis.rtu.plot.RDS", bucket = "research-eddy-inquiry")
     output$RTUUptimePlot <- plotly::renderPlotly({
       suppressWarnings(RTUUptimePlot)
     })
 
     # Plot TIS HornetQ Summary
-    HQUptimePlot <- readRDS(paste0(swft.server.folder.path, "data/plots/LCServices/swft.tis.hornetq.plot.RDS"))
-    
+    HQUptimePlot <- aws.s3::s3readRDS(object = "CnC/plots/swft.tis.hornetq.plot.RDS", bucket = "research-eddy-inquiry")
     output$HornetQUptimePlot <- plotly::renderPlotly({
       suppressWarnings(HQUptimePlot)
     })
 
     # Plot AIS CnC Summary
-    CnCUptimePlotAquatics <- readRDS(paste0(swft.server.folder.path, "data/plots/LCServices/swft.ais.cnc.plot.RDS"))
-    
+    CnCUptimePlotAquatics <- aws.s3::s3readRDS(object = "CnC/plots/swft.ais.cnc.plot.RDS", bucket = "research-eddy-inquiry")
     output$CnCUptimePlotAquatics <- plotly::renderPlotly({
       suppressWarnings(CnCUptimePlotAquatics)
     })
   
     # Plot AIS RTU Summary
-    RTUUptimePlotAquatics <- readRDS(paste0(swft.server.folder.path, "data/plots/LCServices/swft.ais.rtu.plot.RDS"))
-    
+    RTUUptimePlotAquatics <- aws.s3::s3readRDS(object = "CnC/plots/swft.ais.rtu.plot.RDS", bucket = "research-eddy-inquiry")
     output$RTUUptimePlotAquatics <- plotly::renderPlotly({
       suppressWarnings(RTUUptimePlotAquatics)
     })
     
     # Summarize AIS HornetQ
-    HQUptimePlotAquatics <-  readRDS(paste0(swft.server.folder.path, "data/plots/LCServices/swft.ais.hornetq.plot.RDS"))
-    
+    HQUptimePlotAquatics <- aws.s3::s3readRDS(object = "CnC/plots/swft.ais.hornetq.plot.RDS", bucket = "research-eddy-inquiry")
     output$HornetQUptimePlotAquatics <- plotly::renderPlotly({
       suppressWarnings(HQUptimePlotAquatics)
     })

@@ -3,32 +3,8 @@
 # This is the server logic of a Shiny web application. You can run the
 # application by clicking 'Run App' above.
 
-
-# Load required Libraries
-library(fst)
-library(shiny)
-library(plyr)
-library(dplyr)
-library(plotly)
-library(ggplot2)
-library(DT)
-library(tidyr)
-library(data.table)
-library(shinycssloaders)
-library(shinydashboard)
-library(viridis)
-library(stringr)
-library(data.table)
-library(tidytable)
-library(scales)
-library(aws.s3)
-library(lubridate)
-library(reshape2)
-library(RMySQL)
-
-
-# swft.server.folder.path = "/srv/shiny-server/swift/"
-swft.server.folder.path = "C:/GitHub/NEON-Swift/"
+# Specified path to the server folder for Swift. This MUST point to the Swift folder ie /srv/shiny-server/swift/
+swft.server.folder.path = "/srv/shiny-server/neon-swift/"
 
 # Define server logic required to draw a histogram
 server <- function(input, output,session) {
