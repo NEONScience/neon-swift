@@ -6,6 +6,10 @@
 # Specified path to the server folder for Swift. This MUST point to the Swift folder ie /srv/shiny-server/swift/
 swft.server.folder.path = "/srv/shiny-server/neon-swift/"
 
+Sys.setenv("AWS_ACCESS_KEY_ID"     = "research-eddy-inquiry",
+           "AWS_S3_ENDPOINT"       = "neonscience.org",
+           "AWS_DEFAULT_REGION"    = "s3.data")
+
 # Define server logic required to draw a histogram
 server <- function(input, output,session) {
   # base::source(file=paste0(swft.server.folder.path, 'server/swiftFunctions.R',                local=T,echo=T))
