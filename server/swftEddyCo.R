@@ -23,7 +23,7 @@ shiny::observeEvent(input$menu, {
       swft_ec_fast_collect_data_time_start = Sys.time()
       
       
-      if(input$swft_EddyCo_data_type != "CO2"){
+      if(input$swft_EddyCo_data_type != "CO2" & input$swft_EddyCo_data_type != "H2O"){
       # Pull data from S3
       # message(input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2], paste0(" Swft Data Gather Starting ... "))
       swft.data.in = read.eddy.inquiry(dataType  = "2min", 
@@ -55,6 +55,41 @@ shiny::observeEvent(input$menu, {
         swft.data.in <- rbindlist(l = list(li840.data, g2131.data, li7200.data))
         rm(li840.data, g2131.data, li7200.data)
         
+      } else if(input$swft_EddyCo_data_type == "H2O") {
+        
+        message("\t\t   Is anybody out ther! ?1")
+        
+        li840.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
+        # li840.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = "UNDE", startDate = Sys.Date()-7, endDate = Sys.Date(), silent = TRUE)
+        if(nrow(li840.h2o.data) > 0){
+          li840.h2o.data <- li840.h2o.data %>%
+            dplyr::filter(strm_name == "Li840_H2O_fwMole")
+        }
+        # g2131.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "G2131", siteID = "UNDE", startDate = Sys.Date()-7, endDate = Sys.Date(), silent = TRUE)
+        g2131.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "G2131", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
+        if(nrow(g2131.h2o.data) > 0){
+          g2131.h2o.data <- g2131.h2o.data %>%
+            dplyr::filter(strm_name == "G2131_percentFwMoleH2O")
+        }
+        # li7200.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li7200", siteID = "UNDE", startDate = Sys.Date()-7, endDate = Sys.Date(), silent = TRUE)
+        li7200.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li7200", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
+        if(nrow(li7200.h2o.data) > 0){
+          li7200.h2o.data <- li7200.h2o.data %>%
+            dplyr::filter(strm_name == "Li7200_fdMoleH2O")
+        }
+        
+        # l2130.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "L2130", siteID = "UNDE", startDate = Sys.Date()-7, endDate = Sys.Date(), silent = TRUE)
+        l2130.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "L2130", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
+        if(nrow(l2130.h2o.data) > 0){
+          l2130.h2o.data <- l2130.h2o.data %>%
+            dplyr::filter(strm_name == "L2130_H2O")
+        }
+        
+        swft.data.in <- data.table::rbindlist(l = list(li840.h2o.data, g2131.h2o.data, li7200.h2o.data, l2130.h2o.data)) %>%
+          dplyr::mutate(readout_val_double = ifelse(test = strm_name == "G2131_percentFwMoleH2O", yes = readout_val_double*10, no = readout_val_double)) %>%
+          dplyr::mutate(readout_val_double = ifelse(test = strm_name == "L2130_H2O", yes = readout_val_double/1000, no = readout_val_double)) 
+        
+        rm(li840.h2o.data, g2131.h2o.data, li7200.h2o.data)
       }
       
       # For Function Testing
@@ -174,13 +209,8 @@ shiny::observeEvent(input$menu, {
                   dplyr::left_join(y = swft.li840.valves.clean.join, by = "readout_time") %>%
                   dplyr::mutate(SampleLevel = ifelse(test = is.na(SampleLevel) == TRUE, yes = "Unknown", no = SampleLevel)) %>%
                   dplyr::filter(strm_name == "Li840_H2O_fwMole")
-                
-                
               }
-              
-              
             }
-            
           # If swft_EddyCo_sub_data_type_Li840 does == "Sample Valves"
           } else if(input$swft_EddyCo_sub_data_type_Li840 == "Sample Valves"){
             
@@ -337,6 +367,11 @@ shiny::observeEvent(input$menu, {
             dplyr::mutate(strm_name = base::trimws(strm_name)) %>%
             dplyr::filter(readout_val_double < 1000 & readout_val_double >= -5)
           
+        } else if(input$swft_EddyCo_data_type == "H2O"){
+          message("\t\t   2")
+          
+          swft.data.out = swft.data.in
+          
         } else if(input$swft_EddyCo_data_type == "CSAT3"){
           
           swft.data.out = swft.data.in
@@ -476,19 +511,24 @@ shiny::observeEvent(input$menu, {
           if(input$swft_EddyCo_sub_data_type_G2131 == "CO2"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_G2131, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
+            swft.data.out = swft.data.out %>%
+              dplyr::mutate(strm_name = SampleLevel)
+            
             swft.plot = ggplot(data = swft.data.out, aes(x = readout_time, y = readout_val_double, color = SampleLevel)) +
               geom_point() +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
-              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
-              facet_wrap(~strm_name)
+              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) 
             
           }
           
           if(input$swft_EddyCo_sub_data_type_G2131 == "Isotopes"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_G2131, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
+            
+            swft.data.out = swft.data.out %>%
+              dplyr::mutate(strm_name = SampleLevel)
             
             swft.plot = ggplot(data = swft.data.out, aes(x = readout_time, y = readout_val_double, color = SampleLevel)) +
               geom_point() +
@@ -496,13 +536,15 @@ shiny::observeEvent(input$menu, {
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               labs(x = "", y = "Concentration", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
-              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
-              facet_wrap(~strm_name)
+              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) 
       
           }
           
           if(input$swft_EddyCo_sub_data_type_G2131 == "Sample Valves"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_G2131, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
+            
+            # swft.data.out = swft.data.out %>%
+            #   dplyr::mutate(strm_name = variable)
             
             swft.plot = ggplot() +
               geom_col(data = swft.data.out, aes(x = variable, y = value, fill = variable)) +
@@ -520,18 +562,23 @@ shiny::observeEvent(input$menu, {
           if(input$swft_EddyCo_sub_data_type_Li840 == "CO2"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li840, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
+            swft.data.out = swft.data.out %>%
+              dplyr::mutate(strm_name = SampleLevel)
+            
             swft.plot = ggplot(data = swft.data.out, aes(x = readout_time, y = readout_val_double, color = SampleLevel)) +
               geom_point() +
               scale_y_continuous(limits = c(swft.li840.co2.med - 100, swft.li840.co2.med + 100), breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
-              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
-              facet_wrap(~strm_name)
+              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) 
          
           }
           if(input$swft_EddyCo_sub_data_type_Li840 == "H2O"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li840, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
+            
+            swft.data.out = swft.data.out %>%
+              dplyr::mutate(strm_name = SampleLevel)
             
             swft.plot = ggplot(data = swft.data.out, aes(x = readout_time, y = readout_val_double, color = SampleLevel)) +
               geom_point() +
@@ -539,12 +586,14 @@ shiny::observeEvent(input$menu, {
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
-              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
-              facet_wrap(~strm_name)
+              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) 
             
           }
           if(input$swft_EddyCo_sub_data_type_Li840 == "Sample Valves"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li840, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
+            
+            # swft.data.out = swft.data.out %>%
+            #   dplyr::mutate(strm_name = variable)
 
             swft.plot = ggplot() +
               geom_col(data = swft.data.out, aes(x = variable, y = value, fill = variable)) +
@@ -552,7 +601,7 @@ shiny::observeEvent(input$menu, {
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               labs(x = "", y = "Counts", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
-              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
+              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20))+
               facet_wrap(~strm_name)
           }
           if(input$swft_EddyCo_sub_data_type_Li840 == "Flow Rate"){
@@ -562,8 +611,8 @@ shiny::observeEvent(input$menu, {
             plot.max <- max(swft.data.out$readout_time, na.rm = TRUE)
             
             swft.plot <- ggplot(swft.data.out, aes(x=readout_time, y= readout_val_double))+
-              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = .8, ymax = 1.2, alpha = 0.2, fill = "#00cc00")+
-              geom_point(shape = 1, alpha = .25, color = "#c51b7d") +
+              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = .8, ymax = 1.2, alpha = 0.62, fill = "#00cc00")+
+              geom_point(shape = 1, alpha = .6, color = "#c51b7d") +
               geom_hline(yintercept = 1.0, linetype = "dashed") +
               scale_color_manual(values = c("#e41a1c","#377eb8","#4daf4a")) +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
@@ -579,6 +628,9 @@ shiny::observeEvent(input$menu, {
           if(input$swft_EddyCo_sub_data_type_L2130 %in% c("Isotope - 2H", "Isotope - 18O")){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_L2130, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
+            swft.data.out = swft.data.out %>%
+              dplyr::mutate(strm_name = SampleLevel)
+            
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = readout_val_double, color = SampleLevel)) +
               geom_point(alpha = .6) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
@@ -590,6 +642,9 @@ shiny::observeEvent(input$menu, {
           if(input$swft_EddyCo_sub_data_type_L2130 == "H2O"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_L2130, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
+            swft.data.out = swft.data.out %>%
+              dplyr::mutate(strm_name = SampleLevel)
+            
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = readout_val_double, color = SampleLevel)) +
               geom_point(alpha = .6) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
@@ -600,6 +655,9 @@ shiny::observeEvent(input$menu, {
           }
           if(input$swft_EddyCo_sub_data_type_L2130 == "Sample Valves"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_L2130, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
+
+            # swft.data.out = swft.data.out %>%
+            #   dplyr::mutate(strm_name = variable)
             
             swft.plot = ggplot() +
               geom_col(data = swft.data.out, aes(x = variable, y = value, fill = variable)) +
@@ -622,7 +680,8 @@ shiny::observeEvent(input$menu, {
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
               labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
-                   subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))
+                   subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+
+              facet_wrap(~strm_name)
           }
           if(input$swft_EddyCo_sub_data_type_Li7200 == "H2O"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li7200, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
@@ -633,7 +692,8 @@ shiny::observeEvent(input$menu, {
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
               labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
-                   subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))
+                   subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+
+              facet_wrap(~strm_name)
           }
           if(input$swft_EddyCo_sub_data_type_Li7200 == "Flow"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li7200, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
@@ -649,7 +709,8 @@ shiny::observeEvent(input$menu, {
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
               labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
-                   subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))
+                   subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+
+              facet_wrap(~strm_name)
           }
           if(input$swft_EddyCo_sub_data_type_Li7200 == "Signal Strength"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li7200, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
@@ -665,13 +726,17 @@ shiny::observeEvent(input$menu, {
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
               labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
-                   subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))
+                   subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+
+              facet_wrap(~strm_name)
           }
           if(input$swft_EddyCo_sub_data_type_Li7200 == "Cell Temp"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li7200, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
             plot.min <- min(swft.data.out$readout_time, na.rm = TRUE)
             plot.max <- max(swft.data.out$readout_time, na.rm = TRUE)
+            
+            swft.data.out = swft.data.out %>%
+              dplyr::mutate(strm_name = "Cell Tempurature Difference")
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = temp_diff)) +
               geom_point(alpha = .6, color = "black") +
@@ -684,7 +749,8 @@ shiny::observeEvent(input$menu, {
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
               labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
-                   subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))
+                   subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+
+              facet_wrap(~strm_name)
           }
           if(input$swft_EddyCo_sub_data_type_Li7200 == "Pressure Differential"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li7200, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
@@ -723,20 +789,38 @@ shiny::observeEvent(input$menu, {
           message(paste0("Plot: ", input$swft_EddyCo_data_type, "-All for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
           
           swft.co2.colors <- c("Li7200_CO2" = "#005824",
-                          "Li840_CO2_fwMole" = "#e31a1c", 
-                          "G2131_fwMoleCo2" = "#0c2c84")
+                               "Li840_CO2_fwMole" = "#e31a1c", 
+                               "G2131_fwMoleCo2" = "#0c2c84")
           
           swft.plot <- ggplot(swft.data.out, aes(x=readout_time, y= readout_val_double, color = strm_name))+
-            geom_jitter(shape = 1, alpha = .2) +
+            geom_jitter(alpha = .6) +
             scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
             scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
             scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +            scale_color_manual(values = swft.co2.colors)+
             labs(title = paste0(swft.data.out$SiteID[1], ": CO2 2-minute point data"),
                  x = "", y = "CO2 (ppm)",
                  color = "Sensor") +
-            theme(axis.text.x = element_text(angle = 270),
-                  legend.position = "none") + # Option to angle the facet grid y panel text
-            facet_wrap(~strm_name)
+            theme(axis.text.x = element_text(angle = 270), legend.text=element_text(size=14), legend.title = element_text(size = 18))+ guides(colour = guide_legend(override.aes = list(size=4, alpha = 1)))  # Option to angle the facet grid y panel text
+        }
+        if(input$swft_EddyCo_data_type == "H2O"){
+          message("\t\t   3")
+          message(paste0("Plot: ", input$swft_EddyCo_data_type, "-All for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
+          
+          swft.co2.colors <- c("Li7200_fdMoleH2O" = "#005824",
+                               "Li840_H2O_fwMole" = "#e31a1c", 
+                               "G2131_percentFwMoleH2O" = "#0c2c84",
+                               "L2130_H2O"        = "#1c9099")
+          
+          swft.plot <- ggplot(swft.data.out, aes(x=readout_time, y= readout_val_double, color = strm_name))+
+            geom_jitter(alpha = .6) +
+            scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
+            scale_y_continuous(breaks = scales::pretty_breaks(n = 10), sec.axis = dup_axis(name = "")) +            
+            scale_color_manual(values = swft.co2.colors)+
+            labs(title = paste0(swft.data.out$SiteID[1], ": H2O 2-minute point data"),
+                 x = "", y = "undetermined",
+                 color = "Sensor") +
+            theme(axis.text.x = element_text(angle = 270), legend.text=element_text(size=14), legend.title = element_text(size = 18))+ guides(colour = guide_legend(override.aes = list(size=4, alpha = 1)))  # Option to angle the facet grid y panel text
+            
         }
         if(input$swft_EddyCo_data_type == "CSAT3"){
           message(paste0("Plot: ", input$swft_EddyCo_data_type, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
@@ -744,9 +828,11 @@ shiny::observeEvent(input$menu, {
           colors <- c("NA" = "grey","0" = "limegreen", "1" = "gold",
                       "2" = "yellow", "3" = "orange","4" = "red")
           
-          swft.plot <- ggplot(swft.data.out, aes(x=readout_time,y=CSAT3_WindVector,color = CodeSum,`SpeedOfSoundAgreement` = SpdSndAgreement,`PoorSignalLock` = PoorSignalLock,
-                                         `AmplitudeTooHigh` = AmplitudeHigh,`AmplitudeTooLow` = AmplitudeLow))+
-            geom_point(alpha = 0.5, shape = 1)+
+          swft.data.out = swft.data.out %>%
+            dplyr::mutate(strm_name = CodeSum)
+          
+          swft.plot <- ggplot(swft.data.out, aes(x=readout_time,y=CSAT3_WindVector,color = CodeSum))+
+            geom_point(alpha = 0.6, shape = 1)+
             scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
             scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
             scale_color_manual(values = colors)+
@@ -756,6 +842,9 @@ shiny::observeEvent(input$menu, {
         }
         if(input$swft_EddyCo_data_type == "amrs"){
           message(paste0("Plot: ", input$swft_EddyCo_data_type, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
+          
+          swft.data.out = swft.data.out %>%
+            dplyr::mutate(strm_name = day)
           
           swft.plot <-  ggplot(swft.data.out, aes(x = AMRS_x, y= AMRS_y, Time = day, color = as.factor(day)))+
             geom_hline(yintercept = yInt,linetype = "dashed",alpha = 0.75)+
@@ -779,7 +868,7 @@ shiny::observeEvent(input$menu, {
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_HMP155, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y= readout_val_double))+
-              geom_point(alpha = .4, color = "#73C0EC") +
+              geom_point(alpha = .6, color = "#73C0EC") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
@@ -790,7 +879,7 @@ shiny::observeEvent(input$menu, {
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_HMP155, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y= readout_val_double))+
-              geom_point(alpha = .4, color = "#00b200")+
+              geom_point(alpha = .6, color = "#00b200")+
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
@@ -801,7 +890,7 @@ shiny::observeEvent(input$menu, {
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_HMP155, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y= readout_val_double))+
-              geom_point(alpha = .4, color = "red")+
+              geom_point(alpha = .6, color = "red")+
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) +
@@ -828,8 +917,7 @@ shiny::observeEvent(input$menu, {
             labs(title = paste0(swft.data.out$SiteID[1], ": ECSE MFM 2-minute point data"),
                  x = "", y = "Flow Rate (SLPM)",
                  color = "Sensor", caption = flow.text) +
-            theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), legend.position = "none", text = element_text(size = 20)) +
-            facet_wrap(~strm_name, nrow = 3)
+            theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20))
         }
         if(input$swft_EddyCo_data_type == "ecse.voltage") {
           message(paste0("Plot: ", input$swft_EddyCo_data_type, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
@@ -842,8 +930,7 @@ shiny::observeEvent(input$menu, {
             labs(title = paste0(swft.data.out$SiteID[1], ": ECSE Pump Voltage 2-minute point data"),
                  x = "", y = "Voltage",
                  color = "Sensor") +
-            theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), legend.position = "none", text = element_text(size = 20)) +
-            facet_wrap(~strm_name, nrow = 3)
+            theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20))
           
         }
         if(input$swft_EddyCo_data_type == "ec.temps") {
@@ -851,6 +938,9 @@ shiny::observeEvent(input$menu, {
           
           plot.min <- min(swft.data.out$by30, na.rm = TRUE)
           plot.max <- max(swft.data.out$by30, na.rm = TRUE)
+          
+          swft.data.out = swft.data.out %>%
+            dplyr::mutate(strm_name = ec.system)
           
           swft.plot <- ggplot(swft.data.out, aes(x = by30, y= mean, color = type))+
             geom_point(alpha = .63) +
@@ -861,8 +951,7 @@ shiny::observeEvent(input$menu, {
             scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
             labs(title = paste0(swft.data.out$SiteID[1], ": Hut Temperature 2-minute point data"), subtitle = "Averaged hourly",
                  x = "", y = "Temp in Celcius", color = "Temp Sensor") +
-            theme(axis.text.x = element_text(angle = 270), text = element_text(size = 20)) + # Option to angle the facet grid y panel text
-            facet_grid(~ec.system)
+            theme(axis.text.x = element_text(angle = 270), text = element_text(size = 20)) # Option to angle the facet grid y panel text
         }
       } else { 
         # If there are not rows in swft.data.out generate blank plot
@@ -902,11 +991,35 @@ shiny::observeEvent(input$menu, {
     # Output Plot
     output$swft_ec_fast_plot <- shiny::renderPlot({
       if(input$swft_EddyCo_radioButton == "Enabled"){
-        swft_ec_fast_plot()$swft_plot +
-          ylim(input$swft_EddyCo_y_lower, input$swft_EddyCo_y_upper)
+        
+        if(input$swft_EddyCo_radio_y_custom == "Yes"){
+        
+          if(input$swft_EddyCo_facet_wrap == "Yes"){
+            swft_ec_fast_plot()$swft_plot +
+              ylim(input$swft_EddyCo_y_lower, input$swft_EddyCo_y_upper) +
+              facet_wrap(~strm_name)+
+              theme(legend.position = "none")
+          } else {
+            swft_ec_fast_plot()$swft_plot +
+              ylim(input$swft_EddyCo_y_lower, input$swft_EddyCo_y_upper) 
+         
+          } 
+          
+        } else {
+          
+          if(input$swft_EddyCo_facet_wrap == "Yes"){
+            swft_ec_fast_plot()$swft_plot +
+              facet_wrap(~strm_name)+
+              theme(legend.position = "none")
+          } else {
+            swft_ec_fast_plot()$swft_plot 
+            
+          }
+          
+        }
         
       } else {
-        swft_ec_fast_plot()$swft_plot 
+        swft_ec_fast_plot()$swft_plot
       }
     })
     

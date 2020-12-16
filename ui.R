@@ -342,6 +342,7 @@ shiny::shinyUI(
                                                     "ECSE CO2/H2O Analyzer - Li840A"         = "Li840",
                                                     "ECTE CO2/H2O Analyzer - Li7200"         = "Li7200",
                                                     "All CO2"                                = "CO2",
+                                                    "All H2O"                                = "H2O",
                                                     "ECTE 3D Wind Sensor - CSAT3"            = "CSAT3",
                                                     "ECTE Roll/Pitch/Azimuth Sensor - AMRS"  = "amrs",
                                                     "ECTE Relative Humidity Sensor - HMP155" = "HMP155",
@@ -381,11 +382,20 @@ shiny::shinyUI(
                     shiny::column(width = 1),
                     shiny::column(width = 8,
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_radioButton == 'Enabled' ",
+                                              
                         shiny::column(width = 3,
-                          shiny::numericInput(inputId = "swft_EddyCo_y_lower",label = "Min Y", value = "")
+                          shiny::selectInput(inputId = "swft_EddyCo_radio_y_custom", label = "Customize Y-axis", choices = c("Yes", "No"), selected = "No")
+                        ),
+                        shiny::conditionalPanel(condition = "input.swft_EddyCo_radio_y_custom == 'Yes'",
+                          shiny::column(width = 3,
+                            shiny::numericInput(inputId = "swft_EddyCo_y_lower",label = "Min Y", value = "")
+                          ),
+                          shiny::column(width = 3,
+                            shiny::numericInput(inputId = "swft_EddyCo_y_upper",label = "Max Y", value = 500)
+                          )
                         ),
                         shiny::column(width = 3,
-                          shiny::numericInput(inputId = "swft_EddyCo_y_upper",label = "Max Y", value = 500)
+                          shiny::selectInput(inputId = "swft_EddyCo_facet_wrap", label = "Facet by stream name?", choices = c("Yes", "No"), selected = "No")
                         )
                       )
                     )
