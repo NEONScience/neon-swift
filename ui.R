@@ -356,7 +356,7 @@ shiny::shinyUI(
                   shiny::column(width = 3,
                     shiny::fluidRow(
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'G2131'",
-                        shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_G2131', label = 'Sub Data Type', choices = c("CO2", "Isotopes", "Sample Valves"))
+                        shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_G2131', label = 'Sub Data Type', choices = c("CO2","H2O", "Isotopes", "Sample Valves"))
                       ),
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'Li840'",
                         shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_Li840', label = 'Sub Data Type', choices = c("CO2", "H2O", "Sample Valves", "Flow Rate"))

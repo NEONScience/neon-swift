@@ -92,9 +92,9 @@ shiny::observeEvent(input$menu, {
         rm(li840.h2o.data, g2131.h2o.data, li7200.h2o.data)
       }
       
-      # For Function Testing
+      # # For Function Testing
       # swft.data.in = read.eddy.inquiry(dataType  = "2min",
-      #                                  sensor    = "ec.temps",
+      #                                  sensor    = "G2131",
       #                                  siteID    = "WREF",
       #                                  startDate = Sys.Date()-7,
       #                                  endDate   = Sys.Date(),
@@ -120,6 +120,18 @@ shiny::observeEvent(input$menu, {
             
             swft.g2131.co2 = swft.data.in %>% 
               dplyr::filter(strm_name %in% c("G2131_fwMoleCo2")) 
+            
+            swft.data.out = dplyr::left_join(x = swft.g2131.co2, y = swft.g2131.valves, by = "readout_time")  %>%
+              dplyr::mutate(SampleLevel = ifelse(test = is.na(SampleLevel) == TRUE, yes = "Validation", no = SampleLevel)) 
+            
+            message(nrow(swft.data.out))
+            
+          }
+          # Sub Data Type: H2O
+          else if(input$swft_EddyCo_sub_data_type_G2131 == "H2O"){
+            
+            swft.g2131.co2 = swft.data.in %>% 
+              dplyr::filter(strm_name %in% c("G2131_percentFwMoleH2O")) 
             
             swft.data.out = dplyr::left_join(x = swft.g2131.co2, y = swft.g2131.valves, by = "readout_time")  %>%
               dplyr::mutate(SampleLevel = ifelse(test = is.na(SampleLevel) == TRUE, yes = "Validation", no = SampleLevel)) 
@@ -279,7 +291,7 @@ shiny::observeEvent(input$menu, {
             swft.data.out = swft.data.in %>%
               dplyr::filter(strm_name == "L2130_2H_isotope") %>%
               dplyr::left_join(y = swft.l2130.valves, by = "readout_time") %>%
-              dplyr::filter(readout_val_double <= 0 & readout_val_double > -300)
+              dplyr::filter(readout_val_double <= 0 & readout_val_double > -1000)
               
           }
           if(input$swft_EddyCo_sub_data_type_L2130 == "Isotope - 18O"){
@@ -519,6 +531,22 @@ shiny::observeEvent(input$menu, {
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+                   subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
+              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) 
+            
+          }
+          
+          if(input$swft_EddyCo_sub_data_type_G2131 == "H2O"){
+            message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_G2131, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
+            
+            swft.data.out = swft.data.out %>%
+              dplyr::mutate(strm_name = SampleLevel)
+            
+            swft.plot = ggplot(data = swft.data.out, aes(x = readout_time, y = readout_val_double, color = SampleLevel)) +
+              geom_point() +
+              scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
+              scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
+              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(size = 20)) 
             
