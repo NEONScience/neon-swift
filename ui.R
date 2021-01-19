@@ -1,27 +1,26 @@
 r.library = ("/home/NEON/kstyers/R/x86_64-redhat-linux-gnu-library/3.6/")
 
-library(fst,   lib.loc = r.library)
-library(shiny, lib.loc = r.library)
-library(plyr, lib.loc = r.library)
-library(vctrs, lib.loc = r.library)
-library(glue, lib.loc = r.library)
-library(tidyselect, lib.loc = r.library)
-library(dplyr, lib.loc = r.library)
-library(htmlwidgets, lib.loc = r.library)
-library(plotly, lib.loc = r.library)
-library(ggplot2, lib.loc = r.library)
-library(DT, lib.loc = r.library)
-library(tidyr, lib.loc = r.library)
-library(data.table, lib.loc = r.library)
+library(shiny,           lib.loc = r.library)
+library(plyr,            lib.loc = r.library)
+library(vctrs,           lib.loc = r.library)
+library(glue,            lib.loc = r.library)
+library(tidyselect,      lib.loc = r.library)
+library(dplyr,           lib.loc = r.library)
+library(htmlwidgets,     lib.loc = r.library)
+library(plotly,          lib.loc = r.library)
+library(ggplot2,         lib.loc = r.library)
+library(DT,              lib.loc = r.library)
+library(tidyr,           lib.loc = r.library)
+library(data.table,      lib.loc = r.library)
 library(shinycssloaders, lib.loc = r.library)
-library(shinydashboard, lib.loc = r.library)
-library(viridis, lib.loc = r.library)
-library(stringr, lib.loc = r.library)
-library(scales, lib.loc = r.library)
-library(aws.signature, lib.loc = r.library)
-library(xml2, lib.loc = r.library)
-library(aws.s3, lib.loc = r.library)
-library(lubridate, lib.loc = r.library)
+library(shinydashboard,  lib.loc = r.library)
+library(viridis,         lib.loc = r.library)
+library(stringr,         lib.loc = r.library)
+library(scales,          lib.loc = r.library)
+library(aws.signature,   lib.loc = r.library)
+library(xml2,            lib.loc = r.library)
+library(aws.s3,          lib.loc = r.library)
+library(lubridate,       lib.loc = r.library)
 
 swft.server.folder.path = "/srv/shiny-server/neon-swift/"
 
@@ -356,7 +355,7 @@ shiny::shinyUI(
                   shiny::column(width = 3,
                     shiny::fluidRow(
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'G2131'",
-                        shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_G2131', label = 'Sub Data Type', choices = c("CO2", "Isotopes", "Sample Valves"))
+                        shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_G2131', label = 'Sub Data Type', choices = c("CO2","H2O", "Isotopes", "Sample Valves"))
                       ),
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'Li840'",
                         shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_Li840', label = 'Sub Data Type', choices = c("CO2", "H2O", "Sample Valves", "Flow Rate"))
