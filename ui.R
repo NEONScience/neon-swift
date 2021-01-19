@@ -1,4 +1,4 @@
-r.library = ("/home/NEON/kstyers/R/x86_64-redhat-linux-gnu-library/4.0/")
+r.library = ("/home/NEON/kstyers/R/x86_64-redhat-linux-gnu-library/3.6/")
 
 library(fst,   lib.loc = r.library)
 library(shiny, lib.loc = r.library)
