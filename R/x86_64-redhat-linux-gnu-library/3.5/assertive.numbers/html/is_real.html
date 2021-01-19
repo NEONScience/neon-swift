@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the input real/imaginary?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_imaginary {assertive.numbers}"><tr><td>assert_all_are_imaginary {assertive.numbers}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the input real/imaginary?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the input is real or imaginary.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_imaginary(x, tol = 100 * .Machine$double.eps,
+  na_ignore = FALSE, severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_imaginary(x, tol = 100 * .Machine$double.eps,
+  na_ignore = FALSE, severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_real(x, tol = 100 * .Machine$double.eps, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_real(x, tol = 100 * .Machine$double.eps, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_imaginary(x, tol = 100 * .Machine$double.eps,
+  .xname = get_name_in_parent(x))
+
+is_real(x, tol = 100 * .Machine$double.eps, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>Imaginary/real components smaller than <code>tol</code> are not 
+considered.</p>
+</td></tr>
+<tr valign="top"><td><code>na_ignore</code></td>
+<td>
+<p>A logical value.  If <code>FALSE</code>, <code>NA</code> values
+cause an error; otherwise they do not.  Like <code>na.rm</code> in many
+stats package functions, except that the position of the failing
+values does not change.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>TRUE</code> if the input has imaginary component equal to zero.
+The <code>assert_*</code> functions return nothing but
+throw an error if the corresponding <code>is_*</code> function returns 
+<code>FALSE</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/complex.html">complex</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+(x &lt;- with(expand.grid(re = -1:1, im = -1:1), re + im * 1i))
+is_real(x)
+is_imaginary(x)
+
+# By default, very small imaginary/real components are ignored.
+x &lt;- .Machine$double.eps * (1 + 1i)
+is_real(x)
+is_real(x, 0)
+is_imaginary(x)
+is_imaginary(x, 0)
+# numbers with both a real and imaginary component return FALSE
+# (since they are neither purely real nor purely imaginary)
+cmplx &lt;- 1 + 1i
+is_real(cmplx)
+is_imaginary(cmplx)
+assert_all_are_real(1:10)
+assert_all_are_real(1:10 + 0i)
+assert_any_are_real(c(1i, 0))
+assert_all_are_imaginary(1:10 * 1i)
+assert_any_are_imaginary(c(1i, 0))
+assertive.base::dont_stop(assert_all_are_real(x))
+assertive.base::dont_stop(assert_all_are_imaginary(x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.numbers</em> version 0.0-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

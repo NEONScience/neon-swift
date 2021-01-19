@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Consult an option, then default</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for opt {reprex}"><tr><td>opt {reprex}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Consult an option, then default</h2>
+
+<h3>Description</h3>
+
+<p>Arguments that appear like so in the usage:</p>
+<pre>f(..., arg = opt(DEFAULT), ...)
+</pre>
+<p>get their value according to this logic:</p>
+<pre>user-specified value or, if not given,
+  getOption("reprex.arg") or if does not exist,
+    DEFAULT
+</pre>
+<p>It's shorthand for:</p>
+<pre>f(..., arg = getOption("reprex.arg", DEFAULT), ...)
+</pre>
+<p>This is not an exported function and should not be called directly.
+</p>
+
+
+<h3>Details</h3>
+
+<p>Many of the arguments of <code><a href="reprex.html">reprex()</a></code> use <code>opt()</code>. If you don't like the
+official defaults, override them in your <code>.Rprofile</code>. Here's an example for
+someone who dislikes the &quot;Created by ...&quot; string, always wants session info,
+prefers to restyle their code, uses a winky face comment string, and likes
+the tidyverse startup message.</p>
+<pre>options(
+  reprex.advertise = FALSE,
+  reprex.si = TRUE,
+  reprex.style = TRUE,
+  reprex.comment = "#;-)",
+  reprex.tidyverse_quiet = FALSE
+)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>reprex</em> version 0.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

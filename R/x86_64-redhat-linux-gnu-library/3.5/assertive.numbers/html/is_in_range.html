@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the input in range?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_in_closed_range {assertive.numbers}"><tr><td>assert_all_are_in_closed_range {assertive.numbers}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the input in range?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the input is within an numeric interval.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_in_closed_range(x, lower = -Inf, upper = Inf,
+  na_ignore = FALSE, severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_in_closed_range(x, lower = -Inf, upper = Inf,
+  na_ignore = FALSE, severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_in_left_open_range(x, lower = -Inf, upper = Inf,
+  na_ignore = FALSE, severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_in_left_open_range(x, lower = -Inf, upper = Inf,
+  na_ignore = FALSE, severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_in_open_range(x, lower = -Inf, upper = Inf,
+  na_ignore = FALSE, severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_in_open_range(x, lower = -Inf, upper = Inf,
+  na_ignore = FALSE, severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_in_range(x, lower = -Inf, upper = Inf,
+  lower_is_strict = FALSE, upper_is_strict = FALSE, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_in_range(x, lower = -Inf, upper = Inf,
+  lower_is_strict = FALSE, upper_is_strict = FALSE, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_in_right_open_range(x, lower = -Inf, upper = Inf,
+  na_ignore = FALSE, severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_in_right_open_range(x, lower = -Inf, upper = Inf,
+  na_ignore = FALSE, severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_negative(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_negative(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_non_negative(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_non_negative(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_non_positive(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_non_positive(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_percentages(x, lower_is_strict = FALSE,
+  upper_is_strict = FALSE, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_percentages(x, lower_is_strict = FALSE,
+  upper_is_strict = FALSE, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_positive(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_positive(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_proportions(x, lower_is_strict = FALSE,
+  upper_is_strict = FALSE, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_proportions(x, lower_is_strict = FALSE,
+  upper_is_strict = FALSE, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_in_closed_range(x, lower = -Inf, upper = Inf,
+  .xname = get_name_in_parent(x))
+
+is_in_left_open_range(x, lower = -Inf, upper = Inf,
+  .xname = get_name_in_parent(x))
+
+is_in_open_range(x, lower = -Inf, upper = Inf,
+  .xname = get_name_in_parent(x))
+
+is_in_range(x, lower = -Inf, upper = Inf, lower_is_strict = FALSE,
+  upper_is_strict = FALSE, .xname = get_name_in_parent(x))
+
+is_in_right_open_range(x, lower = -Inf, upper = Inf,
+  .xname = get_name_in_parent(x))
+
+is_negative(x, .xname = get_name_in_parent(x))
+
+is_non_negative(x, .xname = get_name_in_parent(x))
+
+is_non_positive(x, .xname = get_name_in_parent(x))
+
+is_percentage(x, lower_is_strict = FALSE, upper_is_strict = FALSE,
+  .xname = get_name_in_parent(x))
+
+is_positive(x, .xname = get_name_in_parent(x))
+
+is_proportion(x, lower_is_strict = FALSE, upper_is_strict = FALSE,
+  .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>lower</code></td>
+<td>
+<p>Lower bound for the interval.</p>
+</td></tr>
+<tr valign="top"><td><code>upper</code></td>
+<td>
+<p>Upper bound for the interval.</p>
+</td></tr>
+<tr valign="top"><td><code>na_ignore</code></td>
+<td>
+<p>A logical value.  If <code>FALSE</code>, <code>NA</code> values
+cause an error; otherwise they do not.  Like <code>na.rm</code> in many
+stats package functions, except that the position of the failing
+values does not change.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>lower_is_strict</code></td>
+<td>
+<p>If <code>TRUE</code>, the lower bound is open (strict) 
+otherwise it is closed.</p>
+</td></tr>
+<tr valign="top"><td><code>upper_is_strict</code></td>
+<td>
+<p>If <code>TRUE</code>, the upper bound is open (strict)
+otherwise it is closed.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The <code>is_*</code> functions return <code>TRUE</code> if the input is 
+within an interval.  The <code>assert_*</code> functions return nothing but
+throw an error if the corresponding <code>is_*</code> function returns 
+<code>FALSE</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code>is_in_range</code> provides the most flexibility in determining
+if values are within a numeric interval.  The other functions restrict
+the input arguments for convience in common cases.  For example,
+<code>is_percentage</code> forces the interval to be from 0 to 100.
+The function is not vectorized by the <code>lower_is_strict</code> and
+<code>upper_is_strict</code> for speed (these are assumed to be scalar logical
+values).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+assert_all_are_positive(1:10)
+assert_all_are_non_negative(0:10)
+assert_any_are_positive(c(-1, 1))
+assert_all_are_percentages(c(0, 50, 100))
+assert_all_are_proportions(c(0, 0.5, 1))
+assert_all_are_in_left_open_range(1 + .Machine$double.eps, lower = 1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.numbers</em> version 0.0-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

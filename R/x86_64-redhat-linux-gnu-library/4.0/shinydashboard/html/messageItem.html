@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a message item to place in a dropdown message menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for messageItem {shinydashboard}"><tr><td>messageItem {shinydashboard}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a message item to place in a dropdown message menu</h2>
+
+<h3>Description</h3>
+
+<p>Create a message item to place in a dropdown message menu
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+messageItem(from, message, icon = shiny::icon("user"), time = NULL,
+  href = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>from</code></td>
+<td>
+<p>Who the message is from.</p>
+</td></tr>
+<tr valign="top"><td><code>message</code></td>
+<td>
+<p>Text of the message.</p>
+</td></tr>
+<tr valign="top"><td><code>icon</code></td>
+<td>
+<p>An icon tag, created by <code><a href="../../shiny/html/icon.html">icon</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>time</code></td>
+<td>
+<p>String representing the time the message was sent. Any string may
+be used. For example, it could be a relative date/time like &quot;5 minutes&quot;,
+&quot;today&quot;, or &quot;12:30pm yesterday&quot;, or an absolute time, like &quot;2014-12-01 13:45&quot;.
+If NULL, no time will be displayed.</p>
+</td></tr>
+<tr valign="top"><td><code>href</code></td>
+<td>
+<p>An optional URL to link to.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="dashboardHeader.html">dashboardHeader</a></code> for example usage.
+</p>
+<p>Other menu items: <code><a href="notificationItem.html">notificationItem</a></code>,
+<code><a href="taskItem.html">taskItem</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>shinydashboard</em> version 0.7.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

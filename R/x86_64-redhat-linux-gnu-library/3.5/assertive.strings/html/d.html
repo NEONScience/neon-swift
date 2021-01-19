@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create regex for repeated digits</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for d {assertive.strings}"><tr><td>d {assertive.strings}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create regex for repeated digits</h2>
+
+<h3>Description</h3>
+
+<p>Creates a regex string for repeated digits.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+d(lo, hi = NA_integer_, optional = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>lo</code></td>
+<td>
+<p>Minimum number of digits to match.</p>
+</td></tr>
+<tr valign="top"><td><code>hi</code></td>
+<td>
+<p>Optional maximum number of digits to match.</p>
+</td></tr>
+<tr valign="top"><td><code>optional</code></td>
+<td>
+<p>If <code>TRUE</code>, the digits are optional.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector of regexes.
+</p>
+
+
+<h3>Note</h3>
+
+<p>If <code>hi</code> is omitted, the returned regex will only match the exact 
+number of digits given by <code>lo</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+d(1:5)
+d(1:5, 6:8)
+d(0:2, Inf)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.strings</em> version 0.0-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

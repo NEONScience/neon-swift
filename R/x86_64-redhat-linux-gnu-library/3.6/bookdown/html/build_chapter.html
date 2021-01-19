@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Combine different parts of an HTML page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for build_chapter {bookdown}"><tr><td>build_chapter {bookdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Combine different parts of an HTML page</h2>
+
+<h3>Description</h3>
+
+<p>Given the HTML header, body, and footer, etc, build an HTML page.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+build_chapter(
+  head,
+  toc,
+  chapter,
+  link_prev,
+  link_next,
+  rmd_cur,
+  html_cur,
+  foot
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>head</code></td>
+<td>
+<p>A character vector of the HTML code before the document title.</p>
+</td></tr>
+<tr valign="top"><td><code>toc</code></td>
+<td>
+<p>A character vector of the table of contents.</p>
+</td></tr>
+<tr valign="top"><td><code>chapter</code></td>
+<td>
+<p>The body of a chapter.</p>
+</td></tr>
+<tr valign="top"><td><code>link_prev, link_next</code></td>
+<td>
+<p>The URL of the previous/next chapter (may be
+<code>NULL</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>rmd_cur</code></td>
+<td>
+<p>The Rmd filename of the current chapter (may be <code>NULL</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>html_cur</code></td>
+<td>
+<p>The HTML filename of the current chapter (may be
+<code>NULL</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>foot</code></td>
+<td>
+<p>A character vector of the HTML code after the chapter body.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is for expert use only. The <code>head</code> and <code>foot</code>
+arguments may not be strictly the HTML header and footer. It depends on the
+HTML comment tokens in the template (see <code><a href="html_chapters.html">html_chapters</a></code>).
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>bookdown</em> version 0.17 <a href="00Index.html">Index</a>]</div>
+</body></html>

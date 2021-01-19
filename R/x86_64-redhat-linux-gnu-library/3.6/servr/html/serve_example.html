@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A convenience function to serve examples in this package</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for serve_example {servr}"><tr><td>serve_example {servr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A convenience function to serve examples in this package</h2>
+
+<h3>Description</h3>
+
+<p>Use server functions to serve built-in examples of this package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+serve_example(name, FUN, ..., run = interactive())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>the directory name of the example under the directory
+<code>system.file('examples', package = 'servr')</code></p>
+</td></tr>
+<tr valign="top"><td><code>FUN</code></td>
+<td>
+<p>a server function that takes the example path as its first
+argument, e.g. <code><a href="httd.html">httd</a></code>, or <code><a href="dynamic_site.html">rmdv1</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments passed to <code>FUN</code></p>
+</td></tr>
+<tr valign="top"><td><code>run</code></td>
+<td>
+<p>whether to run the example (this is mainly for <code>R CMD
+check</code> purposes: the examples will not be really served when the R session
+is not interactive, so they will not block <code>R CMD check</code>)</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>NULL</code> if <code>run = FALSE</code>, otherwise the value returned from
+<code>FUN()</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# R Markdown v1 or v2
+servr::serve_example("rmd", servr::rmdv1)
+servr::serve_example("rmd", servr::rmdv2)
+
+# GNU Make
+servr::serve_example("make1", servr::make)
+servr::serve_example("make2", servr::make)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>servr</em> version 0.15 <a href="00Index.html">Index</a>]</div>
+</body></html>

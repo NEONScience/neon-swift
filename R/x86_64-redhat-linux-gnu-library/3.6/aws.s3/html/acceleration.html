@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bucket Acceleration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for get_acceleration {aws.s3}"><tr><td>get_acceleration {aws.s3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bucket Acceleration</h2>
+
+<h3>Description</h3>
+
+<p>Get/Put acceleration settings or retrieve acceleration status of a bucket.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+get_acceleration(bucket, ...)
+
+put_acceleration(bucket, status = c("Enabled", "Suspended"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>bucket</code></td>
+<td>
+<p>Character string with the name of the bucket, or an object of class &ldquo;s3_bucket&rdquo;.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments passed to <code><a href="s3HTTP.html">s3HTTP</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Character string specifying whether acceleration should be &ldquo;Enabled&rdquo; or &ldquo;Suspended&rdquo;.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Transfer acceleration is a AWS feature that enables potentially faster file transfers to and from S3, particularly when making cross-border transfers (such as from a European client location to the <span class="samp">us-east-1</span> S3 region). Acceleration must be enabled before it can be used. Once enabled, <code>accelerate = TRUE</code> can be passed to any aws.s3 function via <code><a href="s3HTTP.html">s3HTTP</a></code>. <code>get_acceleration</code> returns the acceleration status of a bucket; <code>put_acceleration</code> enables or suspends acceleration.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>get_acceleration</code>: If acceleration has never been enabled or suspend, the value is <code>NULL</code>. Otherwise, the status is returned (either &ldquo;Enabled&rdquo; or &ldquo;Suspended&rdquo;). For <code>put_acceleration</code>: If acceleration has never been enabled or suspend, the value is <code>NULL</code>.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketPUTaccelerate.html">API Documentation: PUT Bucket accelerate</a>
+<a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketGETaccelerate.html">API Documentation: GET Bucket accelerate</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+b &lt;- bucketlist()
+get_acceleration(b[[1]])
+put_acceleration(b[[1]], "Enabled")
+get_acceleration(b[[1]])
+put_acceleration(b[[1]], "Suspended")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>aws.s3</em> version 0.3.21 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot x and y error bars</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for error.crosses {psych}"><tr><td>error.crosses {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Plot x and y error bars </h2>
+
+<h3>Description</h3>
+
+<p>Given two vectors of data (X and Y), plot the means and show standard errors in both X and Y directions. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+error.crosses(x,y,labels=NULL,main=NULL,xlim=NULL,ylim= NULL, 
+xlab=NULL,ylab=NULL,pos=NULL,offset=1,arrow.len=.2,alpha=.05,sd=FALSE,add=FALSE,
+colors=NULL,col.arrows=NULL,col.text=NULL,...)  
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p> A vector of data or summary statistics (from Describe) </p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p> A second vector of data or summary statistics (also from Describe)</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>the names of each pair &ndash; defaults to rownames of x </p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>The title for the graph</p>
+</td></tr>
+<tr valign="top"><td><code>xlim</code></td>
+<td>
+<p>xlim values if desired&ndash; defaults to min and max mean(x) +/- 2 se</p>
+</td></tr>
+<tr valign="top"><td><code>ylim</code></td>
+<td>
+<p>ylim values if desired  &ndash; defaults to min and max mean(y) +/- 2 se</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>label for x axis &ndash; grouping variable 1</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>label for y axis &ndash; grouping variable 2</p>
+</td></tr>
+<tr valign="top"><td><code>pos</code></td>
+<td>
+<p>Labels are located where with respect to the mean?  </p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+<p>Labels are then offset from this location</p>
+</td></tr>
+<tr valign="top"><td><code>arrow.len</code></td>
+<td>
+<p> Arrow length </p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>alpha level of error bars </p>
+</td></tr>
+<tr valign="top"><td><code>sd</code></td>
+<td>
+<p>if sd is TRUE, then draw means +/- 1 sd)</p>
+</td></tr>
+<tr valign="top"><td><code>add</code></td>
+<td>
+<p>if TRUE, overlay the values with a prior plot</p>
+</td></tr>
+<tr valign="top"><td><code>colors</code></td>
+<td>
+<p>What color(s) should be used for the plot character? Defaults to black</p>
+</td></tr>
+<tr valign="top"><td><code>col.arrows</code></td>
+<td>
+<p>What color(s) should be used for the arrows &ndash; defaults to colors</p>
+</td></tr>
+<tr valign="top"><td><code>col.text</code></td>
+<td>
+<p>What color(s) should be used for the text &ndash; defaults to colors</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> Other parameters for plot  </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For an example of two way error bars describing the effects of mood manipulations upon positive and negative affect, see <a href="https://personality-project.org/revelle/publications/happy-sad-appendix/FIG.A-6.pdf">https://personality-project.org/revelle/publications/happy-sad-appendix/FIG.A-6.pdf</a>
+</p>
+<p>The second example shows how error crosses can be done for multiple variables where the grouping variable is found dynamically. The <code><a href="error.circles.html">errorCircles</a></code> example shows how to do this in one step.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> William Revelle <br />     
+<a href="mailto:revelle@northwestern.edu">revelle@northwestern.edu</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>To draw error bars for single variables  <code><a href="error.bars.html">error.bars</a></code>, or by groups <code><a href="error.bars.by.html">error.bars.by</a></code>, or to find descriptive statistics <code><a href="describe.html">describe</a></code>  or descriptive statistics by a grouping variable <code><a href="describe.by.html">describeBy</a></code> and <code><a href="statsBy.html">statsBy</a></code>. 
+</p>
+<p>A much improved version is now called <code><a href="error.circles.html">errorCircles</a></code>. </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+#just draw one pair of variables
+desc &lt;- describe(attitude)
+x &lt;- desc[1,]
+y &lt;- desc[2,]
+error.crosses(x,y,xlab=rownames(x),ylab=rownames(y))   
+
+#now for a bit more complicated plotting 
+data(psychTools::bfi)
+desc &lt;- describeBy(psychTools::bfi[1:25],psychTools::bfi$gender) #select a high and low group
+error.crosses(desc$'1',desc$'2',ylab="female scores",
+   xlab="male scores",main="BFI scores by gender")
+ abline(a=0,b=1)
+ 
+#do it from summary statistics  (using standard errors) 
+g1.stats &lt;- data.frame(n=c(10,20,30),mean=c(10,12,18),se=c(2,3,5))
+g2.stats &lt;- data.frame(n=c(15,20,25),mean=c(6,14,15),se =c(1,2,3))
+error.crosses(g1.stats,g2.stats)
+
+#Or, if you prefer to draw +/- 1 sd. instead of 95% confidence
+g1.stats &lt;- data.frame(n=c(10,20,30),mean=c(10,12,18),sd=c(2,3,5))
+g2.stats &lt;- data.frame(n=c(15,20,25),mean=c(6,14,15),sd =c(1,2,3))
+error.crosses(g1.stats,g2.stats,sd=TRUE)
+
+#and seem even fancy plotting: This is taken from a study of mood
+#four films were given (sad, horror, neutral, happy)
+#with a pre and post test
+data(psychTools::affect)
+colors &lt;- c("black","red","green","blue")
+films &lt;- c("Sad","Horror","Neutral","Happy")
+affect.mat &lt;- describeBy(psychTools::affect[10:17],psychTools::affect$Film,mat=TRUE)
+ error.crosses(affect.mat[c(1:4,17:20),],affect.mat[c(5:8,21:24),],
+    labels=films[affect.mat$group1],xlab="Energetic Arousal",
+     ylab="Tense Arousal",colors = 
+     colors[affect.mat$group1],pch=16,cex=2)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

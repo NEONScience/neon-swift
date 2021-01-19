@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Does the character vector contain CAS registry numbers?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_cas_numbers {assertive.data}"><tr><td>assert_all_are_cas_numbers {assertive.data}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Does the character vector contain CAS registry numbers?</h2>
+
+<h3>Description</h3>
+
+<p>Checks that the input contains Chemical Abstract Service registry numbers.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_cas_numbers(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_cas_numbers(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_cas_number(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>na_ignore</code></td>
+<td>
+<p>A logical value.  If <code>FALSE</code>, <code>NA</code> values
+cause an error; otherwise they do not.  Like <code>na.rm</code> in many
+stats package functions, except that the position of the failing
+values does not change.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A logical vector that is <code>TRUE</code> when the input contains valid  
+CAS registry numbers.
+</p>
+
+
+<h3>Note</h3>
+
+<p>CAS numbers take the form of 1 to 7 digits followed by a hyphen,  
+followed by 2 digits, another hyphen and a final check digit.
+</p>
+
+
+<h3>References</h3>
+
+<p>Chemspider (<a href="https://www.chemspider.com">https://www.chemspider.com</a>) is a good service 
+for looking up CAS numbers.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- c(
+  water            = "7732-18-5", 
+  d_glucose        = "50-99-7",
+  l_glucose        = "921-60-8",
+  no_hyphens       = "7732185", 
+  two_check_digits = "7732-18-55",
+  bad_check_digit  = "7732-18-4",
+  missing          = NA
+)
+is_cas_number(x)
+assert_any_are_cas_numbers(x)
+#These examples should fail.
+assertive.base::dont_stop(assert_all_are_cas_numbers(x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.data</em> version 0.0-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

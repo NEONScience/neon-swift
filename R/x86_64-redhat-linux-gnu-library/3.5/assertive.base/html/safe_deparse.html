@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Safe version of deparse</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for safe_deparse {assertive.base}"><tr><td>safe_deparse {assertive.base}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Safe version of deparse</h2>
+
+<h3>Description</h3>
+
+<p>A version of <code><a href="../../base/html/deparse.html">deparse</a></code> that is guaranteed to always return 
+a single string.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+safe_deparse(expr, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>Any R expression.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Passed to <code><a href="../../base/html/deparse.html">deparse</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector or length one.
+</p>
+
+
+<h3>Note</h3>
+
+<p>By default the RStudio IDE truncates output in the console at 1000 
+characters.  Consequently, if you use <code>safe_deparse</code> on large or complex
+objects, you won't see the full value. You can change the setting using
+Tools -&gt; &quot;Global Options...&quot; -&gt; Code -&gt; Display -&gt; Console -&gt; &quot;Limit length
+of lines displayed in console to:&quot;.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# safe_deparse only differs from deparse when the deparse string is longer
+# than width.cutoff
+deparse(CO2, width.cutoff = 500L) # has length 6
+safe_deparse(CO2)                 # has length 1
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.base</em> version 0.0-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

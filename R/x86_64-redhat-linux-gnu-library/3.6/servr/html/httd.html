@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Serve static files under a directory</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for httd {servr}"><tr><td>httd {servr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Serve static files under a directory</h2>
+
+<h3>Description</h3>
+
+<p>If there is an &lsquo;<span class="file">index.html</span>&rsquo; under this directory, it will be displayed;
+otherwise the list of files is displayed, with links on their names. After we
+run this function, we can go to <span class="samp">http://localhost:port</span> to browse the
+web pages either created from R or read from HTML files.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+httd(dir = ".", ...)
+
+httw(dir = ".", watch = ".", pattern = NULL, all_files = FALSE, handler = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dir</code></td>
+<td>
+<p>The root directory to serve.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>server configurations passed to <code><a href="server_config.html">server_config</a>()</code></p>
+</td></tr>
+<tr valign="top"><td><code>watch</code></td>
+<td>
+<p>a directory under which <code>httw()</code> is to watch for changes;
+if it is a relative path, it is relative to the <code>dir</code> argument</p>
+</td></tr>
+<tr valign="top"><td><code>pattern</code></td>
+<td>
+<p>a regular expression passed to <code><a href="../../base/html/list.files.html">list.files</a>()</code> to
+determine the files to watch</p>
+</td></tr>
+<tr valign="top"><td><code>all_files</code></td>
+<td>
+<p>whether to watch all files including the hidden files</p>
+</td></tr>
+<tr valign="top"><td><code>handler</code></td>
+<td>
+<p>a function to be called every time any files are changed or
+added under the directory; its argument is a character vector of the
+filenames of the files modified or added</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>httd()</code> is a pure static server, and <code>httw()</code> is similar but
+watches for changes under the directory: if an HTML file is being viewed in
+the browser, and any files are modified under the directory, the HTML page
+will be automatically refreshed.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://github.com/yihui/servr">https://github.com/yihui/servr</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#' see https://github.com/yihui/servr for command line usage
+# or run inside an R session
+if (interactive()) servr::httd()
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>servr</em> version 0.15 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Put object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for put_object {aws.s3}"><tr><td>put_object {aws.s3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Put object</h2>
+
+<h3>Description</h3>
+
+<p>Puts an object into an S3 bucket
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+put_object(
+  file,
+  object,
+  bucket,
+  multipart = FALSE,
+  acl = NULL,
+  headers = list(),
+  verbose = getOption("verbose", FALSE),
+  show_progress = getOption("verbose", FALSE),
+  ...
+)
+
+put_folder(folder, bucket, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>A character string containing the filename (or full path) of the file you want to upload to S3. Alternatively, an raw vector containing the file can be passed directly, in which case <code>object</code> needs to be specified explicitly.</p>
+</td></tr>
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>A character string containing the name the object should have in S3 (i.e., its &quot;object key&quot;). If missing, the filename is used.</p>
+</td></tr>
+<tr valign="top"><td><code>bucket</code></td>
+<td>
+<p>Character string with the name of the bucket, or an object of class &ldquo;s3_bucket&rdquo;.</p>
+</td></tr>
+<tr valign="top"><td><code>multipart</code></td>
+<td>
+<p>A logical indicating whether to use multipart uploads. See <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/mpuoverview.html">http://docs.aws.amazon.com/AmazonS3/latest/dev/mpuoverview.html</a>. If <code>file</code> is less than 100 MB, this is ignored.</p>
+</td></tr>
+<tr valign="top"><td><code>acl</code></td>
+<td>
+<p>A character string indicating a <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl">&ldquo;canned&rdquo; access control list</a>. By default all bucket contents and objects therein are given the ACL &ldquo;private&rdquo;. This can later be viewed using <code><a href="acl.html">get_acl</a></code> and modified using <code><a href="acl.html">put_acl</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>headers</code></td>
+<td>
+<p>List of request headers for the REST call. If <code>multipart = TRUE</code>, this only applies to the initialization call.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>A logical indicating whether to be verbose. Default is given by <code>options("verbose")</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>show_progress</code></td>
+<td>
+<p>A logical indicating whether to show a progress bar for uploads. Default is given by <code>options("verbose")</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments passed to <code><a href="s3HTTP.html">s3HTTP</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>folder</code></td>
+<td>
+<p>A character string containing a folder name. (A trailing slash is not required.)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This provide a generic interface for sending files (or serialized, in-memory representations thereof) to S3. Some convenience wrappers are provided for common tasks: e.g., <code><a href="s3save.html">s3save</a></code> and <code><a href="s3saveRDS.html">s3saveRDS</a></code>.
+</p>
+<p>Note that S3 is a flat file store. So there is no folder hierarchy as in a traditional hard drive. However, S3 allows users to create pseudo-folders by prepending object keys with <code>foldername/</code>. The <code>put_folder</code> function is provided as a high-level convenience function for creating folders. This is not actually necessary as objects with slashes in their key will be displayed in the S3 web console as if they were in folders, but it may be useful for creating an empty directory (which is possible in the web console).
+</p>
+
+
+<h3>Value</h3>
+
+<p>If successful, <code>TRUE</code>.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectPUT.html">API Documentation</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="put_bucket.html">put_bucket</a></code>, <code><a href="get_object.html">get_object</a></code>, <code><a href="delete_object.html">delete_object</a></code>, <code><a href="encryption.html">put_encryption</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+  library("datasets")
+  
+  # write file to S3
+  tmp &lt;- tempfile()
+  on.exit(unlink(tmp))
+  utils::write.csv(mtcars, file = tmp)
+  # put object with an upload progress bar
+  put_object(tmp, object = "mtcars.csv", bucket = "myexamplebucket", show_progress = TRUE)
+
+  # create a "folder" in a bucket
+  put_folder("example", bucket = "myexamplebucket")
+  ## write object to the "folder"
+  put_object(tmp, object = "example/mtcars.csv", bucket = "myexamplebucket")
+
+  # write serialized, in-memory object to S3
+  x &lt;- rawConnection(raw(0), "w")
+  utils::write.csv(mtcars, x)
+  put_object(rawConnectionValue(x), object = "mtcars.csv", bucket = "myexamplebucketname")
+
+  # use `headers` for server-side encryption
+  ## require appropriate bucket policy
+  ## encryption can also be set at the bucket-level using \code{\link{put_encryption}}
+  put_object(file = tmp, object = "mtcars.csv", bucket = "myexamplebucket",
+             headers = c('x-amz-server-side-encryption' = 'AES256'))
+
+  # alternative "S3 URI" syntax:
+  put_object(rawConnectionValue(x), object = "s3://myexamplebucketname/mtcars.csv")
+  close(x)
+
+  # read the object back from S3
+  read.csv(text = rawToChar(get_object(object = "s3://myexamplebucketname/mtcars.csv")))
+
+  # multi-part uploads for objects over 5MB
+  \donttest{
+  x &lt;- rnorm(3e6)
+  saveRDS(x, tmp)
+  put_object(tmp, object = "rnorm.rds", bucket = "myexamplebucket",
+             show_progress = TRUE, multipart = TRUE)
+  identical(x, s3readRDS("s3://myexamplebucket/rnorm.rds"))
+  }
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>aws.s3</em> version 0.3.21 <a href="00Index.html">Index</a>]</div>
+</body></html>

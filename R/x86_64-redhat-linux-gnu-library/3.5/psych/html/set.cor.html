@@ -1,0 +1,350 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Multiple Regression and Set Correlation from matrix or raw...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for setCor {psych}"><tr><td>setCor {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Multiple Regression and Set Correlation from matrix or raw input</h2>
+
+<h3>Description</h3>
+
+<p>Given a correlation matrix or a  matrix or dataframe of raw data, find the multiple regressions and draw a path diagram relating a set of y variables as a function of a set of x variables.  A set of covariates (z) can be partialled from the x and y sets. Regression diagrams are automatically included.   Model can be specified in conventional formula form, or in terms of x variables and y variables.  Multiplicative models (interactions) and quadratic terms may be specified in the formula mode if using raw data. By default, the data may be  zero centered before finding the interactions.  Will also find Cohen's Set Correlation between a predictor set of variables (x) and a criterion set (y). Also finds the canonical correlations between the x and y sets.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+setCor(y,x,data,z=NULL,n.obs=NULL,use="pairwise",std=TRUE,square=FALSE,
+       main="Regression Models",plot=TRUE,show=FALSE,zero=TRUE, alpha = .05)
+setCor.diagram(sc,main="Regression model",digits=2,show=FALSE,cex=1,l.cex=1,...)
+set.cor(y,x,data,z=NULL,n.obs=NULL,use="pairwise",std=TRUE,square=FALSE,
+       main="Regression Models",plot=TRUE,show=FALSE,zero=TRUE)    #an alias to setCor
+mat.regress(y, x,data, z=NULL,n.obs=NULL,use="pairwise",square=FALSE) #the old form
+
+matReg(x,y,C,m=NULL,z=NULL,n.obs=0,means=NULL,std=FALSE,raw=TRUE)  #does not handle 
+                    #formula input
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>Three options: 'formula' form (similar to lm) or either  the column numbers of the y set  (e.g., c(2,4,6) or the column names of the y set (e.g., c(&quot;Flags&quot;,&quot;Addition&quot;). See notes and examples for each.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p> either the column numbers of the x set (e.g., c(1,3,5) or the column names of the x set (e.g. c(&quot;Cubes&quot;,&quot;PaperFormBoard&quot;).  x and y may also be set by use of the formula style of lm.</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>A matrix or data.frame of correlations or, if not square, of raw data</p>
+</td></tr>
+<tr valign="top"><td><code>C</code></td>
+<td>
+<p>A variance/covariance matrix, or a correlation matrix</p>
+</td></tr>
+<tr valign="top"><td><code>m</code></td>
+<td>
+<p>The column name or numbers of the set of mediating variables (see <code><a href="mediate.html">mediate</a></code>).</p>
+</td></tr>
+<tr valign="top"><td><code>z</code></td>
+<td>
+<p>the column names or numbers of the set of covariates. </p>
+</td></tr>
+<tr valign="top"><td><code>n.obs</code></td>
+<td>
+<p>If specified, then confidence intervals, etc. are calculated, not needed if raw data are given.</p>
+</td></tr>
+<tr valign="top"><td><code>use</code></td>
+<td>
+<p>find the correlations using &quot;pairwise&quot; (default) or just use &quot;complete&quot; cases (to match the lm function)</p>
+</td></tr>
+<tr valign="top"><td><code>std</code></td>
+<td>
+<p>Report standardized betas (based upon the correlations) or raw bs (based upon covariances)</p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>Are data from a correlation matrix or data matrix?</p>
+</td></tr>
+<tr valign="top"><td><code>means</code></td>
+<td>
+<p>A vector of means for the data in matReg if giving matrix input</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>The title for setCor.diagram</p>
+</td></tr>
+<tr valign="top"><td><code>square</code></td>
+<td>
+<p>if FALSE, then square matrices are treated as correlation matrices not as data matrices. In the rare case that one has as many cases as variables, then set square=TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>sc</code></td>
+<td>
+<p>The output of setCor may be used for drawing diagrams</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>How many digits should be displayed in the setCor.diagram?</p>
+</td></tr>
+<tr valign="top"><td><code>show</code></td>
+<td>
+<p>Show the unweighted matrix correlation between the x and y sets?</p>
+</td></tr>
+<tr valign="top"><td><code>zero</code></td>
+<td>
+<p>zero center the data before finding the interaction terms.</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>p value of the confidence intervals for the beta coefficients</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+<p>By default, setCor makes a plot of the results, set to FALSE to suppress the plot</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>Text size of boxes displaying the variables in the diagram</p>
+</td></tr>
+<tr valign="top"><td><code>l.cex</code></td>
+<td>
+<p>Text size of numbers in arrows, defaults to cex</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional graphical parameters for setCor.diagram</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Although it is more common to calculate multiple regression and canonical correlations from the raw data, it is,  of course, possible to do so from a matrix of correlations or covariances.  In this case, the input to the function is a square covariance or correlation matrix, as well as the column numbers (or names) of the x (predictor),  y (criterion) variables, and if desired z (covariates). The function will find the correlations if given raw data.
+</p>
+<p>Input is either the set of y variables and the set of x variables, this can be written in the standard formula style of lm (see last example).  In this case, pairwise  or higher  interactions (product terms) may also be specified.  By default, when finding product terms,  the data are zero centered (Cohen, Cohen, West and Aiken, 2003), although this option can be turned off (zero=FALSE) to match the results of <code><a href="../../stats/html/lm.html">lm</a></code> or the results discussed in Hayes (2013).  
+</p>
+<p>Covariates to be removed are specified by a negative sign in the formula input or by using the z variable.  Note that when specifying covariates, the regressions are done as if the regressions were done on the partialled variables.  This means that the degrees of freedom and the R2 reflect the regressions of the partialled variables. (See the last example.)
+</p>
+<p>The output is a set of multiple correlations, one for each dependent variable in the y set, as well as the set of canonical correlations.
+</p>
+<p>An additional output is the R2 found using Cohen's set correlation (Cohen, 1982).  This is a measure of how much variance and the x and y set share.
+</p>
+<p>Cohen (1982) introduced the set correlation, a multivariate generalization of the multiple correlation to measure the overall relationship between two sets of variables. It is an application of canoncial correlation (Hotelling, 1936) and <i>1 - &prod;(1-&rho;_i^2)</i> where <i>&rho;_i^2</i> is the squared canonical correlation.  Set correlation is the amount of shared variance (R2) between two sets of variables.  With the addition of a third, covariate set, set correlation will find multivariate R2, as well as partial and semi partial R2.  (The semi and bipartial options are not yet implemented.) Details on set correlation may be found in Cohen (1982), Cohen (1988) and  Cohen, Cohen, Aiken and West (2003). 
+</p>
+<p>R2 between two sets is just </p>
+<p style="text-align: center;"><i>R2 = 1- |R| /(|Ry| * |Rx|)</i></p>
+<p> where R is the  complete correlation matrix of the x and y variables and Rx and Ry are the two sets involved.
+</p>
+<p>Unfortunately, the R2 is sensitive to one of the canonical correlations being very high.  An alternative, T2, is the proportion of additive variance and is the average of the squared canonicals.  (Cohen et al., 2003), see also Cramer and Nicewander (1979).  This  average, because it includes some very small canonical correlations, will tend to be too small.  Cohen et al. admonition is appropriate: &quot;In the final analysis, however, analysts must be guided by their substantive and methodological conceptions of the problem at hand in their choice of a measure of association.&quot; ( p613). 
+</p>
+<p>Yet another measure of the association between two sets is just the simple, unweighted correlation between the two sets. That is, 
+</p>
+<p style="text-align: center;"><i>Ruw=1Rxy1' / (sqrt(1Ryy1'* 1Rxx1'))</i></p>
+<p> where Rxy is the matrix of correlations between the two sets.  This is just  the simple (unweighted) sums of the correlations in each matrix. This technique exemplifies the robust beauty of linear models and  is particularly appropriate in the case of one dimension in both x and y, and will be a drastic underestimate in the case of items where the betas differ in sign. 
+</p>
+<p>When finding the unweighted correlations, as is done in <code><a href="alpha.html">alpha</a></code>, items are flipped so that they all are positively signed.  
+</p>
+<p>A typical use in the SAPA project is to form item composites by clustering or factoring (see  <code><a href="fa.html">fa</a></code>,<code><a href="ICLUST.html">ICLUST</a></code>, <code><a href="principal.html">principal</a></code>), extract the clusters from these results (<code><a href="factor2cluster.html">factor2cluster</a></code>), and then form the composite correlation matrix using <code><a href="cluster.cor.html">cluster.cor</a></code>.  The variables in this reduced matrix may then be used in multiple R procedures using <code><a href="set.cor.html">setCor</a></code>.
+</p>
+<p>Although the overall matrix can have missing correlations, the correlations in the subset of the matrix used for prediction must exist.
+</p>
+<p>If the number of observations is entered, then the conventional confidence intervals, statistical significance, and shrinkage estimates are  reported.
+</p>
+<p>If the input is rectangular (not square), correlations or covariances are found from the data.
+</p>
+<p>The print function reports t and p values for the beta weights, the summary function just reports the beta weights.
+</p>
+<p>The Variance Inflation Factor is reported but should be taken with the normal cautions of interpretation discussed by Guide and Ketokivm.  That is to say, VIF &gt; 10 is not a magic cuttoff to define colinearity.  It is merely 1/(1-smc(R(x)).
+</p>
+<p><code><a href="set.cor.html">matReg</a></code> is primarily a helper function for <code><a href="mediate.html">mediate</a></code> but is a general multiple regression function given a covariance matrix and the specified x,  y and z variables. Its output includes betas, se, t, p and R2.  The call includes m for mediation variables, but these are only used to adjust the degrees of freedom.
+<code><a href="set.cor.html">matReg</a></code> does not work on data matrices, nor does it take formula input.  It is really just a helper function for  <code><a href="mediate.html">mediate</a></code>
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>beta </code></td>
+<td>
+<p>the beta weights for each variable in X for each variable in Y</p>
+</td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+<p>The multiple R for each equation (the amount of change a unit in the predictor set leads to in the criterion set). </p>
+</td></tr>
+<tr valign="top"><td><code>R2 </code></td>
+<td>
+<p>The multiple R2 (% variance acounted for) for each equation</p>
+</td></tr>
+<tr valign="top"><td><code>VIF</code></td>
+<td>
+<p>The Variance Inflation Factor which is just 1/(1-smc(x))</p>
+</td></tr>
+<tr valign="top"><td><code>se</code></td>
+<td>
+<p>Standard errors of beta weights (if n.obs is specified)</p>
+</td></tr>
+<tr valign="top"><td><code>t</code></td>
+<td>
+<p>t value of beta weights (if n.obs is specified)</p>
+</td></tr>
+<tr valign="top"><td><code>Probability</code></td>
+<td>
+<p>Probability of beta = 0 (if n.obs is specified)</p>
+</td></tr>
+<tr valign="top"><td><code>shrunkenR2</code></td>
+<td>
+<p>Estimated shrunken R2 (if n.obs is specified)</p>
+</td></tr>
+<tr valign="top"><td><code>setR2</code></td>
+<td>
+<p>The multiple R2 of the set correlation between the x and y sets</p>
+</td></tr>
+</table>
+<p>itemresidualThe residual correlation matrix of Y with x and z removed
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>ruw</code></td>
+<td>
+<p>The unit weighted multiple correlation for each dependent variable</p>
+</td></tr>
+<tr valign="top"><td><code>Ruw</code></td>
+<td>
+<p>The unit weighted set correlation</p>
+</td></tr> 
+</table>
+
+
+<h3>Note</h3>
+
+<p>As of April 30, 2011, the order of x and y was swapped in the call to be consistent with the general y ~ x  syntax of the lm and aov functions. In addition, the primary name of the function was switched to setCor from mat.regress to reflect the estimation of the set correlation. 
+</p>
+<p>In October, 2017 I added the ability to specify the input in formula mode and allow for higher level and multiple interactions. 
+</p>
+<p>The denominator degrees of freedom for the set correlation does not match that reported by Cohen et al., 2003 in the example on page 621 but does match the formula on page 615, except for the typo in the estimation of F (see Cohen 1982).   The difference seems to be that they are adding in a correction factor of df 2 = df2 + df1.  
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle <br />
+</p>
+<p>Maintainer: William Revelle &lt;revelle@northwestern.edu&gt; </p>
+
+
+<h3>References</h3>
+
+<p>J. Cohen (1982)  Set correlation as a general multivariate data-analytic method. Multivariate Behavioral Research, 17(3):301-341.
+</p>
+<p>J. Cohen, P. Cohen, S.G. West, and L.S. Aiken. (2003) Applied multiple regression/correlation analysis for the behavioral sciences. L. Erlbaum Associates, Mahwah, N.J., 3rd ed edition.
+</p>
+<p>H. Hotelling. (1936) Relations between two sets of variates. Biometrika 28(3/4):321-377.
+</p>
+<p>E.Cramer and W. A. Nicewander (1979) Some symmetric, invariant measures of multivariate association. Psychometrika, 44:43-54.
+</p>
+<p>V. D. R. Guide Jr. and M. Ketokivim (2015) Notes from the Editors: Redefining some methodological criteria for the journal.  Journal of Operations Management. 37. v-viii.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="mediate.html">mediate</a></code> for an alternative regression model with 'mediation'  
+<code><a href="cluster.cor.html">cluster.cor</a></code>, <code><a href="factor2cluster.html">factor2cluster</a></code>,<code><a href="principal.html">principal</a></code>,<code><a href="ICLUST.html">ICLUST</a></code>, <code>link{cancor}</code> and cca in the yacca package. 
+<code><a href="Garcia.html">GSBE</a></code> for further demonstrations of mediation and moderation. </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#First compare to lm using data input
+summary(lm(rating ~ complaints + privileges, data = attitude))
+setCor(rating ~ complaints + privileges, data = attitude, std=FALSE) #do not standardize
+z.attitude &lt;- data.frame(scale(attitude))  #standardize the data before doing lm
+summary(lm(rating ~ complaints + privileges, data = z.attitude))  #regressions on z scores
+setCor(rating ~ complaints + privileges, data = attitude)  #by default we standardize and 
+# the results are the same as the standardized lm
+
+
+R &lt;- cor(attitude) #find the correlations
+#Do the regression on the correlations  
+#Note that these match the regressions on the standard scores of the data
+setCor(rating ~ complaints + privileges, data =R, n.obs=30)
+
+#now, partial out learning and critical
+setCor(rating ~ complaints + privileges - learning - critical, data =R, n.obs=30)
+#compare with the full regression:
+setCor(rating ~ complaints + privileges + learning + critical, data =R, n.obs=30)
+
+
+
+#Canonical correlations:
+
+#The first Kelley data set from Hotelling
+kelley1 &lt;- structure(c(1, 0.6328, 0.2412, 0.0586, 0.6328, 1, -0.0553, 0.0655, 
+0.2412, -0.0553, 1, 0.4248, 0.0586, 0.0655, 0.4248, 1), .Dim = c(4L, 
+4L), .Dimnames = list(c("reading.speed", "reading.power", "math.speed", 
+"math.power"), c("reading.speed", "reading.power", "math.speed", 
+"math.power")))
+lowerMat(kelley1)
+mod1 &lt;- setCor(y = math.speed + math.power ~ reading.speed + reading.power, 
+    data = kelley1, n.obs=140)
+mod1$cancor
+#Hotelling reports .3945 and .0688  we get  0.39450592 0.06884787
+
+#the second Kelley data from Hotelling
+kelley &lt;- structure(list(speed = c(1, 0.4248, 0.042, 0.0215, 0.0573), power = c(0.4248, 
+1, 0.1487, 0.2489, 0.2843), words = c(0.042, 0.1487, 1, 0.6693, 
+0.4662), symbols = c(0.0215, 0.2489, 0.6693, 1, 0.6915), meaningless = c(0.0573, 
+0.2843, 0.4662, 0.6915, 1)), .Names = c("speed", "power", "words", 
+"symbols", "meaningless"), class = "data.frame", row.names = c("speed", 
+"power", "words", "symbols", "meaningless"))
+
+lowerMat(kelley)
+
+setCor(power + speed ~ words + symbols + meaningless,data=kelley)  #formula mode
+#setCor(y= 1:2,x = 3:5,data = kelley) #order of variables input
+
+#Hotelling reports canonical correlations of .3073 and .0583  or squared correlations of
+# 0.09443329 and 0.00339889 vs. our values of cancor = 0.3076 0.0593  with squared values
+#of  0.0946 0.0035,
+
+setCor(y=c(7:9),x=c(1:6),data=Thurstone,n.obs=213)  #easier to just list variable  
+                                              #locations if we have long names
+#now try partialling out some variables
+set.cor(y=c(7:9),x=c(1:3),z=c(4:6),data=Thurstone) #compare with the previous
+#compare complete print out with summary printing 
+sc &lt;- setCor(SATV + SATQ ~ gender + education,data=sat.act) # regression from raw data
+sc
+summary(sc)
+
+setCor(Pedigrees ~ Sentences + Vocabulary - First.Letters - Four.Letter.Words ,
+data=Thurstone)  #showing formula input with two covariates
+
+#Do some regressions with real data 
+setCor(reaction ~ cond + pmi + import, data = Tal.Or)
+#partial out importance
+setCor(reaction ~ cond + pmi - import, data = Tal.Or, main="Partial out importance")
+#compare with using lm by partialling
+mod1 &lt;- lm(reaction ~ cond + pmi + import, data = Tal.Or)
+reaction.import &lt;- lm(reaction~import,data=Tal.Or)$resid
+cond.import &lt;-  lm(cond~import,data=Tal.Or)$resid
+pmi.import &lt;-   lm(pmi~import,data=Tal.Or)$resid
+mod.partial &lt;- lm(reaction.import ~ cond.import + pmi.import)
+summary(mod.partial)
+#lm uses raw scores, so set std = FALSE for setCor
+print(setCor(y = reaction ~ cond + pmi - import, data = Tal.Or,std = FALSE,
+ main = "Partial out importance"),digits=4)
+ 
+ #Show how to find quadratic terms
+sc &lt;- setCor(reaction ~ cond + pmi + I(import^2), data = Tal.Or)
+sc
+#pairs.panels(sc$data) #show the SPLOM of the data
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

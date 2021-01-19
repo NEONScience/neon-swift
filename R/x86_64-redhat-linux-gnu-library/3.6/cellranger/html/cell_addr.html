@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: cell_addr class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cell_addr {cellranger}"><tr><td>cell_addr {cellranger}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>cell_addr class</h2>
+
+<h3>Description</h3>
+
+<p>The <code>cell_addr</code> class is used to hold the absolute row and column
+location for one or more cells. An object of class <code>cell_addr</code> is a list
+with two components of equal length, named <code>row</code> and <code>col</code>,
+consisting of integers greater than or equal to one or <code>NA</code>. This is in
+contrast to the <code><a href="ra_ref.html">ra_ref</a></code> class, which holds a representation of a
+single absolute, relative, or mixed cell reference from, e.g., a formula.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cell_addr(row, col)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>row</code></td>
+<td>
+<p>integer. Must be the same length as <code>col</code> or of length one,
+which will be recycled to the length of <code>col</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>integer. Same deal as for <code>row</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code>cell_addr</code> object
+</p>
+
+
+<h3>Reference</h3>
+
+<p>Spreadsheet Implementation Technology: Basics and Extensions
+Peter Sestoft
+MIT Press 2014
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+cell_addr(4, 3)
+(ca &lt;- cell_addr(1:4, 3))
+ca[2:3]
+ca[[4]]
+length(ca)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>cellranger</em> version 1.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Continously preview the HTML output of a book using the...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for serve_book {bookdown}"><tr><td>serve_book {bookdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Continously preview the HTML output of a book using the <span class="pkg">servr</span> package</h2>
+
+<h3>Description</h3>
+
+<p>When any files are modified or added to the book directory, the book will be
+automatically recompiled, and the current HTML page in the browser will be
+refreshed. This function is based on <code>servr::<a href="../../servr/html/httw.html">httw</a>()</code> to
+continuously watch a directory.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+serve_book(
+  dir = ".",
+  output_dir = "_book",
+  preview = TRUE,
+  in_session = TRUE,
+  quiet = FALSE,
+  ...
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dir</code></td>
+<td>
+<p>The root directory of the book (containing the Rmd source files).</p>
+</td></tr>
+<tr valign="top"><td><code>output_dir</code></td>
+<td>
+<p>The directory for output files; see
+<code><a href="render_book.html">render_book</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>preview</code></td>
+<td>
+<p>Whether to render the modified/added chapters only, or the
+whole book; see <code><a href="render_book.html">render_book</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>in_session</code></td>
+<td>
+<p>Whether to compile the book using the current R session, or
+always open a new R session to compile the book whenever changes occur in
+the book directory.</p>
+</td></tr>
+<tr valign="top"><td><code>quiet</code></td>
+<td>
+<p>Whether to suppress output (e.g., the knitting progress) in the
+console.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other arguments passed to <code>servr::<a href="../../servr/html/httw.html">httw</a>()</code> (not
+including the <code>handler</code> argument, which has been set internally).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>For <code>in_session = TRUE</code>, you will have access to all objects created in
+the book in the current R session: if you use a daemonized server (via the
+argument <code>daemon = TRUE</code>), you can check the objects at any time when
+the current R session is not busy; otherwise you will have to stop the server
+before you can check the objects. This can be useful when you need to
+interactively explore the R objects in the book. The downside of
+<code>in_session = TRUE</code> is that the output may be different with the book
+compiled from a fresh R session, because the state of the current R session
+may not be clean.
+</p>
+<p>For <code>in_sesion = FALSE</code>, you do not have access to objects in the book
+from the current R session, but the output is more likely to be reproducible
+since everything is created from new R sessions. Since this function is only
+for previewing purposes, the cleanness of the R session may not be a big
+concern. You may choose <code>in_session = TRUE</code> or <code>FALSE</code> depending on
+your specific applications. Eventually, you should run <code>render_book()</code>
+from a fresh R session to generate a reliable copy of the book output.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>bookdown</em> version 0.17 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,18 @@
+Presto                  Connect to a Presto database
+PrestoCursor-class      Internal implementation detail class needed for
+                        its side-effects. When dbFetch is called, we
+                        need to both return the data and update the uri
+                        to the next value.
+PrestoSession-class     Internal implementation detail class needed for
+                        its side-effects. When SET/RESET SESSION
+                        queries are called, session parameters need to
+                        be maintained by the client and requires an
+                        in-place update.
+RPresto                 RPresto
+dbDataType,PrestoDriver-method
+                        Return the corresponding presto data type for
+                        the given R 'object'
+dbGetInfo,PrestoDriver-method
+                        Metadata about database objects
+src_presto              dplyr integration to connect to a Presto
+                        database.

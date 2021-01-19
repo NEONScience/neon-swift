@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Condition classes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assertionError {assertive.base}"><tr><td>assertionError {assertive.base}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Condition classes</h2>
+
+<h3>Description</h3>
+
+<p>Error, warning, and message classes derived from their simple equivalents.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assertionError(message, call = NULL, predicate_name = NULL)
+
+assertionWarning(message, call = NULL, predicate_name = NULL)
+
+assertionMessage(message, call = NULL, predicate_name = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>message</code></td>
+<td>
+<p>A string describing the problem.</p>
+</td></tr>
+<tr valign="top"><td><code>call</code></td>
+<td>
+<p>A call describing the source of the condition.</p>
+</td></tr>
+<tr valign="top"><td><code>predicate_name</code></td>
+<td>
+<p>A string naming the predicate that was called when the 
+condition occured.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>assertionError</code>, <code>assertionWarning</code>, or
+<code>assertionMessage</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>These objects behave the same as the standard-issue <code>simpleError</code>,
+<code>simpleWarning</code>, and <code>simpleMessage</code> objects from base-R.  The
+extra class allows you to provide custom handling for assertions inside 
+<code>tryCatch</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+tryCatch(
+  assert_all_are_true(FALSE), 
+  error = function(e) 
+  {
+    if(inherits(e, "assertionCondition"))
+    {
+      # Handle assertions
+      message("This is an assertion condition.")
+      
+      # Handle assertions cause by a specific predicate
+      if(e$predicate_name == "is_true")
+      {
+      }
+    } else
+    {
+      # Handle other error types
+    }
+  }
+)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.base</em> version 0.0-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

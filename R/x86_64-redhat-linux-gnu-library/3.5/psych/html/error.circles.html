@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Two way plots of means, error bars, and sample sizes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for errorCircles {psych}"><tr><td>errorCircles {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Two way plots of means, error bars, and sample sizes</h2>
+
+<h3>Description</h3>
+
+<p>Given a matrix or data frame, data, find statistics based upon a grouping variable and then plot x and y means with error bars for each value of the grouping variable.  If the data are paired (e.g. by gender), then plot means and error bars for the two groups on all variables. </p>
+
+
+<h3>Usage</h3>
+
+<pre>
+errorCircles(x, y, data, ydata = NULL, group=NULL, paired = FALSE, labels = NULL, 
+main = NULL, xlim = NULL, ylim = NULL, xlab = NULL, ylab = NULL,add=FALSE, pos = NULL,
+ offset = 1, arrow.len = 0.2, alpha = 0.05, sd = FALSE, bars = TRUE, circles = TRUE,
+ colors=NULL,col.arrows=NULL,col.text=NULL,circle.size=1, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>The x variable (by name or number) to plot</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>The y variable (name or number) to plot</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>The matrix or data.frame to use for the x data</p>
+</td></tr>
+<tr valign="top"><td><code>ydata</code></td>
+<td>
+<p>If plotting data from two data.frames, then the y variable of the ydata frame will be used.</p>
+</td></tr>
+<tr valign="top"><td><code>group</code></td>
+<td>
+<p>If specified, then <code><a href="statsBy.html">statsBy</a></code> is called first to find the statistics by group</p>
+</td></tr>
+<tr valign="top"><td><code>paired</code></td>
+<td>
+<p>If TRUE, plot all x and y variables for the two values of the grouping variable.</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>Variable names</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>Main title for plot</p>
+</td></tr>
+<tr valign="top"><td><code>xlim</code></td>
+<td>
+<p>xlim values if desired&ndash; defaults to min and max mean(x) +/- 2 se</p>
+</td></tr>
+<tr valign="top"><td><code>ylim</code></td>
+<td>
+<p>ylim values if desired  &ndash; defaults to min and max mean(y) +/- 2 se</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>label for x axis &ndash; grouping variable 1</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>label for y axis &ndash; grouping variable 2</p>
+</td></tr>
+<tr valign="top"><td><code>add</code></td>
+<td>
+<p>If TRUE, add to the prior plot</p>
+</td></tr>
+<tr valign="top"><td><code>pos</code></td>
+<td>
+<p>Labels are located where with respect to the mean?  </p>
+</td></tr>
+<tr valign="top"><td><code>offset</code></td>
+<td>
+<p>Labels are then offset from this location</p>
+</td></tr>
+<tr valign="top"><td><code>arrow.len</code></td>
+<td>
+<p> Arrow length </p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>alpha level of error bars </p>
+</td></tr>
+<tr valign="top"><td><code>sd</code></td>
+<td>
+<p>if sd is TRUE, then draw means +/- 1 sd)</p>
+</td></tr>
+<tr valign="top"><td><code>bars</code></td>
+<td>
+<p>Should error.bars be drawn for both x and y </p>
+</td></tr>
+<tr valign="top"><td><code>circles</code></td>
+<td>
+<p>Should circles representing the relative sample sizes be drawn?</p>
+</td></tr>
+<tr valign="top"><td><code>colors</code></td>
+<td>
+<p>Plot the points using colors &ndash; default is black</p>
+</td></tr>
+<tr valign="top"><td><code>col.text</code></td>
+<td>
+<p>What color for the text labels (defaults to colors)</p>
+</td></tr>
+<tr valign="top"><td><code>col.arrows</code></td>
+<td>
+<p>What color should the arrows and circles be?  Defaults to colors</p>
+</td></tr>
+<tr valign="top"><td><code>circle.size</code></td>
+<td>
+<p>A scaling parameter for the error.circles.  Defaults to 1, but can be adjusted downwards to make them less instrusive.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> Other parameters for plot  </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When visualizing the effect of an experimental manipulation or the relationship of multiple groups, it is convenient to plot their means as well as their confidence regions in a two dimensional space.  
+</p>
+<p>The diameter of the enclosing circle (ellipse) scales as 1/sqrt(N) * the maximum standard error of all variables.  That is to say, the area of the ellipse reflects sample size.  
+</p>
+
+
+<h3>Value</h3>
+
+<p>If the group variable is specified, then the statistics from <code><a href="statsBy.html">statsBy</a></code> are (invisibly) returned.  
+</p>
+
+
+<h3>Note</h3>
+
+<p>Basically this is a combination (and improvement) of <code><a href="statsBy.html">statsBy</a></code> with <code><a href="error.crosses.html">error.crosses</a></code>.  Can also serve some of the functionality of <code><a href="error.bars.by.html">error.bars.by</a></code> (see the last example).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="statsBy.html">statsBy</a></code>, <code><a href="describe.by.html">describeBy</a></code>, <code><a href="error.crosses.html">error.crosses</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#BFI scores for males and females
+errorCircles(1:25,1:25,data=psychTools::bfi,group="gender",paired=TRUE,ylab="female scores",
+      xlab="male scores",main="BFI scores by gender")
+ abline(a=0,b=1)
+#drop the circles since all samples are the same sizes
+errorCircles(1:25,1:25,data=psychTools::bfi,group="gender",paired=TRUE,circles=FALSE,
+     ylab="female scores",xlab="male scores",main="BFI scores by gender")
+ abline(a=0,b=1)
+ 
+ data(psychTools::affect)
+colors &lt;- c("black","red","white","blue")
+films &lt;- c("Sad","Horror","Neutral","Happy")
+affect.stats &lt;- errorCircles("EA2","TA2",data=psychTools::affect[-c(1,20)],
+group="Film",labels=films,
+      xlab="Energetic Arousal",ylab="Tense Arousal",ylim=c(10,22),xlim=c(8,20), 
+      pch=16,cex=2,colors=colors, main ="EA and TA pre and post affective movies")
+#now, use the stats from the prior run 
+errorCircles("EA1","TA1",data=affect.stats,labels=films,pch=16,cex=2,colors=colors,add=TRUE)
+
+#show sample size with the size of the circles
+errorCircles("SATV","SATQ",sat.act,group="education")
+
+#Can also provide error.bars.by functionality
+ errorCircles(2,5,group=2,data=sat.act,circles=FALSE,pch=16,colors="blue",
+      ylim= c(200,800),main="SATV by education",labels="")
+ #just do the breakdown and then show the points
+# errorCircles(3,5,group=3,data=sat.act,circles=FALSE,pch=16,colors="blue",
+#         ylim= c(200,800),main="SATV by age",labels="",bars=FALSE)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,166 @@
+DIM                     Get the dimensions of an object
+Truth                   Is the input TRUE/FALSE/NA?
+are_identical           Are the inputs identical?
+are_same_length         Are the inputs the same length/dimension?
+are_set_equal           Set comparisons
+assert_engine           Throws an error if a condition isn't met
+assert_is_all_of        Does x belong to these classes?
+assertionError          Condition classes
+assertive               Readable check functions to ensure code
+                        integrity.
+bapply                  Wrapper to vapply that returns booleans.
+call_and_name           Call a function, and give the result names.
+cause                   Get or set the '"cause"' attribute
+changes                 Important changes to assertive
+character_to_list_of_integer_vectors
+                        Convert a character vector to a list of integer
+                        vectors See
+                        'character_to_list_of_integer_vectors'.
+coerce_to               Coerce variable to a different class
+dont_stop               Run code without stopping
+false                   FALSE, with a cause of failure
+get_name_in_parent      Get the name of a variable in the parent frame
+has_any_attributes      Does the input have any attributes?
+has_arg                 Does the current call have an argument? See
+                        'has_arg'.
+has_attributes          Does the input have the specified attributes?
+has_cols                Does the input have rows/columns?
+has_dims                Does the input have dimensions?
+has_duplicates          Does the input have duplicates?
+has_names               Does the input have names?
+has_slot                Does the S4 input have a slot?
+has_terms               Does the input have terms?
+is2                     Alternative version of is
+is_array                Is the input an array or matrix?
+is_atomic               Is the input atomic/recursive/vector?
+is_batch_mode           How is R running?
+is_binding_locked       Is the binding of a variable locked? See
+                        'is_binding_locked'.
+is_cas_number           Does the character vector contain CAS registry
+                        numbers?
+is_character            Is the input of type character?
+is_class                Is the input the name of a (formally defined)
+                        class?
+is_closure_function     Is the input a closure, builtin or special
+                        function?
+is_complex              Is the input complex?
+is_connection           Is the input a connection?
+is_credit_card_number   Does the character vector contain credit card
+                        numbers?
+is_data.frame           Is the input is a data.frame?
+is_data.table           Is the input a data.table?
+is_date                 Is the input a date?
+is_date_string          Does the character vector contain dates?
+is_debugged             Is the input function being debugged? See
+                        'is_debugged'.
+is_diagonal_matrix      Is the input a diagonal matrix?
+is_dir                  Is the path a directory?
+is_divisible_by         Is the input divisible by a number?
+is_email_address        Does the character vector contain email
+                        addresses?
+is_empty                Is the input empty/scalar?
+is_empty_character      Does the input contain empty or missing
+                        strings?
+is_empty_file           Is a file too big or small?
+is_empty_model          Is the input the empty model?
+is_environment          Is the input an environment?
+is_equal_to             How does the input relate to a value?
+is_error_free           Does the code run without throwing an error?
+                        See 'is_error_free'.
+is_executable_file      Is the file accessible?
+is_existing             Does the variable exist? See 'is_existing'.
+is_existing_file        Does the file exist?
+is_externalptr          Is the input an external pointer?
+is_factor               Is the input a factor?
+is_finite               Are the inputs (in)finite?
+is_formula              Is the input a formula?
+is_function             Is the input a function?
+is_hex_color            Does the character vector contain hex colors?
+is_honorific            Is the string an honorific?
+is_identity_matrix      Is the input an identity matrix?
+is_if_condition         Is suitable to be used as an if condition See
+                        'is_if_condition'.
+is_in_past              Is the input in the past/future?
+is_in_range             Is the input in range?
+is_inherited_from       Does the object inherit from some class?
+is_integer              Is the input an integer?
+is_internal_function    Is the input an internal function?
+is_ip_address           Does the character vector contain IP addresses?
+is_isbn_code            Does the character vector contain ISBN book
+                        codes?
+is_language             Is the input a language object?
+is_leaf                 Is the input a (dendrogram) leaf?
+is_library              Is the directory a known R library?
+is_list                 Is the input a list?
+is_loaded               Is the input DLL loaded? See 'is_loaded'.
+is_logical              Is the input logical?
+is_lower_triangular_matrix
+                        Is the matrix upper/lower triangular?
+is_matching_fixed       Does the string match a pattern? See
+                        'is_matching_fixed'.
+is_monotonic_increasing
+                        Is the vector monotonically increasing or
+                        decreasing?
+is_nan                  Is the input (not) NaN?
+is_null                 Checks to see if the input is (not) null.
+is_numeric              Is the input numeric?
+is_numeric_string       Does the string contain a number? See
+                        'is_numeric_string'.
+is_on_os_path           Is the path on the OS path?
+is_package_current      Is the installed version of a package current?
+is_qr                   Is the input a QR decomposition of a matrix?
+is_r                    Are you running R?
+is_r_current            Is this version of R up to date?
+is_raster               Is the input a raster?
+is_raw                  Is the input raw?
+is_real                 Is the input real/imaginary?
+is_relistable           Is the input relistable?
+is_rstudio_current      Is RStudio the current version?
+is_rstudio_desktop      Is RStudio running in desktop or server mode?
+is_s3_generic           Is the input an S3 generic or method?
+is_s4                   Is the input an S4 object?
+is_single_character     Is the input a single character? See
+                        'is_single_character'.
+is_square_matrix        Is the input a square matrix?
+is_symmetric_matrix     Is the input a symmetric matrix?
+is_table                Is the input a table?
+is_tbl                  Is the input a tbl?
+is_try_error            Is the input a condition?
+is_ts                   Is the input a time series?
+is_uk_car_licence       Is the string a valid UK car licence plate
+                        number?
+is_uk_national_insurance_number
+                        Is the string a valid UK national insurance
+                        number?
+is_uk_postcode          Is the string a valid UK postcode?
+is_uk_telephone_number
+                        Is the string a valid UK telephone number?
+is_unsorted             Is the input unsorted?
+is_us_social_security_number
+                        Is the string a valid US SSN?
+is_us_telephone_number
+                        Is the string a valid US telephone number?
+is_us_zip_code          Is the string a valid US zip code?
+is_valid_r_code         Is the input valid R code? See
+                        'is_valid_r_code'.
+is_valid_variable_name
+                        Is the string a valid variable name? See
+                        'is_valid_variable_name'.
+is_whole_number         Is the input a whole number?
+is_windows              What OS is running?
+is_xxx_for_decimal_point
+                        What does the current locale specify for the
+                        decimal point?
+is_zero_matrix          Is the input a zero matrix?
+merge_dots_with_list    Merge ellipsis args with a list.
+n_elements              Get the number of elements
+na                      NA, with a cause of failure
+parenthesize            Wrap a string in brackets
+print_and_capture       Print a variable and capture the output
+r_can_find_tools        Can R find tools?
+r_has_jpeg_capability   Does R have a capability?
+safe_deparse            Safe version of deparse
+set_cause               Set a cause and return the input
+strip_attributes        Strip all attributes from a variable
+sys_get_locale          Get or set the system locale
+use_first               Only use the first element of a vector

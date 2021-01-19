@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Combine calls to head and tail</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for headTail {psych}"><tr><td>headTail {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Combine calls to head and tail</h2>
+
+<h3>Description</h3>
+
+<p>A quick way to show the first and last n lines of a data.frame, matrix, or a text object.  Just a pretty call to <code><a href="../../utils/html/head.html">head</a></code> and <code><a href="../../utils/html/head.html">tail</a></code> or <code><a href="../../utils/html/View.html">View</a></code>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+headTail(x, top=4,bottom=4,from=1,to=NULL, digits=2, hlength = 4, tlength =4, 
+ellipsis=TRUE) 
+headtail(x,hlength=4,tlength=4,digits=2,ellipsis=TRUE,from=1,to=NULL)
+topBottom(x, top=4,bottom=4,from=1,to=NULL, digits=2, hlength = 4, tlength = 4) 
+quickView(x,top=8,bottom=8,from=1,to=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p> A matrix or data frame or free text</p>
+</td></tr>
+<tr valign="top"><td><code>top</code></td>
+<td>
+<p>The number of lines at the beginning to show</p>
+</td></tr>
+<tr valign="top"><td><code>bottom</code></td>
+<td>
+<p>The number of lines at the end to show</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>Round off the data to digits</p>
+</td></tr>
+<tr valign="top"><td><code>ellipsis</code></td>
+<td>
+<p>Separate the head and tail with dots (ellipsis)</p>
+</td></tr>
+<tr valign="top"><td><code>from</code></td>
+<td>
+<p>The first column to show (defaults to 1)</p>
+</td></tr>
+<tr valign="top"><td><code>to</code></td>
+<td>
+<p>The last column to show (defaults to the number of columns</p>
+</td></tr>
+<tr valign="top"><td><code>hlength</code></td>
+<td>
+<p>The number of lines at the beginning to show (an alias for top)</p>
+</td></tr>
+<tr valign="top"><td><code>tlength</code></td>
+<td>
+<p>The number of lines at the end to show (an alias for bottom)</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The first top and last bottom lines of a matrix or data frame with an ellipsis in between. If the input is neither a matrix nor data frame, the output will be the first top and last bottom lines. 
+</p>
+<p>For each line, just columns starting at from and going to to will be displayed.  Bt default, from = 1 and to = the last column.
+</p>
+<p>topBottom is just a call to headTail with ellipsis = FALSE and returning a matrix output.
+</p>
+<p>quickView is a call to <code><a href="../../utils/html/View.html">View</a></code> which opens a viewing window which is scrollable (if needed because the number of lines listed is more than a screen's worth).  View (and therefore quickView) is slower than <code><a href="headtail.html">headTail</a></code> or  <code><a href="headtail.html">topBottom</a></code>.  
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../utils/html/head.html">head</a></code> and <code><a href="../../utils/html/head.html">tail</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+headTail(psychTools::iqitems,4,8,to=6) #the first 4 and last 6 items from 1 to 6
+topBottom(psychTools::ability,from =2, to = 6) #the first and last 4 items from 2 to 6
+headTail(psychTools::bfi,top=4, bottom=4,from =6,to=10) #the first and last 4 from 6 to 10
+#not shown
+#quickView(ability,hlength=10,tlength=10)  #this loads a spreadsheet like table  
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

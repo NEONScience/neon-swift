@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Obtains the value of a field</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for jfield {rJava}"><tr><td>jfield {rJava}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Obtains the value of a field 
+</h2>
+
+<h3>Description</h3>
+
+<p><code>.jfield</code> returns the value of the specified field on an object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+.jfield(o, sig = NULL, name, true.class = is.null(sig), convert = TRUE)
+`.jfield&lt;-`(o, name, value)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>o</code></td>
+<td>
+<p>Class name or object (Java reference) whose field is to be
+accessed. Static fields are supported both by specifying the class
+name or using an instance.</p>
+</td></tr>
+<tr valign="top"><td><code>sig</code></td>
+<td>
+<p>signature (JNI type) of the field. If set to <code>NULL</code>
+rJava attempts to determine the signature using reflection. For
+efficiency it is recommended to specify the signature, because
+the reflection lookup is quite expensive.</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>name of the field to access</p>
+</td></tr>
+<tr valign="top"><td><code>true.class</code></td>
+<td>
+<p>by default the class of the resulting object matches
+the siganture of the field. Setting this flag to <code>TRUE</code> causes
+<code>.jfield</code> to use true class name of the resulting object
+instead. (this flag has no effect on scalar fields)</p>
+</td></tr>
+<tr valign="top"><td><code>convert</code></td>
+<td>
+<p>when set to <code>TRUE</code> all references are converted to
+native types (where possible). Otherwise Java references are
+returned directly.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>value to assign into the field. The field signature is
+determined from the value in the same way that parameter signatures
+are determined in <code><a href="jcall.html">.jcall</a></code> - be sure to cast the value
+as necessary, no automatic conversion is done.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The detection of a field signature in <code>.jfield</code> using reflection
+is considerably expensive (more than 3 additional method calls have to
+be performed), therefore it is recommended for time-critical code to
+specify the field signature beforehand.
+</p>
+<p>NOTE: The sequence of arguments in <code>.jfield</code> has been changed
+since rJava 0.5 to be more consistent and match the sequence in
+<code>.jcall</code>. Also <code>.jsimplify</code> is no longer needed as primitive
+types are obtained directly.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>.jfield</code>: contents of the field, <code>.jfield&lt;-</code>: modified object.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="jcall.html">.jcall</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+.jfield("java/lang/Boolean",, "TYPE")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rJava</em> version 0.9-13 <a href="00Index.html">Index</a>]</div>
+</body></html>

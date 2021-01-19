@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Scatter plots using emoji-like images</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for panel.xyimage {latticeExtra}"><tr><td>panel.xyimage {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Scatter plots using emoji-like images
+</h2>
+
+<h3>Description</h3>
+
+<p>Panel function that create scatter plots with emoji-like images for
+plotting character. Images can be local files or URLs. Only PNG and
+JPEG images are currently supported.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+panel.xyimage(x, y, 
+              subscripts,
+              groups = NULL,
+              pch = NULL,
+              cex = 1,
+              ...,
+              grid = FALSE, abline = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, y</code></td>
+<td>
+
+<p>Data vectors to be plotted.
+</p>
+</td></tr>
+<tr valign="top"><td><code>subscripts</code></td>
+<td>
+
+<p>An integer vector of subscripts giving indices of the <code>x</code> and
+<code>y</code> values in the original data source.  See the corresponding
+entry in <code><a href="../../lattice/html/xyplot.html">xyplot</a></code> for details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>groups</code></td>
+<td>
+
+<p>A factor defining groups.
+</p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+
+<p>A character vector giving path(s) or URL(s) of PNG or JPEG files. If 
+<code>groups</code> is specified, there should be one value for each
+level, otherwise this should have length 1. Recycled as necessary.
+</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+
+<p>A numeric multiplier for the size of the symbols. As with
+<code>pch</code>, this can be a vector corresponding to levels of
+<code>groups</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Further arguments are accepted but ignored.
+</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+
+<p>A logical flag, character string, or list specifying whether and how
+a background grid should be drawn. See <code><a href="../../lattice/html/panel.xyplot.html">panel.xyplot</a></code>
+for details.
+</p>
+</td></tr>
+<tr valign="top"><td><code>abline</code></td>
+<td>
+
+<p>A numeric vector or list, specifying arguments arguments for
+<code><a href="../../lattice/html/panel.functions.html">panel.abline</a></code>, which is called with those
+arguments. See <code><a href="../../lattice/html/panel.xyplot.html">panel.xyplot</a></code>
+for details.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The image sources given by <code>pch</code> are downloaded if necessary and
+read in every time the panel function is called. If the same images
+are to be used in multiple panels, it may be more efficient to
+download them once and provide the file paths rather than provide
+URLs.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Deepayan Sarkar
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../lattice/html/panel.xyplot.html">panel.xyplot</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+alive &lt;- "https://twemoji.maxcdn.com/72x72/1f60a.png"
+dead &lt;- "https://twemoji.maxcdn.com/72x72/1f480.png"
+
+dotplot(Titanic,
+        scales = list(x = "free"),
+        between = list(x = 1),
+        panel = panel.xyimage,
+        pch = c(dead, alive), grid = "h", 
+        main = "Survival on the Titanic",
+        xlab = "Number of persons")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Themes for Shiny</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for shinythemes {shinythemes}"><tr><td>shinythemes {shinythemes}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Themes for Shiny</h2>
+
+<h3>Description</h3>
+
+<p>This package contains Bootstrap themes from http://bootswatch.com/, which are
+packaged for use with Shiny applications. The themes included are:
+</p>
+
+
+<h3>Details</h3>
+
+
+<ul>
+<li> <p><a href="http://bootswatch.com/3/cerulean/">cerulean</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/cosmo/">cosmo</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/cyborg/">cyborg</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/darkly/">darkly</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/flatly/">flatly</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/journal/">journal</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/lumen/">lumen</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/paper/">paper</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/readable/">readable</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/sandstone/">sandstone</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/simplex/">simplex</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/slate/">slate</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/spacelab/">spacelab</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/superhero/">superhero</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/united/">united</a>
+</p>
+</li>
+<li> <p><a href="http://bootswatch.com/3/yeti/">yeti</a>
+</p>
+</li></ul>
+
+<p>To use the themes, use the <code>theme</code> argument to
+<code><a href="../../shiny/html/bootstrapPage.html">bootstrapPage</a></code>, <code><a href="../../shiny/html/fluidPage.html">fluidPage</a></code>,
+<code><a href="../../shiny/html/navbarPage.html">navbarPage</a></code>, or <code><a href="../../shiny/html/fixedPage.html">fixedPage</a></code>. The value
+should be <code>shinytheme("cerulean")</code>, where the theme name takes the place
+of <code>"cerulean"</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(shiny)
+library(shinythemes)
+
+# A very basic navbar page with different themes
+shinyApp(
+  ui = navbarPage("Default theme",
+    tabPanel("Plot", "Plot tab contents..."),
+    navbarMenu("More",
+      tabPanel("Summary", "Summary tab contents..."),
+      tabPanel("Table", "Table tab contents...")
+    )
+  ),
+  server = function(input, output) { }
+)
+
+shinyApp(
+  ui = navbarPage("United",
+    theme = shinytheme("united"),
+    tabPanel("Plot", "Plot tab contents..."),
+    navbarMenu("More",
+      tabPanel("Summary", "Summary tab contents..."),
+      tabPanel("Table", "Table tab contents...")
+    )
+  ),
+  server = function(input, output) { }
+)
+
+shinyApp(
+  ui = navbarPage("Cerulean",
+    theme = shinytheme("cerulean"),
+    tabPanel("Plot", "Plot tab contents..."),
+    navbarMenu("More",
+      tabPanel("Summary", "Summary tab contents..."),
+      tabPanel("Table", "Table tab contents...")
+    )
+  ),
+  server = function(input, output) { }
+)
+
+
+# A more complicated app with the flatly theme
+shinyApp(
+  ui = fluidPage(
+    theme = shinytheme("flatly"),
+    titlePanel("Tabsets"),
+    sidebarLayout(
+      sidebarPanel(
+        radioButtons("dist", "Distribution type:",
+                     c("Normal" = "norm",
+                       "Uniform" = "unif",
+                       "Log-normal" = "lnorm",
+                       "Exponential" = "exp")),
+        br(),
+        sliderInput("n", "Number of observations:",
+                     value = 500, min = 1, max = 1000)
+      ),
+      mainPanel(
+        tabsetPanel(type = "tabs",
+          tabPanel("Plot", plotOutput("plot")),
+          tabPanel("Summary", verbatimTextOutput("summary")),
+          tabPanel("Table", tableOutput("table"))
+        )
+      )
+    )
+  ),
+  server = function(input, output) {
+    data &lt;- reactive({
+      dist &lt;- switch(input$dist,
+                     norm = rnorm,
+                     unif = runif,
+                     lnorm = rlnorm,
+                     exp = rexp,
+                     rnorm)
+      dist(input$n)
+    })
+
+    output$plot &lt;- renderPlot({
+      dist &lt;- input$dist
+      n &lt;- input$n
+      hist(data(), main=paste('r', dist, '(', n, ')', sep=''))
+    })
+
+    output$summary &lt;- renderPrint({
+      summary(data())
+    })
+
+    output$table &lt;- renderTable({
+      data.frame(x=data())
+    })
+  }
+)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinythemes</em> version 1.1.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

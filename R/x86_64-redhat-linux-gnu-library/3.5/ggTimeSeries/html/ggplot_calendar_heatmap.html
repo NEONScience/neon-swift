@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plots a calendar heatmap</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ggplot_calendar_heatmap {ggTimeSeries}"><tr><td>ggplot_calendar_heatmap {ggTimeSeries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plots a calendar heatmap</h2>
+
+<h3>Description</h3>
+
+<p>A calendar heatmap provides context for weeks, and day of week which makes
+it a better way to visualise daily data than line charts. Largely uses
+Codoremifa's code from
+stackoverflow.com/questions/22815688/calendar-time-series-with-r.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ggplot_calendar_heatmap(dtDateValue, cDateColumnName = "",
+  cValueColumnName = "", vcGroupingColumnNames = "Year",
+  dayBorderSize = 0.25, dayBorderColour = "black",
+  monthBorderSize = 2, monthBorderColour = "black",
+  monthBorderLineEnd = "round")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dtDateValue</code></td>
+<td>
+<p>Data set which may include other columns apart from date
+and values.</p>
+</td></tr>
+<tr valign="top"><td><code>cDateColumnName</code></td>
+<td>
+<p>Column name of the dates.</p>
+</td></tr>
+<tr valign="top"><td><code>cValueColumnName</code></td>
+<td>
+<p>Column name of the data.</p>
+</td></tr>
+<tr valign="top"><td><code>vcGroupingColumnNames</code></td>
+<td>
+<p>The set of columns which together define the group
+for the chart to operate within If you plan to facet your plot,
+you should specify the same column names to this argument. The function
+will automatically add the veriable for the year to the facet.</p>
+</td></tr>
+<tr valign="top"><td><code>dayBorderSize</code></td>
+<td>
+<p>Size of the border around each day</p>
+</td></tr>
+<tr valign="top"><td><code>dayBorderColour</code></td>
+<td>
+<p>Colour of the border around each day</p>
+</td></tr>
+<tr valign="top"><td><code>monthBorderSize</code></td>
+<td>
+<p>Size of the border around each month</p>
+</td></tr>
+<tr valign="top"><td><code>monthBorderColour</code></td>
+<td>
+<p>Colour of the border around each month</p>
+</td></tr>
+<tr valign="top"><td><code>monthBorderLineEnd</code></td>
+<td>
+<p>Line end for the border around each month</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns a gpplot friendly object which means the user can use
+ggplot scales to modify the look, add more geoms, etc.
+</p>
+
+
+<h3>Cosmetic Tips</h3>
+
+<p>The minimalist look can be achieved by appending the
+following chunk of code to the output object:
+<code>
++
+xlab(NULL) +
+ylab(NULL) +
+scale_fill_continuous(low = 'green', high = 'red') +
+theme(
+   axis.text = element_blank(),
+   axis.ticks = element_blank(),
+   legend.position = 'none',
+   strip.background = element_blank(),
+   # strip.text = element_blank(), # useful if only one year of data
+   plot.background = element_blank(),
+   panel.border = element_blank(),
+   panel.background  = element_blank(),
+   panel.grid = element_blank(),
+   panel.border = element_blank()
+)
+</code>
+</p>
+
+
+<h3>Also See</h3>
+
+<p><code><a href="stat_calendar_heatmap.html">stat_calendar_heatmap</a></code>, a
+flexible but less polished alternative.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+{
+library(data.table)
+library(ggplot2)
+set.seed(1)
+dtData = data.table(
+      DateCol = seq(
+         as.Date("1/01/2014", "%d/%m/%Y"),
+         as.Date("31/12/2015", "%d/%m/%Y"),
+         "days"
+      ),
+      ValueCol = runif(730)
+   )
+# you could also try categorical data with
+# ValueCol = sample(c('a','b','c'), 730, replace = T)
+p1 = ggplot_calendar_heatmap(
+   dtData,
+   'DateCol',
+   'ValueCol'
+)
+p1
+# add new geoms
+p1 +
+geom_text(label = '!!!') +
+scale_colour_continuous(low = 'red', high = 'green')
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggTimeSeries</em> version 1.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

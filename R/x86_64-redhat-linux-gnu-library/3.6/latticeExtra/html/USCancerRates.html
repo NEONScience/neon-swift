@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Rate of Death Due to Cancer in US Counties</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for USCancerRates {latticeExtra}"><tr><td>USCancerRates {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Rate of Death Due to Cancer in US Counties </h2>
+
+<h3>Description</h3>
+
+<p>This data set records the annual rates of death (1999-2003) due to
+cancer by sex in US counties.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>data(USCancerRates)</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with 3041 observations on the following 8 variables.
+</p>
+
+<dl>
+<dt><code>rate.male</code></dt><dd><p>a numeric vector, giving rate of death per
+100,000 due to cancer among males</p>
+</dd>
+<dt><code>LCL95.male</code></dt><dd><p>a 95% lower confidence limit for <code>rate.male</code> </p>
+</dd>
+<dt><code>UCL95.male</code></dt><dd><p>a 95% upper confidence limit for <code>rate.male</code> </p>
+</dd>
+<dt><code>rate.female</code></dt><dd><p>a numeric vector, giving rate of death per
+100,000 due to cancer among females</p>
+</dd>
+<dt><code>LCL95.female</code></dt><dd><p>a 95% lower confidence limit for <code>rate.female</code></p>
+</dd>
+<dt><code>UCL95.female</code></dt><dd><p>a 95% upper confidence limit for <code>rate.female</code></p>
+</dd>
+<dt><code>state</code></dt><dd><p> a factor with levels giving name of US state </p>
+</dd>
+<dt><code>county</code></dt><dd><p> a character vector giving county names, in a
+format similar to that used for county map boundaries in the
+<code>maps</code> package. </p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>See the scripts directory for details of data preprocessing steps.
+</p>
+<p>From the website: Death data provided by the National Vital Statistics
+System public use data file.  Death rates calculated by the National
+Cancer Institute using SEER*Stat.  Death rates are age-adjusted to the
+2000 US standard population
+[<a href="http://www.seer.cancer.gov/stdpopulations/stdpop.19ages.html">http://www.seer.cancer.gov/stdpopulations/stdpop.19ages.html</a>].
+Population counts for denominators are based on Census populations as
+modified by NCI.
+</p>
+
+
+<h3>Source</h3>
+
+<p><a href="http://statecancerprofiles.cancer.gov/">http://statecancerprofiles.cancer.gov/</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(USCancerRates)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

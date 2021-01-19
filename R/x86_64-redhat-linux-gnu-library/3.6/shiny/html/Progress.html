@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Reporting progress (object-oriented API)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for Progress {shiny}"><tr><td>Progress {shiny}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Reporting progress (object-oriented API)</h2>
+
+<h3>Description</h3>
+
+<p>Reporting progress (object-oriented API)
+</p>
+<p>Reporting progress (object-oriented API)
+</p>
+
+
+<h3>Details</h3>
+
+<p>Reports progress to the user during long-running operations.
+</p>
+<p>This package exposes two distinct programming APIs for working with
+progress. <code><a href="withProgress.html">withProgress()</a></code> and <code><a href="withProgress.html">setProgress()</a></code>
+together provide a simple function-based interface, while the
+<code>Progress</code> reference class provides an object-oriented API.
+</p>
+<p>Instantiating a <code>Progress</code> object causes a progress panel to be
+created, and it will be displayed the first time the <code>set</code>
+method is called. Calling <code>close</code> will cause the progress panel
+to be removed.
+</p>
+<p>As of version 0.14, the progress indicators use Shiny's new notification API.
+If you want to use the old styling (for example, you may have used customized
+CSS), you can use <code>style="old"</code> each time you call
+<code>Progress$new()</code>. If you don't want to set the style each time
+<code>Progress$new</code> is called, you can instead call
+<code><a href="shinyOptions.html">shinyOptions(progress.style=&quot;old&quot;)</a></code> just once, inside the server
+function.
+</p>
+
+
+<h3>Methods</h3>
+
+
+
+<h4>Public methods</h4>
+
+
+<ul>
+<li> <p><a href="#method-new"><code>Progress$new()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-set"><code>Progress$set()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-inc"><code>Progress$inc()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-getMin"><code>Progress$getMin()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-getMax"><code>Progress$getMax()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-getValue"><code>Progress$getValue()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-close"><code>Progress$close()</code></a>
+</p>
+</li>
+<li> <p><a href="#method-clone"><code>Progress$clone()</code></a>
+</p>
+</li></ul>
+
+
+<hr>
+<a id="method-new"></a>
+
+
+
+<h4>Method <code>new()</code></h4>
+
+<p>Creates a new progress panel (but does not display it).
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>Progress$new(
+  session = getDefaultReactiveDomain(),
+  min = 0,
+  max = 1,
+  style = getShinyOption("progress.style", default = "notification")
+)</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>session</code></dt><dd><p>The Shiny session object, as provided by <code>shinyServer</code> to
+the server function.</p>
+</dd>
+<dt><code>min</code></dt><dd><p>The value that represents the starting point of the progress
+bar. Must be less than <code>max</code>.</p>
+</dd>
+<dt><code>max</code></dt><dd><p>The value that represents the end of the progress bar. Must be
+greater than <code>min</code>.</p>
+</dd>
+<dt><code>style</code></dt><dd><p>Progress display style. If <code>"notification"</code> (the default),
+the progress indicator will show using Shiny's notification API. If
+<code>"old"</code>, use the same HTML and CSS used in Shiny 0.13.2 and below (this
+is for backward-compatibility).</p>
+</dd>
+</dl>
+
+</div>
+
+
+<hr>
+<a id="method-set"></a>
+
+
+
+<h4>Method <code>set()</code></h4>
+
+<p>Updates the progress panel. When called the first time, the
+progress panel is displayed.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>Progress$set(value = NULL, message = NULL, detail = NULL)</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>value</code></dt><dd><p>Single-element numeric vector; the value at which to set the
+progress bar, relative to <code>min</code> and <code>max</code>. <code>NULL</code> hides the progress
+bar, if it is currently visible.</p>
+</dd>
+<dt><code>message</code></dt><dd><p>A single-element character vector; the message to be
+displayed to the user, or <code>NULL</code> to hide the current message (if any).</p>
+</dd>
+<dt><code>detail</code></dt><dd><p>A single-element character vector; the detail message to be
+displayed to the user, or <code>NULL</code> to hide the current detail message (if
+any). The detail message will be shown with a de-emphasized appearance
+relative to <code>message</code>.</p>
+</dd>
+</dl>
+
+</div>
+
+
+<hr>
+<a id="method-inc"></a>
+
+
+
+<h4>Method <code>inc()</code></h4>
+
+<p>Like <code>set</code>, this updates the progress panel. The difference
+is that <code>inc</code> increases the progress bar by <code>amount</code>, instead of
+setting it to a specific value.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>Progress$inc(amount = 0.1, message = NULL, detail = NULL)</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>amount</code></dt><dd><p>For the <code>inc()</code> method, a numeric value to increment the
+progress bar.</p>
+</dd>
+<dt><code>message</code></dt><dd><p>A single-element character vector; the message to be
+displayed to the user, or <code>NULL</code> to hide the current message (if any).</p>
+</dd>
+<dt><code>detail</code></dt><dd><p>A single-element character vector; the detail message to be
+displayed to the user, or <code>NULL</code> to hide the current detail message (if
+any). The detail message will be shown with a de-emphasized appearance
+relative to <code>message</code>.</p>
+</dd>
+</dl>
+
+</div>
+
+
+<hr>
+<a id="method-getMin"></a>
+
+
+
+<h4>Method <code>getMin()</code></h4>
+
+<p>Returns the minimum value.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>Progress$getMin()</pre></div>
+
+
+<hr>
+<a id="method-getMax"></a>
+
+
+
+<h4>Method <code>getMax()</code></h4>
+
+<p>Returns the maximum value.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>Progress$getMax()</pre></div>
+
+
+<hr>
+<a id="method-getValue"></a>
+
+
+
+<h4>Method <code>getValue()</code></h4>
+
+<p>Returns the current value.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>Progress$getValue()</pre></div>
+
+
+<hr>
+<a id="method-close"></a>
+
+
+
+<h4>Method <code>close()</code></h4>
+
+<p>Removes the progress panel. Future calls to <code>set</code> and
+<code>close</code> will be ignored.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>Progress$close()</pre></div>
+
+
+<hr>
+<a id="method-clone"></a>
+
+
+
+<h4>Method <code>clone()</code></h4>
+
+<p>The objects of this class are cloneable with this method.
+</p>
+
+
+<h5>Usage</h5>
+
+<div class="r"><pre>Progress$clone(deep = FALSE)</pre></div>
+
+
+
+<h5>Arguments</h5>
+
+<div class="arguments">
+
+<dl>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p>
+</dd>
+</dl>
+
+</div>
+
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="withProgress.html">withProgress()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Only run examples in interactive R sessions
+if (interactive()) {
+
+ui &lt;- fluidPage(
+  plotOutput("plot")
+)
+
+server &lt;- function(input, output, session) {
+  output$plot &lt;- renderPlot({
+    progress &lt;- Progress$new(session, min=1, max=15)
+    on.exit(progress$close())
+
+    progress$set(message = 'Calculation in progress',
+                 detail = 'This may take a while...')
+
+    for (i in 1:15) {
+      progress$set(value = i)
+      Sys.sleep(0.5)
+    }
+    plot(cars)
+  })
+}
+
+shinyApp(ui, server)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

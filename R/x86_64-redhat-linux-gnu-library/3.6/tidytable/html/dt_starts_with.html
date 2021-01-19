@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Select helpers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dt_starts_with {tidytable}"><tr><td>dt_starts_with {tidytable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Select helpers</h2>
+
+<h3>Description</h3>
+
+<p>These functions allow you to select variables based on their names.
+</p>
+
+<ul>
+<li> <p><code>dt_starts_with()</code>: Starts with a prefix
+</p>
+</li>
+<li> <p><code>dt_starts_with()</code>: Ends with a suffix
+</p>
+</li>
+<li> <p><code>dt_contains()</code>: Contains a literal string
+</p>
+</li>
+<li> <p><code>dt_everything()</code>: Matches all variables
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+dt_starts_with(match)
+
+dt_contains(match)
+
+dt_ends_with(match)
+
+dt_everything()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>match</code></td>
+<td>
+<p>The match for the helper function to use</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+example_dt &lt;- data.table::data.table(
+  x = 1,
+  y = 2,
+  double_x = 2,
+  double_y = 4)
+
+example_dt %&gt;%
+  dt_select(dt_starts_with("x"))
+
+example_dt %&gt;%
+  dt_select(dt_ends_with("y"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytable</em> version 0.3.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

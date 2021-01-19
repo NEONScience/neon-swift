@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Object cloner</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for clone {rJava}"><tr><td>clone {rJava}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Object cloner
+</h2>
+
+<h3>Description</h3>
+
+<p>Generic function to clone objects
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+clone(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An object to clone</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Further arguments, ignored</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A clone of the object
+</p>
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt>clone</dt><dd><p><code>signature(x = "jobjRef")</code>: clone a java object reference (must implement Cloneable) </p>
+</dd>
+<dt>clone</dt><dd><p><code>signature(x = "jarrayRef")</code>: clone a java rugged array (not yet implemented) </p>
+</dd>
+<dt>clone</dt><dd><p><code>signature(x = "jrectRef")</code>: clone a java rectangular array (not yet implemented) </p>
+</dd>
+</dl>
+
+
+
+<h3>Warning</h3>
+
+<p>The implementation of clone for java object references uses
+the clone method of the Object class. The reading of its description
+in the java help page is <em>strongly</em> recommended. 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+
+  p1 &lt;- .jnew("java/awt/Point" )
+  p2 &lt;- clone( p1 )
+  p2$move( 10L, 10L )
+  p1$getX() 
+
+  # check that p1 and p2 are not references to the same java object
+  stopifnot( p1$getX() == 0 )
+  stopifnot( p2$getX() == 10 )
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rJava</em> version 0.9-13 <a href="00Index.html">Index</a>]</div>
+</body></html>

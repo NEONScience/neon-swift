@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the installed version of a package current?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_is_package_current {assertive.reflection}"><tr><td>assert_is_package_current {assertive.reflection}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the installed version of a package current?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the installed version of a package is current.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_is_package_current(...)
+
+assert_all_are_current_packages(x, lib.loc = .libPaths(),
+  repos = getOption("repos"), type = getOption("pkgType"),
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_current_packages(x, lib.loc = .libPaths(),
+  repos = getOption("repos"), type = getOption("pkgType"),
+  severity = getOption("assertive.severity", "stop"))
+
+is_package_current(x = NULL, lib.loc = .libPaths(),
+  repos = getOption("repos"), type = getOption("pkgType"),
+  .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Passed to and from deprecated <code>assert_is_current_package</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A character vector of package names, or <code>NULL</code> to check all
+installed packages.</p>
+</td></tr>
+<tr valign="top"><td><code>lib.loc</code></td>
+<td>
+<p>A character vector of paths to local package libraries.</p>
+</td></tr>
+<tr valign="top"><td><code>repos</code></td>
+<td>
+<p>A character vector of URLs to repositories to check for new
+package versions.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>Check the repository for source or binary packages?</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_package_current</code>  returns a logical vector that is 
+<code>TRUE</code> whenever the package version matches the one in the repository.
+<code>NA</code> is returned for non-installed packages.
+The <code>assert_*</code> functions throw an error in the event of failure.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../utils/html/old.packages.html">old.packages</a></code>, on which this is based, which
+has advanced usage features.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+# This test is marked "dont-test" since it involves a connection to 
+# repositories which is potentially long running.
+is_package_current(c("assertive.base", "assertive.reflection", "NONEXISTENTPKG"))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.reflection</em> version 0.0-4 <a href="00Index.html">Index</a>]</div>
+</body></html>

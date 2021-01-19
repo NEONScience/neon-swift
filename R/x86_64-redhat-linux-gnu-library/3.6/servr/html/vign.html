@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Serve R Markdown/HTML package vignettes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vign {servr}"><tr><td>vign {servr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Serve R Markdown/HTML package vignettes</h2>
+
+<h3>Description</h3>
+
+<p>Serve package vignettes under the &lsquo;<span class="file">vignettes/</span>&rsquo; directory. Because the
+HTML output files should not be included in the source package, this function
+renders R Markdown/HTML vignettes, displays them in the web browser, and
+deletes the HTML output files. You will see the HTML output when you click
+the links on the &lsquo;<span class="file">.Rmd</span>&rsquo; or &lsquo;<span class="file">.Rhtml</span>&rsquo; files (unlike the static HTTP
+server, the compiled output instead of the source document is displayed).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vign(dir = "vignettes", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dir</code></td>
+<td>
+<p>The root directory to serve.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>server configurations passed to <code><a href="server_config.html">server_config</a>()</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When developing R packages, you may want to preview your vignettes once in a
+while. You can certainly click the button in RStudio to do it, but that
+requires you to install the package and rebuild the vignettes. With this
+function, your vignette will be rebuilt automatically when you update the
+source document. Moreover, because the compilation takes place in the current
+R session, you can take advantage of <code>devtools::load_all()</code> (which has a
+keyboard shortcut in the RStudio IDE) to reload your package and see the
+updated vignette in the web browser.
+</p>
+
+
+<h3>Note</h3>
+
+<p>You are supposed to call this function from the root directory of your
+package. If that is not the case, you should provide the correct path to
+the &lsquo;<span class="file">vignettes/</span>&rsquo; directory of your package to the <code>dir</code> argument.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>servr</em> version 0.15 <a href="00Index.html">Index</a>]</div>
+</body></html>

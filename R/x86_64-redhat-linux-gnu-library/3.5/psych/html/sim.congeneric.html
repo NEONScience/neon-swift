@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Simulate a congeneric data set</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sim.congeneric {psych}"><tr><td>sim.congeneric {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Simulate a congeneric data set </h2>
+
+<h3>Description</h3>
+
+<p>Classical Test Theory (CTT) considers four or more tests to be congenerically equivalent if all tests may be expressed in terms of one factor and a residual error.  Parallel tests are the special case where (usually two) tests have equal factor loadings.  Tau equivalent tests have equal factor loadings but may have unequal errors.  Congeneric tests may differ in both factor loading and error variances.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sim.congeneric(loads = c(0.8, 0.7, 0.6, 0.5),N = NULL,  err=NULL, short = TRUE, 
+              categorical=FALSE, low=-3,high=3,cuts=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>N</code></td>
+<td>
+<p>How many subjects to simulate. If NULL, return the population model </p>
+</td></tr>
+<tr valign="top"><td><code>loads</code></td>
+<td>
+<p> A vector of factor loadings for the tests  </p>
+</td></tr>
+<tr valign="top"><td><code>err</code></td>
+<td>
+<p>A vector of error variances &ndash; if NULL then error = 1 - loading 2</p>
+</td></tr>
+<tr valign="top"><td><code>short</code></td>
+<td>
+<p>short=TRUE: Just give the test correlations, short=FALSE, report observed test scores as well as the implied pattern matrix</p>
+</td></tr>
+<tr valign="top"><td><code>categorical</code></td>
+<td>
+<p> continuous or categorical (discrete) variables.  </p>
+</td></tr>
+<tr valign="top"><td><code>low</code></td>
+<td>
+<p> values less than low are forced to low </p>
+</td></tr>
+<tr valign="top"><td><code>high</code></td>
+<td>
+<p> values greater than high are forced to high  </p>
+</td></tr>
+<tr valign="top"><td><code>cuts</code></td>
+<td>
+<p>If specified, and categorical = TRUE, will cut the resulting continuous output at the value of cuts</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When constructing examples for reliability analysis, it is convenient to simulate congeneric data structures.  These are the most simple of item structures, having just one factor. Mainly used for a discussion of reliability theory as well as factor score estimates. 
+</p>
+<p>The implied covariance matrix is just pattern %*% t(pattern). 
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p>The implied population correlation matrix if N=NULL or short=FALSE, otherwise the sample correlation matrix</p>
+</td></tr>
+<tr valign="top"><td><code>pattern </code></td>
+<td>
+<p>The pattern matrix implied by the loadings and error variances</p>
+</td></tr>
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>The sample correlation matrix for long output</p>
+</td></tr>
+<tr valign="top"><td><code>observed</code></td>
+<td>
+<p>a matrix of test scores for n tests</p>
+</td></tr>
+<tr valign="top"><td><code>latent</code></td>
+<td>
+<p>The latent trait and error scores </p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p> William Revelle </p>
+
+
+<h3>References</h3>
+
+<p>Revelle, W. (in prep) An introduction to psychometric theory with applications in R. To be published by Springer.  (working draft available at  <a href="https://personality-project.org/r/book/">https://personality-project.org/r/book/</a> </p>
+
+
+<h3>See Also</h3>
+
+  <p><code><a href="sim.item.html">item.sim</a></code> for other simulations, <code><a href="fa.html">fa</a></code> for an example of factor scores, <code><a href="irt.fa.html">irt.fa</a></code> and <code><a href="tetrachor.html">polychoric</a></code> for the treatment of item data with discrete values.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+test &lt;- sim.congeneric(c(.9,.8,.7,.6))   #just the population matrix
+test &lt;- sim.congeneric(c(.9,.8,.7,.6),N=100)   # a sample correlation matrix
+test &lt;- sim.congeneric(short=FALSE, N=100)
+round(cor(test$observed),2) # show  a congeneric correlation matrix
+f1=fa(test$observed,scores=TRUE)
+round(cor(f1$scores,test$latent),2)  
+     #factor score estimates are correlated with but not equal to the factor scores
+set.seed(42)
+#500 responses to 4 discrete items
+items &lt;- sim.congeneric(N=500,short=FALSE,low=-2,high=2,categorical=TRUE) 
+d4 &lt;- irt.fa(items$observed)  #item response analysis of congeneric measures
+
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

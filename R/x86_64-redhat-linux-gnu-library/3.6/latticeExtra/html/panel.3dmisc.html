@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Miscellanous panel utilities for three dimensional Trellis...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for panel.3dmisc {latticeExtra}"><tr><td>panel.3dmisc {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Miscellanous panel utilities for three dimensional Trellis Displays</h2>
+
+<h3>Description</h3>
+
+<p>Miscellanous panel functions for use with  three dimensional Lattice
+functions such as cloud and wireframe
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+
+panel.3dbars(x, y, z,
+             rot.mat = diag(4), distance,
+             xbase = 1, ybase = 1,
+             xlim, xlim.scaled,
+             ylim, ylim.scaled,
+             zlim, zlim.scaled,
+             zero.scaled,
+             col = "black",
+             lty = 1, lwd = 1,
+             alpha,
+             ...,
+             col.facet = "white",
+             alpha.facet = 1)
+
+
+panel.3dpolygon(x, y, z, rot.mat = diag(4), distance,
+                xlim.scaled,
+                ylim.scaled,
+                zlim.scaled,
+                zero.scaled,
+                col = "white",
+                border = "black",
+                font, fontface,
+                ...)
+
+panel.3dtext(x, y, z, labels = seq_along(x),
+             rot.mat = diag(4), distance, ...)
+
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, y, z</code></td>
+<td>
+
+<p>data to be plotted
+</p>
+</td></tr>
+<tr valign="top"><td><code>rot.mat, distance</code></td>
+<td>
+
+<p>arguments controlling projection
+</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p> character or expression vectors to be uses as labels </p>
+</td></tr>
+<tr valign="top"><td><code>xlim, ylim, zlim</code></td>
+<td>
+
+<p>limits in the original scale
+</p>
+</td></tr>
+<tr valign="top"><td><code>xlim.scaled, ylim.scaled, zlim.scaled</code></td>
+<td>
+
+<p>limits after scaling
+</p>
+</td></tr>
+<tr valign="top"><td><code>zero.scaled</code></td>
+<td>
+
+<p>the value of z = 0 after scaling
+</p>
+</td></tr>
+<tr valign="top"><td><code>xbase, ybase</code></td>
+<td>
+
+<p>length of the sides of the bars (which are always centered on the
+<code>x</code> and <code>y</code> values).  Can not be vectorized.
+</p>
+</td></tr>
+<tr valign="top"><td><code>col, lty, lwd, alpha, border</code></td>
+<td>
+
+<p>Graphical parameters for the border lines.  These can be vectors, in
+which case each component will be associated with one bar in
+<code>panel.3dbars</code>. 
+</p>
+</td></tr>
+<tr valign="top"><td><code>font, fontface</code></td>
+<td>
+<p> unused graphical parameters, present in the
+argument list only so that they can be captured and ignored  </p>
+</td></tr>
+<tr valign="top"><td><code>col.facet, alpha.facet</code></td>
+<td>
+
+<p>Graphical parameters for surfaces of the bars . These can be
+vectors, in which case each component will be associated with one
+bar.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>extra arguments, passed on as appropriate.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>panel.3dbars</code> and <code>panel.3dpolygon</code> are both suitable for
+use as (components of) the <code>panel.3d.cloud</code> argument of
+<code>panel.cloud</code>.  The first one produces three dimensional bars,
+and the second one draws three dimensional polygons.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Deepayan Sarkar <a href="mailto:deepayan.sarkar@gmail.com">deepayan.sarkar@gmail.com</a></p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../lattice/html/cloud.html">cloud</a></code>,
+<code><a href="../../lattice/html/panel.cloud.html">panel.cloud</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+library(lattice)
+
+cloud(VADeaths, panel.3d.cloud = panel.3dbars,
+      col.facet = "grey", xbase = 0.4, ybase = 0.4,
+      screen = list(z = 40, x = -30))
+
+cloud(VADeaths, panel.3d.cloud = panel.3dbars,
+      xbase = 0.4, ybase = 0.4, zlim = c(0, max(VADeaths)),
+      scales = list(arrows = FALSE, just = "right"), xlab = NULL, ylab = NULL,
+      col.facet = level.colors(VADeaths, at = do.breaks(range(VADeaths), 20),
+                               col.regions = terrain.colors,
+                               colors = TRUE),
+      colorkey = list(col = terrain.colors, at = do.breaks(range(VADeaths), 20)),
+      screen = list(z = 40, x = -30))
+
+
+cloud(as.table(prop.table(Titanic, margin = 1:3)[,,,2]),
+      type = c("p", "h"),
+      zlab = "Proportion\nSurvived",
+      panel.3d.cloud = panel.3dbars,
+      xbase = 0.4, ybase = 0.4,
+      aspect = c(1, 0.3),
+      scales = list(distance = 2),
+      panel.aspect = 0.5)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

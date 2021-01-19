@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Replace missing values</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dt_replace_na {tidytable}"><tr><td>dt_replace_na {tidytable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Replace missing values</h2>
+
+<h3>Description</h3>
+
+<p>A shortcut to replace NAs inside of a <code>dt_mutate()</code> call.
+</p>
+<p>Note: This function <em>does not work</em> outside of <code>dt_mutate()</code> like <code>tidyr::replace_na()</code> does.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dt_replace_na(.col, replace)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.col</code></td>
+<td>
+<p>A vector</p>
+</td></tr>
+<tr valign="top"><td><code>replace</code></td>
+<td>
+<p>A single value used for replacement</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+example_dt &lt;- data.table::data.table(
+  x = c(1, 2, NA),
+  y = c(NA, 1, 2))
+
+example_dt %&gt;%
+  dt_mutate(x = dt_replace_na(x, 5))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytable</em> version 0.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

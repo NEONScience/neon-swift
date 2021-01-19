@@ -1,0 +1,12 @@
+assert_all_are_divisible_by
+                        Is the input divisible by a number?
+assert_all_are_equal_to
+                        How does the input relate to a value?
+assert_all_are_finite   Are the inputs (in)finite?
+assert_all_are_imaginary
+                        Is the input real/imaginary?
+assert_all_are_in_closed_range
+                        Is the input in range?
+assert_all_are_nan      Is the input (not) NaN?
+assert_all_numbers_are_whole_numbers
+                        Is the input a whole number?

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Play a short sound</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for beep {beepr}"><tr><td>beep {beepr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Play a short sound</h2>
+
+<h3>Description</h3>
+
+<p><code>beep</code> plays a short sound which is useful if you want to get notified, 
+for example, when a script has finished. As an added bonus there are a number 
+of different sounds to choose from.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+beep(sound = 1, expr = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sound</code></td>
+<td>
+<p>character string or number specifying what sound to be played by 
+either specifying one of the built in sounds, specifying the path to a wav 
+file or specifying an url. The default is 1. Possible sounds are:
+</p>
+ <ol>
+<li> <p><code>"ping"</code> </p>
+</li>
+<li> <p><code>"coin"</code> </p>
+</li>
+<li> <p><code>"fanfare"</code>
+</p>
+</li>
+<li> <p><code>"complete"</code> </p>
+</li>
+<li> <p><code>"treasure"</code> </p>
+</li>
+<li> <p><code>"ready"</code> </p>
+</li>
+<li>
+<p><code>"shotgun"</code> </p>
+</li>
+<li> <p><code>"mario"</code> </p>
+</li>
+<li> <p><code>"wilhelm"</code> </p>
+</li>
+<li>
+<p><code>"facebook"</code> </p>
+</li>
+<li> <p><code>"sword"</code> </p>
+</li></ol>
+<p> If <code>sound</code> does not match any
+of the sounds above, or is a valid path or url, a random sound will be
+played. Currently <code>beep</code> can only handle http urls, https is not
+supported.</p>
+</td></tr>
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>An optional expression to be excecuted before the sound.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>beep</code> is not able to play the sound a warning is issued rather than 
+an error. This is in order to not risk aborting or stopping the process that
+you wanted to get notified about.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Play a "ping" sound
+beep()
+
+## Not run: 
+# Play a fanfare instead of a "ping".
+beep("fanfare")
+# or
+beep(3)
+
+# Play a random sound
+beep(0)
+
+# Update all packages and "ping" when it's ready
+update.packages(ask=FALSE); beep()
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>beepr</em> version 1.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

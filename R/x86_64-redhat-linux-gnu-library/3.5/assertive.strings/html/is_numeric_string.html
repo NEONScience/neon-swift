@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Does the string contain a number/logical value?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_numeric_strings {assertive.strings}"><tr><td>assert_all_are_numeric_strings {assertive.strings}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Does the string contain a number/logical value?</h2>
+
+<h3>Description</h3>
+
+<p>Check to see if a character vector contains numeric/logical strings.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_numeric_strings(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_numeric_strings(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_logical_strings(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_logical_strings(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_numeric_string(x, .xname)
+
+is_logical_string(x, .xname)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A character vector.</p>
+</td></tr>
+<tr valign="top"><td><code>na_ignore</code></td>
+<td>
+<p>A logical value.  If <code>FALSE</code>, <code>NA</code> values
+cause an error; otherwise they do not.  Like <code>na.rm</code> in many
+stats package functions, except that the position of the failing
+values does not change.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_numeric_string</code> returns a logical vector that is <code>TRUE</code>
+when the string contains numbers.  The corresponding <code>assert_*</code> 
+functions return nothing but throw an error on failure.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+is_numeric_string(c("1", "1.1", "-1.1e1", "one", NA))
+# R only treats certain capitalizations of "true" and "false" as logical
+x &lt;- c(
+  "TRUE", "FALSE", "true", "false", "True", "False", "trUE", "FaLsE", 
+  "T", "F", "t", "f"
+)
+is_logical_string(x)
+
+assert_all_are_numeric_strings(c("1", "2.3", "-4.5", "6e7", "8E-9"))
+assert_any_are_numeric_strings(c("1", "Not a number"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.strings</em> version 0.0-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

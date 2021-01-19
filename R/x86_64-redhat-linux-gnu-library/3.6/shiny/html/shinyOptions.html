@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get or set Shiny options</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for getShinyOption {shiny}"><tr><td>getShinyOption {shiny}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get or set Shiny options</h2>
+
+<h3>Description</h3>
+
+<p><code>getShinyOption()</code> retrieves the value of a Shiny option. <code>shinyOptions()</code>
+sets the value of Shiny options; it can also be used to return a list of all
+currently-set Shiny options.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getShinyOption(name, default = NULL)
+
+shinyOptions(...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>Name of an option to get.</p>
+</td></tr>
+<tr valign="top"><td><code>default</code></td>
+<td>
+<p>Value to be returned if the option is not currently set.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Options to set, with the form <code>name = value</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Scope</h3>
+
+<p>There is a global option set which is available by default. When a Shiny
+application is run with <code><a href="runApp.html">runApp()</a></code>, that option set is duplicated and the
+new option set is available for getting or setting values. If options
+are set from <code>global.R</code>, <code>app.R</code>, <code>ui.R</code>, or <code>server.R</code>, or if they are set
+from inside the server function, then the options will be scoped to the
+application. When the application exits, the new option set is discarded and
+the global option set is restored.
+</p>
+
+
+<h3>Options</h3>
+
+<p>There are a number of global options that affect Shiny's behavior. These can
+be set globally with <code>options()</code> or locally (for a single app) with
+<code>shinyOptions()</code>.
+</p>
+
+<dl>
+<dt>shiny.autoreload (defaults to <code>FALSE</code>)</dt><dd><p>If <code>TRUE</code> when a Shiny app is launched, the
+app directory will be continually monitored for changes to files that
+have the extensions: r, htm, html, js, css, png, jpg, jpeg, gif. If any
+changes are detected, all connected Shiny sessions are reloaded. This
+allows for fast feedback loops when tweaking Shiny UI.
+</p>
+<p>Since monitoring for changes is expensive (we simply poll for last
+modified times), this feature is intended only for development.
+</p>
+<p>You can customize the file patterns Shiny will monitor by setting the
+shiny.autoreload.pattern option. For example, to monitor only ui.R:
+<code>options(shiny.autoreload.pattern = glob2rx("ui.R"))</code>
+</p>
+<p>The default polling interval is 500 milliseconds. You can change this
+by setting e.g. <code>options(shiny.autoreload.interval = 2000)</code> (every
+two seconds).</p>
+</dd>
+<dt>shiny.deprecation.messages (defaults to <code>TRUE</code>)</dt><dd><p>This controls whether messages for
+deprecated functions in Shiny will be printed. See
+<code><a href="shinyDeprecated.html">shinyDeprecated()</a></code> for more information.</p>
+</dd>
+<dt>shiny.error (defaults to <code>NULL</code>)</dt><dd><p>This can be a function which is called when an error
+occurs. For example, <code>options(shiny.error=recover)</code> will result a
+the debugger prompt when an error occurs.</p>
+</dd>
+<dt>shiny.fullstacktrace (defaults to <code>FALSE</code>)</dt><dd><p>Controls whether &quot;pretty&quot; (<code>FALSE</code>) or full
+stack traces (<code>TRUE</code>) are dumped to the console when errors occur during Shiny app execution.
+Pretty stack traces attempt to only show user-supplied code, but this pruning can't always
+be done 100% correctly.</p>
+</dd>
+<dt>shiny.host (defaults to <code>"127.0.0.1"</code>)</dt><dd><p>The IP address that Shiny should listen on. See
+<code><a href="runApp.html">runApp()</a></code> for more information.</p>
+</dd>
+<dt>shiny.jquery.version (defaults to <code>3</code>)</dt><dd><p>The major version of jQuery to use.
+Currently only values of <code>3</code> or <code>1</code> are supported. If <code>1</code>, then jQuery 1.12.4 is used. If <code>3</code>,
+then jQuery 3.5.1 is used.</p>
+</dd>
+<dt>shiny.json.digits (defaults to <code>16</code>)</dt><dd><p>The number of digits to use when converting
+numbers to JSON format to send to the client web browser.</p>
+</dd>
+<dt>shiny.launch.browser (defaults to <code>interactive()</code>)</dt><dd><p>A boolean which controls the default behavior
+when an app is run. See <code><a href="runApp.html">runApp()</a></code> for more information.</p>
+</dd>
+<dt>shiny.maxRequestSize (defaults to 5MB)</dt><dd><p>This is a number which specifies the maximum
+web request size, which serves as a size limit for file uploads.</p>
+</dd>
+<dt>shiny.minified (defaults to <code>TRUE</code>)</dt><dd><p>By default
+Whether or not to include Shiny's JavaScript as a minified (<code>shiny.min.js</code>)
+or un-minified (<code>shiny.js</code>) file. The un-minified version is larger,
+but can be helpful for development and debugging.</p>
+</dd>
+<dt>shiny.port (defaults to a random open port)</dt><dd><p>A port number that Shiny will listen on. See
+<code><a href="runApp.html">runApp()</a></code> for more information.</p>
+</dd>
+<dt>shiny.reactlog (defaults to <code>FALSE</code>)</dt><dd><p>If <code>TRUE</code>, enable logging of reactive events,
+which can be viewed later with the <code><a href="reactlog.html">reactlogShow()</a></code> function.
+This incurs a substantial performance penalty and should not be used in
+production.</p>
+</dd>
+<dt>shiny.sanitize.errors (defaults to <code>FALSE</code>)</dt><dd><p>If <code>TRUE</code>, then normal errors (i.e.
+errors not wrapped in <code>safeError</code>) won't show up in the app; a simple
+generic error message is printed instead (the error and strack trace printed
+to the console remain unchanged). If you want to sanitize errors in general, but you DO want a
+particular error <code>e</code> to get displayed to the user, then set this option
+to <code>TRUE</code> and use <code>stop(safeError(e))</code> for errors you want the
+user to see.</p>
+</dd>
+<dt>shiny.stacktraceoffset (defaults to <code>TRUE</code>)</dt><dd><p>If <code>TRUE</code>, then Shiny's printed stack
+traces will display srcrefs one line above their usual location. This is
+an arguably more intuitive arrangement for casual R users, as the name
+of a function appears next to the srcref where it is defined, rather than
+where it is currently being called from.</p>
+</dd>
+<dt>shiny.suppressMissingContextError (defaults to <code>FALSE</code>)</dt><dd><p>Normally, invoking a reactive
+outside of a reactive context (or <code><a href="isolate.html">isolate()</a></code>) results in
+an error. If this is <code>TRUE</code>, don't error in these cases. This
+should only be used for debugging or demonstrations of reactivity at the
+console.</p>
+</dd>
+<dt>shiny.testmode (defaults to <code>FALSE</code>)</dt><dd><p>If <code>TRUE</code>, then various features for testing Shiny
+applications are enabled.</p>
+</dd>
+<dt>shiny.trace (defaults to <code>FALSE</code>)</dt><dd><p>Print messages sent between the R server and the web
+browser client to the R console. This is useful for debugging. Possible
+values are <code>"send"</code> (only print messages sent to the client),
+<code>"recv"</code> (only print messages received by the server), <code>TRUE</code>
+(print all messages), or <code>FALSE</code> (default; don't print any of these
+messages).</p>
+</dd>
+<dt>shiny.usecairo (defaults to <code>TRUE</code>)</dt><dd><p>This is used to disable graphical rendering by the
+Cairo package, if it is installed. See <code><a href="plotPNG.html">plotPNG()</a></code> for more
+information.</p>
+</dd>
+</dl>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+shinyOptions(myOption = 10)
+getShinyOption("myOption")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

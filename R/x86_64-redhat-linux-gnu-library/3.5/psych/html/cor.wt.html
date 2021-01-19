@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The sample size weighted correlation may be used in...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cor.wt {psych}"><tr><td>cor.wt {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The sample size weighted correlation may be used in correlating aggregated data</h2>
+
+<h3>Description</h3>
+
+<p>If using aggregated data, the correlation of the means does not reflect the sample size used for each mean. cov.wt in RCore does this and returns a covariance matrix or the correlation matrix.  The cor.wt function weights by sample size or by standard errors and by default return correlations. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cor.wt(data,vars=NULL, w=NULL,sds=NULL, cor=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>A matrix or data frame</p>
+</td></tr>
+<tr valign="top"><td><code>vars</code></td>
+<td>
+<p>Variables to analyze</p>
+</td></tr>
+<tr valign="top"><td><code>w</code></td>
+<td>
+<p>A set of weights (e.g., the sample sizes)</p>
+</td></tr>
+<tr valign="top"><td><code>sds</code></td>
+<td>
+<p>Standard deviations of the samples (used if weighting by standard errors)</p>
+</td></tr>
+<tr valign="top"><td><code>cor</code></td>
+<td>
+<p>Report correlations (the default) or covariances</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A weighted correlation is just <i>&sum; (wt_k * (x_ik - x_jk)) /sqrt[wt_k &sum;(x^2_ik) wt_k &sum;(x^2_jk)]</i>  where <i>x_ik</i> is a deviation from the weighted mean.  
+</p>
+<p>The weighted correlation is appropriate for correlating aggregated data, where individual data points might reflect the means of a number of observations.  In this case, each point is weighted by its sample size (or alternatively, by the standard error).  If the weights are all equal, the correlation is just a normal Pearson correlation. 
+</p>
+<p>Used when finding correlations of group means found using <code><a href="statsBy.html">statsBy</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>cor </code></td>
+<td>
+<p>The weighted correlation</p>
+</td></tr>
+<tr valign="top"><td><code>xwt</code></td>
+<td>
+<p>The data as weighted deviations from the weighted mean </p>
+</td></tr>
+<tr valign="top"><td><code>wt</code></td>
+<td>
+<p>The weights used (calculated from the sample sizes).</p>
+</td></tr>
+<tr valign="top"><td><code>mean</code></td>
+<td>
+<p>The weighted means</p>
+</td></tr>
+<tr valign="top"><td><code>xc</code></td>
+<td>
+<p>Unweighted, centered deviation scores from the weighted mean</p>
+</td></tr>
+<tr valign="top"><td><code>xs</code></td>
+<td>
+<p>Deviation scores weighted by the standard error of each sample mean</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>A generalization of <code><a href="../../stats/html/cov.wt.html">cov.wt</a></code> in core R</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle
+</p>
+
+
+<h3>See Also</h3>
+
+<p>See Also as <code><a href="../../stats/html/cov.wt.html">cov.wt</a></code>, <code><a href="statsBy.html">statsBy</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+means.by.age &lt;- statsBy(sat.act,"age")
+wt.cors &lt;- cor.wt(means.by.age)
+lowerMat(wt.cors$r)  #show the weighted correlations
+unwt &lt;- lowerCor(means.by.age$mean)
+mixed &lt;- lowerUpper(unwt,wt.cors$r)  #combine both results
+cor.plot(mixed,TRUE,main="weighted versus unweighted correlations")
+diff &lt;- lowerUpper(unwt,wt.cors$r,TRUE)
+cor.plot(diff,TRUE,main="differences of weighted versus unweighted correlations")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

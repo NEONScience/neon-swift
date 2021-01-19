@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Cast a Java object to another class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for jcast {rJava}"><tr><td>jcast {rJava}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Cast a Java object to another class
+</h2>
+
+<h3>Description</h3>
+
+<p><code>.jcast</code> returns a Java object reference cast to another Java class.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+.jcast(obj, new.class = "java/lang/Object", check = FALSE, convert.array = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>obj</code></td>
+<td>
+<p>a Java object reference</p>
+</td></tr>
+<tr valign="top"><td><code>new.class</code></td>
+<td>
+<p>fully qualified class name in JNI notation
+(e.g. <code>"java/lang/String"</code>). </p>
+</td></tr>
+<tr valign="top"><td><code>check</code></td>
+<td>
+<p>logical. If <code>TRUE</code>, it is checked that the object 
+effectively is an instance of the new class. See <code><a href="instanceof.html">%instanceof%</a></code>.
+Using FALSE (the default) for this argument, rJava does not perform type check and this 
+will cause an error on the first use if the cast is illegal.</p>
+</td></tr>
+<tr valign="top"><td><code>convert.array</code></td>
+<td>
+<p>logical. If <code>TRUE</code> and the object is an array, 
+it is converted into a <code>jarrayRef</code> reference. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is necessary if a argument of <code><a href="jcall.html">.jcall</a></code> or
+<code><a href="jnew.html">.jnew</a></code> is defined as the superclass of the object to be
+passed (see <code><a href="jcall.html">.jcall</a></code>). The original object is not modified.
+</p>
+<p>The default values for the arguments <code>check</code> and <code>convert.array</code>
+is <code>FALSE</code> in order to guarantee backwards compatibility, 
+but it is recommended to set the arguments to <code>TRUE</code>
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns a Java object reference (<code>jobjRef</code>) to the object
+<code>obj</code>, changing the object class.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="jcall.html">.jcall</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+v &lt;- .jnew("java/util/Vector")
+.jcall("java/lang/System","I","identityHashCode",.jcast(v, "java/lang/Object"))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rJava</em> version 0.9-13 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot data and 1 and 2 sigma correlation ellipses</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ellipses {psych}"><tr><td>ellipses {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot data and 1 and 2 sigma correlation ellipses</h2>
+
+<h3>Description</h3>
+
+<p>For teaching correlation, it is useful to draw ellipses around the mean to reflect the correlation.  This variation of the ellipse function from John Fox's car package does so.  Input may be either two vectors or a matrix or data.frame.  In the latter cases, if the number of variables &gt;2, then the ellipses are done in the <code><a href="pairs.panels.html">pairs.panels</a></code> function. Ellipses may be added to existing plots. 
+The minkowski function is included as a generalized ellipse.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ellipses(x, y = NULL, add = FALSE, smooth=TRUE, lm=FALSE,data=TRUE, n = 2,
+ span=2/3, iter=3, col = "red", xlab =NULL,ylab= NULL,size=c(1,2), ...)
+minkowski(r=2,add=FALSE,main=NULL,xl=1,yl=1) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a vector,matrix, or data.frame </p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>Optional second vector </p>
+</td></tr>
+<tr valign="top"><td><code>add</code></td>
+<td>
+<p>Should a new plot be created, or should it be added to?</p>
+</td></tr>
+<tr valign="top"><td><code>smooth</code></td>
+<td>
+<p>smooth = TRUE -&gt; draw a loess fit</p>
+</td></tr>
+<tr valign="top"><td><code>lm</code></td>
+<td>
+<p>lm=TRUE -&gt; draw the linear fit</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>data=TRUE implies draw the data points</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>Should 1 or 2 ellipses be drawn </p>
+</td></tr>
+<tr valign="top"><td><code>span</code></td>
+<td>
+<p>averaging window parameter for the lowess fit</p>
+</td></tr>
+<tr valign="top"><td><code>iter</code></td>
+<td>
+<p>iteration parameter for lowess</p>
+</td></tr>
+<tr valign="top"><td><code>col</code></td>
+<td>
+<p>color of ellipses (default is red</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>label for the x axis</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>label for the y axis</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>The size of ellipses in sd units (defaults to 1 and 2)</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other parameters for plotting</p>
+</td></tr>
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>r=1 draws a city block, r=2 is a Euclidean circle, r &gt; 2 tends towards a square</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>title to use when drawing Minkowski circles</p>
+</td></tr>
+<tr valign="top"><td><code>xl</code></td>
+<td>
+<p>stretch the x axis</p>
+</td></tr>
+<tr valign="top"><td><code>yl</code></td>
+<td>
+<p>stretch the y axis</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Ellipse dimensions are calculated from the correlation between the x and y variables and are scaled as sqrt(1+r) and sqrt(1-r). They are then scaled as size[1] and size[2] standard deviation units.   To scale  for 95 and 99 percent confidence use c(1.64,2.32)
+</p>
+
+
+<h3>Value</h3>
+
+<p> A single plot (for 2 vectors or data frames with fewer than 3 variables.  Otherwise a call is made to <code><a href="pairs.panels.html">pairs.panels</a></code>. 
+</p>
+
+
+<h3>Note</h3>
+
+<p>Adapted from John Fox's ellipse and data.ellipse functions.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle </p>
+
+
+<h3>References</h3>
+
+<p>  Galton, Francis (1888), Co-relations and their measurement. Proceedings of the Royal Society. London Series, 45, 135-145.
+</p>
+
+
+<h3>See Also</h3>
+
+  <p><code><a href="pairs.panels.html">pairs.panels</a></code>  </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(psychTools::galton)
+galton &lt;- psychTools::galton
+ellipses(galton,lm=TRUE)
+
+ellipses(galton$parent,galton$child,xlab="Mid Parent Height",
+                  ylab="Child Height") #input are two vectors
+data(sat.act)
+ellipses(sat.act)  #shows the pairs.panels ellipses
+minkowski(2,main="Minkowski circles")
+minkowski(1,TRUE)
+minkowski(4,TRUE)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

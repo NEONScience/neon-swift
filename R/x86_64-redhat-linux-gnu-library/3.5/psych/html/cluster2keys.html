@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert a cluster vector (from e.g., kmeans) to a keys matrix...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cluster2keys {psych}"><tr><td>cluster2keys {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert a cluster vector (from e.g., kmeans) to a keys matrix suitable for scoring item clusters. </h2>
+
+<h3>Description</h3>
+
+<p>The output of the kmeans clustering function produces a vector of cluster membership.  The <code><a href="score.items.html">score.items</a></code> and <code><a href="cluster.cor.html">cluster.cor</a></code> functions require a matrix of keys.  cluster2keys does this.
+</p>
+<p>May also be used to take the output of an <code><a href="ICLUST.html">ICLUST</a></code> analysis and find a keys matrix.  (By doing a call to the <code><a href="factor2cluster.html">factor2cluster</a></code> function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cluster2keys(c)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>c</code></td>
+<td>
+<p>A vector of cluster assignments or an object of class &ldquo;kmeans&quot; that contains a vector of clusters. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Note that because kmeans will not reverse score items, the clusters defined by kmeans will not necessarily match those of ICLUST with the same number of clusters extracted. 
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>keys</code></td>
+<td>
+<p>A matrix of keys suitable for score.items or cluster.cor</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="cluster.cor.html">cluster.cor</a></code>,<code><a href="score.items.html">score.items</a></code>, <code><a href="factor2cluster.html">factor2cluster</a></code>, <code><a href="make.keys.html">make.keys</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+test.data &lt;- Harman74.cor$cov
+kc &lt;- kmeans(test.data,4)
+keys &lt;- cluster2keys(kc)
+keys  #these match those found by ICLUST
+cluster.cor(keys,test.data)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

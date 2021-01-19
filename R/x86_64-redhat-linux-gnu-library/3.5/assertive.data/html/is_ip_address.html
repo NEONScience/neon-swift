@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Does the character vector contain IP addresses?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_ip_addresses {assertive.data}"><tr><td>assert_all_are_ip_addresses {assertive.data}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Does the character vector contain IP addresses?</h2>
+
+<h3>Description</h3>
+
+<p>Checks that the input contains IP addresses.  (It does not check that the 
+address exists, merely that the string is in a suitable format.)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_ip_addresses(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_ip_addresses(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_ip_address(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>na_ignore</code></td>
+<td>
+<p>A logical value.  If <code>FALSE</code>, <code>NA</code> values
+cause an error; otherwise they do not.  Like <code>na.rm</code> in many
+stats package functions, except that the position of the failing
+values does not change.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A logical vector that is <code>TRUE</code> when the input contains valid IP 
+addresses.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Valid IP addresses are considered to be four integers in the range 0 to 
+255, separated by dots, or the string &quot;localhost&quot;.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- c(
+  localhost     = "localhost", 
+  valid_address = "255.0.255.0", 
+  out_of_range  = "1.2.3.256",
+  five_blocks   = "1.2.3.4.5",
+  non_numeric   = "1.2.3.Z",
+  missing_block = "1.2.3.NA",
+  missing       = NA
+)
+is_ip_address(x)
+assert_any_are_ip_addresses(x)
+#These examples should fail.
+assertive.base::dont_stop(assert_all_are_ip_addresses(x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.data</em> version 0.0-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

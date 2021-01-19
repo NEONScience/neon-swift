@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get output information</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for getCurrentOutputInfo {shiny}"><tr><td>getCurrentOutputInfo {shiny}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get output information</h2>
+
+<h3>Description</h3>
+
+<p>Returns information about the currently executing output, including its <code>name</code> (i.e., <code>outputId</code>);
+and in some cases, relevant sizing and styling information.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getCurrentOutputInfo(session = getDefaultReactiveDomain())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The current Shiny session.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>NULL</code> if called outside of an output context; otherwise,
+a list which includes:
+</p>
+
+<ul>
+<li><p> The <code>name</code> of the output (reported for any output).
+</p>
+</li>
+<li><p> If the output is a <code>plotOutput()</code> or <code>imageOutput()</code>, then:
+</p>
+
+<ul>
+<li> <p><code>height</code>: a reactive expression which returns the height in pixels.
+</p>
+</li>
+<li> <p><code>width</code>: a reactive expression which returns the width in pixels.
+</p>
+</li></ul>
+
+</li>
+<li><p> If the output is a <code>plotOutput()</code>, <code>imageOutput()</code>, or contains a <code>shiny-report-theme</code> class, then:
+</p>
+
+<ul>
+<li> <p><code>bg</code>: a reactive expression which returns the background color.
+</p>
+</li>
+<li> <p><code>fg</code>: a reactive expression which returns the foreground color.
+</p>
+</li>
+<li> <p><code>accent</code>: a reactive expression which returns the hyperlink color.
+</p>
+</li>
+<li> <p><code>font</code>: a reactive expression which returns a list of font information, including:
+</p>
+
+<ul>
+<li> <p><code>families</code>: a character vector containing the CSS <code>font-family</code> property.
+</p>
+</li>
+<li> <p><code>size</code>: a character string containing the CSS <code>font-size</code> property
+</p>
+</li></ul>
+
+</li></ul>
+
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+
+if (interactive()) {
+  shinyApp(
+    fluidPage(
+      tags$style(HTML("body {background-color: black; color: white; }")),
+      tags$style(HTML("body a {color: purple}")),
+      tags$style(HTML("#info {background-color: teal; color: orange; }")),
+      plotOutput("p"),
+      "Computed CSS styles for the output named info:",
+      tagAppendAttributes(
+        textOutput("info"),
+        class = "shiny-report-theme"
+      )
+    ),
+    function(input, output) {
+      output$p &lt;- renderPlot({
+        info &lt;- getCurrentOutputInfo()
+        par(bg = info$bg(), fg = info$fg(), col.axis = info$fg(), col.main = info$fg())
+        plot(1:10, col = info$accent(), pch = 19)
+        title("A simple R plot that uses its CSS styling")
+      })
+      output$info &lt;- renderText({
+        info &lt;- getCurrentOutputInfo()
+        jsonlite::toJSON(
+          list(
+            bg = info$bg(),
+            fg = info$fg(),
+            accent = info$accent(),
+            font = info$font()
+          ),
+          auto_unbox = TRUE
+        )
+      })
+    }
+  )
+}
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

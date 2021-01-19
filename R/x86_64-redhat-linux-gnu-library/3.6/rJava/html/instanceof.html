@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is a java object an instance of a given java class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for .jinstanceof {rJava}"><tr><td>.jinstanceof {rJava}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Is a java object an instance of a given java class
+</h2>
+
+<h3>Description</h3>
+
+<p>Is a java object an instance of a given java class
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+o %instanceof% cl
+.jinstanceof( o, cl )
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>o</code></td>
+<td>
+<p>java object reference</p>
+</td></tr>
+<tr valign="top"><td><code>cl</code></td>
+<td>
+<p>java class. This can be a character vector of length one
+giving the name of the class, or another java object, or an instance
+of the Class class, or a object of class <code>jclassName</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>TRUE if o is an instance of cl
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Romain Francois &lt;francoisromain@free.fr&gt;
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+Double &lt;- J("java.lang.Double")
+d &lt;- new( Double, "10.2" )
+
+# character
+d %instanceof% "java.lang.Double"
+d %instanceof% "java.lang.Number"
+
+# jclassName
+d %instanceof% Double
+
+# instance of Class
+Double.class &lt;- Double@jobj
+d %instanceof% Double.class
+
+# other object
+other.double &lt;- new( Double, 10.2 )
+d %instanceof% other.double
+
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rJava</em> version 0.9-13 <a href="00Index.html">Index</a>]</div>
+</body></html>

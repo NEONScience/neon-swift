@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Phi or Yule coefficient matrix to polychoric coefficient...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for polychor.matrix {psych}"><tr><td>polychor.matrix {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Phi or Yule coefficient matrix  to polychoric coefficient matrix</h2>
+
+<h3>Description</h3>
+
+<p>A set of deprecated functions that have replaced by <code><a href="Yule.html">Yule2tetra</a></code> and <code><a href="Yule.html">Yule2phi</a></code>. 
+</p>
+<p>Some older correlation matrices were reported as matrices of Phi or of Yule correlations.  That is, correlations were found from the two by two table of counts:
+<br />
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> a </td><td style="text-align: left;"> b </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> c </td><td style="text-align: left;"> d  </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p>Yule Q is (ad - bc)/(ad+bc). <br />
+</p>
+<p>With marginal frequencies of a+b, c+d, a+c, b+d.
+</p>
+<p>Given a square matrix of such correlations, and the proportions for each variable that are in the a + b cells, it is possible to reconvert each correlation into a two by two table and then estimate the corresponding polychoric correlation (using John Fox's polychor function. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+Yule2poly.matrix(x, v)  #deprectated
+phi2poly.matrix(x, v)     #deprectated
+Yule2phi.matrix(x, v)     #deprectated
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a matrix of phi or Yule  coefficients </p>
+</td></tr>
+<tr valign="top"><td><code>v</code></td>
+<td>
+<p>A vector of marginal frequencies  </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions call <code><a href="Yule.html">Yule2poly</a></code>,  <code><a href="Yule.html">Yule2phi</a></code> or <code><a href="phi2poly.html">phi2poly</a></code> for each cell of the matrix. See those functions for more details.  See <code><a href="phi.demo.html">phi.demo</a></code> for an example.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A matrix of correlations
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> William Revelle</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#demo &lt;- phi.demo() 
+#compare the phi (lower off diagonal and polychoric correlations (upper off diagonal)
+#show the result from poly.mat
+#round(demo$tetrachoric$rho,2)
+#show the result from phi2poly
+#tetrachorics above the diagonal, phi below the diagonal 
+#round(demo$phis,2) 
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

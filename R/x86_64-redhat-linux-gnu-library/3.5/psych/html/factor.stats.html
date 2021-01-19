@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find various goodness of fit statistics for factor analysis...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for factor.stats {psych}"><tr><td>factor.stats {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find various goodness of fit statistics for factor analysis and principal components </h2>
+
+<h3>Description</h3>
+
+<p>Chi square and other goodness of fit statistics are found based upon the fit of a factor or components model to a correlation matrix.  Although these statistics are normally associated with a maximum likelihood solution, they can be found for minimal residual (OLS), principal axis, or principal component solutions as well.  Primarily called from within these functions, factor.stats can be used by itself. Measures of factorial adequacy and validity follow the paper by Grice, 2001.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fa.stats(r=NULL,f,phi=NULL,n.obs=NA,np.obs=NULL,alpha=.05,fm=NULL) 
+factor.stats(r=NULL,f,phi=NULL,n.obs=NA,np.obs=NULL,alpha=.1,fm=NULL) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>A correlation matrix or a data frame of raw data</p>
+</td></tr>
+<tr valign="top"><td><code>f</code></td>
+<td>
+<p>A factor analysis loadings matrix or the output from a factor or principal components analysis.  In which case the r matrix need not be specified.</p>
+</td></tr>
+<tr valign="top"><td><code>phi</code></td>
+<td>
+<p>A factor intercorrelation matrix if the factor solution was oblique.</p>
+</td></tr>
+<tr valign="top"><td><code>n.obs</code></td>
+<td>
+<p>The number of observations for the correlation matrix.  If not specified, and a correlation matrix is used, chi square will not be reported. Not needed if the input is a data matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>np.obs</code></td>
+<td>
+<p>The pairwise number of subjects for each pair in the correlation matrix.  This is used for finding observed chi square.</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>alpha level of confidence intervals for RMSEA (twice the confidence at each tail)</p>
+</td></tr>
+<tr valign="top"><td><code>fm</code></td>
+<td>
+<p>flag if components are being given statistics</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Combines the goodness of fit tests used in <code><a href="fa.html">fa</a></code> and principal into one function.  If the matrix is singular, will smooth the correlation matrix before finding the fit functions. Now will find the RMSEA (root mean square error of approximation) and the alpha confidence intervals similar to a SEM function.  Also reports the root mean square residual.
+</p>
+<p>Chi square is found two ways.  The first (STATISTIC) applies the goodness of fit test from Maximum Likelihood objective function (see below).  This assumes multivariate normality.  The second is the empirical chi square based upon the observed residual correlation matrix and the observed sample size for each correlation.  This is found by summing the squared residual correlations time the sample size.  
+</p>
+
+
+<h3>Value</h3>
+
+ 
+<table summary="R valueblock">
+<tr valign="top"><td><code>fit</code></td>
+<td>
+<p>How well does the factor model reproduce the correlation matrix. (See <code><a href="VSS.html">VSS</a></code>, <code><a href="ICLUST.html">ICLUST</a></code>, and <code><a href="principal.html">principal</a></code> for this fit statistic.</p>
+</td></tr>
+<tr valign="top"><td><code>fit.off</code></td>
+<td>
+<p>how well are the off diagonal elements reproduced?  This is just 1 - the  relative magnitude of the squared off diagonal residuals to the squared off diagonal original values.</p>
+</td></tr>
+<tr valign="top"><td><code>dof</code></td>
+<td>
+<p>Degrees of Freedom for this model. This is the number of observed correlations minus the number of independent parameters.  Let n=Number of items, nf = number of factors then
+<br />
+<i>dof = n * (n-1)/2 - n * nf + nf*(nf-1)/2</i></p>
+</td></tr>
+<tr valign="top"><td><code>objective</code></td>
+<td>
+<p>value of the function that is minimized by maximum likelihood procedures.  This is reported for comparison purposes and as a way to estimate chi square goodness of fit.  The objective function is 
+<br />
+<i>log(trace ((FF'+U2)^{-1} R) -  log(|(FF'+U2)^-1 R|) - n.items</i>. </p>
+</td></tr>
+<tr valign="top"><td><code>STATISTIC</code></td>
+<td>
+<p>If the number of observations is specified or found, this is a chi square based upon the objective function, f.  Using the formula from <code><a href="../../stats/html/factanal.html">factanal</a></code>(which seems to be Bartlett's test) :
+<br />
+<i> chi^2 = (n.obs - 1 - (2 * p + 5)/6 - (2 * factors)/3)) * f </i> 
+</p>
+<p>Note that this is different from the chi square reported by the sem package which seems to use 
+<i>chi^2 = (n.obs - 1 )* f </i> 
+</p>
+</td></tr>
+<tr valign="top"><td><code>PVAL</code></td>
+<td>
+<p>If n.obs &gt; 0, then what is the probability of observing a chisquare this large or larger?</p>
+</td></tr>
+<tr valign="top"><td><code>Phi</code></td>
+<td>
+<p>If oblique rotations (using oblimin from the GPArotation package or promax) are requested, what is the interfactor correlation.</p>
+</td></tr>
+<tr valign="top"><td><code>R2</code></td>
+<td>
+<p>The multiple R square between the factors and factor score estimates, if they were to be found. (From Grice, 2001)</p>
+</td></tr>
+<tr valign="top"><td><code>r.scores</code></td>
+<td>
+<p>The correlations of the factor score estimates, if they were to be found.</p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>The beta weights to find the factor score estimates</p>
+</td></tr>
+<tr valign="top"><td><code>valid</code></td>
+<td>
+<p>The validity coffiecient of course coded (unit weighted) factor score estimates (From Grice, 2001)</p>
+</td></tr>
+<tr valign="top"><td><code>score.cor</code></td>
+<td>
+<p>The correlation matrix of course coded (unit weighted) factor score estimates, if they were to be found, based upon the loadings matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>RMSEA</code></td>
+<td>
+<p>The Root Mean Square Error of Approximation and the alpha confidence intervals. Based upon the chi square non-centrality parameter.
+This is found as <i>sqrt((f/df - 1(N-1))</i> </p>
+</td></tr>
+<tr valign="top"><td><code>rms</code></td>
+<td>
+<p>The empirically found square root of the squared residuals.  This does not require sample size to be specified nor does it make assumptions about normality.</p>
+</td></tr>
+<tr valign="top"><td><code>crms</code></td>
+<td>
+<p>While the rms uses the number of correlations to find the average, the crms uses the number of degrees of freedom.  Thus, there is a penalty for having too complex a model.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle</p>
+
+
+<h3>References</h3>
+
+<p>Grice, James W.,2001, Computing and evaluating factor scores,  Psychological Methods, 6,4, 430-450.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="fa.html">fa</a></code> with fm=&quot;pa&quot; for principal axis factor analysis, <code><a href="fa.html">fa</a></code> with fm=&quot;minres&quot; for minimum residual factor analysis (default).  <code><a href="deprecated.html">factor.pa</a></code> also does principal axis factor analysis, but is deprecated, as is <code><a href="deprecated.html">factor.minres</a></code> for minimum residual factor analysis. See <code><a href="principal.html">principal</a></code> for principal components.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+v9 &lt;- sim.hierarchical()
+f3 &lt;- fa(v9,3)
+factor.stats(v9,f3,n.obs=500)
+f3o &lt;- fa(v9,3,fm="pa",rotate="Promax")
+factor.stats(v9,f3o,n.obs=500)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

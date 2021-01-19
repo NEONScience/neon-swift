@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find correlations of composite variables (corrected for...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for scoreOverlap {psych}"><tr><td>scoreOverlap {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find correlations of composite variables (corrected for overlap) from a larger matrix.</h2>
+
+<h3>Description</h3>
+
+<p>Given a  n x c cluster definition matrix of -1s, 0s, and 1s (the keys) , and a n x n correlation matrix, or an N x n data matrix, find the correlations of the composite clusters.  The keys matrix can be entered by hand, copied from the clipboard (<code><a href="../../psychTools/html/read.clipboard.html">read.clipboard</a></code>), or taken as output from the <code><a href="factor2cluster.html">factor2cluster</a></code> or <code><a href="make.keys.html">make.keys</a></code> functions.  Similar functionality to <code><a href="score.items.html">scoreItems</a></code> which also gives item by cluster correlations.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+scoreOverlap(keys, r, correct = TRUE, SMC = TRUE, av.r = TRUE, item.smc = NULL, 
+     impute = TRUE,select=TRUE)
+cluster.cor(keys, r.mat, correct = TRUE,SMC=TRUE,item.smc=NULL,impute=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>keys</code></td>
+<td>
+<p>A list of scale/cluster keys, or a  matrix of cluster keys </p>
+</td></tr>
+<tr valign="top"><td><code>r.mat</code></td>
+<td>
+<p>A correlation matrix </p>
+</td></tr>
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>Either a correlation matrix or a raw data matrix</p>
+</td></tr>
+<tr valign="top"><td><code>correct</code></td>
+<td>
+<p> TRUE shows both raw and corrected for attenuation correlations</p>
+</td></tr>
+<tr valign="top"><td><code>SMC</code></td>
+<td>
+<p>Should squared multiple correlations be used as communality estimates for the correlation matrix? </p>
+</td></tr>
+<tr valign="top"><td><code>item.smc</code></td>
+<td>
+<p>the smcs of the items may be passed into the function for speed, or calculated if SMC=TRUE </p>
+</td></tr>
+<tr valign="top"><td><code>impute</code></td>
+<td>
+<p>if TRUE, impute missing scale correlations based upon the average interitem correlation, otherwise return NA.</p>
+</td></tr>
+<tr valign="top"><td><code>av.r</code></td>
+<td>
+<p>Should the average r be used in correcting for overlap? smcs otherwise.</p>
+</td></tr>
+<tr valign="top"><td><code>select</code></td>
+<td>
+<p>By default, just find statistics for items included in the scoring keys. This allows for finding scores from matrices with bad items if they are not included in the set of scoring keys.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This are two of the functions used in the SAPA (<a href="https://sapa-project.org">https://sapa-project.org</a>) procedures to form synthetic correlation matrices.  Given any correlation matrix of items, it is easy to find the correlation matrix of scales made up of those items. This can also be done from the original data matrix or from the correlation matrix using <code><a href="score.items.html">scoreItems</a></code> which is probably preferred unless the keys are overlapping.
+</p>
+<p>In the case of overlapping keys, (items being scored on multiple scales), <code><a href="cluster.cor.html">scoreOverlap</a></code> will adjust for this overlap by replacing the overlapping covariances (which are variances when overlapping) with the corresponding best estimate of an item's &ldquo;true&quot; variance using either the average correlation or the smc estimate for that item.  This parallels the operation done when finding alpha reliability.  This is similar to ideas suggested by Cureton (1966) and Bashaw and Anderson (1966) but uses the smc or the average interitem correlation (default).
+</p>
+<p>A typical use in the SAPA project is to form item composites by clustering or factoring (see <code><a href="fa.html">fa</a></code>, <code><a href="ICLUST.html">ICLUST</a></code>, <code><a href="principal.html">principal</a></code>), extract the clusters from these results (<code><a href="factor2cluster.html">factor2cluster</a></code>), and then form the composite correlation matrix using <code><a href="cluster.cor.html">cluster.cor</a></code>.  The variables in this reduced matrix may then be used in multiple correlatin procedures using <code><a href="set.cor.html">mat.regress</a></code>.
+</p>
+<p>The original correlation is pre and post multiplied by the (transpose) of the keys matrix. 
+</p>
+<p>If some correlations are missing from the original matrix this will lead to missing values (NA) for scale intercorrelations based upon those lower level correlations. If impute=TRUE (the default), a warning is issued and the correlations are imputed based upon the average correlations of the non-missing elements of each scale. 
+</p>
+<p>Because the alpha estimate of reliability is based upon the correlations of the items rather than upon the covariances, this estimate of alpha is sometimes called &ldquo;standardized alpha&quot;.  If the raw items are available, it is useful to compare standardized alpha with the raw alpha found using <code><a href="score.items.html">scoreItems</a></code>.  They will differ substantially only if the items differ a great deal in their variances.   
+</p>
+<p><code><a href="cluster.cor.html">scoreOverlap</a></code> answers an important question when developing scales and related subscales, or when comparing alternative versions of scales.  For by removing the effect of item overlap, it gives a better estimate the relationship between the latent variables estimated by the observed sum (mean) scores.
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>cor </code></td>
+<td>
+<p>the (raw) correlation matrix of the clusters</p>
+</td></tr>
+<tr valign="top"><td><code>sd </code></td>
+<td>
+<p>standard deviation of the cluster scores</p>
+</td></tr>
+<tr valign="top"><td><code>corrected </code></td>
+<td>
+<p>raw correlations below the diagonal, alphas on diagonal, disattenuated above diagonal</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>The (standardized) alpha reliability of each scale.</p>
+</td></tr>
+<tr valign="top"><td><code>G6</code></td>
+<td>
+<p>Guttman's Lambda 6 reliability estimate is based upon the smcs for each item in a scale.  G6 uses the smc based upon the entire item domain.</p>
+</td></tr>
+<tr valign="top"><td><code>av.r</code></td>
+<td>
+<p>The average inter item correlation within a scale</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>How many items are in each cluster?</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p> See SAPA  Revelle, W., Wilt, J.,  and Rosenthal, A. (2010)  Personality and Cognition: The Personality-Cognition Link. In Gruszka, A.  and Matthews, G. and Szymura, B. (Eds.) Handbook of Individual Differences in Cognition: Attention, Memory and Executive Control, Springer. 
+</p>
+<p>The second example uses the <code><a href="../../psychTools/html/msq.html">msq</a></code> data set of 72 measures of motivational state to examine the overlap between four lower level scales and two higher level scales.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Maintainer: William Revelle <a href="mailto:revelle@northwestern.edu">revelle@northwestern.edu</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Bashaw, W. and Anderson Jr, H. E. (1967). A correction for replicated error in correlation coefficients. Psychometrika, 32(4):435-441.
+</p>
+<p>Cureton, E. (1966). Corrected item-test correlations. Psychometrika, 31(1):93-96.
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="factor2cluster.html">factor2cluster</a></code>, <code><a href="set.cor.html">mat.regress</a></code>, <code><a href="alpha.html">alpha</a></code>, and most importantly, <code><a href="score.items.html">scoreItems</a></code>, which will do all of what cluster.cor does for most users.  cluster.cor is an important helper function for <code><a href="ICLUST.html">iclust</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#use the msq data set that shows the structure of energetic and tense arousal
+small.msq &lt;- psychTools::msq[ c("active", "energetic", "vigorous", "wakeful", 
+"wide.awake", "full.of.pep", "lively", "sleepy", "tired", "drowsy","intense", 
+"jittery", "fearful", "tense", "clutched.up", "quiet", "still",    "placid",
+ "calm", "at.rest") ]
+small.R &lt;- cor(small.msq,use="pairwise")
+keys.list &lt;- list(
+EA = c("active", "energetic", "vigorous", "wakeful", "wide.awake", "full.of.pep",
+       "lively", "-sleepy", "-tired", "-drowsy"),
+TA =c("intense", "jittery", "fearful", "tense", "clutched.up", "-quiet", "-still", 
+       "-placid", "-calm", "-at.rest") ,
+
+high.EA = c("active", "energetic", "vigorous", "wakeful", "wide.awake", "full.of.pep",
+       "lively"),
+low.EA =c("sleepy", "tired", "drowsy"),
+lowTA= c("quiet", "still", "placid", "calm", "at.rest"),
+highTA = c("intense", "jittery", "fearful", "tense", "clutched.up")
+   ) 
+   
+keys &lt;- make.keys(small.R,keys.list)
+      
+adjusted.scales &lt;- scoreOverlap(keys.list,small.R)
+#compare with unadjusted
+confounded.scales &lt;- cluster.cor(keys,small.R)
+summary(adjusted.scales)
+#note that the EA and high and low EA and TA and high and low TA 
+# scale correlations are confounded
+summary(confounded.scales) 
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

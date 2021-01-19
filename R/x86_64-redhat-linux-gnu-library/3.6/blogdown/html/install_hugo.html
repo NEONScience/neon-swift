@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Install Hugo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for install_hugo {blogdown}"><tr><td>install_hugo {blogdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Install Hugo</h2>
+
+<h3>Description</h3>
+
+<p>Download the appropriate Hugo executable for your platform from Github and
+try to copy it to a system directory so <span class="pkg">blogdown</span> can run the
+<code>hugo</code> command to build a site. <code>update_hugo()</code> is a wrapper of
+<code>install_hugo(force = TRUE)</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+install_hugo(
+  version = "latest",
+  use_brew = Sys.which("brew") != "",
+  force = FALSE,
+  extended = TRUE
+)
+
+update_hugo()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>version</code></td>
+<td>
+<p>The Hugo version number, e.g., <code>0.26</code>; the special value
+<code>latest</code> means the latest version (fetched from Github releases).
+Alternatively, this argument can take a file path of the zip archive or
+tarball of the Hugo installer that has already been downloaded from Github,
+in which case it will not be downloaded again.</p>
+</td></tr>
+<tr valign="top"><td><code>use_brew</code></td>
+<td>
+<p>Whether to use Homebrew (<a href="https://brew.sh">https://brew.sh</a>) on macOS to
+install Hugo (recommended if you have already installed Homebrew). Note
+Homebrew will be automatically installed if it has not been installed when
+<code>use_brew = TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>force</code></td>
+<td>
+<p>Whether to install Hugo even if it has already been installed.
+This may be useful when upgrading Hugo (if you use Homebrew, run the
+command <code>brew update &amp;&amp; brew upgrade</code> instead).</p>
+</td></tr>
+<tr valign="top"><td><code>extended</code></td>
+<td>
+<p>Whether to use extended version of Hugo that has SCSS/SASS support.
+You only need the extended version if you want to edit SCSS/SASS.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function tries to install Hugo to <code>Sys.getenv('APPDATA')</code> on
+Windows, &lsquo;<span class="file">~/Library/Application Support</span>&rsquo; on macOS, and &lsquo;<span class="file">~/bin/</span>&rsquo; on
+other platforms (such as Linux). If these directories are not writable, the
+package directory &lsquo;<span class="file">Hugo</span>&rsquo; of <span class="pkg">blogdown</span> will be used. If it still
+fails, you have to install Hugo by yourself and make sure it can be found via
+the environment variable <code>PATH</code>.
+</p>
+<p>This is just a helper function and may fail to choose the correct Hugo
+executable for your operating system, especially if you are not on Windows or
+Mac or a major Linux distribution. When in doubt, read the Hugo documentation
+and install it by yourself: <a href="https://gohugo.io">https://gohugo.io</a>.
+</p>
+<p>If you want to install Hugo to a custom path, you can set the global option
+<code>blogdown.hugo.dir</code> to a directory to store the Hugo executable before
+you call <code>install_hugo()</code>, e.g., <code>options(blogdown.hugo.dir =
+'~/Downloads/hugo_0.20.1/')</code>. This may be useful for you to use a specific
+version of Hugo for a specific website. You can set this option per project.
+See <a href="https://bookdown.org/yihui/blogdown/global-options.html">Section
+1.4 Global options</a> for details, or store a copy of Hugo on a USB Flash drive
+along with your website.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>blogdown</em> version 0.17 <a href="00Index.html">Index</a>]</div>
+</body></html>

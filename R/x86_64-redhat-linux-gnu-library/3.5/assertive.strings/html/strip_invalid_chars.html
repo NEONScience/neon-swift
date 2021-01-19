@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Removes invalid characters from a string.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for strip_invalid_chars {assertive.strings}"><tr><td>strip_invalid_chars {assertive.strings}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Removes invalid characters from a string.</h2>
+
+<h3>Description</h3>
+
+<p>Removes invalid characters from a string, leaving only digits.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+strip_invalid_chars(x, invalid_chars, char_desc = gettext("invalid"))
+
+strip_non_alphanumeric(x)
+
+strip_non_numeric(x, allow_x = FALSE, allow_plus = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to strip.</p>
+</td></tr>
+<tr valign="top"><td><code>invalid_chars</code></td>
+<td>
+<p>A regular expression detailing characters to remove.</p>
+</td></tr>
+<tr valign="top"><td><code>char_desc</code></td>
+<td>
+<p>A string describing the characters to remove.</p>
+</td></tr>
+<tr valign="top"><td><code>allow_x</code></td>
+<td>
+<p>If <code>TRUE</code>, the letter &quot;X&quot; is allowed - useful for check 
+digits.</p>
+</td></tr>
+<tr valign="top"><td><code>allow_plus</code></td>
+<td>
+<p>If <code>TRUE</code>, the symbol &quot;+&quot; is allowed - useful for 
+phone numbers.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector of the same length as <code>x</code>, consisting of 
+strings without the characters detailed in the <code>invalid_chars</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+strip_invalid_chars(
+  "  We're floating\tin    space\n\n\n", "[[:space:]]", "whitespace"
+)
+strip_non_numeric(" +44 800-123-456 ", allow_plus = TRUE)
+#Inputs such as factors as coerced to character.
+strip_non_alphanumeric(factor(c(" A1\t1AA.", "*(B2^2BB)%")))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.strings</em> version 0.0-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

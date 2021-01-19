@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Simple function to estimate item difficulties using IRT...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for irt.item.diff.rasch {psych}"><tr><td>irt.item.diff.rasch {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Simple function to estimate item difficulties using IRT concepts</h2>
+
+<h3>Description</h3>
+
+<p>Steps toward a  very crude and preliminary IRT program. These two functions  estimate item difficulty and discrimination parameters.  A better procedure is to use <code><a href="irt.fa.html">irt.fa</a></code> or the ltm package.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+irt.item.diff.rasch(items)
+irt.discrim(item.diff,theta,items)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>items</code></td>
+<td>
+<p> a matrix of items </p>
+</td></tr>
+<tr valign="top"><td><code>item.diff</code></td>
+<td>
+<p>a vector of item difficulties (found by irt.item.diff)</p>
+</td></tr>
+<tr valign="top"><td><code>theta</code></td>
+<td>
+<p>ability estimate from irt.person.theta</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Item Response Theory (aka &quot;The new psychometrics&quot;) models individual responses to items with a logistic function and an individual (theta) and item difficulty (diff) parameter.
+</p>
+<p>irt.item.diff.rasch finds item difficulties with the assumption of theta=0 for all subjects and that all items are equally discriminating.
+</p>
+<p>irt.discrim takes those  difficulties and theta estimates from <code><a href="irt.person.rasch.html">irt.person.rasch</a></code> to find item discrimination (beta) parameters.
+</p>
+<p>A far better package with these features is the ltm package.  The IRT functions in the psych-package are for pedagogical rather than production purposes.  They are believed to be accurate, but are not guaranteed. They do seem to be slightly more robust to missing data structures associated with SAPA data sets than the ltm package. 
+</p>
+<p>The <code><a href="irt.fa.html">irt.fa</a></code> function is also an alternative. This will find <code><a href="tetrachor.html">tetrachoric</a></code> or <code><a href="tetrachor.html">polychoric</a></code> correlations and then convert to IRT parameters using factor analysis (<code><a href="fa.html">fa</a></code>).
+</p>
+
+
+<h3>Value</h3>
+
+<p>a vector of item difficulties or item discriminations.
+</p>
+
+
+<h3>Note</h3>
+
+<p> Under development. Not recommended for public consumption.  See <code><a href="irt.fa.html">irt.fa</a></code> and <code><a href="score.irt.html">score.irt</a></code>  for far better options. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle </p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="irt.fa.html">irt.fa</a></code>, <code><a href="irt.person.rasch.html">irt.person.rasch</a></code> </p>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

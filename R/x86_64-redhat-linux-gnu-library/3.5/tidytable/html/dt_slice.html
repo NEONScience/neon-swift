@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Choose rows by position</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dt_slice {tidytable}"><tr><td>dt_slice {tidytable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Choose rows by position</h2>
+
+<h3>Description</h3>
+
+<p>Choose rows by their ordinal position in a data.table. Grouped data.tables use the ordinal position within the group.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dt_slice(.data, rows = 1:5, by = NULL)
+
+dt_slice_head(.data, n = 5, by = NULL)
+
+dt_slice_tail(.data, n = 5, by = NULL)
+
+dt_slice_max(.data, order_by, n = 5, by = NULL)
+
+dt_slice_min(.data, order_by, n = 5, by = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.data</code></td>
+<td>
+<p>A data.frame or data.table</p>
+</td></tr>
+<tr valign="top"><td><code>rows</code></td>
+<td>
+<p>Integer row values. Provide either positive values to keep, or negative values to drop. The values provided must be either all positive or all negative.</p>
+</td></tr>
+<tr valign="top"><td><code>by</code></td>
+<td>
+<p>A single unquoted column, or a <code>list()</code> of columns to group by.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>Number of rows to grab</p>
+</td></tr>
+<tr valign="top"><td><code>order_by</code></td>
+<td>
+<p>Variable to arrange by</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>data.table
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+example_dt &lt;- data.table::data.table(
+  x = c(1,2,3,4),
+  y = c(4,5,6,7),
+  z = c("a","a","a","b"))
+
+example_dt %&gt;%
+  dt_slice(1:4)
+
+example_dt %&gt;%
+  dt_slice(1, by = z)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytable</em> version 0.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

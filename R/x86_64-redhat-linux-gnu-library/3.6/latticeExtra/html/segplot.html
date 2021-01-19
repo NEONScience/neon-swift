@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot segments using the Trellis framework</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for segplot {latticeExtra}"><tr><td>segplot {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Plot segments using the Trellis framework </h2>
+
+<h3>Description</h3>
+
+<p> This function can be used to systematically draw segments
+using a formula interface to produce Trellis displays using the
+lattice package.  Segments can be drawn either as lines or bars, and
+can be color coded by the value of a covariate, with a suitable
+legend.</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+segplot(x, data, ...)
+
+## S3 method for class 'formula'
+segplot(x, data,
+        level = NULL, centers = NULL,
+        prepanel = prepanel.segplot,
+        panel = panel.segplot,
+        xlab = NULL, ylab = NULL,
+        horizontal = TRUE,
+        ...,
+        at, cuts = 30, colorkey = !is.null(level))
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p> Argument on which argument dispatch is carried out.  For the
+<code>"formula"</code> method, a formula of the form <code>y ~ x1 + x2</code>
+(with further conditioning variables appended if necessary).  The
+terms in the formula must all be vectors of the same length.  Each
+element causes a line segment or rectangle to be drawn, with the
+vertical location determined by <code>y</code> and horizontal endpoints
+determined by <code>x1</code> and <code>x2</code>.  </p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p> An optional data frame, list or environment where
+variables in the formula, as well as <code>level</code>, will be
+evaluated.
+</p>
+</td></tr>
+<tr valign="top"><td><code>level</code></td>
+<td>
+<p> An optional covariate that determines color coding of
+the segments</p>
+</td></tr>
+<tr valign="top"><td><code>centers</code></td>
+<td>
+<p> optional vector of &lsquo;centers&rsquo; of the segments.
+If specified, points will be plotted at these <code>y</code>-locations.  </p>
+</td></tr>
+<tr valign="top"><td><code>prepanel</code></td>
+<td>
+<p> function determining range of the data rectangle from
+data to be used in a panel. </p>
+</td></tr>
+<tr valign="top"><td><code>panel</code></td>
+<td>
+<p> function to render the graphic given the data.  This is
+the function that actually implements the display.  </p>
+</td></tr>
+<tr valign="top"><td><code>xlab, ylab</code></td>
+<td>
+<p> Labels for the axes.  By default both are
+missing. </p>
+</td></tr>
+<tr valign="top"><td><code>horizontal</code></td>
+<td>
+<p> logical, whether the segments are to be drawn
+horizontally (the default) or vertically.  This essentially swaps
+the role of the x- and y-axes in each panel. </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> further arguments.  Arguments to <code>levelplot</code> as
+well as to the default panel function <code><a href="panel.segplot.html">panel.segplot</a></code>
+can be supplied directly to <code>segplot</code>. </p>
+</td></tr>
+<tr valign="top"><td><code>colorkey</code></td>
+<td>
+<p> logical indicating whether a legend showing
+association of segment colors to values of <code>level</code> should be
+shown, or a list to control details of such a color key.  See
+details below. </p>
+</td></tr>
+<tr valign="top"><td><code>at, cuts</code></td>
+<td>
+ <p><code>at</code> specifies the values of <code>level</code> where
+the color code changes.  If <code>at</code> is missing, it defaults to
+<code>cuts</code> equispaced locations spanning the range of <code>levels</code>
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>levelplot</code> function from the lattice package is used to
+internally to implement this function.  In particular, the colorkey
+mechanism is used as it is, and documentation for
+<code><a href="../../lattice/html/levelplot.html">levelplot</a></code> should be consulted to learn how to
+fine tune it.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"trellis"</code>. The
+<code><a href="../../lattice/html/update.trellis.html">update</a></code> method can be used to
+update components of the object and the
+<code><a href="../../lattice/html/print.trellis.html">print</a></code> method (usually called by
+default) will plot it on an appropriate plotting device.
+</p>
+
+
+<h3>Note</h3>
+
+<p> Currently only horizontal segments are supported.  Vertical
+segments can be obtained by modifying the prepanel and panel functions
+suitably. </p>
+
+
+<h3>Author(s)</h3>
+
+<p> Deepayan Sarkar <a href="mailto:deepayan.sarkar@r-project.org">deepayan.sarkar@r-project.org</a> </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../lattice/html/Lattice.html">Lattice</a></code>,
+<code><a href="panel.segplot.html">panel.segplot</a></code>,
+<code><a href="../../lattice/html/levelplot.html">levelplot</a></code>,
+<code><a href="../../lattice/html/xyplot.html">xyplot</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+segplot(factor(1:10) ~ rnorm(10) + rnorm(10), level = runif(10))
+
+data(USCancerRates)
+
+segplot(reorder(factor(county), rate.male) ~ LCL95.male + UCL95.male,
+        data = subset(USCancerRates, state == "Washington"))
+
+segplot(reorder(factor(county), rate.male) ~ LCL95.male + UCL95.male,
+        data = subset(USCancerRates, state == "Washington"),
+        draw.bands = FALSE, centers = rate.male)
+
+segplot(reorder(factor(county), rate.male) ~ LCL95.male + UCL95.male,
+        data = subset(USCancerRates, state == "Washington"),
+        level = rate.female, col.regions = terrain.colors)
+
+segplot(reorder(factor(county), rate.male) ~ LCL95.male + UCL95.male,
+        data = subset(USCancerRates, state == "Washington"),
+        draw.bands = FALSE, centers = rate.male, 
+        segments.fun = panel.arrows, ends = "both", 
+        angle = 90, length = 1, unit = "mm")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

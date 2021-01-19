@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find Item Response Theory (IRT) based scores for dichotomous...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for scoreIrt {psych}"><tr><td>scoreIrt {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find Item Response Theory (IRT) based scores for dichotomous or polytomous items</h2>
+
+<h3>Description</h3>
+
+<p><code><a href="irt.fa.html">irt.fa</a></code> finds Item Response Theory (IRT) parameters through factor analysis of the tetrachoric or polychoric correlations of dichtomous or polytomous items. <code><a href="score.irt.html">scoreIrt</a></code> uses these parameter estimates of discrimination and location to find IRT based scores for the responses. As many factors as found for the correlation matrix will be scored. <code><a href="score.irt.html">scoreIrt.2pl</a></code> will score lists of scales.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+scoreIrt(stats=NULL, items, keys=NULL,cut = 0.3,bounds=c(-4,4),mod="logistic") 
+scoreIrt.1pl(keys.list,items,correct=.5,messages=FALSE,cut=.3,bounds=c(-4,4),
+     mod="logistic")  #Rasch like scaling
+scoreIrt.2pl(itemLists,items,correct=.5,messages=FALSE,cut=.3,bounds=c(-4,4),
+   mod="logistic")  #2 pl scoring
+#the next is an alias for scoreIrt both of which are wrappers for 
+#     score.irt.2 and score.irt.poly
+score.irt(stats=NULL, items, keys=NULL,cut = 0.3,bounds=c(-4,4),mod="logistic") 
+ #the higher order call just calls one of the next two
+  #for dichotomous items 
+score.irt.2(stats, items,keys=NULL,cut = 0.3,bounds=c(-4,4),mod="logistic") 
+  #for polytomous items
+score.irt.poly(stats, items, keys=NULL, cut = 0.3,bounds=c(-4,4),mod="logistic")
+    #to create irt like statistics for plotting
+irt.stats.like(items,stats,keys=NULL,cut=.3)
+make.irt.stats(difficulty,discrimination) 
+   
+irt.tau(x)    #find the tau values for the x object
+irt.se(stats,scores=0,D=1.702)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>stats</code></td>
+<td>
+<p>Output from irt.fa is used for parameter estimates of location and discrimination. Stats may also be the  output from a normal factor analysis (fa). If stats is a data.frame of discrimination and thresholds from some other data set, these values will be used.  See the last example. </p>
+</td></tr>
+<tr valign="top"><td><code>items</code></td>
+<td>
+<p>The raw data, may be either dichotomous or polytomous.</p>
+</td></tr>
+<tr valign="top"><td><code>itemLists</code></td>
+<td>
+<p>a list of items to be factored and scored for each scale, can be a keys.list as used in scoreItems or scoreIrt.1pl</p>
+</td></tr>
+<tr valign="top"><td><code>keys.list</code></td>
+<td>
+<p>A list of items to be scored with keying direction  (see example)</p>
+</td></tr>
+<tr valign="top"><td><code>keys</code></td>
+<td>
+<p>A keys matrix of which items should be scored for each factor</p>
+</td></tr>
+<tr valign="top"><td><code>cut</code></td>
+<td>
+<p>Only items with discrimination values &gt; cut will be used for scoring.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>The raw data to be used to find the tau parameter in irt.tau</p>
+</td></tr>
+<tr valign="top"><td><code>bounds</code></td>
+<td>
+<p>The lower and upper estimates for the fitting function</p>
+</td></tr>
+<tr valign="top"><td><code>mod</code></td>
+<td>
+<p>Should a logistic or normal model be used in estimating the scores?</p>
+</td></tr>
+<tr valign="top"><td><code>correct</code></td>
+<td>
+<p>What value should be used for continuity correction when finding the
+tetrachoric or polychoric correlations when using irt.fa</p>
+</td></tr>
+<tr valign="top"><td><code>messages</code></td>
+<td>
+<p>Should messages be suppressed when running multiple scales?</p>
+</td></tr>
+<tr valign="top"><td><code>scores</code></td>
+<td>
+<p>A single score or a vector of scores to find standard errors</p>
+</td></tr>
+<tr valign="top"><td><code>D</code></td>
+<td>
+<p>The scaling function for the test information statistic used in irt.se</p>
+</td></tr>
+<tr valign="top"><td><code>difficulty</code></td>
+<td>
+<p>The difficulties for each item in a polytomous scoring</p>
+</td></tr>
+<tr valign="top"><td><code>discrimination</code></td>
+<td>
+<p>The item discrimin</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Although there are more elegant ways of finding subject scores given a set of item locations (difficulties) and discriminations, simply finding that value of theta <i>&theta;</i> that best fits the equation <i>P(x|&theta;) = 1/(1+exp(&beta;(&delta; - &theta;) )</i> for a score vector X, and location <i>&delta;</i> and discrimination <i>&beta;</i> provides more information than just total scores.  With complete data, total scores and irt estimates are almost perfectly correlated.  However, the irt estimates provide much more information in the case of missing data.
+</p>
+<p>The bounds parameter sets the lower and upper limits to the estimate.  This is relevant for the case of a subject who gives just the lowest score on every item, or just the top score on every item. Formerly (prior to 1.6.12) this was done by  estimating these taial scores  by finding the probability of missing every item taken, converting this to a quantile score based upon the normal distribution, and then assigning a z value equivalent to 1/2 of that quantile.  Similarly, if a person gets all the items they take correct, their score is defined as the quantile of the z equivalent to the probability of getting all of the items correct, and then moving up the distribution half way.  If these estimates exceed either the upper or lower bounds, they are adjusted to those boundaries. 
+</p>
+<p>As of 1.6.9, the procedure is very different.  We now assume that all items are bounded with one passed item that is easier than all items given, and one failed item that is harder than any item given.  This produces much cleaner results.
+</p>
+<p>There are several more elegant packages in R that provide Full Information Maximum Likeliood IRT based estimates. In particular, the MIRT package seems especially good.  The ltm package give equivalent estimates to MIRT for dichotomous data but produces unstable estimates for polytomous data and should be avoided.   
+</p>
+<p>Although the scoreIrt estimates are are not FIML based they seem to correlated with  the MIRT estiamtes with values exceeding .99.  Indeed, based upon very limited simulations there are some small hints that the solutions match the true score estimates  slightly better than do the MIRT estimates.  <code><a href="score.irt.html">scoreIrt</a></code> seems to do a good job of recovering the basic structure.
+</p>
+<p>If trying to use item parameters from a different data set (e.g. some standardization sample), specify the stats as a data frame with the first column representing the item discriminations, and the next columns the item difficulties. See the last example.
+</p>
+<p>The two wrapper functions <code><a href="score.irt.html">scoreIrt.1pl</a></code> and <code><a href="score.irt.html">scoreIrt.2pl</a></code> are very fast and are meant for scoring one or many scales at a time with a one factor model (<code><a href="score.irt.html">scoreIrt.2pl</a></code>) or just Rasch like scoring.  Just specify the scoring direction for a number of scales  (<code><a href="score.irt.html">scoreIrt.1pl</a></code>) or just items to score  for a number of scales <code><a href="score.irt.html">scoreIrt.2pl</a></code>.  <code><a href="score.irt.html">scoreIrt.2pl</a></code> will then apply <code><a href="irt.fa.html">irt.fa</a></code> to the items for each scale separately, and then find the 2pl scores. 
+</p>
+<p>The keys.list is a list of items to score for each scale.  Preceding the item name with a negative sign will reverse score that item (relevant for <code><a href="score.irt.html">scoreIrt.1pl</a></code>.  Alternatively, a keys matrix can be created using <code><a href="make.keys.html">make.keys</a></code>.  The keys matrix is a matrix of 1s, 0s, and -1s reflecting whether an item should be scored or not scored for a particular factor.  See <code><a href="score.items.html">scoreItems</a></code> or <code><a href="make.keys.html">make.keys</a></code> for details.  The default case is to score all items with absolute discriminations &gt; cut.
+</p>
+<p>If one wants to score scales taking advantage of differences in item location but not do a full IRT analysis, then find the item difficulties from the raw data using <code><a href="score.irt.html">irt.tau</a></code> or combine this information with a scoring keys matrix (see <code><a href="score.items.html">scoreItems</a></code> and <code><a href="make.keys.html">make.keys</a></code> and create quasi-IRT statistics using <code><a href="score.irt.html">irt.stats.like</a></code>.   This is the equivalent of doing a quasi-Rasch model, in that all items are assumed to be equally discriminating.  In this case, tau values may be found first (using <code><a href="score.irt.html">irt.tau</a></code> or just found before doing the scoring.  This is all done for you inside of <code><a href="score.irt.html">scoreIrt.1pl</a></code>. 
+</p>
+<p>Such irt based scores are particularly useful if finding scales based upon massively missing data (e.g., the SAPA data sets).  Even without doing the full irt analysis, we can take into account different item difficulties. 
+</p>
+<p>David Condon has added a very nice function to do 2PL analysis for a number of scales at one time.  <code><a href="score.irt.html">scoreIrt.2pl</a></code> takes the raw data file and a list of items to score for each of multiple scales.  These are then factored (currently just one factor for each scale) and the loadings and difficulties are used for scoring.  
+</p>
+<p>There are conventionally two different metrics and models that are used.  The logistic metric and model and the normal metric and model. These are chosen using the mod parameter.
+</p>
+<p><code><a href="score.irt.html">irt.se</a></code> finds the standard errors for scores with a particular value.  These are based upon the information curves calculated by <code><a href="irt.fa.html">irt.fa</a></code> and are not based upon the particular score of a particular subject.
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>scores</code></td>
+<td>
+<p>A data frame of theta estimates, total scores based upon raw sums, and estimates of fit.</p>
+</td></tr>
+<tr valign="top"><td><code>tau</code></td>
+<td>
+<p>Returned by irt.tau: A data frame of the tau values for an object of dichotomous or polytomous items.  Found without bothering to find the correlations.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>It is very important to note that when using <code><a href="irt.fa.html">irt.fa</a></code> to find the discriminations, to set the sort option to be FALSE. This is now the default.  Otherwise, the discriminations will not match the item order.  
+</p>
+<p>Always under development.  Suggestions for improvement are most appreciated.
+</p>
+<p>scoreIrt is just a wrapper to score.irt.poly and score.irt.2.  The previous version had score.irt which is now deprecated as I try to move to camelCase.
+</p>
+<p>scoreIrt.2pl is a wrapper for irt.fa and scoreIrt.  It was originally developed by David Condon.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle, David Condon
+</p>
+
+
+<h3>References</h3>
+
+<p>Kamata, Akihito and Bauer, Daniel J. (2008) A Note on the Relation Between Factor Analytic and Item Response Theory Models
+Structural Equation Modeling, 15 (1) 136-153.
+</p>
+<p>McDonald, Roderick P. (1999) Test theory: A unified treatment. L. Erlbaum Associates.
+</p>
+<p>Revelle, William. (in prep) An introduction to psychometric theory with applications in R. Springer.  Working draft available at <a href="https://personality-project.org/r/book/">https://personality-project.org/r/book/</a> 
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="irt.fa.html">irt.fa</a></code> for finding the parameters. For more conventional scoring algorithms see <code><a href="score.items.html">scoreItems</a></code>. <code><a href="irt.responses.html">irt.responses</a></code> will plot the empirical response patterns for the alternative response choices for  multiple choice items. For more conventional IRT estimations, see the ltm package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+  #not run in the interest of time, but worth doing
+d9 &lt;- sim.irt(9,1000,-2.5,2.5,mod="normal") #dichotomous items
+test &lt;- irt.fa(d9$items)
+scores &lt;- scoreIrt(test,d9$items)
+scores.df &lt;- data.frame(scores,true=d9$theta) #combine the estimates with the true thetas.
+pairs.panels(scores.df,pch=".",
+main="Comparing IRT and classical with complete data") 
+#now show how to do this with a quasi-Rasch model
+tau &lt;- irt.tau(d9$items)
+scores.rasch &lt;- scoreIrt(tau,d9$items,key=rep(1,9))
+scores.dfr&lt;- data.frame(scores.df,scores.rasch) #almost identical to 2PL model!
+pairs.panels(scores.dfr)
+#with all the data, why bother ?
+
+#now delete some of the data
+d9$items[1:333,1:3] &lt;- NA
+d9$items[334:666,4:6] &lt;- NA
+d9$items[667:1000,7:9] &lt;- NA
+scores &lt;- scoreIrt(test,d9$items)
+scores.df &lt;- data.frame(scores,true=d9$theta) #combine the estimates with the true thetas.
+pairs.panels(scores.df, pch=".",
+main="Comparing IRT and classical with random missing data")
+ #with missing data, the theta estimates are noticably better.
+#now show how to do this with a quasi-Rasch model
+tau &lt;- irt.tau(d9$items)
+scores.rasch &lt;- scoreIrt(tau,d9$items,key=rep(1,9))
+scores.dfr &lt;- data.frame(scores.df,rasch = scores.rasch)
+pairs.panels(scores.dfr)  #rasch is actually better!
+
+
+
+v9 &lt;- sim.irt(9,1000,-2.,2.,mod="normal") #dichotomous items
+items &lt;- v9$items
+test &lt;- irt.fa(items)
+total &lt;- rowSums(items)
+ord &lt;- order(total)
+items &lt;- items[ord,]
+
+
+#now delete some of the data - note that they are ordered by score
+items[1:333,5:9] &lt;- NA
+items[334:666,3:7] &lt;- NA
+items[667:1000,1:4] &lt;- NA
+items[990:995,1:9] &lt;- NA   #the case of terrible data
+items[996:998,] &lt;- 0   #all wrong
+items[999:1000] &lt;- 1   #all right
+scores &lt;- scoreIrt(test,items)
+unitweighted &lt;- scoreIrt(items=items,keys=rep(1,9)) #each item has a discrimination of 1
+#combine the estimates with the true thetas.
+scores.df &lt;- data.frame(v9$theta[ord],scores,unitweighted) 
+   
+colnames(scores.df) &lt;- c("True theta","irt theta","total","fit","rasch","total","fit")
+pairs.panels(scores.df,pch=".",main="Comparing IRT and classical with missing data") 
+ #with missing data, the theta estimates are noticably better estimates 
+ #of the generating theta than using the empirically derived factor loading weights
+
+#now show the ability to score multiple scales using keys
+ab.tau &lt;- irt.tau(psychTools::ability)  #first find the tau values
+ab.keys &lt;- make.keys(psychTools::ability,list(g=1:16,reason=1:4,
+letter=5:8,matrix=9:12,rotate=13:16))
+#ab.scores &lt;- scoreIrt(stats=ab.tau, items = psychTools::ability, keys = ab.keys)
+
+#and now do it for polytomous items using 2pl
+bfi.scores &lt;- scoreIrt.2pl(bfi.keys,bfi[1:25])
+#compare with classical unit weighting by using scoreItems
+#not run in the interests of time
+#bfi.unit &lt;- scoreItems(psychTools::bfi.keys,psychTools::bfi[1:25])
+#bfi.df &lt;- data.frame(bfi.scores,bfi.unit$scores)
+#pairs.panels(bfi.df,pch=".")
+
+
+bfi.irt &lt;- scoreIrt(items=bfi[16:20])  #find irt based N scores
+
+#Specify item difficulties and discriminations from a different data set.
+stats &lt;- structure(list(MR1 = c(1.4, 1.3, 1.3, 0.8, 0.7), difficulty.1 = c(-1.2, 
+-2, -1.5, -1.2, -0.9), difficulty.2 = c(-0.1, -0.8, -0.4, -0.3, 
+-0.1), difficulty.3 = c(0.6, -0.2, 0.2, 0.2, 0.3), difficulty.4 = c(1.5, 
+0.9, 1.1, 1, 1), difficulty.5 = c(2.5, 2.1, 2.2, 1.7, 1.6)), row.names = c("N1", 
+"N2", "N3", "N4", "N5"), class = "data.frame")
+
+
+stats #show them
+bfi.new &lt;-scoreIrt(stats,bfi[16:20])
+bfi.irt &lt;- scoreIrt(items=bfi[16:20]) 
+cor2(bfi.new,bfi.irt)
+newstats &lt;- stats
+newstats[2:6] &lt;-stats[2:6 ] + 1  #change the difficulties
+bfi.harder &lt;- scoreIrt(newstats,bfi[16:20])
+pooled &lt;- cbind(bfi.irt,bfi.new,bfi.harder)
+describe(pooled)  #note that the mean scores have changed
+lowerCor(pooled) #and although the unit weighted scale are identical,
+# the irt scales differ by changing the difficulties
+
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

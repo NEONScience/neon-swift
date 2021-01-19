@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Attach mechanism for java packages</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for javaImport {rJava}"><tr><td>javaImport {rJava}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Attach mechanism for java packages
+</h2>
+
+<h3>Description</h3>
+
+<p>The <code>javaImport</code> function creates an item on R's
+search that maps names to class names references found in 
+one or several &quot;imported&quot; java packages.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+javaImport(packages = "java.lang")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>packages</code></td>
+<td>
+<p>character vector containing java package paths</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An external pointer to a java specific <code>UserDefinedDatabase</code> object
+</p>
+
+
+<h3>Warning</h3>
+
+<p>This feature is experimental. Use with caution, and don't forget to
+detach.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Currently the list of objects in the imported package is populated
+as new objects are found, <em>not</em> at creation time.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Romain Francois &lt;francoisromain@free.fr&gt;
+</p>
+
+
+<h3>References</h3>
+
+<p><em>User-Defined Tables in the R Search Path</em>. Duncan Temple Lang. December 4, 2001
+<a href="http://www.omegahat.net/RObjectTables/">http://www.omegahat.net/RObjectTables/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/attach.html">attach</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+	attach( javaImport( "java.util" ), pos = 2 , name = "java:java.util" )
+	
+	# now we can just do something like this 
+	v &lt;- new( Vector )
+	v$add( "foobar" )
+	ls( pos = 2 )
+	
+	# or this
+	m &lt;- new( HashMap )
+	m$put( "foo", "bar" )
+	ls( pos = 2 )
+	
+	# or even this :
+	Collections$EMPTY_MAP
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rJava</em> version 0.9-13 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Function to convert scores to &quot;conventional &quot; metrics</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rescale {psych}"><tr><td>rescale {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Function to convert scores to &ldquo;conventional
+&quot; metrics</h2>
+
+<h3>Description</h3>
+
+<p>Psychologists frequently report data in terms of transformed scales such as &ldquo;IQ&quot; (mean=100, sd=15, &ldquo;SAT/GRE&quot; (mean=500, sd=100), &ldquo;ACT&quot; (mean=18, sd=6), &ldquo;T-scores&quot; (mean=50, sd=10), or &ldquo;Stanines&quot; (mean=5, sd=2). The <code><a href="rescale.html">rescale</a></code> function converts the data to standard scores and then rescales to the specified mean(s) and standard deviation(s). </p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rescale(x, mean = 100, sd = 15,df=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A matrix or data frame </p>
+</td></tr>
+<tr valign="top"><td><code>mean</code></td>
+<td>
+<p>Desired mean of the rescaled scores- may be a vector</p>
+</td></tr>
+<tr valign="top"><td><code>sd</code></td>
+<td>
+<p>Desired standard deviation of the rescaled scores</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>if TRUE, returns a data frame, otherwise a matrix</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A data.frame (default) or matrix of rescaled scores.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> William Revelle </p>
+
+
+<h3>See Also</h3>
+
+<p>  See Also  <code><a href="../../base/html/scale.html">scale</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+T &lt;- rescale(attitude,50,10) #all put on same scale
+describe(T)
+T1 &lt;- rescale(attitude,seq(0,300,50),seq(10,70,10)) #different means and sigmas
+describe(T1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

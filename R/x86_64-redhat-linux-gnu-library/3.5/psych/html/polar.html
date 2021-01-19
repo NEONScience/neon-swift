@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert Cartesian factor loadings into polar coordinates</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for polar {psych}"><tr><td>polar {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert Cartesian factor loadings into polar coordinates </h2>
+
+<h3>Description</h3>
+
+<p>Factor and cluster analysis output typically presents item by factor correlations (loadings).  Tables of factor loadings are frequently sorted by the size of loadings.  This style of presentation tends to make it difficult to notice the pattern of loadings on other, secondary, dimensions.  By converting to polar coordinates, it is easier to see the pattern of the secondary loadings. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+polar(f, sort = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>f</code></td>
+<td>
+<p>A matrix of loadings or the output from a factor or cluster analysis program</p>
+</td></tr>
+<tr valign="top"><td><code>sort</code></td>
+<td>
+<p> sort=TRUE: sort items by the angle of the items on the first pair of factors.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Although many uses of factor analysis/cluster analysis assume a simple structure where items have one and only one large loading, some domains such as personality or affect items have a more complex structure and some items have high loadings on two factors.  (These items are said to have complexity 2, see <code><a href="VSS.html">VSS</a></code>).  By expressing the factor loadings in polar coordinates, this structure is more readily perceived.
+</p>
+<p>For each pair of factors, item loadings are converted to an angle with the first factor, and a vector length corresponding to the amount of variance in the item shared with the two factors.  
+</p>
+<p>For a two dimensional structure, this will lead to a column of angles and a column of vector lengths.  For n factors, this leads to n* (n-1)/2 columns of angles and an equivalent number of vector lengths.
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>polar </code></td>
+<td>
+<p>A data frame of polar coordinates </p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle</p>
+
+
+<h3>References</h3>
+
+<p>Rafaeli, E. &amp; Revelle, W. (2006). A premature consensus: Are happiness and sadness truly opposite affects? Motivation and Emotion. \
+</p>
+<p>Hofstee, W. K. B., de Raad, B., &amp; Goldberg, L. R. (1992). Integration of the big five and circumplex approaches to trait structure. Journal of Personality and Social Psychology, 63, 146-163.</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="ICLUST.html">ICLUST</a></code>, <code><a href="cluster.plot.html">cluster.plot</a></code>, <code><a href="circ.tests.html">circ.tests</a></code>,  <code><a href="fa.html">fa</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+circ.data &lt;- circ.sim(24,500)
+circ.fa &lt;- fa(circ.data,2)
+circ.polar &lt;- round(polar(circ.fa),2)
+circ.polar
+#compare to the graphic
+cluster.plot(circ.fa)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

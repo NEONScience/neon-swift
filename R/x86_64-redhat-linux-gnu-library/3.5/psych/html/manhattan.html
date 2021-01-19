@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: &quot;Manhattan&quot; plots of correlations with a set of criteria.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for manhattan {psych}"><tr><td>manhattan {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>&quot;Manhattan&quot; plots of correlations with a set of criteria.</h2>
+
+<h3>Description</h3>
+
+<p>A useful way of showing the strength of many correlations with a particular criterion is the Manhattan plot.  This is just a plot of correlations ordered by some keying variable.  Useful to understand the basis of items used in <code><a href="best.scales.html">bestScales</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+manhattan(x, criteria = NULL, keys = NULL,raw=TRUE,n.obs=NULL, abs = TRUE, 
+  ylab = NULL, labels = NULL, log.p = FALSE,ci=.05, pch = 21,
+ main = "Manhattan Plot of", adjust="holm",ylim = NULL,digits=2,dictionary=NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A matrix or data.frame of items or a correlation matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>criteria</code></td>
+<td>
+<p>What column names should be predicted.  If a separate file, what are the variables to predict.</p>
+</td></tr>
+<tr valign="top"><td><code>keys</code></td>
+<td>
+<p>a keys.list similar to that used in <code><a href="score.items.html">scoreItems</a></code>  </p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>The default is raw data, the alternative is a correlation matrix</p>
+</td></tr>
+<tr valign="top"><td><code>n.obs</code></td>
+<td>
+<p>If given a correlation matrix, and showing log.p, we need the number of observations</p>
+</td></tr>
+<tr valign="top"><td><code>abs</code></td>
+<td>
+<p>Should we show the absolute value of the correlations.</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>If NULL, will label as either correlations or log (10) of correlations</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>if NULL, will use the names of the keys</p>
+</td></tr>
+<tr valign="top"><td><code>log.p</code></td>
+<td>
+<p>Should we show the correlations (log.p = FALSE) or the log of the probabilities of the correlations (TRUE)</p>
+</td></tr>
+<tr valign="top"><td><code>ci</code></td>
+<td>
+<p>The probability for the upper and lower confidence intervals &ndash; bonferroni adjusted</p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p>The default plot chararcter is a filled circle</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>The title for each criterion</p>
+</td></tr>
+<tr valign="top"><td><code>adjust</code></td>
+<td>
+<p>Which adjustment for multiple correlations should be applied (&quot;holm&quot;, &quot;bonferroni&quot;, &quot;none&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>ylim</code></td>
+<td>
+<p>If NULL will be the min and max of the data</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>Round off the results to digits</p>
+</td></tr>
+<tr valign="top"><td><code>dictionary</code></td>
+<td>
+<p>A dictionary of items</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other graphic parameters</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When exploring the correlations of many items with a few criteria, it is useful to form scales from the most correlated items (see <code><a href="best.scales.html">bestScales</a></code>.  To get a feeling of the distribution of items across various measures, we can display their correlations (or the log of the probabilities) grouped by some set of scale keys. May also be used to display and order correlations (rows) with a criteria (columns) if given a correlation as input (raw=FALSE).
+</p>
+
+
+<h3>Value</h3>
+
+<p>The correlations or the log p values are returned (invisibily)
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="best.scales.html">bestScales</a></code>, <code><a href="error.dots.html">error.dots</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+op &lt;- par(mfrow=(c(2,3))) #we want to compare two different sets of plots
+manhattan(psychTools::bfi[1:25],psychTools::bfi[26:28]
+,labels=colnames(psychTools::bfi)[1:25], dictionary=psychTools::bfi.dictionary)
+manhattan(psychTools::bfi[1:25],psychTools::bfi[26:28],log.p=TRUE,
+    dictionary=psychTools::bfi.dictionary)
+
+#Do it again, but now show items by the keys.list
+bfi.keys &lt;-
+  list(agree=c("-A1","A2","A3","A4","A5"),conscientious=c("C1","C2","C3","-C4","-C5"),
+ extraversion=c("-E1","-E2","E3","E4","E5"),neuroticism=c("N1","N2","N3","N4","N5"),
+ openness = c("O1","-O2","O3","O4","-O5"))
+man &lt;-  manhattan(psychTools::bfi[1:25],psychTools::bfi[26:28],keys=bfi.keys,
+     dictionary=psychTools::bfi.dictionary[1:2])
+manhattan(psychTools::bfi[1:25],psychTools::bfi[26:28],keys=bfi.keys,log.p=TRUE,
+dictionary=psychTools::bfi.dictionary[1:2]) 
+
+#Alternatively, use a matrix as input
+R &lt;-cor(psychTools::bfi[1:25],psychTools::bfi[26:28],use="pairwise")
+manhattan(R,cs(gender,education,age),keys=bfi.keys,
+      dictionary=psychTools::bfi.dictionary[1:2], raw=FALSE,abs=FALSE)
+par &lt;- op
+
+
+
+psychTools::dfOrder(man,1,ascending=FALSE)  #print out the items sorted on gender
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

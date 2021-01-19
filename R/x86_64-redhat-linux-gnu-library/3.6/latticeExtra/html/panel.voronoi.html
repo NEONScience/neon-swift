@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Panel functions for level-coded irregular points</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for panel.voronoi {latticeExtra}"><tr><td>panel.voronoi {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Panel functions for level-coded irregular points </h2>
+
+<h3>Description</h3>
+
+<p>These panel functions for <code><a href="../../lattice/html/levelplot.html">levelplot</a></code>
+can represent irregular (x, y) points with a color covariate.
+<code>panel.levelplot.points</code> simply draws color-coded points.
+<code>panel.voronoi</code> uses the <span class="pkg">deldir</span> package to
+calculate the spatial extension of a set of points in 2 dimensions.
+This is known variously as a Voronoi mosaic, a Dirichlet tesselation,
+or Thiessen polygons.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+panel.voronoi(x, y, z, subscripts = TRUE, at = pretty(z),
+   points = TRUE, border = "transparent",
+   na.rm = FALSE, win.expand = 0.07, use.tripack = FALSE,
+   ...,
+   col.regions = regions$col, alpha.regions = regions$alpha)
+
+panel.levelplot.points(x, y, z, subscripts = TRUE, at = pretty(z),
+   shrink, labels, label.style, contour, region,
+   pch = 21, col.symbol = "#00000044",
+   ...,
+   col.regions = regions$col, fill = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, y, z</code></td>
+<td>
+<p> an irregular set of points at locations (x, y) with
+value z. </p>
+</td></tr>
+<tr valign="top"><td><code>subscripts</code></td>
+<td>
+<p> integer vector indicating what subset of x, y and z
+to draw. Typically passed by <code><a href="../../lattice/html/levelplot.html">levelplot</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>at, col.regions, alpha.regions</code></td>
+<td>
+<p> color scale definition;
+see <code><a href="../../lattice/html/panel.levelplot.html">panel.levelplot</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>points</code></td>
+<td>
+<p> whether to draw the (x, y) points. </p>
+</td></tr>
+<tr valign="top"><td><code>border</code></td>
+<td>
+<p> color for polygon borders. </p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p> if <code>TRUE</code>, points with missing <code>z</code> values will
+be excluded from the calculation of polygons. If <code>FALSE</code>,
+those polygons are calculated but are not drawn (i.e. are
+transparent). </p>
+</td></tr>
+<tr valign="top"><td><code>win.expand</code></td>
+<td>
+<p> defines the rectangular window bounding the
+polygons. This is a factor by which
+to expand the range of the data. Set to 0 to limit drawing at the
+furthest data point locations. Ignored if <code>use.tripack = TRUE</code>. </p>
+</td></tr>
+<tr valign="top"><td><code>use.tripack</code></td>
+<td>
+<p> if <code>TRUE</code>, use <span class="pkg">tripack</span> package rather
+than <span class="pkg">deldir</span>. See Details. </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> further arguments are
+passed to <code><a href="../../lattice/html/panel.xyplot.html">panel.xyplot</a></code> if <code>points =
+      TRUE</code>. </p>
+</td></tr>
+<tr valign="top"><td><code>pch, col.symbol</code></td>
+<td>
+<p> symbol and border color for points.
+A filled symbol should be used, i.e. in the range 21-25. </p>
+</td></tr>
+<tr valign="top"><td><code>shrink, labels, label.style, contour, region, fill</code></td>
+<td>
+<p> ignored. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <span class="pkg">tripack</span> package implementation is faster than <span class="pkg">deldir</span> but not under a
+fully free licence. Also, the <span class="pkg">deldir</span> package allows polygons to
+be clipped to a rectangular window (the <code>win.expand</code> argument).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Felix Andrews <a href="mailto:felix@nfrac.org">felix@nfrac.org</a> </p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="tileplot.html">tileplot</a></code>,
+<code><a href="../../lattice/html/panel.levelplot.html">panel.levelplot</a></code>,
+<code><a href="../../deldir/html/deldir.html">deldir</a></code>  </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## a variant of Figure 5.6 from Sarkar (2008)
+## http://lmdvr.r-forge.r-project.org/figures/figures.html?chapter=05;figure=05_06
+
+depth.ord &lt;- rev(order(quakes$depth))
+quakes$Magnitude &lt;- equal.count(quakes$mag, 4)
+quakes.ordered &lt;- quakes[depth.ord, ]
+
+levelplot(depth ~ long + lat | Magnitude, data = quakes.ordered,
+         panel = panel.levelplot.points, type = c("p", "g"),
+         aspect = "iso", prepanel = prepanel.default.xyplot)
+
+## a levelplot with jittered cells
+
+xyz &lt;- expand.grid(x = 0:9, y = 0:9)
+xyz[] &lt;- jitter(as.matrix(xyz))
+xyz$z &lt;- with(xyz, sqrt((x - 5)^2 + (y - 5)^2))
+levelplot(z ~ x * y, xyz, panel = panel.voronoi, points = FALSE)
+
+## hexagonal cells
+
+xyz$y &lt;- xyz$y + c(0, 0.5)
+levelplot(z ~ x * y, xyz, panel = panel.voronoi, points = FALSE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

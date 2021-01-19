@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot two categorical variables as marimekko</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stat_marimekko {ggTimeSeries}"><tr><td>stat_marimekko {ggTimeSeries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot two categorical variables as marimekko</h2>
+
+<h3>Description</h3>
+
+<p>Plot two categorical variables as marimekko
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stat_marimekko(mapping = NULL, data = NULL, show.legend = NA,
+  inherit.aes = TRUE, na.rm = T, xlabelyposition = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>mapping</code></td>
+<td>
+<p>mapping</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>data</p>
+</td></tr>
+<tr valign="top"><td><code>show.legend</code></td>
+<td>
+<p>logical</p>
+</td></tr>
+<tr valign="top"><td><code>inherit.aes</code></td>
+<td>
+<p>logical</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>logical</p>
+</td></tr>
+<tr valign="top"><td><code>xlabelyposition</code></td>
+<td>
+<p>position</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other functions
+A marimekko plot, or a mosaic plot, visualises the co-occurrence of two
+categorical / ordinal variables. In a time series, it could be used to
+visualise the transitions from one state to another by considering each
+state to be a category and plotting current category vs. next category.</p>
+</td></tr>
+</table>
+
+
+<h3>Aesthetics</h3>
+
+<p>xbucket, ybucket, fill. Fill argument needs to be
+assigned to ybucket., or some other column which is a one to one mapping of ybucket.
+</p>
+
+
+<h3>Cosmetic Tips</h3>
+
+<p>The minimalist look can be achieved by appending the
+following chunk of code to the output object:
+<code>
++
+xlab(NULL) +
+ylab(NULL) +
+scale_fill_continuous(low = 'green', high = 'red') +
+theme(
+   axis.text = element_blank(),
+   axis.ticks = element_blank(),
+   legend.position = 'none',
+   strip.background = element_blank(),
+   # strip.text = element_blank(), # useful if only one year of data
+   plot.background = element_blank(),
+   panel.border = element_blank(),
+   panel.background  = element_blank(),
+   panel.grid = element_blank(),
+   panel.border = element_blank()
+)
+</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+{
+library(ggplot2)
+ggplot(
+   data.frame(
+      x1 = round(3 * runif(10000), 0),
+      y1 = pmax(pmin(round(3 * rnorm(10000), 0), 3), -3),
+      weight = 1:10000
+   )
+) +
+   stat_marimekko(
+      aes(
+         xbucket = x1,
+         ybucket = y1,
+         fill = factor(y1),
+         weight = weight
+      ),
+      xlabelyposition = 1.1,
+      color = 'black'
+   )}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggTimeSeries</em> version 1.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

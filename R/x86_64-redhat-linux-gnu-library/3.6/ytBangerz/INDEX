@@ -1,0 +1,39 @@
+addPhenocamUptimes      Append Uptime Report with Phenocam Data
+applyRanges             identify percentage of out of range data for a
+                        given stream(s)
+applyUptimes            Generate uptime % for L0 IS data streams
+assembleReports         Assemble Site Statistics Into Reports
+calcCoV                 Calculate Coefficient of Variation
+calcRange               Calculate Percent in Range
+calcUptime              Calculate Uptime
+gatherByDomain          Rearrange the sites by Domain for reporting via
+                        daily Domain Reports
+getL0Data               Get L0 Data. All of it. Very Slow.
+getMinMeanMax           Get Min/Mean/Max values
+getSiteStats_fast       Get Site Statisitcs, The Fast Way
+getSiteStats_slow       Get Site Statisitcs, The Slow Way
+getSiteStreams          Return the Sensor Streams at A Given Site
+groupBySensor           Group output by sensor group
+makeAlertOutput         Make Alert Output
+makeStatusDf            Make Status Dataframe
+neonFunFact             Return a fun NEON fact for the date of interest
+normalizeTo75           Assemble Site Statistics Into Reports
+parseAlerts             Parse out site-specific alerts from overarching
+                        large list of alerts
+parseReports            Parse out site-specific reports from
+                        overarching large list of reports
+pingSiteLCs             Ping A Site
+plotL0Data              Plot problematic L0 streams
+prestoQuery             Extract a time window of a list of NEON
+                        measurement streams (L0) from ECS using Presto
+prestoStatQuery         Extract a time window of a list of NEON
+                        measurement streams (L0) from ECS using Presto
+productStatus           Generate Status Data Frame for Data Products
+rangeFromPercentile     Distill Percent-in-range Information from Bulk
+                        Statistics
+reRunReports            Re-run Reports
+sendGroupedEmail        Send grouped emails
+translateStatusDF       Translate Status DF (TRUE/FALSE) dataframes
+                        into human readable interpretations for daily
+                        domain reports
+uptimeFromBulk          Distill Uptime Information from Bulk Statistics

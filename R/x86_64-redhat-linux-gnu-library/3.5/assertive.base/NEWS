@@ -1,0 +1,20 @@
+0.0-7 Added safe_deparse fn.
+      Exported print_and_capture.
+      Some moderate performance enhancements for vectorized predicates.
+      Better feedback msg for is2 with fn and S4 inputs, and with vectorized class arg.
+      Some more examples.
+0.0-6 assertionConditions now include the name of the predicate that caused them.
+      This predicate name is given in assertion failure messages.
+      Byte compilation turned on (for slight performance gains).
+      Numeric/complex values now reported with higher accuracy (17 sig digits) in vector error msgs.
+0.0-5 Regression fixes to merge_dots_with_list, merge.list.
+      Pipes inside the assertion now work (very slight breaking change to get_name_in_parent).
+0.0-4 Many minor fixes and documentation updates.
+      dont_stop can now run past multiple errors (slightly breaking change).
+      merge.list and merge_dots_with_list deal with unnamed arguments.
+0.0-3 Reverted behaviour of is_na, is_not_na to prevent breaks in dependencies.
+0.0-2 Added Dutch, French, German, Greek, Hungarian, Korean, Russian, Swedish, 
+      Turkish, and Ukranian translations.
+      Added assert_are_identical for comparing two objects.
+      More README.
+0.0-1 Content extracted from assertive 0.2-7, and tidied.

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Merge ellipsis args with a list.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for merge_dots_with_list {assertive.base}"><tr><td>merge_dots_with_list {assertive.base}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Merge ellipsis args with a list.</h2>
+
+<h3>Description</h3>
+
+<p>Merges variable length ellipsis arguments to a function with a list argument.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+merge_dots_with_list(..., l = list(), warn_on_dupes = TRUE,
+  allow_unnamed_elements = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Some inputs.</p>
+</td></tr>
+<tr valign="top"><td><code>l</code></td>
+<td>
+<p>A list.</p>
+</td></tr>
+<tr valign="top"><td><code>warn_on_dupes</code></td>
+<td>
+<p><code>TRUE</code> or <code>FALSE</code>.  Should a warning be given 
+if both <code>x</code> and <code>y</code> have elements with the same name.  See note.</p>
+</td></tr>
+<tr valign="top"><td><code>allow_unnamed_elements</code></td>
+<td>
+<p><code>TRUE</code> or <code>FALSE</code>. Should unnamed
+elements be allowed?</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list containing the merged inputs.
+</p>
+
+
+<h3>Note</h3>
+
+<p>If any arguments are present in both the <code>...</code> and <code>l</code> 
+arguments, the <code>...</code> version takes preference, and a warning is thrown.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="merge.list.html">merge.list</a></code>, <code><a href="../../base/html/merge.html">merge</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+merge_dots_with_list(
+  foo = 1, 
+  bar = 2, 
+  baz = 3, 
+  l = list(foo = 4, baz = 5, quux = 6)
+)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.base</em> version 0.0-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

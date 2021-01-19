@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the string a valid UK national insurance number?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_uk_national_insurance_numbers {assertive.data.uk}"><tr><td>assert_all_are_uk_national_insurance_numbers {assertive.data.uk}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the string a valid UK national insurance number?</h2>
+
+<h3>Description</h3>
+
+<p>Checks that the input contains UK national insurance numbers.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_uk_national_insurance_numbers(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_uk_national_insurance_numbers(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_uk_national_insurance_number(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>na_ignore</code></td>
+<td>
+<p>A logical value.  If <code>FALSE</code>, <code>NA</code> values
+cause an error; otherwise they do not.  Like <code>na.rm</code> in many
+stats package functions, except that the position of the failing
+values does not change.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_uk_national_insurance_number</code> returns <code>TRUE</code> if the 
+input string contains a valid UK national insurance number.  The assert_* 
+function returns nothing but throw an error when the <code>is_*</code> function 
+returns <code>FALSE</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>A single space is allowed at the appropriate points (after the first 
+two letters and after each pair of numbers) but not compulsory.
+</p>
+
+
+<h3>References</h3>
+
+<p>Regex taken from 
+<a href="http://www.regexlib.com/REDetails.aspx?regexp_id=527">http://www.regexlib.com/REDetails.aspx?regexp_id=527</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ni_numbers &lt;- c(
+  "AA 00 00 00 A", "AA 00 00 00", "AA000000A",                #ok
+  "ZZ 99 99 99 M", "ZZ 99 99 99", "ZZ999999M",                
+  "DA 00 00 00", "FA 00 00 00", "IA 00 00 00",                #bad first letter
+  "QA 00 00 00", "UA 00 00 00", "VA 00 00 00",
+  "AD 00 00 00", "AF 00 00 00", "AI 00 00 00", "AO 00 00 00", #bad second letter
+  "AQ 00 00 00", "AU 00 00 00", "AV 00 00 00",
+  "AA 00 00 00 E", "AA 00 00 00 G", "AA 00 00 00 H",          #bad final letter
+  "AA 00 00 00 I", "AA 00 00 00 J", "AA 00 00 00 K",
+  "AA 00 00 00 L", "AA 00 00 00 N", "AA 00 00 00 O",
+  "AA 00 00 00 P", "AA 00 00 00 Q", "AA 00 00 00 R",
+  "AA 00 00 00 S", "AA 00 00 00 T", "AA 00 00 00 U",
+  "AA 00 00 00 V", "AA 00 00 00 W", "AA 00 00 00 X",
+  "AA 00 00 00 Y", "AA 00 00 00 Z"    
+)
+is_uk_national_insurance_number(ni_numbers)
+assert_any_are_uk_national_insurance_numbers(ni_numbers)
+#These examples should fail.
+assertive.base::dont_stop(assert_all_are_uk_national_insurance_numbers(ni_numbers))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.data.uk</em> version 0.0-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

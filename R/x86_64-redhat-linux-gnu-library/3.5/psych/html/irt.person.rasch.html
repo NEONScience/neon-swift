@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Item Response Theory estimate of theta (ability) using a...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for irt.1p {psych}"><tr><td>irt.1p {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Item Response Theory estimate of theta (ability) using a Rasch (like) model</h2>
+
+<h3>Description</h3>
+
+<p>Item Response Theory models individual responses to items by estimating individual ability (theta) and item difficulty (diff) parameters.  
+This is an early and crude attempt to capture this modeling procedure. A better procedure is to use  <code><a href="irt.fa.html">irt.fa</a></code>. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+irt.person.rasch(diff, items)
+irt.0p(items)
+irt.1p(delta,items)
+irt.2p(delta,beta,items) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>diff</code></td>
+<td>
+<p> A vector of item difficulties  &ndash;probably taken from irt.item.diff.rasch</p>
+</td></tr>
+<tr valign="top"><td><code>items</code></td>
+<td>
+<p>A matrix of 0,1 items  nrows = number of subjects, ncols = number of items</p>
+</td></tr>
+<tr valign="top"><td><code>delta</code></td>
+<td>
+<p>delta is the same as diff and is the item difficulty parameter</p>
+</td></tr>
+<tr valign="top"><td><code>beta</code></td>
+<td>
+<p>beta is the item discrimination parameter  found in <code><a href="irt.item.diff.rasch.html">irt.discrim</a></code> </p>
+</td></tr> 
+</table>
+
+
+<h3>Details</h3>
+
+<p>A very preliminary IRT estimation procedure.
+Given scores xij for ith individual on jth item <br />
+Classical Test Theory ignores item difficulty and defines ability as expected score : abilityi = theta(i) = x(i.)
+A zero parameter model rescales these mean scores from 0 to 1 to a quasi logistic scale ranging from - 4 to 4
+This is merely a non-linear transform of the raw data to reflect a logistic mapping.
+</p>
+<p>Basic 1 parameter (Rasch) model considers item difficulties (delta j):  
+p(correct on item j for the ith subject |theta i, deltaj) = 1/(1+exp(deltaj - thetai))
+If we have estimates of item difficulty (delta), then we can find theta i by optimization 
+</p>
+<p>Two parameter model adds item sensitivity (beta j):
+p(correct on item j for subject i |thetai, deltaj, betaj) = 1/(1+exp(betaj *(deltaj- theta i)))
+Estimate delta, beta, and theta  to maximize fit of model to data.
+</p>
+<p>The procedure used here is to first find the item difficulties assuming theta = 0
+Then find theta given those deltas
+Then find beta given delta and theta.
+</p>
+<p>This is not an &quot;official&quot; way to do IRT, but is useful for basic item development. See <code><a href="irt.fa.html">irt.fa</a></code> and <code><a href="score.irt.html">score.irt</a></code>  for far better options. 
+</p>
+
+
+<h3>Value</h3>
+
+<p> a data.frame with estimated ability (theta) and quality of fit. (for irt.person.rasch)
+<br />
+a data.frame with the raw means, theta0, and the number of items completed</p>
+
+
+<h3>Note</h3>
+
+<p> Not recommended for serious use.  This code is under development. Much better functions are in the ltm and eRm packages. Similar analyses can be done using <code><a href="irt.fa.html">irt.fa</a></code> and <code><a href="score.irt.html">score.irt</a></code>. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> William Revelle</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="sim.html">sim.irt</a></code>, <code><a href="sim.html">sim.rasch</a></code>,  <code><a href="logistic.html">logistic</a></code>, <code><a href="irt.fa.html">irt.fa</a></code>, <code><a href="tetrachor.html">tetrachoric</a></code>,  <code><a href="irt.item.diff.rasch.html">irt.item.diff.rasch</a></code>   </p>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

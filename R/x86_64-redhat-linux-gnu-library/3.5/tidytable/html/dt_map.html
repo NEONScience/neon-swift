@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Apply a function to each element of a vector</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dt_map {tidytable}"><tr><td>dt_map {tidytable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Apply a function to each element of a vector</h2>
+
+<h3>Description</h3>
+
+<p>The dt_map functions transform their input by applying a function to each element and returning a vector the same length as the input.
+</p>
+
+<ul>
+<li> <p><code>dt_map()</code> returns a list
+</p>
+</li>
+<li> <p><code style="white-space: pre;">_lgl()</code>, <code style="white-space: pre;">_int()</code>, <code style="white-space: pre;">_dbl()</code> and <code style="white-space: pre;">_chr()</code> variants return their specified type
+</p>
+</li>
+<li> <p><code style="white-space: pre;">_dfr()</code> &amp; <code style="white-space: pre;">_dfc()</code> Return data frame results binded together
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+
+
+dt_map_lgl(.x, .f, ...)
+
+dt_map_int(.x, .f, ...)
+
+dt_map_dbl(.x, .f, ...)
+
+dt_map_chr(.x, .f, ...)
+
+dt_map_dfc(.x, .f, ...)
+
+dt_map_dfr(.x, .f, ..., .id = NULL)
+
+dt_walk(.x, .f, ...)
+
+dt_map2(.x, .y, .f, ...)
+
+dt_map2_lgl(.x, .y, .f, ...)
+
+dt_map2_int(.x, .y, .f, ...)
+
+dt_map2_dbl(.x, .y, .f, ...)
+
+dt_map2_chr(.x, .y, .f, ...)
+
+dt_map2_dfc(.x, .y, .f, ...)
+
+dt_map2_dfr(.x, .y, .f, ..., .id = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.x</code></td>
+<td>
+<p>A list or vector</p>
+</td></tr>
+<tr valign="top"><td><code>.f</code></td>
+<td>
+<p>A function</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other arguments to pass to a function</p>
+</td></tr>
+<tr valign="top"><td><code>.id</code></td>
+<td>
+<p>Whether <code>dt_map_dfr()</code> should add an id column to the finished dataset</p>
+</td></tr>
+<tr valign="top"><td><code>.y</code></td>
+<td>
+<p>A list or vector</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+dt_map(c(1,2,3), ~.x + 1)
+
+dt_map_dbl(c(1,2,3), ~.x + 1)
+
+dt_map_chr(c(1,2,3), as.character)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytable</em> version 0.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

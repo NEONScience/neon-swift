@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: R* = R- F F'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for factor.residuals {psych}"><tr><td>factor.residuals {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> R* =  R- F F' </h2>
+
+<h3>Description</h3>
+
+<p>The basic factor or principal components model is that a correlation or covariance matrix may be reproduced by the product of a factor loading matrix times its transpose.  Find the residuals of the original minus the  reproduced matrix.  Used by <code><a href="factor.fit.html">factor.fit</a></code>, <code><a href="VSS.html">VSS</a></code>, <code><a href="ICLUST.html">ICLUST</a></code>, etc.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+factor.residuals(r, f)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p> A correlation matrix </p>
+</td></tr>
+<tr valign="top"><td><code>f</code></td>
+<td>
+<p> A factor model matrix or a list of class loadings</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The basic factor equation is <i>nRn = nFk kFn' + U2</i>. Residuals are just  R* = R - F'F. The residuals should be (but in practice probably rarely are) examined to understand the adequacy of the factor analysis.  When doing Factor analysis or Principal Components analysis, one usually continues to extract factors/components until the residuals do not differ from those expected from a random matrix.
+</p>
+
+
+<h3>Value</h3>
+
+<p> rstar is the residual correlation matrix.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Maintainer: William Revelle &lt;revelle@northwestern.edu&gt;
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="fa.html">fa</a></code>,  <code><a href="principal.html">principal</a></code>, <code><a href="VSS.html">VSS</a></code>, <code><a href="ICLUST.html">ICLUST</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+fa2 &lt;- fa(Harman74.cor$cov,2,rotate=TRUE)
+ fa2resid &lt;- factor.residuals(Harman74.cor$cov,fa2)
+ fa2resid[1:4,1:4] #residuals with two factors extracted
+ fa4 &lt;- fa(Harman74.cor$cov,4,rotate=TRUE)
+ fa4resid &lt;- factor.residuals(Harman74.cor$cov,fa4)
+ fa4resid[1:4,1:4] #residuals with 4 factors extracted
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

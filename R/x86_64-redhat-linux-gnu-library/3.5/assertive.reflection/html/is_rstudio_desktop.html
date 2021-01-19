@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is RStudio running in desktop or server mode?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for is_rstudio_desktop {assertive.reflection}"><tr><td>is_rstudio_desktop {assertive.reflection}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is RStudio running in desktop or server mode?</h2>
+
+<h3>Description</h3>
+
+<p>Checks for RStudio desktop or server version.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+is_rstudio_desktop()
+
+is_rstudio_server()
+</pre>
+
+
+<h3>References</h3>
+
+<p>The values that RStudio uses for its mode are defined in
+<a href="https://github.com/rstudio/rstudio/blob/master/src/cpp/session/include/session/SessionConstants.hpp">https://github.com/rstudio/rstudio/blob/master/src/cpp/session/include/session/SessionConstants.hpp</a>
+via the constants <code>kSessionProgramModeDesktop</code> and 
+<code>kSessionProgramModeServer</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="is_r.html">is_rstudio</a></code>, <code><a href="is_rstudio_current.html">is_rstudio_current</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+is_rstudio_desktop()
+is_rstudio_server()
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.reflection</em> version 0.0-4 <a href="00Index.html">Index</a>]</div>
+</body></html>

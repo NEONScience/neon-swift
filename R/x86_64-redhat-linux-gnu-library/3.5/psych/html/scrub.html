@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A utility for basic data cleaning and recoding.  Changes...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for scrub {psych}"><tr><td>scrub {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A utility for basic data cleaning and recoding.  Changes values outside of minimum and maximum limits to NA.</h2>
+
+<h3>Description</h3>
+
+<p>A tedious part of data analysis is addressing the problem of miscoded data that need to be converted to NA or some other value.  For a given data.frame or matrix, scrub will set all values of columns from=from to to=to that are less than a set (vector) of min values or more than a vector of max values to NA. Can also be used to do basic recoding of data for all values=isvalue to newvalue.
+</p>
+<p>The length of the where, isvalue, and newvalues must either match, or be 1.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+scrub(x, where, min, max,isvalue,newvalue)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a data frame or matrix</p>
+</td></tr>
+<tr valign="top"><td><code>where</code></td>
+<td>
+<p>The variables to examine.  (Can be by name or by column number)</p>
+</td></tr>
+<tr valign="top"><td><code>min</code></td>
+<td>
+<p>a vector of minimum values that are acceptable</p>
+</td></tr>
+<tr valign="top"><td><code>max</code></td>
+<td>
+<p>a vector of maximum values that are acceptable</p>
+</td></tr>
+<tr valign="top"><td><code>isvalue</code></td>
+<td>
+<p>a vector of values to be converted to newvalue (one per variable)</p>
+</td></tr>
+<tr valign="top"><td><code>newvalue</code></td>
+<td>
+<p>a vector of values to replace those that match isvalue</p>
+</td></tr></table>
+
+
+<h3>Details</h3>
+
+<p>Solves a tedious problem that can be done directly but that is sometimes awkward.  Will either replace specified values with NA or 
+</p>
+
+
+<h3>Value</h3>
+
+<p>The corrected data frame.</p>
+
+
+<h3>Note</h3>
+
+<p>Probably could be optimized to avoid one loop
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="reverse.code.html">reverse.code</a></code>, <code><a href="rescale.html">rescale</a></code> for other simple utilities.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(attitude)
+x &lt;- scrub(attitude,isvalue=55) #make all occurrences of 55 NA
+x1 &lt;- scrub(attitude, where=c(4,5,6), isvalue =c(30,40,50), 
+     newvalue = c(930,940,950)) #will do this for the 4th, 5th, and 6th variables
+x2 &lt;- scrub(attitude, where=c(4,4,4), isvalue =c(30,40,50), 
+            newvalue = c(930,940,950)) #will just do it for the 4th column
+#get rid of a complicated set of cases and replace with missing values
+y &lt;- scrub(attitude,where=2:4,min=c(20,30,40),max= c(120,110,100),isvalue= c(32,43,54))
+y1 &lt;- scrub(attitude,where="learning",isvalue=55,newvalue=999) #change a column by name
+y2 &lt;- scrub(attitude,where="learning",min=45,newvalue=999) #change a column by name
+
+y3 &lt;- scrub(attitude,where="learning",isvalue=c(45,48),
+    newvalue=999) #change a column by name look for multiple values in that column
+y4 &lt;- scrub(attitude,where="learning",isvalue=c(45,48),
+      newvalue= c(999,-999)) #change values in one column to one of two different things
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

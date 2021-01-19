@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Does the input contain empty or missing strings?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_empty_character {assertive.strings}"><tr><td>assert_all_are_empty_character {assertive.strings}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Does the input contain empty or missing strings?</h2>
+
+<h3>Description</h3>
+
+<p>Checks for empty or missing strings.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_empty_character(x, severity = getOption("assertive.severity",
+  "stop"))
+
+assert_any_are_empty_character(x, severity = getOption("assertive.severity",
+  "stop"))
+
+assert_all_are_non_empty_character(x,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_non_empty_character(x,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_missing_or_empty_character(x,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_missing_or_empty_character(x,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_non_missing_nor_empty_character(x,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_non_missing_nor_empty_character(x,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_strings_are_not_missing_nor_empty(x,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_strings_are_not_missing_nor_empty(x,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_is_an_empty_string(x, severity = getOption("assertive.severity",
+  "stop"))
+
+assert_is_a_non_empty_string(x, severity = getOption("assertive.severity",
+  "stop"))
+
+assert_is_a_missing_or_empty_string(x,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_is_a_non_missing_nor_empty_string(x,
+  severity = getOption("assertive.severity", "stop"))
+
+is_empty_character(x, .xname = get_name_in_parent(x))
+
+is_non_empty_character(x, .xname = get_name_in_parent(x))
+
+is_missing_or_empty_character(x, .xname = get_name_in_parent(x))
+
+is_non_missing_nor_empty_character(x, .xname = get_name_in_parent(x))
+
+is_not_missing_nor_empty_character(x)
+
+is_an_empty_string(x, .xname = get_name_in_parent(x))
+
+is_a_non_empty_string(x, .xname = get_name_in_parent(x))
+
+is_a_missing_or_empty_string(x, .xname = get_name_in_parent(x))
+
+is_a_non_missing_nor_empty_string(x, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A character vector.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The <code>is_*</code> functions return logical vectors for strings which
+are (non) empty or missing, and the <code>assert_*</code> functions throw errors
+on failure.
+</p>
+
+
+<h3>Note</h3>
+
+<p>In R, <code>NA_character_</code> is considered to be a non-empty string
+(at least by <code><a href="../../base/html/nzchar.html">nzchar</a></code>), which is why many functions are
+needed to to clarify the situation.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../assertive.types/html/is_character.html">is_character</a></code>, 
+<code><a href="../../base/html/nzchar.html">nzchar</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# These functions return a vector:
+x &lt;- c("", "a", NA)
+is_empty_character(x)
+is_non_empty_character(x)
+is_missing_or_empty_character(x)
+is_non_missing_nor_empty_character(x)
+
+# These functions return a single value:
+is_an_empty_string("")
+is_an_empty_string("a")
+is_an_empty_string(NA_character_)
+
+is_a_non_empty_string("")
+is_a_non_empty_string("a")
+is_a_non_empty_string(NA_character_)
+
+is_a_missing_or_empty_string("")
+is_a_missing_or_empty_string("a")
+is_a_missing_or_empty_string(NA_character_)
+
+is_a_non_missing_nor_empty_string("")
+is_a_non_missing_nor_empty_string("a")
+is_a_non_missing_nor_empty_string(NA_character_)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.strings</em> version 0.0-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

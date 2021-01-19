@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the string a valid US SSN?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_us_social_security_numbers {assertive.data.us}"><tr><td>assert_all_are_us_social_security_numbers {assertive.data.us}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the string a valid US SSN?</h2>
+
+<h3>Description</h3>
+
+<p>Checks that the input contains US Social Security Number.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_us_social_security_numbers(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_us_social_security_numbers(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_us_social_security_number(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>na_ignore</code></td>
+<td>
+<p>A logical value.  If <code>FALSE</code>, <code>NA</code> values
+cause an error; otherwise they do not.  Like <code>na.rm</code> in many
+stats package functions, except that the position of the failing
+values does not change.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_us_social_security_number</code> returns <code>TRUE</code> if the input 
+string contains a valid US Social Security Number. The assert_* functions 
+return nothing but throw an error when the <code>is_*</code> function returns 
+<code>FALSE</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>A valid SSN is considered to be 3 digits, then 2 digits then 4 digits
+possibly separated by a hyphen or space.  The first block cannot be 666 or a
+begin with a nine, and no block can contain all zeroes.  The function 
+doesn't guarantee that the SSN actually exists.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ssns &lt;- c("123-45-6789", "666-45-6789", "123-00-6789")
+is_us_social_security_number(ssns)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.data.us</em> version 0.0-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

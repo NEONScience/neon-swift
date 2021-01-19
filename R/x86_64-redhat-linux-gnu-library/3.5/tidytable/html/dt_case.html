@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Case when</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dt_case {tidytable}"><tr><td>dt_case {tidytable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Case when</h2>
+
+<h3>Description</h3>
+
+<p>This function allows you to use multiple if/else statements in one call.
+Note that this function is called differently than 'dplyr::case_when'! See examples
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dt_case(..., default = NA)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Sequence of condition/value designations</p>
+</td></tr>
+<tr valign="top"><td><code>default</code></td>
+<td>
+<p>Default value. Set to NA. Argument must be named.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A vector
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(data.table)
+
+test_df &lt;- data.table::data.table(
+  a = 1:10,
+  b = 11:20,
+  c = c(rep("a", 6), rep("b", 4)),
+  d = c(rep("a", 4), rep("b", 6)))
+
+test_df %&gt;%
+  as_dt() %&gt;%
+  dt_mutate(x = dt_case(b &lt; 13, 3,
+                        a &gt; 4, 2,
+                        default = 10))
+test_df %&gt;%
+  as_dt() %&gt;%
+  dt_mutate(x = dt_case(c == "a","a",
+                        default = d))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytable</em> version 0.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

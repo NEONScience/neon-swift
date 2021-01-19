@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Assemble Site Statistics Into Reports</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for normalizeTo75 {ytBangerz}"><tr><td>normalizeTo75 {ytBangerz}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Assemble Site Statistics Into Reports</h2>
+
+<h3>Description</h3>
+
+<p>Assemble Site Statistics Into Reports
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+normalizeTo75(site, date, stat.save.dir)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>site</code></td>
+<td>
+<p>The 4-Letter site code for a NEON site. Please, no OKSR.</p>
+</td></tr>
+<tr valign="top"><td><code>date</code></td>
+<td>
+<p>A single date, in the format &quot;YYYY-MM-DD&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>stat.save.dir</code></td>
+<td>
+<p>The directory where site level stat files are saved</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Somtimes, the site LC is very slow to stream the last 25% of data. This fucntion lets us normalize uptimes to 100
+normalization only happens if all values &lt;75% and &gt;60% (which, when normalized, is the 80% uptime value used elsewhere)
+RH is excluded from consideration due to it's messiness
+</p>
+
+
+<h3>Value</h3>
+
+<p>Site uptime stats are normalized (as appropriate) and written into the site's statistic files.
+</p>
+<p>@export
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Robert 'n' Josh
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>ytBangerz</em> version 0.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

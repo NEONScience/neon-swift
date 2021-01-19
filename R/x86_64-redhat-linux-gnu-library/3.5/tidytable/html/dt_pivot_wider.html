@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pivot data from long to wide</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dt_pivot_wider {tidytable}"><tr><td>dt_pivot_wider {tidytable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pivot data from long to wide</h2>
+
+<h3>Description</h3>
+
+<p><code>dt_pivot_wider()</code> &quot;widens&quot; data, increasing the number of columns and
+decreasing the number of rows. The inverse transformation is
+<code>dt_pivot_longer()</code>. Syntax based on the <code>tidyr</code> equivalents.
+</p>
+<p>Supports enhanced selection
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dt_pivot_wider(
+  .data,
+  id_cols = NULL,
+  names_from,
+  names_sep = "_",
+  values_from,
+  drop = TRUE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.data</code></td>
+<td>
+<p>the data table to widen</p>
+</td></tr>
+<tr valign="top"><td><code>id_cols</code></td>
+<td>
+<p>A set of columns that uniquely identifies each observation. Defaults to all columns in the data table except for the columns specified in <code>names_from</code> and <code>values_from</code>. Typically used when you have additional variables that is directly related.</p>
+</td></tr>
+<tr valign="top"><td><code>names_from</code></td>
+<td>
+<p>A pair of arguments describing which column (or columns) to get the name of the output column (<code>name_from</code>), and which column (or columns) to get the cell values from (<code>values_from</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>names_sep</code></td>
+<td>
+<p>the separator between the names of the columns</p>
+</td></tr>
+<tr valign="top"><td><code>values_from</code></td>
+<td>
+<p>A pair of arguments describing which column (or columns) to get the name of the output column (<code>name_from</code>), and which column (or columns) to get the cell values from (<code>values_from</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>drop</code></td>
+<td>
+<p>When <code>FALSE</code>, will cast by including all missing combinations. When <code>TRUE</code>, it is drop missing combination. <code>c(FALSE, TRUE)</code> will only include all missing combinations of formula LHS; <code>c(TRUE, FALSE)</code> will only include all missing combinations of formula RHS.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+library(data.table)
+
+example_dt &lt;- data.table::data.table(
+  z = rep(c("a", "b", "c"), 2),
+  stuff = c(rep("x", 3), rep("y", 3)),
+  things = 1:6)
+
+dt_pivot_wider(example_dt, names_from = stuff, values_from = things)
+dt_pivot_wider(example_dt, names_from = stuff, values_from = things, id_cols = z)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytable</em> version 0.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

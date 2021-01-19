@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Fill in missing values with previous or next value</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dt_fill {tidytable}"><tr><td>dt_fill {tidytable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Fill in missing values with previous or next value</h2>
+
+<h3>Description</h3>
+
+<p>Fills missing values in the selected columns using the next or previous entry. Can be done by group.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dt_fill(
+  .data,
+  ...,
+  .direction = c("down", "up", "downup", "updown"),
+  by = NULL
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.data</code></td>
+<td>
+<p>A data.frame or data.table</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>A selection of bare columns</p>
+</td></tr>
+<tr valign="top"><td><code>.direction</code></td>
+<td>
+<p>Direction in which to fill missing values. Currently &quot;down&quot; (the default), &quot;up&quot;, &quot;downup&quot; (first down then up), or &quot;updown&quot; (first up and then down)</p>
+</td></tr>
+<tr valign="top"><td><code>by</code></td>
+<td>
+<p>Whether the filling should be done by group. Passed in a <code>list()</code></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A data.table
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+test_df &lt;- data.table::data.table(
+  x = c(NA, NA, NA, 4:10),
+  y = c(1:6, NA, 8, NA, 10),
+  z = c(rep("a", 8), rep("b", 2)))
+
+test_df %&gt;%
+  dt_fill(x, y, by = z)
+
+test_df %&gt;%
+  dt_fill(x, y, by = z, .direction = "downup")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytable</em> version 0.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

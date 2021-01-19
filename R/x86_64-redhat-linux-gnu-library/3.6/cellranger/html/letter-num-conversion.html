@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert between letter and integer representations of column...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for letter-num-conversion {cellranger}"><tr><td>letter-num-conversion {cellranger}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert between letter and integer representations of column IDs</h2>
+
+<h3>Description</h3>
+
+<p>Convert &quot;A1&quot;-style column IDs from a letter representation to an integer,
+e.g. column A becomes 1, column D becomes 4, etc. Or go the other way around.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+letter_to_num(x)
+
+num_to_letter(y)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a character vector of &quot;A1&quot; style column IDs (case insensitive)</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>a vector of integer column IDs</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+
+<ul>
+<li><p> Google Sheets have up to 300 columns (column KN).
+</p>
+</li>
+<li><p> Excel 2010 spreadsheets have up to 16,384 columns (column XFD).
+</p>
+</li>
+<li><p> ZZ is column 702.
+</p>
+</li>
+<li><p> ZZZ is column 18,278 (no known spreadsheet actually goes that high).
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>a vector of column IDs, either character or integer
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+letter_to_num('Z')
+letter_to_num(c('AA', 'ZZ', 'ABD', 'ZZZ'))
+letter_to_num(c(NA, ''))
+num_to_letter(28)
+num_to_letter(900)
+num_to_letter(18278)
+num_to_letter(c(25, 52, 900, 18278))
+num_to_letter(c(NA, 0, 4.8, -4))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>cellranger</em> version 1.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

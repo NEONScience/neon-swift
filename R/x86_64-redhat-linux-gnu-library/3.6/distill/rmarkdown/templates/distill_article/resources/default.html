@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="$lang$" xml:lang="$lang$"$if(dir)$ dir="$dir$"$endif$>
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+$if(feed)$
+  <link rel="alternate" type="application/rss+xml" href="$feed$" />
+$endif$
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+$for(header-includes)$
+  $header-includes$
+$endfor$
+
+$for(css)$
+  <link rel="stylesheet" href="$css$" type="text/css"/>
+$endfor$
+
+</head>
+
+<body$if(layout)$ class="layout-$layout$"$endif$>
+
+$if(include-before)$
+$for(include-before)$
+$include-before$
+$endfor$
+$endif$
+
+<div class="d-title">
+<h1>$pagetitle$</h1>
+$if(description)$<p>$description$</p>$endif$
+</div>
+
+$if(author)$
+<div class="d-byline">
+$for(author)$
+  $if(author.name)$$author.name$ $author.url$ $if(author.affiliation)$($author.affiliation$)$author.affiliation_url$$endif$
+  $else$
+  $author$
+  $endif$
+$sep$, $endfor$
+$if(date)$<br/>$date$$endif$
+</div>
+$endif$
+
+<div class="d-article">
+$if(toc)$
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="$idprefix$TOC">
+$table-of-contents$
+</nav>
+<hr class="d-toc-separator"/>
+$endif$
+$body$
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+$if(math)$
+$if(mathjax-url)$
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "$mathjax-url$";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+$endif$
+$endif$
+
+$for(include-after)$
+$include-after$
+$endfor$
+
+</body>
+
+</html>

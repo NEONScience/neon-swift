@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Does the character vector contain hex colors?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_hex_colors {assertive.data}"><tr><td>assert_all_are_hex_colors {assertive.data}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Does the character vector contain hex colors?</h2>
+
+<h3>Description</h3>
+
+<p>Checks that the input contains hexadecimal colors.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_hex_colors(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_hex_colors(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_hex_colours(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_hex_colours(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_hex_color(x)
+
+is_hex_colour(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>na_ignore</code></td>
+<td>
+<p>A logical value.  If <code>FALSE</code>, <code>NA</code> values
+cause an error; otherwise they do not.  Like <code>na.rm</code> in many
+stats package functions, except that the position of the failing
+values does not change.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A logical vector that is <code>TRUE</code> when the input contains hex 
+colours.
+</p>
+
+
+<h3>Note</h3>
+
+<p>A string is considered to represent a hexadecimal colour when contains 
+a hash followed by six hex values.  That is, digits or the letters from a to 
+f (case insensitive).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- c(
+  "#012345", "#789abc", "#defDEF",  #ok
+  "012345",                         #no hash
+  "#g12345",                        #bad letter
+  "#01 23 45",                      #contains spaces
+  "#12345", "#1234567"              #wrong length
+)
+is_hex_color(x)
+assert_any_are_hex_colors(x)
+#These examples should fail.
+assertive.base::dont_stop(assert_all_are_hex_colors(x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.data</em> version 0.0-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

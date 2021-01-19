@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Does the file exist?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_existing_files {assertive.files}"><tr><td>assert_all_are_existing_files {assertive.files}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Does the file exist?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the input files exist.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_existing_files(x, severity = getOption("assertive.severity",
+  "stop"))
+
+assert_any_are_existing_files(x, severity = getOption("assertive.severity",
+  "stop"))
+
+is_existing_file(x, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_existing_file</code> wraps <code>file.exists</code>, showing
+the names of the inputs in the answer.   <code>assert_*_are_existing_files</code> 
+return nothing but throws an error if <code>is_existing_file</code> returns
+<code>FALSE</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Trailing slashes are removed from paths to avoid a lot of false 
+negatives by the underlying function <code>file.exists</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/file.exists.html">file.exists</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+assert_all_are_existing_files(dir())
+# These examples should fail.
+assertive.base::dont_stop(
+  assert_all_are_existing_files("not an existing file (probably)")
+)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.files</em> version 0.0-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

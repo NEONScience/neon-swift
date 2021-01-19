@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the path a directory? Checks to see if the input path is a...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_dirs {assertive.files}"><tr><td>assert_all_are_dirs {assertive.files}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the path a directory?
+Checks to see if the input path is a directory.</h2>
+
+<h3>Description</h3>
+
+<p>Is the path a directory?
+Checks to see if the input path is a directory.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_dirs(x, severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_dirs(x, severity = getOption("assertive.severity", "stop"))
+
+is_dir(x, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>File paths.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_dir</code> returns <code>TRUE</code> if and only if the input 
+path is a directory that exists, as determined by <code>file.info</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+assert_all_are_dirs(R.home())
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.files</em> version 0.0-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

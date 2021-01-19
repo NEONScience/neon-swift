@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Flow cytometry data from five samples from a patient</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gvhd10 {latticeExtra}"><tr><td>gvhd10 {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Flow cytometry data from five samples from a patient  </h2>
+
+<h3>Description</h3>
+
+<p>Flow cytometry data from blood samples taken from a Leukemia patient
+before and after allogenic bone marrow transplant.  The data spans
+five visits.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>data(gvhd10)</pre>
+
+
+<h3>Format</h3>
+
+<p>A data frame with 113896 observations on the following 8 variables.
+</p>
+
+<dl>
+<dt><code>FSC.H</code></dt><dd><p> forward scatter height values</p>
+</dd>
+<dt><code>SSC.H</code></dt><dd><p> side scatter height values </p>
+</dd>
+<dt><code>FL1.H</code></dt><dd><p> intensity (height) in the FL1 channel </p>
+</dd>
+<dt><code>FL2.H</code></dt><dd><p> intensity (height) in the FL2 channel </p>
+</dd>
+<dt><code>FL3.H</code></dt><dd><p> intensity (height) in the FL3 channel </p>
+</dd>
+<dt><code>FL2.A</code></dt><dd><p> intensity (area) in the FL2 channel </p>
+</dd>
+<dt><code>FL4.H</code></dt><dd><p> intensity (height) in the FL4 channel </p>
+</dd>
+<dt><code>Days</code></dt><dd><p>a factor with levels <code>-6</code> <code>0</code> <code>6</code> <code>13</code> <code>20</code> <code>27</code> <code>34</code></p>
+</dd>
+</dl>
+
+
+
+<h3>Source</h3>
+
+<p><a href="http://web.archive.org/web/20070427103026/http://www.ficcs.org/software.html#Data_Files">http://web.archive.org/web/20070427103026/http://www.ficcs.org/software.html#Data_Files</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Brinkman, R.R., et al. (2007).  High-Content Flow Cytometry and
+Temporal Data Analysis for Defining a
+Cellular Signature of Graft-Versus-Host Disease.
+<em>Biology of Blood and Marrow Transplantation</em> <b>13&ndash;6</b>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Figure 3.4 from Sarkar (2008)
+data(gvhd10)
+histogram(~log2(FSC.H) | Days, gvhd10, xlab = "log Forward Scatter",
+          type = "density", nint = 50, layout = c(2, 4))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

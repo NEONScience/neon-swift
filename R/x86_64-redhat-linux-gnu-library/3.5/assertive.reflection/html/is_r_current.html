@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is this version of R up to date?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_is_r_current {assertive.reflection}"><tr><td>assert_is_r_current {assertive.reflection}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is this version of R up to date?</h2>
+
+<h3>Description</h3>
+
+<p>Check if this version of R is as new as the current release version of R.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_is_r_current(severity = getOption("assertive.severity", "stop"))
+
+assert_is_current_r(severity = getOption("assertive.severity", "stop"))
+
+is_r_current(cran = getOption("repos", c(CRAN =
+  "http://cran.r-project.org"))["CRAN"])
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>cran</code></td>
+<td>
+<p>A string giving the URL of the CRAN repository to check.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>R_system_version</code> giving the current release
+version of R.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Development versions of R can have versions higher than the current
+release version of R.  For convenience, these will return <code>TRUE</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+# This example is marked "don't test" since it requires an 
+# internet connection and is potentially long running
+is_r_current()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.reflection</em> version 0.0-4 <a href="00Index.html">Index</a>]</div>
+</body></html>

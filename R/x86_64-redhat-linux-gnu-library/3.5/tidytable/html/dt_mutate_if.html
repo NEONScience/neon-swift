@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Mutate</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dt_mutate_if {tidytable}"><tr><td>dt_mutate_if {tidytable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Mutate</h2>
+
+<h3>Description</h3>
+
+<p>Edit existing columns. Supports enhanced selection.
+</p>
+<p>There are two variants:
+</p>
+
+<ul>
+<li> <p><code>dt_mutate_all()</code>
+</p>
+</li>
+<li> <p><code>dt_mutate_across()</code>: Replaces both <code>mutate_if()</code> &amp; <code>mutate_at()</code>
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+dt_mutate_if(.data, .predicate, .funs, ...)
+
+dt_mutate_at(.data, .vars, .funs, ...)
+
+dt_mutate_across(.data, .cols, .funs, ...)
+
+dt_mutate_all(.data, .funs, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.data</code></td>
+<td>
+<p>A data.frame or data.table</p>
+</td></tr>
+<tr valign="top"><td><code>.predicate</code></td>
+<td>
+<p>predicate for <code>dt_mutate_if()</code> to use</p>
+</td></tr>
+<tr valign="top"><td><code>.funs</code></td>
+<td>
+<p>Functions to pass. Can pass a list of functions.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other arguments for the passed function</p>
+</td></tr>
+<tr valign="top"><td><code>.vars</code></td>
+<td>
+<p>vector <code>c()</code> of bare column names for <code>dt_mutate_at()</code> to use</p>
+</td></tr>
+<tr valign="top"><td><code>.cols</code></td>
+<td>
+<p>vector <code>c()</code> of bare column names for <code>dt_mutate_across()</code> to use</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A data.table
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(data.table)
+
+example_dt &lt;- data.table::data.table(
+  x = c(1,1,1),
+  y = c(2,2,2),
+  z = c("a", "a", "b"))
+
+example_dt %&gt;%
+  as_dt() %&gt;%
+  dt_mutate_across(is.numeric, as.character)
+
+example_dt %&gt;%
+  as_dt() %&gt;%
+  dt_mutate_across(c(x, y), ~ .x * 2)
+
+example_dt %&gt;%
+  as_dt() %&gt;%
+  dt_mutate_across(c(x, y), list(new = ~ .x * 2))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytable</em> version 0.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

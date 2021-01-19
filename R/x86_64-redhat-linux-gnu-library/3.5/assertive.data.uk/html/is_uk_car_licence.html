@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the string a valid UK car licence plate number?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_uk_car_licences {assertive.data.uk}"><tr><td>assert_all_are_uk_car_licences {assertive.data.uk}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the string a valid UK car licence plate number?</h2>
+
+<h3>Description</h3>
+
+<p>Checks that the input contains UK car licence plate numbers.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_uk_car_licences(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_uk_car_licences(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_uk_car_licenses(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_uk_car_licenses(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_uk_car_licence(x)
+
+is_uk_car_license(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>na_ignore</code></td>
+<td>
+<p>A logical value.  If <code>FALSE</code>, <code>NA</code> values
+cause an error; otherwise they do not.  Like <code>na.rm</code> in many
+stats package functions, except that the position of the failing
+values does not change.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_uk_national_insurance_number</code> returns <code>TRUE</code> if the 
+input string contains a valid UK car licence plate number The assert_* 
+function returns nothing but throw an error when the <code>is_*</code> function 
+returns <code>FALSE</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>A single space, in the appropriate place, is allowed but not 
+compulsory.
+</p>
+
+
+<h3>References</h3>
+
+<p>Regex taken from 
+<a href="http://www.regexlib.com/REDetails.aspx?regexp_id=527">http://www.regexlib.com/REDetails.aspx?regexp_id=527</a>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+licences &lt;- c(
+  #1903 to 1931
+  "A 1", "AA 9999",                   #ok
+  "A 01",                             #zero prefix on number
+  "S0", "G0", "RG0", "LM0",           #ok, special plates
+  #1931 to 1963
+  "AAA 1", "AAA 999",                 #ok
+  "III 1", "QQQ 1", "ZZZ 1",          #disallowed letters
+  "AAA 01",                           #zero prefix on number
+  #1931 to 1963 alt
+  "1 AAA", "9999 AAA",                #ok
+  "1 III", "1 QQQ", "1 ZZZ",          #disallowed letters
+  "01 AAA",                           #zero prefix on number
+  #1963 to 1982
+  "AAA 1A", "AAA 999A",               #ok
+  "AAA 1I", "AAA 1O", "AAA 1Q",       #disallowed letters
+  "AAA 1U", "AAA 1Z", 
+  "AAA 01A",                          #zero prefix on number
+  #1982 to 2001
+  "A1 AAA", "A999 AAA",               #ok    
+  "I1 AAA", "O1 AAA",                 #disallowed letters
+  "U1 AAA", "Z1 AAA",
+  "A01 AAA",                          #zero prefix on number
+  #2001 to 2051
+  "AA00 AAA", "AA99 AAA",             #ok
+  "II00 AAA", "QQ00 AAA", "ZZ00 AAA", #disallowed letters
+  "AA00 III", "AA00 QQQ"
+)
+is_uk_car_licence(licences)
+assert_any_are_uk_car_licences(licences)
+#These examples should fail.
+assertive.base::dont_stop(assert_all_are_uk_car_licences(licences))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.data.uk</em> version 0.0-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

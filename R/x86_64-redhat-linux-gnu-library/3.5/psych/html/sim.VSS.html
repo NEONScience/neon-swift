@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: create VSS like data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sim.VSS {psych}"><tr><td>sim.VSS {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> create VSS like data</h2>
+
+<h3>Description</h3>
+
+<p>Simulation is one of most useful techniques in statistics and psychometrics.  Here we simulate a correlation matrix with a simple structure composed of a specified number of factors.  Each item is assumed to have complexity one.  See <code><a href="sim.item.html">circ.sim</a></code> and <code><a href="sim.item.html">item.sim</a></code> for alternative simulations.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sim.VSS(ncases=1000, nvariables=16, nfactors=4, meanloading=.5,dichot=FALSE,cut=0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ncases</code></td>
+<td>
+<p> number of simulated subjects </p>
+</td></tr>
+<tr valign="top"><td><code>nvariables</code></td>
+<td>
+<p> Number of variables </p>
+</td></tr>
+<tr valign="top"><td><code>nfactors</code></td>
+<td>
+<p> Number of factors to generate </p>
+</td></tr>
+<tr valign="top"><td><code>meanloading</code></td>
+<td>
+<p>with a mean loading </p>
+</td></tr>
+<tr valign="top"><td><code>dichot</code></td>
+<td>
+<p>dichot=FALSE give continuous variables, dichot=TRUE gives dichotomous variables</p>
+</td></tr>
+<tr valign="top"><td><code>cut</code></td>
+<td>
+<p>if dichotomous = TRUE, then items with values &gt; cut are assigned 1, otherwise 0.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a ncases x nvariables  matrix 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> William Revelle</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="VSS.html">VSS</a></code>, <code><a href="ICLUST.html">ICLUST</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+simulated &lt;- sim.VSS(1000,20,4,.6)
+vss &lt;- VSS(simulated,rotate="varimax")
+VSS.plot(vss)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: US national population estimates</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for USAge {latticeExtra}"><tr><td>USAge {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> US national population estimates </h2>
+
+<h3>Description</h3>
+
+<p>US national population estimates by age and sex from 1900 to 1979.
+The data is available both as a (3-dimensional) table and a data
+frame.  The second form omits the 75+ age group to keep age numeric.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+data(USAge.table)
+data(USAge.df)
+</pre>
+
+
+<h3>Format</h3>
+
+<p><code>USAge.table</code> is a 3-dimensional array with dimensions 
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: right;">
+    No </td><td style="text-align: left;"> Name </td><td style="text-align: left;"> Levels</td>
+</tr>
+<tr>
+ <td style="text-align: right;">
+    1 </td><td style="text-align: left;"> Age </td><td style="text-align: left;"> 0, 1, 2, ..., 74, 75+</td>
+</tr>
+<tr>
+ <td style="text-align: right;">
+    2 </td><td style="text-align: left;"> Sex </td><td style="text-align: left;"> Male, Female</td>
+</tr>
+<tr>
+ <td style="text-align: right;">
+    3 </td><td style="text-align: left;"> Year </td><td style="text-align: left;"> 1900, 1901, ..., 1979 </td>
+</tr>
+<tr>
+ <td style="text-align: right;">
+  </td>
+</tr>
+
+</table>
+
+<p>Cells contain raw counts of estimated population.
+</p>
+<p><code>USAge.df</code> is a data frame with 12000 observations on the
+following 4 variables.
+</p>
+
+<dl>
+<dt><code>Age</code></dt><dd><p>a numeric vector, giving age in years</p>
+</dd>
+<dt><code>Sex</code></dt><dd><p>a factor with levels <code>Male</code> <code>Female</code></p>
+</dd>
+<dt><code>Year</code></dt><dd><p>a numeric vector, giving year</p>
+</dd>
+<dt><code>Population</code></dt><dd><p>a numeric vector, giving population in
+millions</p>
+</dd>
+</dl>
+
+
+
+<h3>Details</h3>
+
+<p>The data for 1900-1929 are rounded to thousands.  The data for
+1900-1939 exclude the Armed Forces overseas and the population
+residing in Alaska and Hawaii.  The data for 1940-1949 represent the
+resident population plus Armed Forces overseas, but exclude the
+population residing in Alaska and Hawaii.  The data for 1950-1979
+represent the resident population plus Armed Forces overseas, and
+also include the population residing in Alaska and Hawaii.
+</p>
+
+
+<h3>Source</h3>
+
+<p>U.S. Census Bureau website: <a href="http://www.census.gov/">http://www.census.gov/</a>
+</p>
+
+
+<p>The data were available as individual files for each year, with
+varying levels for the margins.  The preprocessing steps used to
+reduce the data to the form given here are described in the scripts
+directory.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(USAge.df)
+head(USAge.df)
+
+## Figure 10.7 from Sarkar (2008)
+xyplot(Population ~ Age | factor(Year), USAge.df,
+       groups = Sex, type = c("l", "g"),
+       auto.key = list(points = FALSE, lines = TRUE, columns = 2),
+       aspect = "xy", ylab = "Population (millions)",
+       subset = Year %in% seq(1905, 1975, by = 10))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

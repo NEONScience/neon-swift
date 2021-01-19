@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Utilities for daemonized servers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for daemon_stop {servr}"><tr><td>daemon_stop {servr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Utilities for daemonized servers</h2>
+
+<h3>Description</h3>
+
+<p><code>daemon_list()</code> returns IDs of servers, which can be used to stop the
+daemonized servers.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+daemon_stop(which = daemon_list())
+
+daemon_list()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>which</code></td>
+<td>
+<p>A integer vector of the server IDs; by default, IDs of all
+existing servers in the current R session obtained from
+<code>daemon_list()</code>, i.e., all daemon servers will be stopped by default.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The function <code>daemon_list()</code> returns a list of existing server
+IDs, and <code>daemon_stop()</code> returns an invisible <code>NULL</code>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>servr</em> version 0.15 <a href="00Index.html">Index</a>]</div>
+</body></html>

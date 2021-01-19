@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: as_dt() helper</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for as_dt {tidytable}"><tr><td>as_dt {tidytable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>as_dt() helper</h2>
+
+<h3>Description</h3>
+
+<p>Prevents modify-by-reference/converts a data.frame to a data.table.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+as_dt(.data)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.data</code></td>
+<td>
+<p>A data.frame or data.table</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+example_df &lt;- data.frame(x = 1:10)
+
+example_df %&gt;%
+  as_dt() %&gt;%
+  dt_mutate(double_x = x * 2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytable</em> version 0.3.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

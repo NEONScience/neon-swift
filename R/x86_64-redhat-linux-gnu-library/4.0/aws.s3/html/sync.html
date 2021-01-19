@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: S3 file sync</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for s3sync {aws.s3}"><tr><td>s3sync {aws.s3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>S3 file sync</h2>
+
+<h3>Description</h3>
+
+<p>Sync files/directories to/from S3
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+s3sync(
+  path = ".",
+  bucket,
+  prefix = "",
+  direction = c("upload", "download"),
+  verbose = TRUE,
+  create = FALSE,
+  ...
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>string, path to the directory to synchronize, it will be expanded as needed (NOTE: older versions had a <code>files</code> argument which expected a full list of files which was ambiguous).</p>
+</td></tr>
+<tr valign="top"><td><code>bucket</code></td>
+<td>
+<p>Character string with the name of the bucket, or an object of class &ldquo;s3_bucket&rdquo;.</p>
+</td></tr>
+<tr valign="top"><td><code>prefix</code></td>
+<td>
+<p>string, if set to non-empty string, leading part of the objects in the bucket much have that prefix, other objects are not considered. In practice, this alows the immitation of sub-directories in the bucket and in that case it is typically required that the training slash is included in the prefix.</p>
+</td></tr>
+<tr valign="top"><td><code>direction</code></td>
+<td>
+<p>A character vector specifying whether to &ldquo;upload&rdquo; and/or &ldquo;download&rdquo; files. By default, <code>s3sync</code> is two-way, uploading any files missing from the bucket and downloading any objects missing from the local directory.</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>A logical indicating whether to be verbose (the default is <code>TRUE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>create</code></td>
+<td>
+<p>logical, if <code>TRUE</code> the bucket is created if it doesn't exist, otherwise synchronizing a non-existing bucket is an error.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments passed to <code><a href="s3HTTP.html">s3HTTP</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>s3sync</code> synchronizes specified files to an S3 bucket.
+If the bucket does not exist, it is created (unless <code>create=FALSE</code>). Similarly, if local directories do not exist (corresponding to leading portions of object keys), they are created, recursively. Object keys are generated based on <code>files</code> and local files are named (and organized into directories) based on object keys. A slash is interpreted as a directory level.
+Local objects are copied to S3 and S3 objects are copied locally. This copying is performed conditionally. Objects existing locally but not in S3 are uploaded using <code><a href="put_object.html">put_object</a></code>. Objects existing in S3 but not locally, are saved using <code><a href="get_object.html">save_object</a></code>. If objects exist in both places, the MD5 checksum for each is compared; when identical, no copying is performed. If the checksums differ, local files are replaced with the bucket version if the local file is older and the S3 object is replaced if the local file is newer. If checksums differ but modified times match (which seems unlikely), a warning is issued. Note that multi-part files don't have a full MD5 sum recorded in S3 so they cannot be compared and thus are always assumed to be different.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A logical.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://docs.aws.amazon.com/cli/latest/reference/s3/sync.html">aws s3 sync command line</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="get_bucket.html">get_bucket</a></code>, <code><a href="put_object.html">put_object</a></code>, , <code><a href="get_object.html">save_object</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+  put_bucket("examplebucket")
+
+  # sync all files in current directory to bucket (upload-only)
+  s3sync(bucket = "examplebucket", direction = "upload")
+
+  # two-way sync
+  s3sync(bucket = "examplebucket")
+
+  # full sync between a subset of the bucket and a test directory in user's home
+  # corresponding roughly to:
+  #   aws s3 sync ~/test s3://examplebucket/test/
+  #   aws s3 sync s3://examplebucket/test/ ~/test
+  s3sync("~/test", "examplebucket", prefix="test/", region="us-east-2")
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>aws.s3</em> version 0.3.21 <a href="00Index.html">Index</a>]</div>
+</body></html>

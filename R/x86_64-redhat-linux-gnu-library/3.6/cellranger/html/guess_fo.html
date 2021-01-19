@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Guess cell reference string format</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for guess_fo {cellranger}"><tr><td>guess_fo {cellranger}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Guess cell reference string format</h2>
+
+<h3>Description</h3>
+
+<p>Guess if cell references are in R1C1 or A1 format.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+guess_fo(x, fo = c("R1C1", "A1"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>character vector of cell reference strings</p>
+</td></tr>
+<tr valign="top"><td><code>fo</code></td>
+<td>
+<p>default to assume if format is ambiguous</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>character vector consisting of <code>R1C1</code>, <code>A1</code>, or <code>NA</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+A1 &lt;- c("A1", "$A1", "A$1", "$A$1", "a1")
+guess_fo(A1)
+R1C1 &lt;- c("R1C1", "R1C[-1]", "R[-1]C1", "R[-1]C[9]")
+guess_fo(R1C1)
+
+guess_fo("RC2")
+guess_fo("12")
+guess_fo(12)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>cellranger</em> version 1.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

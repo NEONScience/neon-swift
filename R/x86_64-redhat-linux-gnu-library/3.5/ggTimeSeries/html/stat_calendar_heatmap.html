@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plots a calendar heatmap</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stat_calendar_heatmap {ggTimeSeries}"><tr><td>stat_calendar_heatmap {ggTimeSeries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plots a calendar heatmap</h2>
+
+<h3>Description</h3>
+
+<p>A calendar heatmap provides context for weeks, and day of week and
+is a better way to visualise daily data than line charts.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stat_calendar_heatmap(mapping = NULL, data = NULL, show.legend = NA,
+  inherit.aes = TRUE, na.rm = T, bandwidth = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>mapping</code></td>
+<td>
+<p>mapping</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>df</p>
+</td></tr>
+<tr valign="top"><td><code>show.legend</code></td>
+<td>
+<p>logical</p>
+</td></tr>
+<tr valign="top"><td><code>inherit.aes</code></td>
+<td>
+<p>logical</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>logical</p>
+</td></tr>
+<tr valign="top"><td><code>bandwidth</code></td>
+<td>
+<p>bandwidth</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>more functions</p>
+</td></tr>
+</table>
+
+
+<h3>Aesthetics</h3>
+
+<p>date, fill.
+</p>
+
+
+<h3>Data Tips</h3>
+
+<p><a href="../../base/html/strftime.html">strftime</a> can help extract the value
+of the year, week of year, and day of week from the date column. You might
+need to extract the year to facet multiple years as demonstrated in the
+example.
+This stat uses the following transformation to obtain the x and  y
+coordinate to be used in the heatmap -
+<code>
+   data$x = 1 + as.integer(strftime(data$date, "%W"))
+   data$y = as.integer(strftime(data$date, "%w"))
+   data$y[data$y == 0L] = 7
+   data$y = 8 - data$y
+</code>
+</p>
+
+
+<h3>Cosmetic Tips</h3>
+
+<p>The minimalist look can be achieved by appending the
+following chunk of code to the output object:
+<code>
++
+xlab(NULL) +
+ylab(NULL) +
+scale_fill_continuous(low = 'green', high = 'red') +
+theme(
+   axis.text = element_blank(),
+   axis.ticks = element_blank(),
+   legend.position = 'none',
+   strip.background = element_blank(),
+   panel.background = element_blank(),
+   panel.border = element_blank()
+)
+</code>
+</p>
+
+
+<h3>Also See</h3>
+
+<p><code><a href="ggplot_calendar_heatmap.html">ggplot_calendar_heatmap</a></code>, a
+polished but less flexible alternative.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+{
+library(ggplot2)
+DailyData = data.frame(
+      DateCol = seq(
+         as.Date("1/01/2014", "%d/%m/%Y"),
+         as.Date("31/12/2015", "%d/%m/%Y"),
+         "days"
+      ),
+      ValueCol = runif(730)
+   )
+   DailyData$Year = strftime(DailyData$DateCol, "%Y")
+ggplot(
+   DailyData,
+   aes(
+      date = DateCol,
+      fill = ValueCol
+   )
+) +
+   stat_calendar_heatmap() +
+   facet_wrap(~Year, ncol = 1)}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggTimeSeries</em> version 1.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

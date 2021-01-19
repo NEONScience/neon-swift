@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Multivariate _t_ distribution</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dmt {mnormt}"><tr><td>dmt {mnormt}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Multivariate <em>t</em> distribution</h2>
+
+<h3>Description</h3>
+
+<p>The probability density function, the distribution function and random
+number generation for the multivariate  Student's <em>t</em>  distribution
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dmt(x, mean = rep(0, d), S, df=Inf, log = FALSE) 
+pmt(x, mean = rep(0, d), S, df=Inf, ...) 
+rmt(n = 1, mean = rep(0, d), S, df=Inf, sqrt=NULL) 
+sadmvt(df, lower, upper, mean, S, maxpts = 2000*d, abseps = 1e-06, releps = 0) 
+biv.nt.prob(df, lower, upper, mean, S)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p> either a vector of length <code>d</code> 
+or a matrix with <code>d</code> columns, where <code>d=ncol(S)</code>, giving
+the coordinates of the point(s) where the density must be evaluated;
+for <code>pmt</code>,  <code>d</code> cannot exceed <code>20</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>mean</code></td>
+<td>
+<p>either a vector of length <code>d</code>, representing the location
+parameter (equal to the mean vector when <code>df&gt;1</code>) or a matrix 
+whose rows represent different mean vectors (except for <code>rmt</code>); 
+in the matrix case, its dimensions must match those of <code>x</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>S</code></td>
+<td>
+<p>a symmetric positive-definite matrix representing the 
+scale matrix of the distribution, such that <code>S*df/(df-2)</code> is
+the variance-covariance matrix  when <code>df&gt;2</code>;  a vector of
+length <code>1</code> is also allowed (in this case, <code>d=1</code> is set).</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>degrees of freedom; it must be a positive integer for <code>pmt</code>, 
+<code>sadmvt</code> and <code>biv.nt.prob</code>, otherwise a positive number. 
+If <code>df=Inf</code> (default value), the corresponding <code>*mnorm</code>
+function is called, unless <code>d=2</code>; in this case
+<code>biv.nt.prob</code> is used. If  <code>biv.nt.prob</code> is called with
+<code>df=Inf</code>, it returns the probability of a rectangle assigned by
+a bivariate normal distribution.</p>
+</td></tr> 
+<tr valign="top"><td><code>log</code></td>
+<td>
+<p>a logical value(default value is <code>FALSE</code>); if <code>TRUE</code>, 
+the logarithm of the density is computed.</p>
+</td></tr>    
+<tr valign="top"><td><code>sqrt</code></td>
+<td>
+<p>if not <code>NULL</code> (default value is <code>NULL</code>), 
+a square root of the intended scale matrix <code>S</code>; 
+see &lsquo;Details&rsquo; for a full description.</p>
+</td></tr>   
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>parameters passed to <code>sadmvt</code>, 
+among <code>maxpts</code>, <code>absrel</code>, <code>releps</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>the number of random  vectors to be generated</p>
+</td></tr>
+<tr valign="top"><td><code>lower</code></td>
+<td>
+<p>a numeric vector of lower integration limits of 
+the density function; must be of maximal length <code>20</code>; 
+<code>+Inf</code> and <code>-Inf</code> entries are allowed.</p>
+</td></tr>
+<tr valign="top"><td><code>upper</code></td>
+<td>
+<p> a numeric vector of upper integration limits 
+of the density function; must be of maximal length <code>20</code>; 
+<code>+Inf</code> and <code>-Inf</code> entries are allowed </p>
+</td></tr>
+<tr valign="top"><td><code>maxpts</code></td>
+<td>
+<p>the maximum number of function evaluations 
+(default value: <code>2000*d</code>)</p>
+</td></tr>
+<tr valign="top"><td><code>abseps</code></td>
+<td>
+<p>absolute error tolerance (default value: <code>1e-6</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>releps</code></td>
+<td>
+<p>relative error tolerance (default value: <code>0</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The functions <code>sadmvt</code> and <code>biv.nt.prob</code> are interfaces to 
+Fortran-77  routines by Alan Genz, and available from his web page; 
+they makes uses of some auxiliary  functions whose authors are 
+documented in the Fortran code. The routine <code>sadmvt</code> uses an adaptive 
+integration method. The routine <code>biv.nt.prob</code> is specific for the
+bivariate case; if <code>df&lt;1</code> or <code>df=Inf</code>, it computes the bivariate 
+normal distribution function using a non-iterative method described in a
+reference given below.
+If <code>pmt</code> is called  with <code>d&gt;2</code>, this is converted into
+a suitable call to <code>sadmvt</code>; if <code>d=2</code>, a call to 
+<code>biv.nt.prob</code> is used; if <code>d=1</code>, then <code>pt</code> is used.
+</p>
+<p>If <code>sqrt=NULL</code> (default value), the working of <code>rmt</code> involves 
+computation of a square root of <code>S</code> via the Cholesky decomposition.
+If a non-<code>NULL</code> value of <code>sqrt</code> is supplied, it is assumed that
+it represents a square root of the scale matrix,  
+otherwise represented by <code>S</code>, whose value is ignored in this case.  
+This mechanism is intended primarily for use in a sequence of calls to
+<code>rmt</code>, all sampling from a distribution with fixed scale matrix;
+a suitable matrix <code>sqrt</code> can then be computed only once beforehand, 
+avoiding that the same operation is repeated multiple times along the 
+sequence of calls. For examples of use of this argument, see those in the 
+documentation of <code><a href="dmnorm.html">rmnorm</a></code>.  
+Another use of <code>sqrt</code> is to supply a different form of square root 
+of the scale matrix, in place of the Cholesky factor.
+</p>
+<p>For efficiency reasons, <code>rmt</code> does not perform checks on the supplied  
+arguments.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>dmt</code> returns a vector of density values (possibly log-transformed);
+<code>pmt</code> and <code>sadmvt</code> return a single probability with 
+attributes giving details on the achieved accuracy,  provided <code>x</code> 
+of <code>pmnorm</code> is a vector;
+<code>rmt</code> returns a matrix of <code>n</code> rows of random vectors
+</p>
+
+
+<h3>Note</h3>
+
+ 
+<p>The attributes <code>error</code> and <code>status</code> of the probability returned 
+by <code>sadmvt</code> and by <code>pmt</code> (the latter only if <code>x</code> is a vector 
+and <code>d&gt;2</code>) indicate whether the function 
+had a normal termination, achieving the required accuracy. 
+If this is not the case, re-run the function with a higher value of
+<code>maxpts</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Fortran code of <code>SADMVT</code> and most auxiliary functions by Alan Genz,
+some additional auxiliary functions by people referred to within his 
+program; interface to <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> and additional <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> code by Adelchi Azzalini.</p>
+
+
+<h3>References</h3>
+
+<p>Genz, A.:  Fortran code in files <code>mvt.f</code> and <code>mvtdstpack.f</code> 
+available at <a href="http://www.math.wsu.edu/math/faculty/genz/software/">http://www.math.wsu.edu/math/faculty/genz/software/</a> 
+</p>
+<p>Dunnett, C.W. and Sobel, M. (1954).
+A bivariate generalization of Student's <em>t</em>-distribution with tables  
+for certain special cases. <em>Biometrika</em> 41, 153&ndash;169.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/TDist.html">dt</a></code>, 
+<code><a href="dmnorm.html">rmnorm</a></code> for use of argument <code>sqrt</code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- seq(-2,4,length=21)
+y &lt;- 2*x+10
+z &lt;- x+cos(y) 
+mu &lt;- c(1,12,2)
+Sigma &lt;- matrix(c(1,2,0,2,5,0.5,0,0.5,3), 3, 3)
+df &lt;- 4
+f  &lt;- dmt(cbind(x,y,z), mu, Sigma,df)
+p1 &lt;- pmt(c(2,11,3), mu, Sigma, df)
+p2 &lt;- pmt(c(2,11,3), mu, Sigma, df, maxpts=10000, abseps=1e-8)
+x  &lt;- rmt(10, mu, Sigma, df)
+p  &lt;- sadmvt(df, lower=c(2,11,3), upper=rep(Inf,3), mu, Sigma) # upper tail
+#
+p0 &lt;- pmt(c(2,11), mu[1:2], Sigma[1:2,1:2], df=5)
+p1 &lt;- biv.nt.prob(5, lower=rep(-Inf,2), upper=c(2, 11), mu[1:2], Sigma[1:2,1:2])
+p2 &lt;- sadmvt(5, lower=rep(-Inf,2), upper=c(2, 11), mu[1:2], Sigma[1:2,1:2]) 
+c(p0, p1, p2, p0-p1, p0-p2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>mnormt</em> version 1.5-5 <a href="00Index.html">Index</a>]</div>
+</body></html>

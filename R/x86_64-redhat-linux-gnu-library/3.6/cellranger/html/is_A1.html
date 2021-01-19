@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Test cell reference strings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for is_A1 {cellranger}"><tr><td>is_A1 {cellranger}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Test cell reference strings</h2>
+
+<h3>Description</h3>
+
+<p>Test cell reference strings for a specific format.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+is_A1(x)
+
+is_R1C1(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>character vector of cell reference strings</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a logical vector
+</p>
+
+
+<h3>Functions</h3>
+
+
+<ul>
+<li> <p><code>is_A1</code>: A1 format, case insenstive; relative, absolute, or mixed
+</p>
+</li>
+<li> <p><code>is_R1C1</code>: R1C1 format; relative, absolute, or mixed
+</p>
+</li></ul>
+
+
+<h3>Examples</h3>
+
+<pre>
+is_A1("A1")
+is_R1C1("A1")
+is_R1C1("R4C12")
+
+x &lt;- c("A1", "$A4", "$b$12", "RC1", "R[-4]C9", "R5C3")
+data.frame(x, is_A1(x), is_R1C1(x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>cellranger</em> version 1.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

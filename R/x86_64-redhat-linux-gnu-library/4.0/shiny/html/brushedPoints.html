@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find rows of data selected on an interactive plot.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for brushedPoints {shiny}"><tr><td>brushedPoints {shiny}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find rows of data selected on an interactive plot.</h2>
+
+<h3>Description</h3>
+
+<p><code>brushedPoints()</code> returns rows from a data frame which are under a brush.
+<code>nearPoints()</code> returns rows from a data frame which are near a click, hover,
+or double-click. Alternatively, set <code>allRows = TRUE</code> to return all rows from
+the input data with an additional column <code>selected_</code> that indicates which
+rows of the would be selected.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+brushedPoints(
+  df,
+  brush,
+  xvar = NULL,
+  yvar = NULL,
+  panelvar1 = NULL,
+  panelvar2 = NULL,
+  allRows = FALSE
+)
+
+nearPoints(
+  df,
+  coordinfo,
+  xvar = NULL,
+  yvar = NULL,
+  panelvar1 = NULL,
+  panelvar2 = NULL,
+  threshold = 5,
+  maxpoints = NULL,
+  addDist = FALSE,
+  allRows = FALSE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>A data frame from which to select rows.</p>
+</td></tr>
+<tr valign="top"><td><code>brush, coordinfo</code></td>
+<td>
+<p>The data from a brush or click/dblclick/hover event
+e.g. <code>input$plot_brush</code>, <code>input$plot_click</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>xvar, yvar</code></td>
+<td>
+<p>A string giving the name of the variable on the x or y axis.
+These are only required for base graphics, and must be the name of
+a column in <code>df</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>panelvar1, panelvar2</code></td>
+<td>
+<p>A string giving the name of a panel variable.
+For expert use only; in most cases these will be automatically
+derived from the ggplot2 spec.</p>
+</td></tr>
+<tr valign="top"><td><code>allRows</code></td>
+<td>
+<p>If <code>FALSE</code> (the default) return a data frame containing
+the selected rows. If <code>TRUE</code>, the input data frame will have a new
+column, <code>selected_</code>, which indicates whether the row was selected or not.</p>
+</td></tr>
+<tr valign="top"><td><code>threshold</code></td>
+<td>
+<p>A maximum distance (in pixels) to the pointer location.
+Rows in the data frame will be selected if the distance to the pointer is
+less than <code>threshold</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>maxpoints</code></td>
+<td>
+<p>Maximum number of rows to return. If <code>NULL</code> (the default),
+will return all rows within the threshold distance.</p>
+</td></tr>
+<tr valign="top"><td><code>addDist</code></td>
+<td>
+<p>If TRUE, add a column named <code>dist_</code> that contains the
+distance from the coordinate to the point, in pixels. When no pointer
+event has yet occurred, the value of <code>dist_</code> will be <code>NA</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A data frame based on <code>df</code>, containing the observations selected by the
+brush or near the click event. For <code>nearPoints()</code>, the rows will be sorted
+by distance to the event.
+</p>
+<p>If <code>allRows = TRUE</code>, then all rows will returned, along with a new
+<code>selected_</code> column that indicates whether or not the point was selected.
+The output from <code>nearPoints()</code> will no longer be sorted, but you can
+set <code>addDist = TRUE</code> to get an additional column that gives the pixel
+distance to the pointer.
+</p>
+
+
+<h3>ggplot2</h3>
+
+<p>For plots created with ggplot2, it is not necessary to specify the
+column names to <code>xvar</code>, <code>yvar</code>, <code>panelvar1</code>, and <code>panelvar2</code> as that
+information can be automatically derived from the plot specification.
+</p>
+<p>Note, however, that this will not work if you use a computed column, like
+<code style="white-space: pre;">aes(speed/2, dist))</code>. Instead, we recommend that you modify the data
+first, and then make the plot with &quot;raw&quot; columns in the modified data.
+</p>
+
+
+<h3>Brushing</h3>
+
+<p>If x or y column is a factor, then it will be coerced to an integer vector.
+If it is a character vector, then it will be coerced to a factor and then
+integer vector. This means that the brush will be considered to cover a
+given character/factor value when it covers the center value.
+</p>
+<p>If the brush is operating in just the x or y directions (e.g., with
+<code>brushOpts(direction = "x")</code>, then this function will filter out points
+using just the x or y variable, whichever is appropriate.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="plotOutput.html">plotOutput()</a></code> for example usage.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Note that in practice, these examples would need to go in reactives
+# or observers.
+
+# This would select all points within 5 pixels of the click
+nearPoints(mtcars, input$plot_click)
+
+# Select just the nearest point within 10 pixels of the click
+nearPoints(mtcars, input$plot_click, threshold = 10, maxpoints = 1)
+
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Does the input have any attributes?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for has_any_attributes {assertive.properties}"><tr><td>has_any_attributes {assertive.properties}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Does the input have any attributes?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the input has any attributes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+has_any_attributes(x, .xname = get_name_in_parent(x))
+
+has_no_attributes(x, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>has_any_attributes</code> returns <code>TRUE</code> if <code>attributes(x)</code>
+has length greater than zero. <code>has_attributes</code> returns a logical vector
+that is <code>TRUE</code> whenever the specified attribute is not <code>NULL</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>There are no corresponding <code>assert</code> functions, since they overlap 
+too closely with the assertions for <code><a href="has_attributes.html">has_attributes</a></code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="has_attributes.html">has_attributes</a></code> to check for specific attributes.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+has_any_attributes(matrix())
+has_no_attributes(data.frame())
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.properties</em> version 0.0-4 <a href="00Index.html">Index</a>]</div>
+</body></html>

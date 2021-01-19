@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a dashboard sidebar menu and menu items.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sidebarMenu {shinydashboard}"><tr><td>sidebarMenu {shinydashboard}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a dashboard sidebar menu and menu items.</h2>
+
+<h3>Description</h3>
+
+<p>A <code>dashboardSidebar</code> can contain a <code>sidebarMenu</code>. A
+<code>sidebarMenu</code> contains <code>menuItem</code>s, and they can in turn contain
+<code>menuSubItem</code>s.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sidebarMenu(..., id = NULL, .list = NULL)
+
+menuItem(text, ..., icon = NULL, badgeLabel = NULL, badgeColor = "green",
+  tabName = NULL, href = NULL, newtab = TRUE, selected = NULL,
+  expandedName = as.character(gsub("[[:space:]]", "", text)),
+  startExpanded = FALSE)
+
+menuSubItem(text, tabName = NULL, href = NULL, newtab = TRUE,
+  icon = shiny::icon("angle-double-right"), selected = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>For menu items, this may consist of <code><a href="sidebarMenu.html">menuSubItem</a></code>s.</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>For <code>sidebarMenu</code>, if <code>id</code> is present, this id will be
+used for a Shiny input value, and it will report which tab is selected. For
+example, if <code>id="tabs"</code>, then <code>input$tabs</code> will be the
+<code>tabName</code> of the currently-selected tab. If you want to be able to
+bookmark and restore the selected tab, an <code>id</code> is required.</p>
+</td></tr>
+<tr valign="top"><td><code>.list</code></td>
+<td>
+<p>An optional list containing items to put in the menu Same as the
+<code>...</code> arguments, but in list format. This can be useful when working
+with programmatically generated items.</p>
+</td></tr>
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>Text to show for the menu item.</p>
+</td></tr>
+<tr valign="top"><td><code>icon</code></td>
+<td>
+<p>An icon tag, created by <code><a href="../../shiny/html/icon.html">icon</a></code>. If
+<code>NULL</code>, don't display an icon.</p>
+</td></tr>
+<tr valign="top"><td><code>badgeLabel</code></td>
+<td>
+<p>A label for an optional badge. Usually a number or a short
+word like &quot;new&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>badgeColor</code></td>
+<td>
+<p>A color for the badge. Valid colors are listed in
+<a href="validColors.html">validColors</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>tabName</code></td>
+<td>
+<p>The name of a tab that this menu item will activate. Not
+compatible with <code>href</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>href</code></td>
+<td>
+<p>An link address. Not compatible with <code>tabName</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>newtab</code></td>
+<td>
+<p>If <code>href</code> is supplied, should the link open in a new
+browser tab?</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>If <code>TRUE</code>, this <code>menuItem</code> or <code>menuSubItem</code>
+will start selected. If no item have <code>selected=TRUE</code>, then the first
+<code>menuItem</code> will start selected.</p>
+</td></tr>
+<tr valign="top"><td><code>expandedName</code></td>
+<td>
+<p>A unique name given to each <code>menuItem</code> that serves
+to indicate which one (if any) is currently expanded. (This is only applicable
+to <code>menuItem</code>s that have children and it is mostly only useful for
+bookmarking state.)</p>
+</td></tr>
+<tr valign="top"><td><code>startExpanded</code></td>
+<td>
+<p>Should this <code>menuItem</code> be expanded on app startup?
+(This is only applicable to <code>menuItem</code>s that have children, and only
+one of these can be expanded at any given time).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Menu items (and similarly, sub-items) should have a value for either
+<code>href</code> or <code>tabName</code>; otherwise the item would do nothing. If it has
+a value for <code>href</code>, then the item will simply be a link to that value.
+</p>
+<p>If a <code>menuItem</code> has a non-NULL <code>tabName</code>, then the <code>menuItem</code>
+will behave like a tab &ndash; in other words, clicking on the <code>menuItem</code>
+will bring a corresponding <code>tabItem</code> to the front, similar to a
+<code><a href="../../shiny/html/tabPanel.html">tabPanel</a></code>. One important difference between a
+<code>menuItem</code> and a <code>tabPanel</code> is that, for a <code>menuItem</code>, you
+must also supply a corresponding <code>tabItem</code> with the same value for
+<code>tabName</code>, whereas for a <code>tabPanel</code>, no <code>tabName</code> is needed.
+(This is because the structure of a <code>tabPanel</code> is such that the tab name
+can be automatically generated.) Sub-items are also able to activate
+<code>tabItem</code>s.
+</p>
+<p>Menu items (but not sub-items) also may have an optional badge. A badge is a
+colored oval containing text.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="dashboardSidebar.html">dashboardSidebar</a></code> for example usage. For
+dynamically-generated sidebar menus, see <code><a href="renderMenu.html">renderMenu</a></code> and
+<code><a href="sidebarMenuOutput.html">sidebarMenuOutput</a></code>.
+</p>
+<p>Other sidebar items: <code><a href="sidebarSearchForm.html">sidebarSearchForm</a></code>,
+<code><a href="sidebarUserPanel.html">sidebarUserPanel</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>shinydashboard</em> version 0.7.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

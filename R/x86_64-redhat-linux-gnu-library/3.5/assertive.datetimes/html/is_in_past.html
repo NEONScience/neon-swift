@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the input in the past/future?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_after {assertive.datetimes}"><tr><td>assert_all_are_after {assertive.datetimes}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the input in the past/future?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the input is a time in the past/future, or before/after
+some time point.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_after(x, y, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_after(x, y, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_before(x, y, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_before(x, y, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_in_future(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_in_future(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_in_past(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_in_past(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_after(x, y, .xname = get_name_in_parent(x),
+  .yname = get_name_in_parent(y))
+
+is_before(x, y, .xname = get_name_in_parent(x),
+  .yname = get_name_in_parent(y))
+
+is_in_future(x, .xname = get_name_in_parent(x))
+
+is_in_past(x, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p><code>Date</code> or <code>POSIXt</code> input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>Another date-time object to compare against.</p>
+</td></tr>
+<tr valign="top"><td><code>na_ignore</code></td>
+<td>
+<p>A logical value.  If <code>FALSE</code>, <code>NA</code> values
+cause an error; otherwise they do not.  Like <code>na.rm</code> in many
+stats package functions, except that the position of the failing
+values does not change.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+<tr valign="top"><td><code>.yname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The current time is determined by <code>Sys.time</code>, and the 
+input is coerced to <code>POSIXct</code> format if necessary.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The <code>is_*</code> function return <code>TRUE</code> if the input is 
+a time in the future/past.  The <code>assert_*</code> functions return nothing but
+throw an error if the corresponding <code>is_*</code> function returns 
+<code>FALSE</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Note that the print method for <code>POSIXct</code> objects means that the
+cause attribute (in the event of failures) is not shown.  You can still 
+access it via, e.g., <code>cause(is_in_past(x))</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/Sys.time.html">Sys.time</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- Sys.time() + c(-1, 100)
+is_in_past(x)
+is_in_future(x)
+
+# more generally, compare against any date-time
+is_before(x, as.POSIXct("9999-12-31"))
+is_after(x, as.POSIXct("0001-01-01"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.datetimes</em> version 0.0-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

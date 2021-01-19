@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: An S4 class to represent a Presto Result</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for PrestoResult-class {RPresto}"><tr><td>PrestoResult-class {RPresto}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>An S4 class to represent a Presto Result</h2>
+
+<h3>Description</h3>
+
+<p>An S4 class to represent a Presto Result
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S4 method for signature 'PrestoResult'
+show(object)
+
+## S4 method for signature 'PrestoResult'
+dbHasCompleted(res, ...)
+
+## S4 method for signature 'PrestoResult'
+dbClearResult(res, ...)
+
+## S4 method for signature 'PrestoResult,integer'
+dbFetch(res, n = -1, ...)
+
+## S4 method for signature 'PrestoResult,numeric'
+dbFetch(res, n = -1, ...)
+
+## S4 method for signature 'PrestoResult,missing'
+dbFetch(res, n = -1, ...)
+
+## S4 method for signature 'PrestoResult'
+dbGetRowCount(res, ...)
+
+## S4 method for signature 'PrestoResult'
+dbGetStatement(res, ...)
+
+## S4 method for signature 'PrestoResult'
+dbIsValid(dbObj, ...)
+
+## S4 method for signature 'PrestoResult,missing'
+dbListFields(conn, name)
+
+## S4 method for signature 'PrestoResult,integer'
+fetch(res, n = -1, ...)
+
+## S4 method for signature 'PrestoResult,numeric'
+fetch(res, n = -1, ...)
+
+## S4 method for signature 'PrestoResult,missing'
+fetch(res)
+</pre>
+
+
+<h3>Slots</h3>
+
+
+<dl>
+<dt><code>statement</code></dt><dd><p>The SQL statement sent to the database</p>
+</dd>
+<dt><code>connection</code></dt><dd><p>The connection object associated with the result</p>
+</dd>
+<dt><code>cursor</code></dt><dd><p>An internal implementation detail for keeping track of
+what stage a request is in</p>
+</dd>
+</dl>
+
+<hr /><div style="text-align: center;">[Package <em>RPresto</em> version 1.3.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

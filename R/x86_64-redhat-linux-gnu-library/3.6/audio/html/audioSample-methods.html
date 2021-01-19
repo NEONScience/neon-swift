@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Audio sample class methods</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for audioSample-methods {audio}"><tr><td>audioSample-methods {audio}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Audio sample class methods
+</h2>
+
+<h3>Description</h3>
+
+<p><code>audioSample</code> methods behave in the same way as the underlying
+methods of numeric vectors and matrices except that they preserve
+the attributes and class of the objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  ## S3 method for class 'audioSample'
+x$name
+  ## S3 replacement method for class 'audioSample'
+x$name &lt;- value
+  ## S3 method for class 'audioSample'
+x[..., drop = FALSE]
+  ## S3 method for class 'audioSample'
+as.Sample(x, ...) 
+  ## S3 method for class 'audioSample'
+print(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>sample object</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>name of the attribute to get/set</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>value to set</p>
+</td></tr>
+<tr valign="top"><td><code>drop</code></td>
+<td>
+<p>see <code>`[`</code> operator documentation</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>parameters passed to the object-specific method</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- audioSample(sin(1:8000/10), 8000)
+x$rate
+x[1:10]
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>audio</em> version 0.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

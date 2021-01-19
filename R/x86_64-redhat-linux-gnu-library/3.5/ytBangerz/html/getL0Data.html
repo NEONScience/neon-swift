@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get L0 Data. All of it. Very Slow.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for getL0Data {ytBangerz}"><tr><td>getL0Data {ytBangerz}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get L0 Data. All of it. Very Slow.</h2>
+
+<h3>Description</h3>
+
+<p>Get L0 Data. All of it. Very Slow.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getL0Data(site, streams, startDate, endDate, creds)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>site</code></td>
+<td>
+<p>The 4-Letter site code for a NEON site. Please, no OKSR.</p>
+</td></tr>
+<tr valign="top"><td><code>streams</code></td>
+<td>
+<p>A list of streams to pull data for.</p>
+</td></tr>
+<tr valign="top"><td><code>startDate</code></td>
+<td>
+<p>A POSIXct object of the start date/time for the query</p>
+</td></tr>
+<tr valign="top"><td><code>endDate</code></td>
+<td>
+<p>A POSIXct object of the start date/time for the query (exclusive)</p>
+</td></tr>
+<tr valign="top"><td><code>creds</code></td>
+<td>
+<p>Presto creds, in the form &quot;user;pass&quot;. Use NULL if no creds to use the SOM VM's system creds</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A wrapper function to handle dates and creds correctly. Not much to see. Real action is in <code><a href="prestoQuery.html">prestoQuery</a></code>!
+</p>
+
+
+<h3>Value</h3>
+
+<p>Site uptime stats are normalized (as appropriate) and written into the site's statistic files.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Robert 'n' Josh
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>ytBangerz</em> version 0.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

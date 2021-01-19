@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for get_object {aws.s3}"><tr><td>get_object {aws.s3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get object</h2>
+
+<h3>Description</h3>
+
+<p>Retrieve an object from an S3 bucket. To check if an object exists, see <code><a href="head_object.html">head_object</a></code>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+get_object(
+  object,
+  bucket,
+  headers = list(),
+  parse_response = FALSE,
+  as = "raw",
+  ...
+)
+
+save_object(
+  object,
+  bucket,
+  file = basename(object),
+  headers = list(),
+  overwrite = TRUE,
+  ...
+)
+
+select_object(
+  object,
+  bucket,
+  request_body,
+  headers = list(),
+  parse_response = FALSE,
+  ...
+)
+
+s3connection(object, bucket, headers = list(), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>Character string with the object key, or an object of class &ldquo;s3_object&rdquo;. In most cases, if <code>object</code> is specified as the latter, <code>bucket</code> can be omitted because the bucket name will be extracted from &ldquo;Bucket&rdquo; slot in <code>object</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>bucket</code></td>
+<td>
+<p>Character string with the name of the bucket, or an object of class &ldquo;s3_bucket&rdquo;.</p>
+</td></tr>
+<tr valign="top"><td><code>headers</code></td>
+<td>
+<p>List of request headers for the REST call.</p>
+</td></tr>
+<tr valign="top"><td><code>parse_response</code></td>
+<td>
+<p>Passed through to <code><a href="s3HTTP.html">s3HTTP</a></code>, as this function requires a non-default setting. There is probably no reason to ever change this.</p>
+</td></tr>
+<tr valign="top"><td><code>as</code></td>
+<td>
+<p>Passed through to <code>httr::content</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments passed to <code><a href="s3HTTP.html">s3HTTP</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>An R connection, or file name specifying the local file to save the object into.</p>
+</td></tr>
+<tr valign="top"><td><code>overwrite</code></td>
+<td>
+<p>A logical indicating whether to overwrite <code>file</code>. Passed to <code><a href="../../httr/html/write_disk.html">write_disk</a></code>. Default is <code>TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>request_body</code></td>
+<td>
+<p>For <code>select_object</code>, an XML request body as described in the <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectSELECTContent.html">SELECT API documentation</a>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>get_object</code> retrieves an object into memory as a raw vector. This page describes <code>get_object</code> and several wrappers that provide additional useful functionality.
+</p>
+<p><code>save_object</code> saves an object to a local file without bringing it into memory.
+</p>
+<p><code>s3connection</code> provides a <code><a href="../../base/html/connection.html">connection</a></code> interface to an S3 object.
+</p>
+<p><code>select_object</code> uses the <a href="https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectSELECTContent.html">SELECT API</a> to select part of a CSV or JSON object. This requires constructing and passing a fairly tedious request body, which users will have to construct themselves according to the documentation.
+</p>
+<p>Some users may find the raw vector response format of <code>get_object</code> unfamiliar. The object will also carry attributes, including &ldquo;content-type&rdquo;, which may be useful for deciding how to subsequently process the vector. Two common strategies are as follows. For text content types, running <code><a href="../../base/html/charToRaw.html">charToRaw</a></code> may be the most useful first step to make the response human-readable. Alternatively, converting the raw vector into a connection using <code><a href="../../base/html/rawConnection.html">rawConnection</a></code> may also be useful, as that can often then be passed to parsing functions just like a file connection would be.
+</p>
+<p>Higher-level functions
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>file = NULL</code>, a raw object. Otherwise, a character string containing the file name that the object is saved to.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html">API Documentation: GET Object</a>
+<a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html">API Documentation: GET Object torrent</a>
+<a href="https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectSELECTContent.html">API Documentation: SELECT Object</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="get_bucket.html">get_bucket</a></code>, <code><a href="head_object.html">object_exists</a></code>, <code><a href="head_object.html">head_object</a></code>, <code><a href="put_object.html">put_object</a></code>, <code><a href="delete_object.html">delete_object</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+  # get an object in memory
+  ## create bucket
+  b &lt;- put_bucket("myexamplebucket")
+  
+  ## save a dataset to the bucket
+  s3save(mtcars, bucket = b, object = "mtcars")
+  obj &lt;- get_bucket(b)
+  ## get the object in memory
+  x &lt;- get_object(obj[[1]])
+  load(rawConnection(x))
+  "mtcars" %in% ls()
+
+  # save an object locally
+  y &lt;- save_object(obj[[1]], file = object[[1]][["Key"]])
+  y %in% dir()
+
+  # return object using 'S3 URI' syntax, with progress bar
+  get_object("s3://myexamplebucket/mtcars", show_progress = TRUE)
+
+  # return parts of an object
+  ## use 'Range' header to specify bytes
+  get_object(object = obj[[1]], headers = list('Range' = 'bytes=1-120'))
+ 
+  # example of streaming connection
+  ## setup a bucket and object
+  b &lt;- put_bucket("myexamplebucket")
+  s3write_using(mtcars, bucket = b, object = "mtcars.csv", FUN = utils::write.csv)
+  
+  ## setup the connection
+  con &lt;- s3connection("mtcars.csv", bucket = b)
+  
+  ## line-by-line read
+  while(length(x &lt;- readLines(con, n = 1L))) {
+    print(x)
+  }
+
+  ## use data.table::fread without saving object to file
+  library(data.table)
+  s3write_using(as.data.table(mtcars), bucket = b, object = "mtcars2.csv", FUN = data.table::fwrite)
+  fread(get_object("mtcars2.csv", bucket = b, as = "text"))
+
+  ## cleanup
+  close(con)
+  delete_bucket("myexamplebucket")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>aws.s3</em> version 0.3.21 <a href="00Index.html">Index</a>]</div>
+</body></html>

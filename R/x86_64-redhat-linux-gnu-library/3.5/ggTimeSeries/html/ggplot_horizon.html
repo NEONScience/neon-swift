@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot a time series as a horizon plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ggplot_horizon {ggTimeSeries}"><tr><td>ggplot_horizon {ggTimeSeries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot a time series as a horizon plot</h2>
+
+<h3>Description</h3>
+
+<p>A horizon plot breaks the Y dimension down using colours. This is useful
+when visualising y values spanning a vast range and / or trying to highlight
+outliers without losing context of the rest of the data.  Horizon
+plots are best viewed in an apsect ratio of very low vertical length.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ggplot_horizon(dtData, cXColumnName, cYColumnName, bandwidth = NULL,
+  vcGroupingColumnNames = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dtData</code></td>
+<td>
+<p>Data set which may include other columns apart from date
+and values.</p>
+</td></tr>
+<tr valign="top"><td><code>cXColumnName</code></td>
+<td>
+<p>Column name of dates.</p>
+</td></tr>
+<tr valign="top"><td><code>cYColumnName</code></td>
+<td>
+<p>Column name of values.</p>
+</td></tr>
+<tr valign="top"><td><code>bandwidth</code></td>
+<td>
+<p>the width of one band of Y values.
+easier to differentiate between the bands.</p>
+</td></tr>
+<tr valign="top"><td><code>vcGroupingColumnNames</code></td>
+<td>
+<p>The set of columns which together define the group
+for the chart to operate within If you plan to facet your plot,
+you should specify the same column names to this argument.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns a gpplot friendly object which means the user can use
+ggplot scales, etc. to modify the look.
+</p>
+
+
+<h3>Cosmetic Tips</h3>
+
+<p>The minimalist look can be achieved by appending the
+following chunk of code to the example output object:
+<code>
++
+xlab(NULL) +
+ylab(NULL) +
+scale_fill_continuous(low = 'green', high = 'red') +
+theme(
+   axis.text = element_blank(),
+   axis.ticks = element_blank(),
+   legend.position = 'none',
+   strip.background = element_blank(),
+   # strip.text = element_blank(), # useful if only one year of data
+   plot.background = element_blank(),
+   panel.border = element_blank(),
+   panel.background  = element_blank(),
+   panel.grid = element_blank(),
+   panel.border = element_blank()
+) +
+coord_fixed( 0.5 * diff(range(dfData$x)) / diff(range(dfData$y)))
+</code>
+</p>
+
+
+<h3>Also See</h3>
+
+<p><code><a href="stat_horizon.html">stat_horizon</a></code>, a less polished but more
+flexible alternative.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+{
+library(ggplot2)
+set.seed(1)
+dfData = data.frame(x = 1:1000, y = cumsum(rnorm(1000)))
+p1 = ggplot_horizon(dfData, 'x', 'y')
+p1
+# add new geoms or colours
+p1 +
+geom_text(label = '!!!') +
+scale_colour_continuous(low = 'red', high = 'green')
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggTimeSeries</em> version 1.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

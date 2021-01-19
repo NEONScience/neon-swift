@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: List Buckets</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bucketlist {aws.s3}"><tr><td>bucketlist {aws.s3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>List Buckets</h2>
+
+<h3>Description</h3>
+
+<p>List buckets as a data frame
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bucketlist(add_region = FALSE, ...)
+
+bucket_list_df(add_region = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>add_region</code></td>
+<td>
+<p>A logical (by default <code>FALSE</code>) indicating whether to add &ldquo;Region&rdquo; column to the output data frame. This simply induces a loop over <code><a href="get_location.html">get_location</a></code> for each bucket.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments passed to <code><a href="s3HTTP.html">s3HTTP</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>bucketlist</code> performs a GET operation on the base s3 endpoint and returns a list of all buckets owned by the authenticated sender of the request. If authentication is successful, this function provides a list of buckets available to the authenticated user. In this way, it can serve as a &ldquo;hello world!&rdquo; function, to confirm that one's authentication credentials are working correctly.
+</p>
+<p><code>bucket_list_df</code> and <code>bucketlist</code> are identical.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data frame of buckets. Can be empty (0 rows, 0 columns) if there are no buckets, otherwise contains typically at least columns <code>Bucket</code> and <code>CreationDate</code>.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTServiceGET.html">API Documentation</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="get_bucket.html">get_bucket</a></code>, <code><a href="get_object.html">get_object</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>aws.s3</em> version 0.3.21 <a href="00Index.html">Index</a>]</div>
+</body></html>

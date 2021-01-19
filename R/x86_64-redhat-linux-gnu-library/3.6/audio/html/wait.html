@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Wait for an event</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for wait {audio}"><tr><td>wait {audio}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Wait for an event
+</h2>
+
+<h3>Description</h3>
+
+<p><code>wait</code> waits until an event occurs or times out
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+wait(x, ...)
+## Default S3 method:
+wait(x, timeout, ...)
+## S3 method for class 'audioInstance'
+wait(x, timeout=NA, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>event to wait for</p>
+</td></tr>
+<tr valign="top"><td><code>timeout</code></td>
+<td>
+<p>longest period to wait for (in seconds, real number). A value of 0 causes <code>wait</code> to just check for the event, values <code>NA</code> and less than zero mean to wait indefinitely until the even occurs.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>optional arguments passed to the method specific to the object being monitored</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The default method allows <code>x</code> to specify the timeout, i.e., if <code>timeout</code> is not specified and <code>x</code> is numeric then the timeout is set to <code>x</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns the result.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+# play a sound and wait until the playback is done
+wait(play(sin(1:10000/20)))
+# wait for 2.5 seconds unconditionally
+wait(2.5)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>audio</em> version 0.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

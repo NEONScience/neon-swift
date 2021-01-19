@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Calculate and plot smoothed time series.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for panel.tskernel {latticeExtra}"><tr><td>panel.tskernel {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Calculate and plot smoothed time series.
+</h2>
+
+<h3>Description</h3>
+
+<p>Plot time series smoothed by discrete symmetric smoothing kernels.
+These kernels can be used to smooth time series objects.
+Options include moving averages, triangular filters, or
+approximately Gaussian filters.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+panel.tskernel(x, y, ...,
+    width = NROW(x) %/% 10 + 1, n = 300,
+    c = 1, sides = 2, circular = FALSE,
+    kern = kernel("daniell",
+           rep(floor((width/sides) / sqrt(c)), c)))
+
+simpleSmoothTs(x, ...)
+
+## Default S3 method:
+simpleSmoothTs(x, ...,
+    width = NROW(x) %/% 10 + 1, n = NROW(x),
+    c = 1, sides = 2, circular = FALSE,
+    kern = kernel("daniell",
+           rep(floor((width/sides)/sqrt(c)), c)))
+
+## S3 method for class 'zoo'
+simpleSmoothTs(x, ..., n = NROW(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, y</code></td>
+<td>
+
+<p>data points. Should define a regular, ordered series.
+A time series object can be passed as the first argument, in which
+case <code>y</code> can be omitted. The <code>x</code> argument given to
+<code>simpleSmoothTs</code> is allowed to be a multivariate time series,
+i.e. to have multiple columns.
+</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>further arguments passed on to <code><a href="../../lattice/html/llines.html">panel.lines</a></code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+
+<p>nominal width of the smoothing kernel in time steps. In the default
+case, which is a simple moving average, this is the actual width.
+When <code>c &gt; 1</code> the number of time steps used in the kernel
+increases but the equivalent bandwidth stays the same.
+If only past values are used (with <code>sides = 1</code>) then
+<code>width</code> refers to one side of the symmetric kernel.
+</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+
+<p>approximate number of time steps desired for the result. If this is
+less than the length of <code>x</code>, the smoothed time series will be
+aggregated by averaging blocks of (an integer number of) time
+steps, and this aggregated series will be centered with respect to
+the original series.
+</p>
+</td></tr>
+<tr valign="top"><td><code>c</code></td>
+<td>
+
+<p>smoothness of the kernel: <code>c = 1</code> is a moving average,
+<code>c = 2</code> is a triangular kernel, <code>c = 3</code> and higher
+approximate smooth Gaussian kernels.
+<code>c</code> is actually the number of times to
+recursively convolve a simple moving average kernel with itself.
+The kernel size is adjusted to maintain a constant equivalent
+bandwidth as <code>c</code> increases.
+</p>
+</td></tr>
+<tr valign="top"><td><code>sides</code></td>
+<td>
+
+<p>if <code>sides=1</code> the smoothed series is calculed from past values
+only (using one half of the symmetric kernel); if <code>sides=2</code> it
+is centred around lag 0.
+</p>
+</td></tr>
+<tr valign="top"><td><code>circular</code></td>
+<td>
+
+<p>to treat the data as circular (periodic).
+</p>
+</td></tr>
+<tr valign="top"><td><code>kern</code></td>
+<td>
+
+<p>a <code>tskernel</code> object; if given, this over-rides <code>width</code> and
+<code>c</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>The author is not an expert on time series theory.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Felix Andrews <a href="mailto:felix@nfrac.org">felix@nfrac.org</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../stats/html/kernel.html">kernel</a></code>,
+<code><a href="../../stats/html/filter.html">filter</a></code>,
+<code><a href="../../lattice/html/xyplot.ts.html">xyplot.ts</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## a Gaussian-like filter (contrast with c = 1 or c = 2)
+xyplot(sunspot.year) +
+layer(panel.tskernel(x, y, width = 20, c = 3, col = 1, lwd = 2))
+
+## example from ?kernel:
+## long and short moving averages, backwards in time
+xyplot(EuStockMarkets[,1]) +
+  layer(panel.tskernel(x, y, width = 100, col = 1, sides = 1)) +
+  layer(panel.tskernel(x, y, width = 20, col = 2, sides = 1))
+
+## per group, with a triangular filter
+xyplot(EuStockMarkets, superpose = TRUE) +
+  glayer(panel.tskernel(..., width = 100, c = 2),
+         theme = simpleTheme(lwd = 2))
+
+## plot the actual kernels used; note adjustment of width
+width = 100
+kdat &lt;- lapply(1:4, function(c) {
+    k &lt;- kernel("daniell", rep(floor(0.5*width / sqrt(c)), c))
+    ## demonstrate that the effective bandwidth stays the same:
+    message("c = ", c, ": effective bandwidth = ", bandwidth.kernel(k))
+    ## represent the kernel as a time series, for plotting
+    ts(k[-k$m:k$m], start = -k$m)
+})
+names(kdat) &lt;- paste("c =", 1:4)
+xyplot(do.call(ts.union, kdat), type = "h",
+    scales = list(y = list(relation = "same")))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Add a spinner that shows when an output is recalculating</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for withSpinner {shinycssloaders}"><tr><td>withSpinner {shinycssloaders}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Add a spinner that shows when an output is recalculating</h2>
+
+<h3>Description</h3>
+
+<p>Add a spinner that shows when an output is recalculating
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+withSpinner(
+  ui_element,
+  type = getOption("spinner.type", default = 1),
+  color = getOption("spinner.color", default = "#0275D8"),
+  size = getOption("spinner.size", default = 1),
+  color.background = getOption("spinner.color.background"),
+  custom.css = FALSE,
+  proxy.height = NULL,
+  id = NULL,
+  image = NULL,
+  image.width = NULL,
+  image.height = NULL,
+  hide.ui = TRUE
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ui_element</code></td>
+<td>
+<p>A UI element that should be wrapped with a spinner when the corresponding output is being calculated.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>The type of spinner to use, valid values are integers between 0-8 (0 means no spinner). Check out
+<a href="https://daattali.com/shiny/shinycssloaders-demo">https://daattali.com/shiny/shinycssloaders-demo</a> to see the different types of spinners. You can also use
+your own custom image using the <code>image</code> parameter.</p>
+</td></tr>
+<tr valign="top"><td><code>color</code></td>
+<td>
+<p>The color of the spinner in hex format. Ignored if <code>image</code> is used.</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>The size of the spinner, relative to its default size (default is 1, a size of 2 means twice as large). Ignored if <code>image</code> is used.</p>
+</td></tr>
+<tr valign="top"><td><code>color.background</code></td>
+<td>
+<p>For certain spinners (type 2-3), you will need to specify the background color of the spinner. Ignored if <code>image</code> is used.</p>
+</td></tr>
+<tr valign="top"><td><code>custom.css</code></td>
+<td>
+<p>Set to <code>TRUE</code> if you have your own custom CSS that you defined and you don't want the automatic CSS applied to the spinner. Ignored if <code>image</code> is used.</p>
+</td></tr>
+<tr valign="top"><td><code>proxy.height</code></td>
+<td>
+<p>If the output UI doesn't specify the output height, you can set a proxy height. It defaults to &quot;400px&quot;
+for outputs with undefined height. Ignored if <code>hide.ui</code> is set to <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>The HTML ID to use for the spinner. If you don't provide one, it will be generated automatically.</p>
+</td></tr>
+<tr valign="top"><td><code>image</code></td>
+<td>
+<p>The path or URL of the image to use if you want to use a custom image instead of a built-in spinner.</p>
+</td></tr>
+<tr valign="top"><td><code>image.width</code></td>
+<td>
+<p>The width for the custom image spinner, in pixels. If not provided, then the original
+size of the image is used. Ignored if not using <code>image</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>image.height</code></td>
+<td>
+<p>The height for the custom image spinner, in pixels. If not provided, then the original
+size of the image is used. Ignored if not using <code>image</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>hide.ui</code></td>
+<td>
+<p>By default, while an output is recalculating, the output UI is hidden and the spinner is visible instead.
+Setting <code>hide.ui = FALSE</code> will result in the spinner showing up on top of the previous output UI.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+
+  shinyApp(
+    ui = fluidPage(
+      actionButton("go", "Go"),
+      withSpinner(plotOutput("plot"))
+    ),
+    server = function(input, output) {
+      output$plot &lt;- renderPlot({
+        input$go
+        Sys.sleep(1.5)
+        plot(runif(10))
+      })
+    }
+  )
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinycssloaders</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

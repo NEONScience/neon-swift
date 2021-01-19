@@ -1,0 +1,12 @@
+are_disjoint_sets	are_set_equal
+are_intersecting_sets	are_set_equal
+are_set_equal	are_set_equal
+assert_are_disjoint_sets	are_set_equal
+assert_are_intersecting_sets	are_set_equal
+assert_are_set_equal	are_set_equal
+assert_is_set_equal	are_set_equal
+assert_is_subset	are_set_equal
+assert_is_superset	are_set_equal
+is_set_equal	are_set_equal
+is_subset	are_set_equal
+is_superset	are_set_equal

@@ -1,0 +1,5 @@
+0.0-3 Added is_matching_* predicates + assertions. (Thanks Aditya!)
+0.0-2 Added is_logical_string + assertions.
+      Reexported some deprecated fns for back compatibility.
+      Dropped devtools dependency.
+0.0-1 Content extracted from assertive 0.3-0, and tidied.

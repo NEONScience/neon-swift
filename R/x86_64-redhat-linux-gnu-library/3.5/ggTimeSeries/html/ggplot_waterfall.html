@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plots a water fall plot</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ggplot_waterfall {ggTimeSeries}"><tr><td>ggplot_waterfall {ggTimeSeries}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plots a water fall plot</h2>
+
+<h3>Description</h3>
+
+<p>A waterfall plot highlights the change in the time series rather than the
+value of the time series itself.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ggplot_waterfall(dtData, cXColumnName, cYColumnName, nArrowSize = 0.25,
+  vcGroupingColumnNames = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dtData</code></td>
+<td>
+<p>Data set which may include other columns apart from the
+columns mapped to x and y .</p>
+</td></tr>
+<tr valign="top"><td><code>cXColumnName</code></td>
+<td>
+<p>Column name of the x mapping.</p>
+</td></tr>
+<tr valign="top"><td><code>cYColumnName</code></td>
+<td>
+<p>Column name of the y mapping.</p>
+</td></tr>
+<tr valign="top"><td><code>nArrowSize</code></td>
+<td>
+<p>the size of the arrow head on the plot in cm</p>
+</td></tr>
+<tr valign="top"><td><code>vcGroupingColumnNames</code></td>
+<td>
+<p>The set of columns which together define the group
+for the chart to operate between. If you plan to facet your plot,
+you should specify the same column names to this argument.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns a gpplot friendly object which means the user can use
+ggplot scales to modify the look, add more geoms, etc.
+</p>
+
+
+<h3>Cosmetic Tips</h3>
+
+<p>The minimalist look can be achieved by appending the
+following chunk of code to the output object:
+<code>
++
+xlab(NULL) +
+ylab(NULL) +
+scale_fill_continuous(low = 'green', high = 'red') +
+theme(
+   axis.text = element_blank(),
+   axis.ticks = element_blank(),
+   legend.position = 'none',
+   strip.background = element_blank(),
+   # strip.text = element_blank(), # useful if only one year of data
+   plot.background = element_blank(),
+   panel.background = element_blank(),
+   panel.border = element_blank(),
+   panel.grid = element_blank(),
+   panel.border = element_blank()
+)
+</code>
+</p>
+
+
+<h3>Also See</h3>
+
+<p><code><a href="stat_waterfall.html">stat_waterfall</a></code>, a
+flexible but less polished alternative.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+{
+library(ggplot2)
+set.seed(1)
+dfData = data.frame(x = 1:100, y = cumsum(rnorm(100)))
+ggplot_waterfall(
+   dtData = dfData,
+   'x',
+   'y'
+)}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggTimeSeries</em> version 1.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Overlay panels of Trellis plots on same or different scales</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for as.layer {latticeExtra}"><tr><td>as.layer {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Overlay panels of Trellis plots on same or different scales </h2>
+
+<h3>Description</h3>
+
+<p>Allows overlaying of Trellis plots, drawn on the same scales or on
+different scales in each of the x and y dimensions.
+There are options for custom axes and graphical styles.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+as.layer(x, ...)
+
+## S3 method for class 'trellis'
+as.layer(x, x.same = TRUE, y.same = TRUE,
+         axes = c(if (!x.same) "x", if (!y.same) "y"), opposite = TRUE,
+         outside = FALSE, theme = x$par.settings, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p> a trellis object. </p>
+</td></tr>
+<tr valign="top"><td><code>x.same</code></td>
+<td>
+<p> retains the existing panel x scale for the new layer,
+rather than using the layer's native x scale. </p>
+</td></tr>
+<tr valign="top"><td><code>y.same</code></td>
+<td>
+<p> retains the existing panel y scale. </p>
+</td></tr>
+<tr valign="top"><td><code>axes</code></td>
+<td>
+<p> which of the axes to draw (<code>NULL</code> for neither).
+Axes might not be drawn anyway, such as if
+<code>scales$draw == FALSE</code>. </p>
+</td></tr>
+<tr valign="top"><td><code>opposite</code></td>
+<td>
+<p> whether to draw axes on the opposite side to normal:
+that is, the top and/or right sides rather than bottom and/or
+left. May be a vector of length 2 to specify for x and y axes
+separately. </p>
+</td></tr>
+<tr valign="top"><td><code>outside</code></td>
+<td>
+<p> whether to draw the axes outside the plot region. Note
+that space for outside axes will not be allocated
+automatically. May be a vector of length 2 to specify for x and y axes
+separately. </p>
+</td></tr>
+<tr valign="top"><td><code>theme</code></td>
+<td>
+<p> passed to <code><a href="layer.html">layer</a></code>. </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> passed to <code><a href="layer.html">layer</a></code>: typically
+the <code>style</code> argument would be specified. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Panels from the trellis object <code>x</code> will be drawn in the
+corresponding panel of another trellis object, so packet numbers match
+(see examples).
+</p>
+<p>Axis setting are taken from the trellis object <code>x</code>, so most
+<code>scales</code> arguments such as <code>draw</code>, <code>at</code>, <code>labels</code> etc will
+carry over to the overlaid axes. Only the main axis settings are used
+(i.e. left or bottom), even when <code>opposite = TRUE</code>.
+</p>
+<p>Currently, outside top axes will be drawn in the strip if there are strips.
+</p>
+
+
+<h3>Value</h3>
+
+<p>an updated trellis object.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Felix Andrews <a href="mailto:felix@nfrac.org">felix@nfrac.org</a> </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="doubleYScale.html">doubleYScale</a></code>,
+<code><a href="layer.html">layer</a></code>,
+<code><a href="../../lattice/html/panel.axis.html">panel.axis</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+b1 &lt;- barley
+b2 &lt;- barley
+b2$yield &lt;- b2$yield + 10
+
+## panels are matched up by packet number
+dotplot(variety ~ yield | site * year, b1) +
+  as.layer(dotplot(variety ~ yield | site * year, b2, col = "red"))
+
+## which gives the same result as:
+dotplot(variety ~ yield | site * year, data = b1, subscripts = TRUE) +
+  layer(panel.dotplot(yield[subscripts], variety[subscripts], col = "red"),
+        data = b2)
+
+
+## example with all same scales (the default):
+xyplot(fdeaths ~ mdeaths) +
+  as.layer(xyplot(fdeaths ~ mdeaths, col = 2, subset = ldeaths &gt; 2000))
+
+## same x scales, different y scales:
+xyplot(fdeaths ~ mdeaths) +
+  as.layer(bwplot(~ mdeaths, box.ratio = 0.2), y.same = FALSE)
+
+## same y scales, different x scales:
+xyplot(fdeaths ~ mdeaths) +
+  as.layer(bwplot(fdeaths ~ factor(mdeaths*0), box.ratio = 0.2), x.same = FALSE)
+
+## as.layer() is called automatically if two plots are added:
+histogram(~ ldeaths, type = "density") + densityplot(~ ldeaths, lwd = 3)
+
+## applying one panel layer to several panels of another object
+xyplot(Sepal.Length + Sepal.Width ~ Petal.Length + Petal.Width | Species,
+       data = iris, scales = "free") +
+   as.layer(levelplot(volcano), x.same = FALSE, y.same = FALSE, under = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

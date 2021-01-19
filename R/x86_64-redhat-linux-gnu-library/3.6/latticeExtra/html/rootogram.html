@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Trellis Displays of Tukey's Hanging Rootograms</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rootogram {latticeExtra}"><tr><td>rootogram {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Trellis Displays of Tukey's Hanging Rootograms</h2>
+
+<h3>Description</h3>
+
+<p>Displays hanging rootograms. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rootogram(x, ...)
+
+## S3 method for class 'formula'
+rootogram(x, data = parent.frame(),
+          ylab = expression(sqrt(P(X == x))),
+          prepanel = prepanel.rootogram,
+          panel = panel.rootogram,
+          ...,
+          probability = TRUE)
+
+prepanel.rootogram(x, y = table(x),
+                   dfun = NULL,
+                   transformation = sqrt,
+                   hang = TRUE,
+                   probability = TRUE,
+                   ...)
+
+panel.rootogram(x, y = table(x),
+                dfun = NULL,
+                col = plot.line$col,
+                lty = plot.line$lty,
+                lwd = plot.line$lwd,
+                alpha = plot.line$alpha,
+                transformation = sqrt,
+                hang = TRUE,
+                probability = TRUE,
+                type = "l", pch = 16,
+                ...)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, y</code></td>
+<td>
+<p> For <code>rootogram</code>, <code>x</code> is the object on which
+method dispatch is carried out.  For the <code>"formula"</code> method,
+<code>x</code> is a formula describing the form of conditioning plot.  The
+formula can be either of the form <code>~x</code> or of the form
+<code>y~x</code>.  In the first case, <code>x</code> is assumed to be a vector
+of raw observations, and an observed frequency distribution is
+computed from it.  In the second case, <code>x</code> is assumed to be
+unique values and <code>y</code> the corresponding frequencies.  In either
+case, further conditioning variables are allowed.
+</p>
+<p>A similar interpretation holds for <code>x</code> and <code>y</code> in
+<code>prepanel.rootogram</code> and <code>panel.rootogram</code>.
+</p>
+<p>Note that the data are assumed to arise from a discrete distribution
+with some probability mass function.  See details below.
+</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p> For the <code>"formula"</code> method, a data frame containing
+values for any variables in the formula, as well as those in
+<code>groups</code> and <code>subset</code> if applicable (<code>groups</code> is
+currently ignored by the default panel function).  By default the
+environment where the function was called from is used.  </p>
+</td></tr>
+<tr valign="top"><td><code>dfun</code></td>
+<td>
+<p> a probability mass function, to be evaluated at unique x
+values </p>
+</td></tr>
+<tr valign="top"><td><code>prepanel, panel</code></td>
+<td>
+<p> panel and prepanel function used to create the
+display.  </p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p> the y-axis label; typically a character string or an
+expression. </p>
+</td></tr>
+<tr valign="top"><td><code>col, lty, lwd, alpha</code></td>
+<td>
+<p> graphical parameters </p>
+</td></tr>
+<tr valign="top"><td><code>transformation</code></td>
+<td>
+<p> a vectorized function.  Relative frequencies
+(observed) and theoretical probabilities (<code>dfun</code>) are
+transformed by this function before being plotted. </p>
+</td></tr>
+<tr valign="top"><td><code>hang</code></td>
+<td>
+<p>logical, whether lines representing observed relative
+freuqncies should &ldquo;hang&rdquo; from the curve representing the
+theoretical probabilities. </p>
+</td></tr>
+<tr valign="top"><td><code>probability</code></td>
+<td>
+<p> A logical flag, controlling whether the y-values
+are to be standardized to be probabilities by dividing by their sum.
+</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p> A character vector consisting of one or both of
+<code>"p"</code> and <code>"l"</code>. If <code>"p"</code> is included, the evaluated
+values of <code>dfun</code> will be denoted by points, and if <code>"l"</code>
+is included, they will be joined by lines. </p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p> The plotting character to be used for the <code>"p"</code>
+type. </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> extra arguments, passed on as appropriate.  Standard
+lattice arguments as well as arguments to <code>panel.rootogram</code>
+can be supplied directly in the high level <code>rootogram</code> call.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function implements Tukey's hanging rootograms.  As implemented,
+<code>rootogram</code> assumes that the data arise from a discrete
+distribution (either supplied in raw form, when <code>y</code> is
+unspecified, or in terms of the frequency distribution) with some
+unknown probability mass function (p.m.f.).  The purpose of the plot
+is to check whether the supplied theoretical p.m.f. <code>dfun</code> is a
+reasonable fit for the data.
+</p>
+<p>It is reasonable to consider rootograms for continuous data by
+discretizing it (similar to a histogram), but this must be done by the
+user before calling <code>rootogram</code>.  An example is given below.
+</p>
+<p>Also consider the <code>rootogram</code> function in the <code>vcd</code> package,
+especially if the number of unique values is small.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>rootogram</code> produces an object of class <code>"trellis"</code>.  The
+<code>update</code> method can be used to update components of the object and
+the <code>print</code> method (usually called by default) will plot it on an
+appropriate plotting device.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Deepayan Sarkar <a href="mailto:deepayan.sarkar@gmail.com">deepayan.sarkar@gmail.com</a></p>
+
+
+<h3>References</h3>
+
+<p>John W. Tukey (1972) Some graphic and semi-graphic displays. In
+T. A. Bancroft (Ed) <em>Statistical Papers in Honor of George
+W. Snedecor</em>, pp. 293&ndash;316.  Available online at
+<a href="http://www.edwardtufte.com/tufte/tukey">http://www.edwardtufte.com/tufte/tukey</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../lattice/html/xyplot.html">xyplot</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+library(lattice)
+
+x &lt;- rpois(1000, lambda = 50)
+
+p &lt;- rootogram(~x, dfun = function(x) dpois(x, lambda = 50))
+p
+
+lambdav &lt;- c(30, 40, 50, 60, 70)
+
+update(p[rep(1, length(lambdav))],
+       aspect = "xy",
+       panel = function(x, ...) {
+           panel.rootogram(x,
+                           dfun = function(x)
+                           dpois(x, lambda = lambdav[panel.number()]))
+       })
+
+
+lambdav &lt;- c(46, 48, 50, 52, 54)
+
+update(p[rep(1, length(lambdav))],
+       aspect = "xy",
+       prepanel = function(x, ...) {
+           tmp &lt;-
+               lapply(lambdav,
+                      function(lambda) {
+                          prepanel.rootogram(x,
+                                             dfun = function(x)
+                                             dpois(x, lambda = lambda))
+                      })
+           list(xlim = range(sapply(tmp, "[[", "xlim")),
+                ylim = range(sapply(tmp, "[[", "ylim")),
+                dx = do.call("c", lapply(tmp, "[[", "dx")),
+                dy = do.call("c", lapply(tmp, "[[", "dy")))
+       },
+       panel = function(x, ...) {
+           panel.rootogram(x,
+                           dfun = function(x)
+                           dpois(x, lambda = lambdav[panel.number()]))
+           grid::grid.text(bquote(Poisson(lambda == .(foo)),
+                                  where = list(foo = lambdav[panel.number()])),
+                           y = 0.15,
+                           gp = grid::gpar(cex = 1.5))
+       },
+       xlab = "",
+       sub = "Random sample from Poisson(50)")
+
+
+## Example using continuous data
+
+xnorm &lt;- rnorm(1000)
+
+## 'discretize' by binning and replacing data by bin midpoints
+
+h &lt;- hist(xnorm, plot = FALSE)
+
+## Option 1: Assume bin probabilities proportional to dnorm()
+
+norm.factor &lt;- sum(dnorm(h$mids, mean(xnorm), sd(xnorm)))
+
+rootogram(counts ~ mids, data = h,
+          dfun = function(x) {
+              dnorm(x, mean(xnorm), sd(xnorm)) / norm.factor
+          })
+
+## Option 2: Compute probabilities explicitly using pnorm()
+
+pdisc &lt;- diff(pnorm(h$breaks, mean = mean(xnorm), sd = sd(xnorm)))
+pdisc &lt;- pdisc / sum(pdisc)
+
+rootogram(counts ~ mids, data = h,
+          dfun = function(x) {
+              f &lt;- factor(x, levels = h$mids)
+              pdisc[f]
+          })
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

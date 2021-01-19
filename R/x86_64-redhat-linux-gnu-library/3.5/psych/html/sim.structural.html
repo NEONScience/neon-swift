@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create correlation matrices or data matrices with a...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sim.structure {psych}"><tr><td>sim.structure {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create correlation matrices or data matrices with a particular measurement and structural model </h2>
+
+<h3>Description</h3>
+
+<p>Structural Equation Models decompose correlation or correlation matrices into a measurement (factor) model and a structural (regression) model.  sim.structural creates data sets with known measurement and structural properties. Population or sample correlation matrices with known properties are generated. Optionally raw data are produced. 
+</p>
+<p>It is also possible to specify a measurement model for a set of x variables separately from a set of y variables.  They are then combined into one model with the correlation structure between the two sets.
+</p>
+<p>Finally, the general case is given a population correlation matrix, generate data that will reproduce (with sampling variability) that correlation matrix.  <code><a href="sim.structural.html">sim.correlation</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sim.structure(fx=NULL,Phi=NULL, fy=NULL, f=NULL, n=0, uniq=NULL, raw=TRUE, 
+  items = FALSE, low=-2,high=2,d=NULL,cat=5, mu=0)
+sim.structural(fx=NULL, Phi=NULL, fy=NULL, f=NULL, n=0, uniq=NULL, raw=TRUE,
+      items = FALSE, low=-2,high=2,d=NULL,cat=5, mu=0)  #deprecated
+sim.correlation(R,n=1000,data=FALSE)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fx</code></td>
+<td>
+<p>The measurement model for x</p>
+</td></tr>
+<tr valign="top"><td><code>Phi</code></td>
+<td>
+<p>The structure matrix of the latent variables</p>
+</td></tr>
+<tr valign="top"><td><code>fy</code></td>
+<td>
+<p>The measurement model for y</p>
+</td></tr>
+<tr valign="top"><td><code>f</code></td>
+<td>
+<p> The measurement model</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p> Number of cases to simulate.  If n=0, the population matrix is returned.</p>
+</td></tr>
+<tr valign="top"><td><code>uniq</code></td>
+<td>
+<p>The uniquenesses if creating a covariance matrix</p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>if raw=TRUE, raw data are returned as well for n &gt; 0.</p>
+</td></tr>
+<tr valign="top"><td><code>items</code></td>
+<td>
+<p>TRUE if simulating items, FALSE if simulating scales</p>
+</td></tr>
+<tr valign="top"><td><code>low</code></td>
+<td>
+<p>Restrict the item difficulties to range from low to high</p>
+</td></tr>
+<tr valign="top"><td><code>high</code></td>
+<td>
+<p>Restrict the item difficulties to range from low to high</p>
+</td></tr>
+<tr valign="top"><td><code>d</code></td>
+<td>
+<p>A vector of item difficulties, if NULL will range uniformly from low to high</p>
+</td></tr>
+<tr valign="top"><td><code>cat</code></td>
+<td>
+<p>Number of categories when creating binary (2) or polytomous items</p>
+</td></tr>
+<tr valign="top"><td><code>mu</code></td>
+<td>
+<p>A vector of means, defaults to 0</p>
+</td></tr>
+<tr valign="top"><td><code>R</code></td>
+<td>
+<p>The correlation matrix to reproduce</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>if TRUE, return the raw data, otherwise return the sample correlation matrix.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Given the measurement model, fx and the structure model Phi, the model is  f %*% Phi %*%  t(f).   Reliability is f %*% t(f). <i>f &phi; f'</i> and the reliability for each test is the items communality or just the diag of the model. 
+</p>
+<p>If creating a correlation matrix, (uniq=NULL) then the diagonal is set to 1, otherwise the diagonal is diag(model) + uniq and the resulting structure is a covariance matrix.
+</p>
+
+<p>A special case of a structural model are one factor models such as parallel tests, tau equivalent tests, and congeneric tests.  These may be created by letting the structure matrix = 1 and then defining a vector of factor loadings. Alternatively, <code><a href="sim.congeneric.html">sim.congeneric</a></code> will do the same. 
+</p>
+<p><code><a href="sim.structural.html">sim.correlation</a></code> will create data sampled from a specified correlation matrix for a particular sample size. If desired, it will just return the sample correlation matrix.  With data=TRUE, it will return the sample data as well.
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>model </code></td>
+<td>
+<p>The implied population correlation or covariance matrix</p>
+</td></tr> 
+<tr valign="top"><td><code>reliability </code></td>
+<td>
+<p>The population reliability values</p>
+</td></tr>
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>The sample correlation or covariance matrix</p>
+</td></tr> 
+<tr valign="top"><td><code>observed</code></td>
+<td>
+<p>If raw=TRUE, a sample data matrix</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p> William Revelle </p>
+
+
+<h3>References</h3>
+
+<p>Revelle, W. (in preparation) An Introduction to Psychometric Theory with applications in R. Springer. at <a href="https://personality-project.org/r/book/">https://personality-project.org/r/book/</a>    </p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="sim.hierarchical.html">make.hierarchical</a></code> for another structural model and <code><a href="sim.congeneric.html">make.congeneric</a></code> for the one factor case. <code><a href="structure.list.html">structure.list</a></code> and <code><a href="structure.list.html">structure.list</a></code> for making symbolic structures.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#First, create a sem like model with a factor model of x and ys with correlation Phi
+fx &lt;-matrix(c( .9,.8,.6,rep(0,4),.6,.8,-.7),ncol=2)  
+fy &lt;- matrix(c(.6,.5,.4),ncol=1)
+rownames(fx) &lt;- c("V","Q","A","nach","Anx")
+rownames(fy)&lt;- c("gpa","Pre","MA")
+Phi &lt;-matrix( c(1,0,.7,.0,1,.7,.7,.7,1),ncol=3)
+#now create this structure
+gre.gpa &lt;- sim.structural(fx,Phi,fy)
+print(gre.gpa,2)  
+#correct for attenuation to see structure
+#the raw correlations are below the diagonal, the adjusted above
+round(correct.cor(gre.gpa$model,gre.gpa$reliability),2) 
+
+#These are the population values,
+# we can also create a correlation matrix sampled from this population
+GRE.GPA  &lt;- sim.structural(fx,Phi,fy,n=250,raw=FALSE)
+lowerMat(GRE.GPA$r)
+
+#or we can show data sampled from such a population
+GRE.GPA  &lt;- sim.structural(fx,Phi,fy,n=250,raw=TRUE)
+lowerCor(GRE.GPA$observed)
+
+
+ 
+congeneric &lt;- sim.structure(f=c(.9,.8,.7,.6)) # a congeneric model 
+congeneric 
+
+#now take this correlation matrix as a population value and create samples from it
+example.congeneric &lt;- sim.correlation(congeneric$model,n=200) #create a sample matrix
+lowerMat(example.congeneric ) #show the correlation matrix
+#or create another sample and show the data
+example.congeneric.data &lt;- sim.correlation(congeneric$model,n=200,data=TRUE) 
+describe(example.congeneric.data )
+lowerCor(example.congeneric.data )
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

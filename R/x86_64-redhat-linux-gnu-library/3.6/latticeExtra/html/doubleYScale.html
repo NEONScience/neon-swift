@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Draw two plot series with different y scales</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for doubleYScale {latticeExtra}"><tr><td>doubleYScale {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Draw two plot series with different y scales </h2>
+
+<h3>Description</h3>
+
+<p>Overplot two trellis objects with different y scales,
+optionally in different styles, adding a second y axis, and/or a
+second y axis label.
+</p>
+<p><em>Note:</em> drawing plots with multiple scales is often a bad idea
+as it can be misleading.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+doubleYScale(obj1, obj2, use.style = TRUE,
+             style1 = if (use.style) 1, style2 = if (use.style) 2,
+             add.axis = TRUE, add.ylab2 = FALSE,
+             text = NULL, auto.key = if (!is.null(text))
+               list(text, points = points, lines = lines, ...),
+             points = FALSE, lines = TRUE, ..., under = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>obj1, obj2</code></td>
+<td>
+
+<p>trellis objects. Note that most settings, like main/sub/legend/etc
+are taken only from <code>obj1</code>; only the panel, axis and ylab are
+taken from obj2.
+</p>
+</td></tr>
+<tr valign="top"><td><code>use.style, style1, style2</code></td>
+<td>
+
+<p><code>style1</code> and <code>style2</code> give the &lsquo;group number&rsquo; for obj1
+and obj2 respectively. The style is taken from these indices into
+the values of <code>trellis.par.get("superpose.line")</code>.
+Therefore these should be integers between 1 and 6;
+a value of 0 or NULL can be given to leave the default settings.
+These will also be applied to the y-axes and ylab, if relevant.
+<code>use.style</code> simply changes the defaults of the style arguments.
+</p>
+</td></tr>
+<tr valign="top"><td><code>add.axis</code></td>
+<td>
+
+<p>if TRUE, draw a second y axis (for the <code>obj2</code> series) on the
+right side of the plot.
+</p>
+</td></tr>
+<tr valign="top"><td><code>add.ylab2</code></td>
+<td>
+
+<p>if TRUE, draw a second y axis label (from <code>obj2$ylab</code>) on the
+right side of the plot. Note, this will replace any existing key or
+legend on the right side, i.e. with <code>space = "right"</code>.
+</p>
+</td></tr>
+<tr valign="top"><td><code>text, auto.key, points, lines, ...</code></td>
+<td>
+
+<p>if non-NULL, add a <code>key</code> to the display, using entries named by
+<code>text</code>. Further arguments are passed on to
+<code><a href="../../lattice/html/simpleKey.html">simpleKey</a></code> at plot time.
+</p>
+</td></tr>
+<tr valign="top"><td><code>under</code></td>
+<td>
+
+<p>if TRUE, draw <code>obj2</code> under <code>obj1</code>.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Panels from the trellis object <code>obj2</code> will be drawn in the
+corresponding panel of <code>obj1</code>.
+</p>
+<p>Axis settings are taken from the trellis objects, so most
+<code>scales</code> arguments such as <code>draw</code>, <code>at</code>, <code>labels</code>
+etc from <code>obj2</code> will carry over to the second y axis.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a merged trellis object.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Felix Andrews <a href="mailto:felix@nfrac.org">felix@nfrac.org</a> </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="as.layer.html">as.layer</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+set.seed(1)
+foo &lt;- list(x = 1:100, y = cumsum(rnorm(100)))
+## show original data
+xyplot(y + y^2 ~ x, foo, type = "l")
+## construct separate plots for each series
+obj1 &lt;- xyplot(y ~ x, foo, type = "l")
+obj2 &lt;- xyplot(y^2 ~ x, foo, type = "l")
+## simple case: no axis for the overlaid plot
+doubleYScale(obj1, obj2, add.axis = FALSE)
+## draw second y axis
+doubleYScale(obj1, obj2)
+## ...with second ylab
+doubleYScale(obj1, obj2, add.ylab2 = TRUE)
+## ...or with a key
+doubleYScale(obj1, obj2, text = c("obj1", "obj2"))
+## ...with custom styles
+update(doubleYScale(obj1, obj2, text = c("obj1", "obj2")),
+  par.settings = simpleTheme(col = c('red','black'), lty = 1:2))
+
+## different plot types
+x &lt;- rnorm(60)
+doubleYScale(histogram(x), densityplot(x), use.style = FALSE)
+## (but see ?as.layer for a better way to do this)
+
+## multi-panel example
+## a variant of Figure 5.13 from Sarkar (2008)
+## http://lmdvr.r-forge.r-project.org/figures/figures.html?chapter=05;figure=05_13
+data(SeatacWeather)
+temp &lt;- xyplot(min.temp + max.temp ~ day | month,
+               data = SeatacWeather, type = "l", layout = c(3, 1))
+rain &lt;- xyplot(precip ~ day | month, data = SeatacWeather, type = "h")
+
+doubleYScale(temp, rain, style1 = 0, style2 = 3, add.ylab2 = TRUE,
+   text = c("min. T", "max. T", "rain"), columns = 3)
+
+## re-plot with different styles
+update(trellis.last.object(),
+   par.settings = simpleTheme(col = c("black", "red", "blue")))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

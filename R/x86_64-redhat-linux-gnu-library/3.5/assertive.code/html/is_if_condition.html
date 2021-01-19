@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is suitable to be used as an if condition</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_is_if_condition {assertive.code}"><tr><td>assert_is_if_condition {assertive.code}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is suitable to be used as an if condition</h2>
+
+<h3>Description</h3>
+
+<p>Is suitable to be used as an if condition
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_is_if_condition(x, severity = getOption("assertive.severity",
+  "stop"))
+
+is_if_condition(x, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_if_condition</code> returns <code>TRUE</code> if the input is 
+scalar <code>TRUE</code> or <code>FALSE</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p><code>if</code> will try to do the right thing if you pass it a number
+or a string, but this function assumes you want to do the right thing
+and pass either <code>TRUE</code> or <code>FALSE</code>, maybe with some attributes.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+is_if_condition(TRUE)
+is_if_condition(FALSE)
+is_if_condition(NA)
+is_if_condition(c(TRUE, FALSE))
+is_if_condition("the truth")
+# You can pass a number as a logical condition, but you shouldn't,
+# so the next line returns FALSE.
+is_if_condition(1)
+assertive.base::dont_stop(assert_is_if_condition(raw(1)))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.code</em> version 0.0-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

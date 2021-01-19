@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A function to add two vectors or matrices</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for matrix.addition {psych}"><tr><td>matrix.addition {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A function to add two vectors or matrices </h2>
+
+<h3>Description</h3>
+
+<p>It is sometimes convenient to add two vectors or matrices in an operation analogous to matrix multiplication. For matrices nXm and mYp, the matrix sum  of the i,jth element of nSp = sum(over m) of iXm + mYj. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+x %+% y </pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p> a n by m matrix (or vector if m= 1)</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p> a m by p matrix (or vector if m = 1)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Used in such problems as Thurstonian scaling.  Although not technically matrix addition, as pointed out by Krus, there are many applications where the sum or difference of two vectors or matrices is a useful operation.  An alternative operation for vectors is  outer(x ,y , FUN=&quot;+&quot;) but this does not work for matrices.  
+</p>
+
+
+<h3>Value</h3>
+
+<p>a n by p matix of sums
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle</p>
+
+
+<h3>References</h3>
+
+<p>Krus, D. J. (2001) Matrix addition. Journal of Visual Statistics, 1, (February, 2001).</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+x &lt;- seq(1,4)
+z &lt;- x %+% -t(x)
+x
+z
+#compare with outer(x,-x,FUN="+")
+x &lt;- matrix(seq(1,6),ncol=2)
+y &lt;- matrix(seq(1,10),nrow=2)
+z &lt;- x %+% y
+x
+y
+z
+#but compare this with outer(x ,y,FUN="+") 
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

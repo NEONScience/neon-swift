@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: The Bass-Ackward factoring algorithm discussed by Goldberg</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bassAckward {psych}"><tr><td>bassAckward {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>The Bass-Ackward factoring algorithm discussed by Goldberg
+</h2>
+
+<h3>Description</h3>
+
+<p>Goldberg (2006) described a hierarchical factor structure organization from the &ldquo;top down&quot;.  The original idea was to do successive factor analyses from 1 to nf factors organized by factor score correlations from  one level to the next.  Waller (2007) discussed a simple way of doing this for components without finding the scores.  Using the factor correlations (from Gorsuch) to organize factors hierarchically results may be organized at many different levels. The algorithm may be applied to principal components (pca) or to true factor analysis.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bassAckward(r, nfactors = 1, fm = "minres", rotate = "oblimin", scores = "tenBerge",
+adjust=TRUE, plot=TRUE,cut=.3, use = "pairwise", cor = "cor", weight = NULL,
+correct = 0.5,...)
+bassAckward.diagram(x,digits=2,cut = .3,labels=NULL,marg=c(1.5,.5,1.0,.5),
+main="BassAckward",items=TRUE,sort=TRUE,lr=TRUE,curves=FALSE,organize=TRUE,...) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>A correlation matrix or a data matrix suitable for factoring</p>
+</td></tr>
+<tr valign="top"><td><code>nfactors</code></td>
+<td>
+<p>Factors from 1 to nfactors will be extracted. If nfactors is a a vector, then just the number of factors specified in the vector will be extracted. (See examples).
+</p>
+</td></tr>
+<tr valign="top"><td><code>fm</code></td>
+<td>
+<p>Factor method.  The default is 'minres' factoring.  Although to be consistent with the original Goldberg article, we can also do principal components (fm =&quot;pca&quot;).
+</p>
+</td></tr>
+<tr valign="top"><td><code>rotate</code></td>
+<td>
+<p>What type of rotation to apply.  The default for factors is oblimin, for pca is varimax.</p>
+</td></tr>
+<tr valign="top"><td><code>scores</code></td>
+<td>
+<p>What factor scoring algorithm should be used. The default is &quot;tenBerge&quot;, other possibilities include &quot;regression&quot;, or &quot;bartlett&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>adjust</code></td>
+<td>
+<p>If using any other scoring proceure that &quot;tenBerge&quot; should we adjust the correlations for the lack of factor score fit?</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+<p>By default draw a bassAckward diagram</p>
+</td></tr>
+<tr valign="top"><td><code>use</code></td>
+<td>
+<p>How to treat missing data.  Use='pairwise&quot; finds pairwise complete correlations.
+</p>
+</td></tr>
+<tr valign="top"><td><code>cor</code></td>
+<td>
+<p>What kind of correlation to find.  The default is Pearson.
+</p>
+</td></tr>
+<tr valign="top"><td><code>weight</code></td>
+<td>
+<p>Should cases be weighted?  Default, no.
+</p>
+</td></tr>
+<tr valign="top"><td><code>correct</code></td>
+<td>
+<p>If finding tetrachoric or polychoric correlations, what correction should be applied to empty cells (defaults to .5)
+</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>The object returned by bassAckward</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>Number of digits to display on each path</p>
+</td></tr>
+<tr valign="top"><td><code>cut</code></td>
+<td>
+<p>Values greater than the abs(cut) will be displayed in a path diagram.</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>Labels may be taken from the output of the bassAckward function or can be specified as a list.</p>
+</td></tr>
+<tr valign="top"><td><code>marg</code></td>
+<td>
+<p>Margins are set to be slightly bigger than normal to allow for a cleaner diagram</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>The main title for the figure</p>
+</td></tr>
+<tr valign="top"><td><code>items</code></td>
+<td>
+<p>if TRUE, show the items associated with the factors</p>
+</td></tr>
+<tr valign="top"><td><code>sort</code></td>
+<td>
+<p>if TRUE, sort the items by factor loadings</p>
+</td></tr>
+<tr valign="top"><td><code>lr</code></td>
+<td>
+<p>Should the graphic be drawn left to right or top to bottom</p>
+</td></tr>
+<tr valign="top"><td><code>curves</code></td>
+<td>
+<p>Should we show the correlations between factors at the same level</p>
+</td></tr>
+<tr valign="top"><td><code>organize</code></td>
+<td>
+<p>Rename and sort the factors at two lowest levels for a more pleasing figure</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other graphic parameters (e.g., cex)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This is essentially a wrapper to the <code><a href="fa.html">fa</a></code> and <code><a href="principal.html">pca</a></code> combined with the <code><a href="faCor.html">faCor</a></code> functions.  They are called repeatedly and then the weights from the resulting solutions are used to find the factor/component correlations. 
+</p>
+<p>Although the default is do all factor solutions from 1 to the nfactors, this can be simplified by specifying just some of the factor solutions. Thus, for the 135 items of the spi, it is more reasonable to ask for 3,5, and 27 item solutions. 
+</p>
+<p>The function <code><a href="bassAckward.html">bassAckward.diagram</a></code> may be called using the <code><a href="diagram.html">diagram</a></code> function or may be called directly.
+</p>
+<p>The output from <code><a href="bassAckward.html">bassAckward.diagram</a></code> is the sorted factor structure suitable for using <code><a href="fa.lookup.html">fa.lookup</a></code>.
+</p>
+<p>Although not particularly pretty, it is possible to do Schmid-Leiman rotations at each level.  Specify the rotation as rotate=&quot;schmid&quot;.
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>Call</code></td>
+<td>
+<p>Echo the call</p>
+</td></tr>
+<tr valign="top"><td><code>fm</code></td>
+<td>
+<p>Echos the factor method used</p>
+</td></tr>
+</table>
+<p>itemfaA list of the factor loadings at each level
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>bass.ack</code></td>
+<td>
+<p>A list of the factor correlations at each level</p>
+</td></tr>
+<tr valign="top"><td><code>summary</code></td>
+<td>
+<p>The factors at each level</p>
+</td></tr>
+<tr valign="top"><td><code>sumnames</code></td>
+<td>
+<p>Summary of the factor names</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>Factor labels including items for each level</p>
+</td></tr>
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>The correlation matrix analyzed</p>
+</td></tr>
+<tr valign="top"><td><code>Phi</code></td>
+<td>
+<p>The factor correlations at each level</p>
+</td></tr>
+<tr valign="top"><td><code>fa</code></td>
+<td>
+<p>The factor analysis loadings at each level, now includes Phi values </p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>Goldberg calculated factor/component scores and then correlated these.  Waller suggests just looking at the unrotated components and then examining the correlations when rotating  different numbers of components.  I do not follow the Waller procedure, but rather find successive factors and then  find factor/component correlations following Gorsuch. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle</p>
+
+
+<h3>References</h3>
+
+<p>Goldberg, L.R. (2006) Doing it all Bass-Ackwards: The development of hierarchical factor structures from the top down. Journal of Research in Personality, 40, 4, 347-358.
+</p>
+<p>Gorsuch, Richard, (1983) Factor Analysis. Lawrence Erlebaum Associates.
+</p>
+<p>Revelle, William. (in prep) An introduction to psychometric theory with applications in R. Springer.  Working draft available at <a href="https://personality-project.org/r/book/">https://personality-project.org/r/book/</a> 
+</p>
+<p>Waller, N. (2007), A general method for computing hierarchical component structures by Goldberg's Bass-Ackwards method, Journal of Research in Personality, 41, 4, 745-752,
+DOI: 10.1016/j.jrp.2006.08.005
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="fa.html">fa</a></code>, <code><a href="principal.html">pca</a></code>,  <code><a href="omega.html">omega</a></code> and <code><a href="ICLUST.html">iclust</a></code>  for alternative hierarchical solutions. 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+bassAckward(Thurstone,4,main="Thurstone data set")
+print(bassAckward(psychTools::bfi[1:25],c(2,3,5),main="bfi data set"),short=FALSE)
+ #do pca instead of factors  just summarize, don't plot
+summary(bassAckward(psychTools::bfi[1:25],c(1,3,5,7),fm="pca",main="Components",plot=FALSE))
+##not run, but useful example
+#sp5 &lt;- bassAckward(psychTools::spi[11:145], c(3,4,5,27))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

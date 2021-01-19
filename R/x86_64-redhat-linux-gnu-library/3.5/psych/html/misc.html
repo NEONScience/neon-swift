@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Miscellaneous helper functions for the psych package</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for psych.misc {psych}"><tr><td>psych.misc {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Miscellaneous helper functions for the psych package</h2>
+
+<h3>Description</h3>
+
+<p>This is a set of minor, if not trivial, helper functions.
+lowerCor finds the correlation of x variables and then prints them using 
+lowerMat which is a trivial, but useful, function to round off and print the lower triangle of a matrix.
+reflect reflects the output of a factor analysis or principal components analysis so that one or more factors is reflected. (Requested by Alexander Weiss.)
+progressBar prints out ...  as a calling routine (e.g., <code><a href="tetrachor.html">tetrachoric</a></code>) works through a tedious calculation.  shannon finds the Shannon index (H) of diversity or of information. test.all tests all the examples in a package.  best.items sorts a factor matrix for absolute values and displays the expanded items names. fa.lookup returns sorted factor analysis output with item labels. <code><a href="misc.html">cor2</a></code> correlates two data.frames (of equal length). levels2numeric and char2numeric convert dataframe columns that are categorical/levels to numeric values. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+psych.misc()
+lowerCor(x,digits=2,use="pairwise",method="pearson")
+cor2(x,y,digits=2,use="pairwise",method="pearson")
+lowerMat(R, digits = 2)
+tableF(x,y)
+reflect(f,flip=NULL)
+progressBar(value,max,label=NULL) 
+shannon(x,correct=FALSE,base=2)
+test.all(pl,package="psych",dependencies 
+      = c("Depends", "Imports", "LinkingTo"),find=FALSE,skip=NULL) 
+ levels2numeric(x) 
+ char2numeric(x) 
+ isCorrelation(x) #test if an object is a symmetric matrix    
+ fromTo(data,from,to=NULL) #convert character names to locations as specified in colnames
+ #of data
+ cs(...) #convert a list of text words to  character vector
+ acs(...) #convert a list of text words to  a single string
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>R</code></td>
+<td>
+<p>A rectangular matrix or data frame (probably a correlation matrix)</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A data matrix or data frame or a vector depending upon the function.</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>A data matrix or data frame or a vector</p>
+</td></tr>
+<tr valign="top"><td><code>f</code></td>
+<td>
+<p>The object returned from either a factor analysis (fa) or a principal components analysis (principal) </p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>round to digits</p>
+</td></tr>
+<tr valign="top"><td><code>use</code></td>
+<td>
+<p>Should pairwise deletion be done, or one of the other options to cor</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>&quot;pearson&quot;, &quot;kendall&quot;, &quot;spearman&quot;</p>
+</td></tr> 
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>the current value of some looping variable</p>
+</td></tr>
+<tr valign="top"><td><code>max</code></td>
+<td>
+<p>The maximum value the loop will achieve</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>what function is looping</p>
+</td></tr>
+<tr valign="top"><td><code>flip</code></td>
+<td>
+<p>The factor or components to be reversed keyed (by factor number)</p>
+</td></tr>
+<tr valign="top"><td><code>correct</code></td>
+<td>
+<p>Correct for the maximum possible information in this item</p>
+</td></tr>
+<tr valign="top"><td><code>base</code></td>
+<td>
+<p>What is the base for the log function (default=2, e implies base = exp(1))</p>
+</td></tr>
+<tr valign="top"><td><code>pl</code></td>
+<td>
+<p>The name of a package (or list of packages) to be activated and then have all the examples tested.</p>
+</td></tr>
+<tr valign="top"><td><code>package</code></td>
+<td>
+<p>Find the dependencies for this package, e.g., psych</p>
+</td></tr>
+<tr valign="top"><td><code>dependencies</code></td>
+<td>
+<p>Which type of dependency to examine?</p>
+</td></tr>
+<tr valign="top"><td><code>find</code></td>
+<td>
+<p>Look up the dependencies, and then test all of their examples</p>
+</td></tr>
+<tr valign="top"><td><code>skip</code></td>
+<td>
+<p>Do not test these dependencies</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>A dataframe or matrix to choose from</p>
+</td></tr>
+<tr valign="top"><td><code>from</code></td>
+<td>
+<p>select from column with name from to column with name to</p>
+</td></tr>
+<tr valign="top"><td><code>to</code></td>
+<td>
+<p>select from column from to column to</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Any string of legitimate objects</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code><a href="misc.html">lowerCor</a></code> prints out the lower off diagonal matrix rounded to digits with column names abbreviated to digits + 3 characters, but also returns the full and unrounded matrix.  By default, it uses pairwise deletion of variables.  It in turn calls
+</p>
+<p><code><a href="misc.html">lowerMat</a></code> which does the pretty printing.  
+</p>
+<p>It is important to remember to not call <code><a href="misc.html">lowerCor</a></code> when all you need is <code><a href="misc.html">lowerMat</a></code>!  
+</p>
+<p><code><a href="misc.html">cs</a></code> is a direct copy of the Cs function in the Hmisc package by Frank Harrell.  Added to psych to avoid the overhead of the Hmisc package.
+</p>
+
+
+<h3>Value</h3>
+
+ 
+<p><code><a href="misc.html">tableF</a></code> is fast alternative to the table function for creating two way tables of numeric variables.  It does not have any of the elegant checks of the table function and thus is much faster.  Used in the <code><a href="tetrachor.html">tetrachoric</a></code> and <code><a href="tetrachor.html">polychoric</a></code> functions to maximize speed.
+</p>
+<p><code><a href="misc.html">lowerCor</a></code> Finds and prints (using <code><a href="misc.html">lowerMat</a></code>) the lower diagonal correlation matrix but returns (invisibly) the full correlation matrix found with the use and method parameters. The default values are for pairwise deletion of variables, and to print to 2 decimal places. 
+</p>
+<p><code><a href="misc.html">lowerMat</a></code>Shows the lower triangle of a matrix, rounded to digits with titles abbreviated to digits + 3
+</p>
+<p><code><a href="misc.html">progressBar</a></code> Display a series of dots as we progress through a slow loop (removed from anything  using multicores). 
+</p>
+<p><code><a href="misc.html">tableF</a></code> (for tableFast) is a cut down version of table that does no error checking, nor returns pretty output, but is significantly faster than table.  It will just work on two integer vectors.  This is used in polychoric an tetrachoric for about a 50% speed improvement for large problems.  
+</p>
+<p><code><a href="misc.html">shannon</a></code> finds Shannon's H index of information.  Used for estimating the complexity or diversity of the distribution of responses in a vector or matrix. </p>
+<p style="text-align: center;"><i>H = -&sum;{p_i log(p_i) }</i></p>
+
+<p><code><a href="misc.html">test.all</a></code> allows one to test all the examples in specified package.  This allows us to make sure that those examples work when other packages (e.g., psych) are also loaded.  This is used when developing revisions to the psych package to make sure the the other packages work.  Some packages will not work and/or crash the system (e.g., DeducerPlugInScaling requires Java and even with Java, crashes when loaded, even if psych is not there!).  Alternatively, if testing a long list of dependencies, you can skip the first part by specifying them by name.
+</p>
+<p><code><a href="misc.html">cor2</a></code> will find and display the correlations between two sets of variables, rounded to digits, using the other options. If x is a list of multiple sets (two or more), then all sets are correlated.  
+</p>
+<p><code><a href="misc.html">levels2numeric</a></code>converts character data with levels to numeric data.  Used in the SAPA analyses where we code some variables, (e.g., gender, education) with character codes to help in the documentation of files, but want to do analyses of correlations with other categorical variables. 
+</p>
+<p><code><a href="misc.html">char2numeric</a></code>converts character data with levels to numeric data.  Used for cases when data from questionnaires include the response categories rathere than numeric data.  Unless the levels of the data are in meaningful order, the numeric results are not useful.  Most useful if doing polychoric analyses.
+</p>
+<p><code><a href="misc.html">fromTo</a></code> selects the columns in data from to 
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="corr.test.html">corr.test</a></code> to find correlations, count the pairwise occurrences, and to give significance tests for each correlation.  <code><a href="r.test.html">r.test</a></code> for a number of tests of correlations, including tests of the difference between correlations.  <code><a href="lowerUpper.html">lowerUpper</a></code> will display the differences between two matrices.</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+lowerMat(Thurstone)
+lb &lt;- lowerCor(psychTools::bfi[1:10])  #finds and prints the lower correlation matrix, 
+  # returns the square matrix.
+#fiml &lt;- corFiml(psychTools::bfi[1:10])     #FIML correlations require lavaan package
+#lowerMat(fiml)  #to get pretty output
+f3 &lt;- fa(Thurstone,3)
+f3r &lt;- reflect(f3,2)  #reflect the second factor
+#find the complexity of the response patterns of the iqitems.
+round(shannon(psychTools::iqitems),2) 
+#test.all('BinNor')  #Does the BinNor package work when we are using other packages
+bestItems(lb,"A3",cut=.1,dictionary=psychTools::bfi.dictionary[1:2],raw=FALSE)
+#to make this a latex table 
+#df2latex(bestItems(lb,2,cut=.2))
+#
+data(psychTools::bfi.dictionary)
+f2 &lt;- fa(psychTools::bfi[1:10],2)
+fa.lookup(f2,psychTools::bfi.dictionary)
+
+sa1 &lt;-sat.act[1:2]
+sa2 &lt;- sat.act[3:4]
+sa3 &lt;- sat.act[5:6]
+cor2(sa1,sa2)
+cor2(list(sa1,sa2))  #show within set and between set cors
+cor2(list(sa1,sa2,sa3))
+lowerCor(fromTo(sat.act,"ACT","SATQ")) #show some correlations
+vect &lt;- cs(ACT,SATQ)  #skip the quotes
+vect   #they are in this vector
+#to combine longer terms
+vect &lt;- cs("Here is a longish",vector, that, we ,"want to combine", into, several)
+vect
+temp &lt;- acs("Here is a longish",vector, that, we ,"want to combine", into, one)
+temp
+lowerCor(fromTo(sat.act,cs(ACT,SATQ)))  
+
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

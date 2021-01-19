@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a dynamic menu output for shinydashboard (client side)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for menuOutput {shinydashboard}"><tr><td>menuOutput {shinydashboard}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a dynamic menu output for shinydashboard (client side)</h2>
+
+<h3>Description</h3>
+
+<p>This can be used as a placeholder for dynamically-generated
+<code><a href="dropdownMenu.html">dropdownMenu</a></code>, <code><a href="notificationItem.html">notificationItem</a></code>,
+<code><a href="messageItem.html">messageItem</a></code>, <code><a href="taskItem.html">taskItem</a></code> <code><a href="sidebarMenu.html">sidebarMenu</a></code>,
+or <code><a href="sidebarMenu.html">menuItem</a></code>. If called directly, you must make sure to supply
+the correct type of tag. It is simpler to use the wrapper functions if
+present; for example, <code><a href="dropdownMenuOutput.html">dropdownMenuOutput</a></code> and
+<code><a href="sidebarMenuOutput.html">sidebarMenuOutput</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+menuOutput(outputId, tag = tags$li)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>outputId</code></td>
+<td>
+<p>Output variable name.</p>
+</td></tr>
+<tr valign="top"><td><code>tag</code></td>
+<td>
+<p>A tag function, like <code>tags$li</code> or <code>tags$ul</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="renderMenu.html">renderMenu</a></code> for the corresponding server side function
+and examples.
+</p>
+<p>Other menu outputs: <code><a href="dropdownMenuOutput.html">dropdownMenuOutput</a></code>,
+<code><a href="menuItemOutput.html">menuItemOutput</a></code>, <code><a href="renderMenu.html">renderMenu</a></code>,
+<code><a href="sidebarMenuOutput.html">sidebarMenuOutput</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>shinydashboard</em> version 0.7.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

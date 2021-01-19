@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Helper functions to write Hugo shortcodes using the R syntax</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for shortcode {blogdown}"><tr><td>shortcode {blogdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Helper functions to write Hugo shortcodes using the R syntax</h2>
+
+<h3>Description</h3>
+
+<p>These functions return Hugo shortcodes with the shortcode name and arguments
+you specify. The closing shortcode will be added only if the inner content is
+not empty. The function <code>shortcode_html()</code> is essentially
+<code>shortcode(.type = 'html')</code>. The function <code>shortcodes()</code> is a
+vectorized version of <code>shortcode()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+shortcode(.name, ..., .content = NULL, .type = "markdown")
+
+shortcode_html(...)
+
+shortcodes(..., .sep = "\n")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.name</code></td>
+<td>
+<p>The name of the shortcode.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>All arguments of the shortcode (either all named, or all unnamed).
+The <code>...</code> argument of <code>shortcode_html()</code> is passed to
+<code>shortcode()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.content</code></td>
+<td>
+<p>The inner content for the shortcode.</p>
+</td></tr>
+<tr valign="top"><td><code>.type</code></td>
+<td>
+<p>The type of the shortcode: <code>markdown</code> or <code>html</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.sep</code></td>
+<td>
+<p>The separator between two shortcodes (by default, a newline).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions can be used in either <span class="pkg">knitr</span> inline R expressions or
+code chunks. The returned character string is wrapped in
+<code>htmltools::<a href="../../htmltools/html/HTML.html">HTML</a>()</code>, so  <span class="pkg">rmarkdown</span> will protect
+it from the Pandoc conversion. You cannot simply write <code>{{&lt; shortcode
+&gt;}}</code> in R Markdown, because Pandoc is not aware of Hugo shortcodes, and may
+convert special characters so that Hugo can no longer recognize the
+shortcodes (e.g. <code>&lt;</code> will be converted to <code>&amp;lt;</code>).
+</p>
+<p>If your document is pure Markdown, you can use the Hugo syntax to write
+shortcodes, and there is no need to call these R functions.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A character string wrapped in <code>htmltools::HTML()</code>;
+<code>shortcode()</code> returns a string of the form <code>{{% name args %}}</code>,
+and <code>shortcode_html()</code> returns <code>{{&lt; name args &gt;}}</code>.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://gohugo.io/extras/shortcodes/">https://gohugo.io/extras/shortcodes/</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(blogdown)
+
+shortcode("tweet", "1234567")
+shortcodes("tweet", as.character(1:5))  # multiple tweets
+shortcode("figure", src = "/images/foo.png", alt = "A nice figure")
+shortcode("highlight", "bash", .content = "echo hello world;")
+
+shortcode_html("myshortcode", .content = "My &lt;strong&gt;shortcode&lt;/strong&gt;.")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>blogdown</em> version 0.17 <a href="00Index.html">Index</a>]</div>
+</body></html>

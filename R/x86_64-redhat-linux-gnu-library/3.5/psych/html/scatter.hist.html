@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Draw a scatter plot with associated X and Y histograms,...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for scatterHist {psych}"><tr><td>scatterHist {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Draw a scatter plot with associated X and Y histograms, densities and correlation</h2>
+
+<h3>Description</h3>
+
+<p>Draw a X Y scatter plot with associated X and Y histograms with estimated densities.  Partly a demonstration of the use of layout. Also includes lowess smooth or linear model slope, as well as correlation.  Adapted from addicted to R example 78 with further modifications suggested by Jared Smith. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>scatterHist(x,y=NULL,smooth=TRUE,ab=FALSE,correl=TRUE,density=TRUE,ellipse=TRUE,  
+  digits=2,method,cex.cor=1, title="Scatter plot + histograms", xlab=NULL,ylab=NULL,  
+   smoother=FALSE,nrpoints=0, xlab.hist=NULL,ylab.hist=NULL,grid=FALSE, xlim=NULL, 
+   ylim=NULL, x.breaks=11,y.breaks=11, x.space=0, y.space=0 ,freq=TRUE, x.axes=TRUE, 
+   y.axes=TRUE,size=c(1,2),...) 
+ 
+ scatter.hist(x,y=NULL,smooth=TRUE,ab=FALSE, correl=TRUE, density=TRUE, ellipse=TRUE, 
+ digits=2, method,cex.cor=1, title="Scatter plot + histograms", 
+ xlab=NULL,ylab=NULL,smoother=FALSE, nrpoints=0, xlab.hist=NULL, ylab.hist=NULL, 
+ grid=FALSE, xlim=NULL,ylim=NULL,x.breaks=11,y.breaks=11,
+ x.space=0,y.space=0,freq=TRUE,x.axes=TRUE,y.axes=TRUE,size=c(1,2),...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>The X vector, or the first column of a  data.frame or matrix.  </p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>The Y vector, of if X is a data.frame or matrix, the second column of X</p>
+</td></tr>
+<tr valign="top"><td><code>smooth</code></td>
+<td>
+<p>if TRUE, then add a loess smooth to the plot</p>
+</td></tr>
+<tr valign="top"><td><code>ab</code></td>
+<td>
+<p>if TRUE, then show the best fitting linear fit</p>
+</td></tr>
+<tr valign="top"><td><code>correl</code></td>
+<td>
+<p>TRUE: Show the correlation</p>
+</td></tr>
+<tr valign="top"><td><code>density</code></td>
+<td>
+<p>TRUE: Show the estimated densities</p>
+</td></tr>
+<tr valign="top"><td><code>ellipse</code></td>
+<td>
+<p>TRUE: draw 1 and 2 sigma ellipses and smooth</p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>How many digits to use if showing the correlation</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>Which method to use for correlation (&quot;pearson&quot;,&quot;spearman&quot;,&quot;kendall&quot;) 
+defaults to &quot;pearson&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>smoother</code></td>
+<td>
+<p>if TRUE, use smoothScatter instead of plot. Nice for large N.</p>
+</td></tr>
+<tr valign="top"><td><code>nrpoints</code></td>
+<td>
+<p>If using smoothScatter, show nrpoints as dots. Defaults to 0</p>
+</td></tr>
+<tr valign="top"><td><code>grid</code></td>
+<td>
+<p>If TRUE, show a grid for the scatter plot.</p>
+</td></tr>
+<tr valign="top"><td><code>cex.cor</code></td>
+<td>
+<p>Adjustment for the size of the correlation</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>Label for the x axis</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>Label for the y axis</p>
+</td></tr>
+<tr valign="top"><td><code>xlim</code></td>
+<td>
+<p>Allow specification for limits of x axis, although this seems to just work for the scatter plots.</p>
+</td></tr>
+<tr valign="top"><td><code>ylim</code></td>
+<td>
+<p>Allow specification for limits of y axis</p>
+</td></tr> 
+<tr valign="top"><td><code>x.breaks</code></td>
+<td>
+<p>Number of breaks to suggest to the x axis histogram.</p>
+</td></tr>
+<tr valign="top"><td><code>y.breaks</code></td>
+<td>
+<p>Number of breaks to suggest to the y axis histogram.</p>
+</td></tr>
+<tr valign="top"><td><code>x.space</code></td>
+<td>
+<p>space between bars</p>
+</td></tr>
+<tr valign="top"><td><code>y.space</code></td>
+<td>
+<p>Space between y bars</p>
+</td></tr>
+<tr valign="top"><td><code>freq</code></td>
+<td>
+<p>Show frequency counts, otherwise show density counts</p>
+</td></tr>
+<tr valign="top"><td><code>x.axes</code></td>
+<td>
+<p>Show the x axis for the x histogram</p>
+</td></tr>
+<tr valign="top"><td><code>y.axes</code></td>
+<td>
+<p>Show the y axis for the y histogram</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>The sizes of the ellipses (in sd units).  Defaults to 1,2</p>
+</td></tr>
+<tr valign="top"><td><code>xlab.hist</code></td>
+<td>
+<p>Not currently available</p>
+</td></tr>
+<tr valign="top"><td><code>ylab.hist</code></td>
+<td>
+<p>Label for y axis histogram.  Not currently available.</p>
+</td></tr> 
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>An optional title</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other parameters for graphics</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Just a straightforward application of layout and barplot, with some tricks taken from <code><a href="pairs.panels.html">pairs.panels</a></code>.  The various options allow for correlation ellipses (1 and 2 sigma from the mean), lowess smooths, linear fits, density curves on the histograms, and the value of the correlation.  ellipse = TRUE implies smooth = TRUE.  The grid option provides a background grid to the scatterplot. )
+</p>
+
+
+<h3>Note</h3>
+
+<p>Adapted from Addicted to R example 78.  Modified following some nice suggestions from Jared Smith. 
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="pairs.panels.html">pairs.panels</a></code> for multiple plots, <code><a href="multi.hist.html">multi.hist</a></code> for multiple histograms.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(sat.act)
+with(sat.act,scatter.hist(SATV,SATQ))
+#or for something a bit more splashy
+scatter.hist(sat.act[5:6],pch=(19+sat.act$gender),col=c("blue","red")[sat.act$gender],grid=TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

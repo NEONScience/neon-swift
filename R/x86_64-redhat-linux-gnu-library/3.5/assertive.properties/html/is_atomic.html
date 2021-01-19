@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the input atomic/recursive/vector?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_is_atomic {assertive.properties}"><tr><td>assert_is_atomic {assertive.properties}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the input atomic/recursive/vector?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the input is a type that is atomic/recursive/vector.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_is_atomic(x, severity = getOption("assertive.severity", "stop"))
+
+assert_is_nested(x, severity = getOption("assertive.severity", "stop"))
+
+assert_is_non_nested(x, severity = getOption("assertive.severity", "stop"))
+
+assert_is_recursive(x, severity = getOption("assertive.severity", "stop"))
+
+assert_is_vector(x, severity = getOption("assertive.severity", "stop"))
+
+is_atomic(x, .xname = get_name_in_parent(x))
+
+is_nested(x, .xname = get_name_in_parent(x))
+
+is_non_nested(x, .xname = get_name_in_parent(x))
+
+is_recursive(x, .xname = get_name_in_parent(x))
+
+is_vector(x, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_atomic</code>, <code>is_recursive</code> and <code>is_vector</code> wrap 
+<code>is.atomic</code>, <code>is.recursive</code> and <code>is.vector</code> respectively,
+providing more information on failure.  
+<code>is_nested</code> checks for recursive objects where at least one element is
+also recursive. <code>is_non_nested</code> returns <code>TRUE</code> for atomic objects
+and recursive objects where no elements are recursive.
+The <code>assert_*</code> functions return nothing but throw an error if the 
+corresponding <code>is_*</code> function returns <code>FALSE</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/is.atomic.html">is.atomic</a></code> and <code><a href="../../base/html/is.vector.html">is.vector</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+atomic_types &lt;- list(
+  logical(),
+  integer(),
+  numeric(), 
+  complex(),
+  character(), 
+  raw(),
+  matrix(), 
+  array(),
+  factor(),
+  NULL
+)
+for(var in atomic_types) assert_is_atomic(var)
+
+recursive_types &lt;- list(
+  list(), 
+  expression(),
+  data.frame(), 
+  y ~ x,
+  function(){},
+  call("sin", "pi")
+)
+for(var in recursive_types) assert_is_recursive(var)
+
+# Names are neither atomic nor recursive
+a_name &lt;- as.name("x")
+is_atomic(a_name)
+is_recursive(a_name)
+
+vector_types &lt;- c(
+  atomic_types[1:6], 
+  recursive_types[1:2]
+)
+for(var in vector_types) assert_is_vector(var)
+
+# Nested objects are recursive and have at least one recursive element
+nested_list &lt;- list(a = 1, b = list(2:3))
+assert_is_nested(nested_list)
+for(elt in nested_list) assert_is_non_nested(elt)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.properties</em> version 0.0-4 <a href="00Index.html">Index</a>]</div>
+</body></html>

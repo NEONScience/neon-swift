@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Load an app's supporting R files</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for loadSupport {shiny}"><tr><td>loadSupport {shiny}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Load an app's supporting R files</h2>
+
+<h3>Description</h3>
+
+<p>Loads all of the supporting R files of a Shiny application. Specifically,
+this function loads any top-level supporting <code>.R</code> files in the <code style="white-space: pre;">R/</code> directory
+adjacent to the <code>app.R</code>/<code>server.R</code>/<code>ui.R</code> files.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+loadSupport(
+  appDir = NULL,
+  renv = new.env(parent = globalenv()),
+  globalrenv = globalenv()
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>appDir</code></td>
+<td>
+<p>The application directory. If <code>appDir</code> is <code>NULL</code> or
+not supplied, the nearest enclosing directory that is a Shiny app, starting
+with the current directory, is used.</p>
+</td></tr>
+<tr valign="top"><td><code>renv</code></td>
+<td>
+<p>The environmeny in which the files in the <code style="white-space: pre;">R/</code> directory should
+be evaluated.</p>
+</td></tr>
+<tr valign="top"><td><code>globalrenv</code></td>
+<td>
+<p>The environment in which <code>global.R</code> should be evaluated. If
+<code>NULL</code>, <code>global.R</code> will not be evaluated at all.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Since Shiny 1.5.0, this function is called by default when running an
+application. If it causes problems, there are two ways to opt out. You can
+either place a file named <code style="white-space: pre;">_disable_autoload.R</code> in your R/ directory, or
+set <code>options(shiny.autoload.r=FALSE)</code>. If you set this option, it will
+affect any application that runs later in the same R session, potentially
+breaking it, so after running your application, you should unset option with
+<code>options(shiny.autoload.r=NULL)</code>
+</p>
+<p>The files are sourced in alphabetical order (as determined by
+<a href="../../base/html/list.files.html">list.files</a>). <code>global.R</code> is evaluated before the supporting R files in the
+<code style="white-space: pre;">R/</code> directory.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

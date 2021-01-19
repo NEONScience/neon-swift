@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find the interpolated sample median, quartiles, or specific...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for interp.median {psych}"><tr><td>interp.median {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find the interpolated sample median, quartiles, or specific quantiles for a vector, matrix, or data frame</h2>
+
+<h3>Description</h3>
+
+<p>For data with a limited number of response categories (e.g., attitude items), it is useful treat each response category as range with width, w and linearly interpolate the median, quartiles, or any quantile value within the median response.   
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+interp.median(x, w = 1,na.rm=TRUE)
+interp.quantiles(x, q = .5, w = 1,na.rm=TRUE)
+interp.quartiles(x,w=1,na.rm=TRUE)
+interp.boxplot(x,w=1,na.rm=TRUE)
+interp.values(x,w=1,na.rm=TRUE)
+interp.qplot.by(y,x,w=1,na.rm=TRUE,xlab="group",ylab="dependent",
+               ylim=NULL,arrow.len=.05,typ="b",add=FALSE,...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>input vector </p>
+</td></tr>
+<tr valign="top"><td><code>q</code></td>
+<td>
+<p>quantile to estimate ( 0 &lt; q &lt; 1</p>
+</td></tr>
+<tr valign="top"><td><code>w</code></td>
+<td>
+<p>category width</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>input vector for interp.qplot.by</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>should missing values be removed</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>x label</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>Y label</p>
+</td></tr>
+<tr valign="top"><td><code>ylim</code></td>
+<td>
+<p>limits for the y axis</p>
+</td></tr>
+<tr valign="top"><td><code>arrow.len</code></td>
+<td>
+<p>length of arrow in interp.qplot.by</p>
+</td></tr>
+<tr valign="top"><td><code>typ</code></td>
+<td>
+<p>plot type in interp.qplot.by</p>
+</td></tr>
+<tr valign="top"><td><code>add</code></td>
+<td>
+<p>add the plot or not</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional parameters to plotting function</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If the total number of responses is N, with median, M, and the number of responses at the median value, Nm &gt;1, and Nb= the number of responses less than the median,  then with the assumption that the responses are distributed uniformly within the category,  the interpolated median is M - .5w + w*(N/2 - Nb)/Nm. 
+</p>
+<p>The generalization to 1st, 2nd and 3rd quartiles as well as the general quantiles is straightforward.
+</p>
+<p>A somewhat different generalization allows for graphic presentation of the difference between interpolated and non-interpolated points.  This uses the interp.values function.
+</p>
+<p>If the input is a matrix or data frame, quantiles are reported for each variable.
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>im</code></td>
+<td>
+<p>interpolated median(quantile)</p>
+</td></tr>
+<tr valign="top"><td><code>v</code></td>
+<td>
+<p>interpolated values for all data points</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+  <p><code><a href="../../stats/html/median.html">median</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+interp.median(c(1,2,3,3,3))  # compare with median = 3
+interp.median(c(1,2,2,5))
+interp.quantiles(c(1,2,2,5),.25)
+x &lt;- sample(10,100,TRUE)
+interp.quartiles(x)
+#
+x &lt;-  c(1,1,2,2,2,3,3,3,3,4,5,1,1,1,2,2,3,3,3,3,4,5,1,1,1,2,2,3,3,3,3,4,2)
+y &lt;-  c(1,2,3,3,3,3,4,4,4,4,4,1,2,3,3,3,3,4,4,4,4,5,1,5,3,3,3,3,4,4,4,4,4)
+x &lt;-  x[order(x)]   #sort the data by ascending order to make it clearer
+y &lt;- y[order(y)]
+xv &lt;- interp.values(x)
+yv &lt;- interp.values(y)
+barplot(x,space=0,xlab="ordinal position",ylab="value")
+lines(1:length(x)-.5,xv)
+points(c(length(x)/4,length(x)/2,3*length(x)/4),interp.quartiles(x))
+barplot(y,space=0,xlab="ordinal position",ylab="value")
+lines(1:length(y)-.5,yv)
+points(c(length(y)/4,length(y)/2,3*length(y)/4),interp.quartiles(y))
+data(psychTools::galton)
+galton &lt;- psychTools::galton
+interp.median(galton)
+interp.qplot.by(galton$child,galton$parent,ylab="child height"
+,xlab="Mid parent height") 
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

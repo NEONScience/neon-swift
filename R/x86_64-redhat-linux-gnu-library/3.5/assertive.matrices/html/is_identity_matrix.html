@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the matrix an identity matrix?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_is_identity_matrix {assertive.matrices}"><tr><td>assert_is_identity_matrix {assertive.matrices}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the matrix an identity matrix?</h2>
+
+<h3>Description</h3>
+
+<p>Checks that the input is an identity matrix.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_is_identity_matrix(x, tol = 100 * .Machine$double.eps,
+  severity = getOption("assertive.severity", "stop"))
+
+is_identity_matrix(x, tol = 100 * .Machine$double.eps,
+  .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>tol</code></td>
+<td>
+<p>Abolute deviations from the expected values smaller than 
+<code>tol</code> are not considered.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>TRUE</code> if the input is all zeroes (after coercion to be a 
+matrix).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- diag(3)
+is_identity_matrix(x)
+x[1, 2] &lt;- 100 * .Machine$double.eps
+is_identity_matrix(x)
+x[2, 3] &lt;- 101 * .Machine$double.eps
+is_identity_matrix(x)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.matrices</em> version 0.0-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

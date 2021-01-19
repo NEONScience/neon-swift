@@ -1,0 +1,3 @@
+0.0-2 Better error msgs for is_equal_to & its friends.
+      Removed devtools dependency.
+0.0-1 Content extracted from assertive 0.3-0, and tidied.

@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Construct a String To Sign</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for string_to_sign {aws.signature}"><tr><td>string_to_sign {aws.signature}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Construct a String To Sign</h2>
+
+<h3>Description</h3>
+
+<p>Construct a String to Sign from request elements
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+string_to_sign(
+  algorithm = "AWS4-HMAC-SHA256",
+  datetime,
+  region,
+  service,
+  request_hash
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>algorithm</code></td>
+<td>
+<p>A character string containing the hashing algorithm used in signing process. Should only be &ldquo;AWS4-HMAC-SHA256&rdquo;.</p>
+</td></tr>
+<tr valign="top"><td><code>datetime</code></td>
+<td>
+<p>A character string containing a UTC date in the form of &ldquo;YYYYMMDDTHHMMSSZ&rdquo;.</p>
+</td></tr>
+<tr valign="top"><td><code>region</code></td>
+<td>
+<p>A character string containing the AWS region for the request.</p>
+</td></tr>
+<tr valign="top"><td><code>service</code></td>
+<td>
+<p>A character string containing the AWS service (e.g., &ldquo;iam&rdquo;, &ldquo;host&rdquo;, &ldquo;ec2&rdquo;).</p>
+</td></tr>
+<tr valign="top"><td><code>request_hash</code></td>
+<td>
+<p>A character string containing the hash of the canonical request, perhaps as returned by <code><a href="canonical_request.html">canonical_request</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This is a mostly internal function that creates a &ldquo;String To Sign&rdquo;, which is part of the Signature Version 4. Users probably only need to use the <code><a href="signature_v4_auth.html">signature_v4_auth</a></code> function to generate signatures.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Thomas J. Leeper &lt;thosjleeper@gmail.com&gt;
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://docs.aws.amazon.com/general/latest/gr/sigv4-create-string-to-sign.html">Create a String to Sign for Signature Version 4</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="signature_v4.html">signature_v4</a></code>, <code><a href="signature_v4_auth.html">signature_v4_auth</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# From AWS documentation
+rh &lt;- "3511de7e95d28ecd39e9513b642aee07e54f4941150d8df8bf94b328ef7e55e2"
+sts &lt;- 
+string_to_sign(datetime = "20110909T233600Z",
+               region = "us-east-1",
+               service = "iam",
+               request_hash = rh)
+identical(sts, "AWS4-HMAC-SHA256
+20110909T233600Z
+20110909/us-east-1/iam/aws4_request
+3511de7e95d28ecd39e9513b642aee07e54f4941150d8df8bf94b328ef7e55e2")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>aws.signature</em> version 0.6.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

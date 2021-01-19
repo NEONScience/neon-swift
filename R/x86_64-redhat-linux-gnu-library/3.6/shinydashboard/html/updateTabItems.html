@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Change the selected tab on the client</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for updateTabItems {shinydashboard}"><tr><td>updateTabItems {shinydashboard}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Change the selected tab on the client</h2>
+
+<h3>Description</h3>
+
+<p>This function controls the active tab of <code><a href="tabItems.html">tabItems</a></code> from the
+server. It behaves just like <code><a href="../../shiny/html/updateTabsetPanel.html">updateTabsetPanel</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+updateTabItems(session, inputId, selected = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The <code>session</code> object passed to function given to
+<code>shinyServer</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The id of the <code>tabsetPanel</code>, <code>navlistPanel</code>,
+or <code>navbarPage</code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>selected</code></td>
+<td>
+<p>The name of the tab to make active.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Only run this example in interactive R sessions
+if (interactive()) {
+
+ui &lt;- dashboardPage(
+  dashboardHeader(title = "Simple tabs"),
+  dashboardSidebar(
+    sidebarMenu(
+      id = "tabs",
+      menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+      menuItem("Widgets", tabName = "widgets", icon = icon("th"))
+    ),
+    actionButton('switchtab', 'Switch tab')
+  ),
+  dashboardBody(
+    tabItems(
+      tabItem(tabName = "dashboard",
+        h2("Dashboard tab content")
+      ),
+      tabItem(tabName = "widgets",
+        h2("Widgets tab content")
+      )
+    )
+  )
+)
+
+server &lt;- function(input, output, session) {
+  observeEvent(input$switchtab, {
+    newtab &lt;- switch(input$tabs,
+      "dashboard" = "widgets",
+      "widgets" = "dashboard"
+    )
+    updateTabItems(session, "tabs", newtab)
+  })
+}
+
+shinyApp(ui, server)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinydashboard</em> version 0.7.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the file accessible?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_executable_files {assertive.files}"><tr><td>assert_all_are_executable_files {assertive.files}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the file accessible?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the input files can be executed/read/written to.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_executable_files(x, warn_about_windows = TRUE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_executable_files(x, warn_about_windows = TRUE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_readable_files(x, warn_about_windows = TRUE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_readable_files(x, warn_about_windows = TRUE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_writable_files(x, warn_about_windows = TRUE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_writable_files(x, warn_about_windows = TRUE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_executable_file(x, warn_about_windows = TRUE,
+  .xname = get_name_in_parent(x))
+
+is_ex_file(x)
+
+is_readable_file(x, warn_about_windows = TRUE,
+  .xname = get_name_in_parent(x))
+
+is_writable_file(x, warn_about_windows = TRUE,
+  .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>warn_about_windows</code></td>
+<td>
+<p>Logical.  If <code>TRUE</code>, then calling the function
+under Windows will throw a warning about the problems with 
+<code><a href="../../base/html/file.access.html">file.access</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_executable_file</code> wraps <code>file.access</code>, showing
+the names of the inputs in the answer.   <code>assert_is_executable_file</code> 
+returns nothing but throws an error if <code>is_executable_file</code> returns
+<code>FALSE</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/file.access.html">file.access</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+files &lt;- dir()
+is_readable_file(files)
+is_writable_file(files, warn_about_windows = FALSE)
+is_executable_file(files, warn_about_windows = FALSE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.files</em> version 0.0-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

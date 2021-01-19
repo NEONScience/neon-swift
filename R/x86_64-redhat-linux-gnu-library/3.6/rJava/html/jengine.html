@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Java callback engineCast a Java object to another class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for jengine {rJava}"><tr><td>jengine {rJava}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Java callback engineCast a Java object to another class
+</h2>
+
+<h3>Description</h3>
+
+<p><code>.jengine</code> obtains the current callback engine or starts it.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+.jengine(start=FALSE, silent=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>start</code></td>
+<td>
+<p>if set to <code>TRUE</code> then the callback engine is started
+if it is not yet active</p>
+</td></tr>
+<tr valign="top"><td><code>silent</code></td>
+<td>
+<p>if set to <code>TRUE</code> then NULL is returned if there is
+no engine available. Otherwise an error is raised</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>.jengine</code> can be used to detect whether the engine was started
+or to start the engine.
+</p>
+<p>Before any callbacks from Java into R can be performed, the Java
+callback engine must be initialized, loading Java/R Interface
+(JRI). If JRI was not started and <code>start</code> is set to <code>TRUE</code>
+then <code>.jengine</code> will load necessary classes and start
+it.
+</p>
+<p>Note that JRI is an optional part of rJava and requires R shared
+library at the moment. By default rJava will continue with
+installation even if JRI cannot be built.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns a Java object reference (<code>jobjRef</code>) to the current Java
+callback engine.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="jcall.html">.jcall</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+.jengine(TRUE)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rJava</em> version 0.9-13 <a href="00Index.html">Index</a>]</div>
+</body></html>

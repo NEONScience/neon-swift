@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pause an R process</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pause {profvis}"><tr><td>pause {profvis}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pause an R process</h2>
+
+<h3>Description</h3>
+
+<p>This function pauses an R process for some amount of time. It differs from
+<code><a href="../../base/html/Sys.sleep.html">Sys.sleep</a></code> in that time spent in <code>pause</code> will show up in
+profiler data. Another difference is that <code>pause</code> uses up 100
+whereas <code>Sys.sleep</code> does not.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pause(seconds)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>seconds</code></td>
+<td>
+<p>Number of seconds to pause.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Wait for 0.5 seconds
+pause(0.5)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>profvis</em> version 0.3.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

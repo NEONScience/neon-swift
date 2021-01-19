@@ -1,0 +1,7 @@
+0.0-3 Added is_externalptr.
+      Added is_pairlist.
+      Added many function-related assertions (is_closure_function, is_s3_generic, etc.).
+0.0-2 Added is_formula and variants.
+      Added is_double and assertions.
+      Some better error messages.
+0.0-1 Content extracted from assertive 0.3-0, and tidied.

@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Join two data.tables together</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dt_left_join {tidytable}"><tr><td>dt_left_join {tidytable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Join two data.tables together</h2>
+
+<h3>Description</h3>
+
+<p>Join two data.tables together
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dt_left_join(x, y, by = NULL)
+
+dt_inner_join(x, y, by = NULL)
+
+dt_right_join(x, y, by = NULL)
+
+dt_full_join(x, y, by = NULL, suffix = c(".x", ".y"))
+
+dt_anti_join(x, y, by = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A data.frame or data.table</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>A data.frame or data.table</p>
+</td></tr>
+<tr valign="top"><td><code>by</code></td>
+<td>
+<p>A character vector of variables to join by. If NULL, the default, the join will do a natural join, using all variables with common names across the two tables.</p>
+</td></tr>
+<tr valign="top"><td><code>suffix</code></td>
+<td>
+<p>Append created for duplicated column names when using 'dt_full_join()'</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A data.table
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+df1 &lt;- data.table::data.table(x = c("a","a","a","b","b"), y = 1:5)
+df2 &lt;- data.table::data.table(x = c("a","b"), z = 1:2)
+
+df1 %&gt;% dt_left_join(df2)
+df1 %&gt;% dt_inner_join(df2)
+df1 %&gt;% dt_right_join(df2)
+df1 %&gt;% dt_full_join(df2)
+df1 %&gt;% dt_anti_join(df2)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytable</em> version 0.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

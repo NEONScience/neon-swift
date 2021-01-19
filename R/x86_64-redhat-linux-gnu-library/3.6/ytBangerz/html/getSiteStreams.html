@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Return the Sensor Streams at A Given Site</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for getSiteStreams {ytBangerz}"><tr><td>getSiteStreams {ytBangerz}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Return the Sensor Streams at A Given Site</h2>
+
+<h3>Description</h3>
+
+<p>Return the Sensor Streams at A Given Site
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getSiteStreams(site, l0.matrix, exception.df = NULL, date = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>site</code></td>
+<td>
+<p>The 4-Letter site code for a NEON site. Please, no OKSR.</p>
+</td></tr>
+<tr valign="top"><td><code>l0.matrix</code></td>
+<td>
+<p>The l0.matrix as a data frame.</p>
+</td></tr>
+<tr valign="top"><td><code>exception.df</code></td>
+<td>
+<p>A data frame of excepted streams. Full 45-character streams and site column required</p>
+</td></tr>
+<tr valign="top"><td><code>date</code></td>
+<td>
+<p>A YYYY-MM-DD character date. Input a value to return sensors installed at a site on a given date.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Report files aggreagted up from site level stats, by date.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Robert 'n' Josh
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>ytBangerz</em> version 0.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

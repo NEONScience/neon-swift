@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bucket versions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for get_versions {aws.s3}"><tr><td>get_versions {aws.s3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bucket versions</h2>
+
+<h3>Description</h3>
+
+<p>Get/Put versioning settings or retrieve versions of bucket objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+get_versions(bucket, ...)
+
+get_versioning(bucket, ...)
+
+put_versioning(bucket, status = c("Enabled", "Suspended"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>bucket</code></td>
+<td>
+<p>Character string with the name of the bucket, or an object of class &ldquo;s3_bucket&rdquo;.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments passed to <code><a href="s3HTTP.html">s3HTTP</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>Character string specifying whether versioning should be &ldquo;Enabled&rdquo; or &ldquo;Suspended&rdquo;.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>get_versioning</code> returns the versioning status of a bucket; <code>put_versioning</code> sets the versioning status. <code>get_versions</code> returns information about bucket versions.
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>get_versioning</code>: If versioning has never been enabled or suspend, the value is <code>NULL</code>. Otherwise, the status is returned (either &ldquo;Enabled&rdquo; or &ldquo;Suspended&rdquo;). For <code>put_versioning</code>: If versioning has never been enabled or suspend, the value is <code>NULL</code>. Otherwise, the status is returned (either &ldquo;Enabled&rdquo; or &ldquo;Suspended&rdquo;).
+For <code>get_versions</code>: A list.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketGETVersion.html">API Documentation</a>
+<a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketGETversioningStatus.html">API Documentation</a>
+<a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTBucketPUTVersioningStatus.html">API Documentation</a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+ put_versioning("mybucket")
+ get_versioning("mybucket")
+ get_versions("mybucket")
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>aws.s3</em> version 0.3.21 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Render multiple R Markdown documents into a book</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for render_book {bookdown}"><tr><td>render_book {bookdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Render multiple R Markdown documents into a book</h2>
+
+<h3>Description</h3>
+
+<p>Render multiple R Markdown files under the current working directory into a
+book. It can be used in the RStudio IDE (specifically, the <code>knit</code> field
+in YAML). The <code>preview_chapter()</code> function is a wrapper of
+<code>render_book(preview = TRUE)</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+render_book(
+  input,
+  output_format = NULL,
+  ...,
+  clean = TRUE,
+  envir = parent.frame(),
+  clean_envir = !interactive(),
+  output_dir = NULL,
+  new_session = NA,
+  preview = FALSE,
+  encoding = "UTF-8",
+  config_file = "_bookdown.yml"
+)
+
+preview_chapter(..., envir = parent.frame())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>input</code></td>
+<td>
+<p>An input filename (or multiple filenames). If <code>preview =
+TRUE</code>, only files specified in this argument are rendered, otherwise all R
+Markdown files specified by the book are rendered.</p>
+</td></tr>
+<tr valign="top"><td><code>output_format, ..., clean, envir</code></td>
+<td>
+<p>Arguments to be passed to
+<code>rmarkdown::<a href="../../rmarkdown/html/render.html">render</a>()</code>. For <code>preview_chapter()</code>,
+<code>...</code> is passed to <code>render_book()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>clean_envir</code></td>
+<td>
+<p>Whether to clean up the environment <code>envir</code> before
+rendering the book. By default, the environment is cleaned when rendering
+the book in a non-interactive R session.</p>
+</td></tr>
+<tr valign="top"><td><code>output_dir</code></td>
+<td>
+<p>The output directory. If <code>NULL</code>, a field named
+<code>output_dir</code> in the configuration file &lsquo;<span class="file">_bookdown.yml</span>&rsquo; will be
+used (possibly not specified, either, in which case a directory name
+&lsquo;<span class="file">_book</span>&rsquo; will be used).</p>
+</td></tr>
+<tr valign="top"><td><code>new_session</code></td>
+<td>
+<p>Whether to use new R sessions to compile individual Rmd
+files (if not provided, the value of the <code>new_session</code> option in
+&lsquo;<span class="file">_bookdown.yml</span>&rsquo; is used; if this is also not provided,
+<code>new_session = FALSE</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>preview</code></td>
+<td>
+<p>Whether to render and preview the input files specified by the
+<code>input</code> argument. Previewing a certain chapter may save compilation
+time as you actively work on this chapter, but the output may not be
+accurate (e.g. cross-references to other chapters will not work).</p>
+</td></tr>
+<tr valign="top"><td><code>encoding</code></td>
+<td>
+<p>Ignored. The character encoding of all input files is
+supposed to be UTF-8.</p>
+</td></tr>
+<tr valign="top"><td><code>config_file</code></td>
+<td>
+<p>The book configuration file.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>There are two ways to render a book from Rmd files. The default way
+(<code>new_session = FALSE</code>) is to merge Rmd files into a single file and
+render this file. You can also choose to render each individual Rmd file in a
+new R session (<code>new_session = TRUE</code>).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# see https://bookdown.org/yihui/bookdown for the full documentation
+if (file.exists("index.Rmd")) bookdown::render_book("index.Rmd")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bookdown</em> version 0.17 <a href="00Index.html">Index</a>]</div>
+</body></html>

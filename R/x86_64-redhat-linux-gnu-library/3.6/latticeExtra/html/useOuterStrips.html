@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Put Strips on the Boundary of a Lattice Display</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for useOuterStrips {latticeExtra}"><tr><td>useOuterStrips {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Put Strips on the Boundary of a Lattice Display </h2>
+
+<h3>Description</h3>
+
+<p>Try to update a <code>"trellis"</code> object so that strips are only
+shown on the top and left boundaries when printed, instead of in every
+panel as is usual.  This is only meaningful when there are exactly two
+conditioning variables.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+
+useOuterStrips(x,
+               strip = strip.default,
+               strip.left = strip.custom(horizontal = FALSE),
+               strip.lines = 1,
+               strip.left.lines = strip.lines)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p> An object of class <code>"trellis"</code>. </p>
+</td></tr>
+<tr valign="top"><td><code>strip, strip.left</code></td>
+<td>
+<p> A function, character string or logical that
+would be appropriate <code>strip</code> and <code>strip.left</code> arguments
+respectively in a high level lattice function call (see
+<code><a href="../../lattice/html/xyplot.html">xyplot</a></code>) </p>
+</td></tr>
+<tr valign="top"><td><code>strip.lines, strip.left.lines</code></td>
+<td>
+<p> height of strips in number of
+lines; helpful for multi-line text or mathematical annotation in
+strips. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>useOuterStrips</code> modifies a <code>"trellis"</code> object with
+<code>length(dim(x)) == 2</code> so that when plotted, strips are only shown
+on the top and left boundaries of the panel layout, rather than on top
+of every panel, as is the usual behaviour.
+</p>
+<p>If the original <code>"trellis"</code> object <code>x</code> includes non-default
+<code>strip</code> and <code>strip.left</code> arguments, they will be ignored.
+To provide customized strip behaviour, specify the custom strip
+functions directly as arguments to <code>useOuterStrips</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"trellis"</code>; essentially the same as <code>x</code>,
+but with certain properties modified.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Deepayan Sarkar </p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../lattice/html/Lattice.html">Lattice</a></code>,
+<code><a href="../../lattice/html/xyplot.html">xyplot</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+library(lattice)
+
+mtcars$HP &lt;- equal.count(mtcars$hp)
+
+useOuterStrips(xyplot(mpg ~ disp | HP + factor(cyl), mtcars))
+
+useOuterStrips(xyplot(mpg ~ disp | factor(cyl) + HP, mtcars),
+               strip.left = FALSE,
+               strip = strip.custom(style = 4))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

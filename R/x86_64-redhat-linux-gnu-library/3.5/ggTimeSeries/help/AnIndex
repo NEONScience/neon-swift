@@ -1,0 +1,17 @@
+dtClimate	dtClimate
+ggplot_calendar_heatmap	ggplot_calendar_heatmap
+ggplot_horizon	ggplot_horizon
+ggplot_waterfall	ggplot_waterfall
+Marimekkofy	Marimekkofy
+StatCalendarMonthBreaks	StatCalendarMonthBreaks
+StatHorizon	StatHorizon
+StatMarimekko	StatMarimekko
+StatOccurrence	StatOccurrence
+StatSteamgraph	StatSteamgraph
+StatWaterfall	StatWaterfall
+stat_calendar_heatmap	stat_calendar_heatmap
+stat_horizon	stat_horizon
+stat_marimekko	stat_marimekko
+stat_occurrence	stat_occurrence
+stat_steamgraph	stat_steamgraph
+stat_waterfall	stat_waterfall

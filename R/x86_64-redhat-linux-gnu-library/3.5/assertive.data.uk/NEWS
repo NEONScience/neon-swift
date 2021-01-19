@@ -1,0 +1,2 @@
+0.0-2 Drop dependency on devtools::with_envvar().
+0.0-1 Content extracted from assertive 0.3-0, and tidied.

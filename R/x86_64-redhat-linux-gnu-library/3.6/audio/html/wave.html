@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: WAVE file manipulations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for wave {audio}"><tr><td>wave {audio}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+WAVE file manipulations
+</h2>
+
+<h3>Description</h3>
+
+<p><code>load.wave</code> loads a sample from a WAVE file
+</p>
+<p><code>save.wave</code> saves a sample into a WAVE file
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+load.wave(where)
+save.wave(what, where)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>where</code></td>
+<td>
+<p>file name of the file to load from or save to</p>
+</td></tr>
+<tr valign="top"><td><code>what</code></td>
+<td>
+<p>audioSample object to save</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>WAVE is a RIFF (Resource Interchange File Format) widely used for
+storage of uncompressed audio data. It is often identified by the
+extension .WAV on DOS-legacy systems (such as Windows). Although
+WAVE files may contain compressed data, the above functions only
+support plain, uncompressed PCM data.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>load.wave</code> returns an object of the class <code>audioSample</code> as loaded from the WAVE file
+</p>
+<p><code>save.wave</code> always returns <code>NULL</code>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="audioSample.html">audioSample</a></code>, <code><a href="play.html">play</a></code>, <code><a href="record.html">record</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>audio</em> version 0.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

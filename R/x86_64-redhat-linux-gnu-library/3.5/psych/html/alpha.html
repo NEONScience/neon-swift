@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find two estimates of reliability: Cronbach's alpha and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for alpha {psych}"><tr><td>alpha {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find two estimates of reliability: Cronbach's alpha and Guttman's Lambda 6. </h2>
+
+<h3>Description</h3>
+
+<p>Internal consistency measures of reliability range from <i>omega_hierchical</i> to <i>alpha</i> to <i>omega_total</i>.  This function reports two estimates: Cronbach's coefficient <i>alpha</i> and Guttman's <i>lambda_6</i>.  Also reported are item - whole correlations, <i>alpha</i> if an item is omitted, and item means and standard deviations.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+alpha(x, keys=NULL,cumulative=FALSE, title=NULL, max=10,na.rm = TRUE,
+   check.keys=FALSE,n.iter=1,delete=TRUE,use="pairwise",warnings=TRUE,
+   n.obs=NULL,impute=NULL
+   )
+alpha.ci(alpha,n.obs,n.var=NULL,p.val=.05,digits=2)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A data.frame or matrix of data, or a covariance or correlation matrix </p>
+</td></tr>
+<tr valign="top"><td><code>keys</code></td>
+<td>
+<p>If some items are to be reversed keyed, then either specify the direction of all items or just a vector of which items to reverse </p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>Any text string to identify this run</p>
+</td></tr>
+<tr valign="top"><td><code>cumulative</code></td>
+<td>
+<p>should means reflect the sum of items or the mean of the items.  The default value is means.</p>
+</td></tr>
+<tr valign="top"><td><code>max</code></td>
+<td>
+<p>the number of categories/item to consider if reporting category frequencies.  Defaults to 10, passed to <code>link{response.frequencies}</code> </p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>The default is to remove missing values and find pairwise correlations</p>
+</td></tr>
+<tr valign="top"><td><code>check.keys</code></td>
+<td>
+<p>if TRUE, then find the first principal component and reverse key items with negative loadings.  Give a warning if this happens. </p>
+</td></tr>
+<tr valign="top"><td><code>n.iter</code></td>
+<td>
+<p>Number of iterations if bootstrapped confidence intervals are desired</p>
+</td></tr>
+<tr valign="top"><td><code>delete</code></td>
+<td>
+<p>Delete items with no variance and issue a warning</p>
+</td></tr>
+<tr valign="top"><td><code>use</code></td>
+<td>
+<p>Options to pass to the cor function: &quot;everything&quot;, &quot;all.obs&quot;, &quot;complete.obs&quot;, &quot;na.or.complete&quot;, or &quot;pairwise.complete.obs&quot;. The default is &quot;pairwise&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>warnings</code></td>
+<td>
+<p>By default print a warning and a message that items were reversed. Suppress the message if warnings = FALSE</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>The value to use for confidence intervals</p>
+</td></tr>
+<tr valign="top"><td><code>n.obs</code></td>
+<td>
+<p>If using correlation matrices as input, by specify the number of observations, we can find confidence intervals</p>
+</td></tr>
+<tr valign="top"><td><code>impute</code></td>
+<td>
+<p>How should we impute missing data? Not at all, medians, or means</p>
+</td></tr>
+<tr valign="top"><td><code>n.var</code></td>
+<td>
+<p>Number of items in the scale (to find r.bar)</p>
+</td></tr>
+<tr valign="top"><td><code>p.val</code></td>
+<td>
+<p>width of confidence interval (pval/2 to 1-p.val/2) </p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>How many digits to use for alpha.ci</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Alpha is one of several estimates of the internal consistency reliability of a test.
+</p>
+<p>Surprisingly, more than a century after Spearman (1904) introduced the concept of reliability to psychologists, there are still multiple approaches for measuring it. Although very popular, Cronbach's <i>&alpha;</i>  (1951) underestimates the reliability of a test and over estimates the first factor saturation.
+</p>
+<p><i>alpha</i> (Cronbach, 1951) is the same as Guttman's  <i>lambda</i>3 (Guttman, 1945) and may be found by
+</p>
+<p style="text-align: center;"><i>Lambda 3 = (n)/(n-1)(1-tr(Vx)/(Vx)  = (n)/(n-1)(Vx-tr(Vx)/Vx  = alpha</i></p>
+
+<p>Perhaps because it is so easy to calculate and is available in most commercial programs, alpha is without doubt the most frequently reported measure of internal consistency reliability. Alpha is the mean of all possible spit half reliabilities (corrected for test length).  For a unifactorial test, it is a reasonable estimate of the first factor saturation, although if the test has any microstructure (i.e., if it is &ldquo;lumpy&quot;) coefficients <i>beta</i> (Revelle, 1979; see <code><a href="ICLUST.html">ICLUST</a></code>) and <i>omega_hierchical</i> (see <code><a href="omega.html">omega</a></code>)  are more appropriate estimates of the general factor saturation.  <i>omega_total</i> (see <code><a href="omega.html">omega</a></code>) is a better estimate of the reliability of the total test.  
+</p>
+<p>Guttman's Lambda 6 (G6) considers the amount of variance in each item that can be accounted for the linear regression of all of the other items (the squared multiple correlation or smc), or more precisely, the variance of the errors, <i>e_j^2</i>,  and is
+</p>
+<p style="text-align: center;"><i>lambda 6 = 1 - sum(e^2)/Vx = 1-sum(1-r^2(smc))/Vx.</i></p>
+
+<p>The squared multiple correlation is a lower bound for the item communality and as the number of items increases, becomes a better estimate.
+</p>
+<p>G6 is also sensitive to lumpyness in the test and should not be taken as a measure of unifactorial structure.  For lumpy tests, it will be greater than alpha.  For tests with equal item loadings, alpha &gt; G6, but if the loadings are unequal or if there is a general factor, G6 &gt; alpha. alpha is a generalization of an earlier estimate of reliability for tests with dichotomous items developed by Kuder and Richardson, known as KR20, and a shortcut approximation, KR21. (See Revelle, in prep).
+</p>
+<p>Alpha and G6 are both positive functions of the number of items in a test as well as the average intercorrelation of the items in the test.  When calculated from the item variances and total test variance, as is done here, raw alpha is sensitive to differences in the item variances. Standardized alpha is based upon the correlations rather than the covariances.  
+</p>
+<p>A useful index of the quality of the test that is linear with the number of items and the average correlation is the Signal/Noise ratio where </p>
+<p style="text-align: center;"><i>s/n = n r/(1-r)</i></p>
+<p>  (Cronbach and Gleser, 1964; Revelle and Condon (in press)).
+</p>
+<p>More complete reliability analyses of a single scale can be done using the <code><a href="omega.html">omega</a></code> function which finds <i>omega_hierchical</i> and <i>omega_total</i> based upon a hierarchical factor analysis.  
+</p>
+<p>Alternative functions <code><a href="score.items.html">score.items</a></code> and  <code><a href="cluster.cor.html">cluster.cor</a></code> will also score multiple scales and report more useful statistics. &ldquo;Standardized&quot; alpha is calculated from the inter-item correlations and will differ from raw alpha. 
+</p>
+<p>Four alternative item-whole correlations are reported, three are conventional, one unique.  raw.r is the correlation of the item with the entire scale, not correcting for item overlap. std.r is the correlation of the item with the entire scale, if each item were standardized.  r.drop is the correlation of the item with the scale composed of the remaining items.  Although each of these are conventional statistics, they have the disadvantage that a) item overlap inflates the first and b) the scale is different for each item when an item is dropped. Thus, the fourth alternative, r.cor, corrects for the item overlap by subtracting the item variance but then replaces this with the best estimate of common variance, the smc. This is similar to a suggestion by Cureton (1966).
+</p>
+<p>If some items are to be reversed keyed then they can be specified by either item name or by item location.  (Look at the 3rd and 4th examples.)  Automatic reversal can also be done, and this is based upon the sign of the loadings on the first principal component (Example 5).  This requires the check.keys option to be TRUE.  Previous versions defaulted to have check.keys=TRUE, but some users complained that this made it too easy to find alpha without realizing that some items had been reversed (even though a warning was issued!).  Thus, I have set the default to be check.keys=FALSE with a warning that some items need to be reversed (if this is the case).  To suppress these warnings, set warnings=FALSE.  
+</p>
+<p>Scores are based upon the simple averages (or totals) of the items scored. Thus, if some items are missing, the scores reflect just the items answered.  This is particularly problematic if using total scores (with the cumulative=TRUE option).  To impute missing data using either means or medians, use the <code><a href="score.items.html">scoreItems</a></code> function.   Reversed items are subtracted from the maximum + minimum item response for all the items.
+</p>
+<p>When using raw data, standard errors for the raw alpha are calculated using equation 2 and 3 from Duhhachek and Iacobucci (2004).  This is problematic because some simulations suggest these values are too small.  It is probably better to use bootstrapped values.
+</p>
+<p><code><a href="alpha.html">alpha.ci</a></code> finds confidence intervals using  the Feldt et al. (1987) procedure.  This procedure does not consider the internal structure of the test the way that the Duhhachek and Iacobucci (2004) procedure does.  That is, the latter considers the variance of the covariances, while the Feldt procedure is based upon just the mean covariance.
+</p>
+<p>Bootstrapped resamples are found if n.iter &gt; 1.  These are returned as the boot object.  They may be plotted or described.  The 2.5% and 97.5% values are returned in the boot.ci object.
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>total </code></td>
+<td>
+<p>a list containing</p>
+</td></tr>
+<tr valign="top"><td><code>raw_alpha</code></td>
+<td>
+<p>alpha based upon the covariances</p>
+</td></tr>
+<tr valign="top"><td><code>std.alpha</code></td>
+<td>
+<p>The standarized alpha based upon the correlations</p>
+</td></tr>
+<tr valign="top"><td><code>G6(smc)</code></td>
+<td>
+<p>Guttman's Lambda 6 reliability</p>
+</td></tr>
+<tr valign="top"><td><code>average_r</code></td>
+<td>
+<p>The average interitem correlation</p>
+</td></tr>
+<tr valign="top"><td><code>median_r</code></td>
+<td>
+<p>The median interitem correlation</p>
+</td></tr>
+<tr valign="top"><td><code>mean</code></td>
+<td>
+<p>For data matrices, the mean of the scale formed by averaging or summing the items (depending upon the cumulative option)</p>
+</td></tr>
+<tr valign="top"><td><code>sd</code></td>
+<td>
+<p>For data matrices, the standard deviation of the total score</p>
+</td></tr>
+<tr valign="top"><td><code>alpha.drop </code></td>
+<td>
+<p>A data frame with all of the above for the case of each item being removed one by one.</p>
+</td></tr>
+<tr valign="top"><td><code>item.stats</code></td>
+<td>
+<p>A data frame including</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>number of complete cases for the item</p>
+</td></tr>
+<tr valign="top"><td><code>raw.r</code></td>
+<td>
+<p>The correlation of each item with the total score, not corrected for item overlap.</p>
+</td></tr>
+<tr valign="top"><td><code>std.r</code></td>
+<td>
+<p>The correlation of each item with the total score (not corrected for item overlap) if the items were all standardized</p>
+</td></tr>
+<tr valign="top"><td><code>r.cor</code></td>
+<td>
+<p>Item whole correlation corrected for item overlap and scale reliability</p>
+</td></tr>
+<tr valign="top"><td><code>r.drop</code></td>
+<td>
+<p>Item whole correlation for this item against the scale without this item</p>
+</td></tr>
+<tr valign="top"><td><code>mean</code></td>
+<td>
+<p>for data matrices, the mean of each item</p>
+</td></tr>
+<tr valign="top"><td><code>sd</code></td>
+<td>
+<p>For data matrices, the standard deviation of each item</p>
+</td></tr>
+<tr valign="top"><td><code>response.freq</code></td>
+<td>
+<p>For data matrices, the frequency of each item response (if less than 20)</p>
+</td></tr>
+<tr valign="top"><td><code>scores</code></td>
+<td>
+<p>Scores are by default simply the average response for all items that a participant took. If cumulative=TRUE, then these are sum scores. Note, this is dangerous if there are lots of missing values.</p>
+</td></tr>  
+</table>
+<p>itemboot.ciThe lower, median, and upper ranges of the 95% confidence interval based upon the bootstrap.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>boot</code></td>
+<td>
+<p>a 6 column by n.iter matrix of boot strapped resampled values</p>
+</td></tr>
+<tr valign="top"><td><code>Unidim</code></td>
+<td>
+<p>An index of unidimensionality</p>
+</td></tr>
+<tr valign="top"><td><code>Fit</code></td>
+<td>
+<p>The fit of the off diagonal matrix</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>By default, items that correlate negatively with the overall scale will be reverse coded.  This option may be turned off by setting check.keys = FALSE.  If items are reversed, then each item is subtracted from the  minimum item response + maximum item response where  min and max are taken over all items.  Thus, if the items intentionally differ in range, the scores will be off by a constant.  See <code><a href="score.items.html">scoreItems</a></code> for a solution. 
+</p>
+<p>Two item level statistics are worth comparing: the mean interitem r and the median interitem r.  If these differ very much, that is a sign that the scale is not particularly homogeneous.  
+</p>
+<p>If the data have been preprocessed by the dplyr package, a strange error can occur.  alpha expects either data.frames or matrix input. data.frames returned by dplyr have had three extra classes added to them which causes alpha to break.  The solution is merely to change the class of the input to &quot;data.frame&quot;.  
+</p>
+<p>Two experimental measures of Goodness of Fit are returned in the output: Unidim and Fit. They are not printed or displayed, but are available for analysis. The first is an index of how well the modeled average correlations actually reproduce the original correlation matrix.  The second is how well the modeled correlations reproduce the off diagonal elements of the matrix. Both are indices of squared residuals compared to the squared original correlations.  These two measures are under development and might well be modified or dropped in subsequent versions.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle </p>
+
+
+<h3>References</h3>
+
+<p>Cronbach, L.J. (1951) Coefficient alpha and the internal strucuture of tests.  Psychometrika, 16, 297-334.
+</p>
+<p>Cureton, E. (1966). Corrected item-test correlations. Psychometrika, 31(1):93-96.
+</p>
+<p>Cronbach, L.J. and Gleser G.C.  (1964)The signal/noise ratio in the comparison of reliability coefficients. Educational and Psychological Measurement, 24 (3) 467-480. 
+</p>
+<p>Duhachek, A. and Iacobucci, D. (2004). Alpha's standard error (ase): An accurate and precise confidence interval estimate. Journal of Applied Psychology, 89(5):792-808.
+</p>
+<p>Feldt, L. S., Woodruff, D. J., &amp; Salih, F. A. (1987). Statistical inference for coefficient alpha. Applied Psychological Measurement (11) 93-103.
+</p>
+<p>Guttman, L. (1945). A basis for analyzing test-retest reliability. Psychometrika, 10 (4), 255-282. 
+</p>
+<p>Revelle, W.  (in preparation) An introduction to psychometric theory with applications in R. Springer.  (Available online at <a href="https://personality-project.org/r/book">https://personality-project.org/r/book</a>). 
+</p>
+<p>Revelle, W. Hierarchical Cluster Analysis and the Internal Structure of Tests. Multivariate Behavioral Research, 1979, 14, 57-74.
+</p>
+<p>Revelle, W. and Condon, D.C. Reliability.  In Irwing, P., Booth, T. and Hughes, D. (Eds). the Wiley-Blackwell Handbook of Psychometric Testing (in press).
+</p>
+<p>Revelle, W. and Zinbarg, R. E. (2009) Coefficients alpha, beta, omega and the glb: comments on Sijtsma. Psychometrika, 74 (1) 1145-154. 
+</p>
+
+
+<h3>See Also</h3>
+
+  <p><code><a href="omega.html">omega</a></code>, <code><a href="ICLUST.html">ICLUST</a></code>, <code><a href="guttman.html">guttman</a></code>, <code><a href="score.items.html">scoreItems</a></code>, <code><a href="cluster.cor.html">cluster.cor</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+set.seed(42) #keep the same starting values
+#four congeneric measures
+r4 &lt;- sim.congeneric()
+alpha(r4)
+#nine hierarchical measures -- should actually use omega
+r9 &lt;- sim.hierarchical()
+alpha(r9)
+
+# examples of two independent factors that produce reasonable alphas
+#this is a case where alpha is a poor indicator of unidimensionality
+
+two.f &lt;- sim.item(8)
+#specify which items to reverse key by name
+ alpha(two.f,keys=c("V3","V4","V5","V6"))
+ 
+ #automatic reversal base upon first component
+alpha(two.f,check.keys=TRUE)    #note that the median is much less than the average R
+#this suggests (correctly) that the 1 factor model is probably wrong 
+#an example with discrete item responses  -- show the frequencies
+items &lt;- sim.congeneric(N=500,short=FALSE,low=-2,high=2,
+        categorical=TRUE) #500 responses to 4 discrete items with 5 categories
+a4 &lt;- alpha(items$observed)  #item response analysis of congeneric measures
+a4
+#summary just gives Alpha
+summary(a4)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

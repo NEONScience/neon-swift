@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find the Winsorized scores, means, sds or variances for a...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for winsor {psych}"><tr><td>winsor {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find the Winsorized scores, means, sds or variances  for a vector, matrix, or data.frame </h2>
+
+<h3>Description</h3>
+
+<p>Among the  robust estimates of central tendency are trimmed means and Winsorized means.  This function finds the Winsorized scores.   The top and bottom trim values are given values of the trimmed and 1- trimmed quantiles.  Then means, sds, and variances are found.    </p>
+
+
+<h3>Usage</h3>
+
+<pre>
+winsor(x, trim = 0.2, na.rm = TRUE)
+winsor.mean(x, trim = 0.2, na.rm = TRUE)
+winsor.means(x, trim = 0.2, na.rm = TRUE)  
+winsor.sd(x, trim = 0.2, na.rm = TRUE)  
+winsor.var(x, trim = 0.2, na.rm = TRUE)  
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A data vector, matrix or data frame</p>
+</td></tr>
+<tr valign="top"><td><code>trim</code></td>
+<td>
+<p>Percentage of data to move  from the top and bottom of the distributions</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>Missing data are removed </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Among the many robust estimates of central tendency, some recommend the Winsorized mean.  Rather than just dropping the top and bottom trim percent, these extreme values are replaced with values at the trim and 1- trim quantiles.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A scalar or vector of winsorized scores or winsorized means, sds, or variances (depending upon the call).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle with modifications suggested by Joe Paxton and a further correction added  (January, 2009) to preserve the original order for the winsor case.</p>
+
+
+<h3>References</h3>
+
+<p>Wilcox, Rand R. (2005) Introduction to robust estimation and hypothesis testing. Elsevier/Academic Press. Amsterdam ; Boston.
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="interp.median.html">interp.median</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(sat.act)
+winsor.means(sat.act) #compare with the means of the winsorized scores
+y &lt;- winsor(sat.act)
+describe(y)
+xy &lt;- data.frame(sat.act,y)
+#pairs.panels(xy) #to see the effect of winsorizing 
+x &lt;- matrix(1:100,ncol=5)
+winsor(x)
+winsor.means(x)
+y &lt;- 1:11
+winsor(y,trim=.5)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

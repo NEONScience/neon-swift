@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: ra_ref class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ra_ref {cellranger}"><tr><td>ra_ref {cellranger}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>ra_ref class</h2>
+
+<h3>Description</h3>
+
+<p>The <code>ra_ref</code> class is used to represent a single relative, absolute, or
+mixed cell reference, presumably found in a formula. When <code>row_abs</code> is
+<code>TRUE</code>, it means that <code>row_ref</code> identifies a specific row in an
+absolute sense. When <code>row_abs</code> is <code>FALSE</code>, it means that
+<code>row_ref</code> holds a positive, zero, or negative offset relative to the
+address of the cell containing the formula that contains the associated cell
+reference. Ditto for <code>col_abs</code> and <code>col_ref</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ra_ref(row_ref = 1L, row_abs = TRUE, col_ref = 1L, col_abs = TRUE,
+  sheet = NA_character_, file = NA_character_)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>row_ref</code></td>
+<td>
+<p>integer, row or row offset</p>
+</td></tr>
+<tr valign="top"><td><code>row_abs</code></td>
+<td>
+<p>logical indicating whether <code>row_ref</code> is absolute or
+relative</p>
+</td></tr>
+<tr valign="top"><td><code>col_ref</code></td>
+<td>
+<p>integer, column or column offset</p>
+</td></tr>
+<tr valign="top"><td><code>col_abs</code></td>
+<td>
+<p>logical indicating whether <code>col_ref</code> is absolute or
+relative</p>
+</td></tr>
+<tr valign="top"><td><code>sheet</code></td>
+<td>
+<p>the name of a sheet (a.k.a. worksheet or tab)</p>
+</td></tr>
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>the name of a file (a.k.a. workbook)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A <code>ra_ref</code> object can also store the name of a sheet and a file, though
+these will often be <code>NA</code>. A cell reference in a formula can potentially
+be qualified like this: <code>[my_workbook.xlxs]Sheet1!R2C3</code>. In Testoft
+(2014), he creates an entirely separate class for this, a <code>cell_ref</code>,
+which consists of a sheet- and file-ignorant <code>ra_ref</code> object and a sheet
+reference (he doesn't allow formulas to refer to other files). I hope I
+don't regret choosing a different path.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a <code>ra_ref</code> object
+</p>
+
+
+<h3>Reference</h3>
+
+<p>Spreadsheet Implementation Technology: Basics and Extensions
+Peter Sestoft
+MIT Press 2014
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ra_ref()
+ra_ref(row_ref = 3, col_ref = 2)
+ra_ref(row_ref = 10, row_abs = FALSE, col_ref = 3, col_abs = TRUE)
+ra_ref(sheet = "a sheet")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>cellranger</em> version 1.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

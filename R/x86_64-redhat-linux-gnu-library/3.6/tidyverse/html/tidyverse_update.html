@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Update tidyverse packages</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tidyverse_update {tidyverse}"><tr><td>tidyverse_update {tidyverse}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Update tidyverse packages</h2>
+
+<h3>Description</h3>
+
+<p>This will check to see if all tidyverse packages (and optionally, their
+dependencies) are up-to-date, and will install after an interactive
+confirmation.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+tidyverse_update(recursive = FALSE, repos = getOption("repos"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>recursive</code></td>
+<td>
+<p>If <code>TRUE</code>, will also list all dependencies of
+tidyverse packages.</p>
+</td></tr>
+<tr valign="top"><td><code>repos</code></td>
+<td>
+<p>The repositories to use to check for updates.
+Defaults to <code>getOptions("repos")</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+tidyverse_update()
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidyverse</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

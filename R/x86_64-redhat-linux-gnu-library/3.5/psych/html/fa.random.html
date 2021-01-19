@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A first approximation to Random Effects Exploratory Factor...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for fa.random {psych}"><tr><td>fa.random {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A first approximation to Random Effects Exploratory Factor Analysis</h2>
+
+<h3>Description</h3>
+
+<p>Inspired, in part, by the wprifm function in the profileR package, fa.random removes between subject differences in mean level and then does a normal exploratory factor analysis of the ipsatized data.  Functionally, this removes a general factor of the data before factoring. To prevent non-positive definiteness of the residual data matrix, a very small amount of random noise is added to each variable. This is just a call to fa after removing the between subjects effect. Read the help file for <code><a href="fa.html">fa</a></code> for a detailed explanation of all of the input parameters and the output objects. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fa.random(data, nfactors = 1, fix = TRUE, n.obs = NA, n.iter = 1, rotate = "oblimin",
+ scores = "regression", residuals = FALSE, SMC = TRUE, covar = FALSE, missing = FALSE,  
+ impute = "median", min.err = 0.001, max.iter = 50, symmetric = TRUE, warnings = TRUE,
+  fm = "minres", alpha = 0.1, p = 0.05, oblique.scores = FALSE, np.obs = NULL, 
+  use = "pairwise", cor = "cor", weight = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>A raw data matrix (or data.frame)</p>
+</td></tr>
+<tr valign="top"><td><code>nfactors</code></td>
+<td>
+<p> Number of factors to extract, default is 1 </p>
+</td></tr>
+<tr valign="top"><td><code>fix</code></td>
+<td>
+<p>If TRUE, then a small amount of random error is added to each observed variable to keep the matrix positive semi-definite.  If FALSE, then this is not done but because the matrix is non-positive semi-definite it will need to be smoothed when finding the scores and the various statistics.</p>
+</td></tr>
+<tr valign="top"><td><code>n.obs</code></td>
+<td>
+<p>Number of observations used to find the correlation matrix if using a correlation matrix.  Used for finding the goodness of fit statistics. Must be specified if using a correlaton matrix and finding confidence intervals. Ignored.</p>
+</td></tr>
+<tr valign="top"><td><code>np.obs</code></td>
+<td>
+<p>The pairwise number of observations. Used if using a correlation matrix and asking for a minchi solution.</p>
+</td></tr>
+<tr valign="top"><td><code>rotate</code></td>
+<td>
+<p>&quot;none&quot;, &quot;varimax&quot;, &quot;quartimax&quot;,  &quot;bentlerT&quot;, &quot;equamax&quot;, &quot;varimin&quot;, &quot;geominT&quot; and &quot;bifactor&quot; are orthogonal rotations.  &quot;Promax&quot;, &quot;promax&quot;, &quot;oblimin&quot;, &quot;simplimax&quot;, &quot;bentlerQ,  &quot;geominQ&quot; and &quot;biquartimin&quot; and &quot;cluster&quot; are possible oblique transformations of the solution.  The default is to do a oblimin transformation, although  versions prior to 2009 defaulted to varimax. SPSS seems to do a Kaiser normalization before doing Promax, this is done here by the call to &quot;promax&quot; which does the normalization before calling Promax in GPArotation.</p>
+</td></tr>
+<tr valign="top"><td><code>n.iter</code></td>
+<td>
+<p>Number of bootstrap interations to do in fa or fa.poly</p>
+</td></tr>
+<tr valign="top"><td><code>residuals</code></td>
+<td>
+<p>Should the residual matrix be shown </p>
+</td></tr>
+<tr valign="top"><td><code>scores</code></td>
+<td>
+<p>the default=&quot;regression&quot; finds factor scores using regression.  Alternatives for  estimating factor scores include simple regression (&quot;Thurstone&quot;), correlaton preserving (&quot;tenBerge&quot;) as well as &quot;Anderson&quot; and &quot;Bartlett&quot; using the appropriate algorithms ( <code><a href="factor.scores.html">factor.scores</a></code>). Although scores=&quot;tenBerge&quot; is probably preferred for most solutions, it will lead to problems with some improper correlation matrices.  </p>
+</td></tr>
+<tr valign="top"><td><code>SMC</code></td>
+<td>
+<p>Use squared multiple correlations (SMC=TRUE) or use 1  as initial communality estimate. Try using 1 if imaginary eigen values are reported. If SMC is a vector of length the number of variables, then these values are used as starting values in the case of fm='pa'. </p>
+</td></tr>
+<tr valign="top"><td><code>covar</code></td>
+<td>
+<p>if covar is TRUE, factor the covariance matrix, otherwise factor the correlation matrix</p>
+</td></tr>
+<tr valign="top"><td><code>missing</code></td>
+<td>
+<p>if scores are TRUE, and missing=TRUE, then impute missing values using either the median or the mean</p>
+</td></tr>
+<tr valign="top"><td><code>impute</code></td>
+<td>
+<p>&quot;median&quot; or &quot;mean&quot; values are used to replace missing values</p>
+</td></tr>
+<tr valign="top"><td><code>min.err</code></td>
+<td>
+<p>Iterate until the change in communalities is less than min.err</p>
+</td></tr>
+<tr valign="top"><td><code>max.iter</code></td>
+<td>
+<p>Maximum number of iterations for convergence </p>
+</td></tr>
+<tr valign="top"><td><code>symmetric</code></td>
+<td>
+<p>symmetric=TRUE forces symmetry by just looking at the lower off diagonal values</p>
+</td></tr>
+<tr valign="top"><td><code>warnings</code></td>
+<td>
+<p>warnings=TRUE =&gt; warn if number of factors is too many </p>
+</td></tr>
+<tr valign="top"><td><code>fm</code></td>
+<td>
+<p>Factoring method  fm=&quot;minres&quot; will do a minimum residual as will fm=&quot;uls&quot;.  Both of these use a first derivative.  fm=&quot;ols&quot; differs very slightly from &quot;minres&quot; in that it minimizes the entire residual matrix using an OLS procedure but uses the empirical first derivative.  This will be slower.  fm=&quot;wls&quot; will do a weighted least squares (WLS) solution, fm=&quot;gls&quot; does a generalized weighted least squares (GLS), fm=&quot;pa&quot; will do the principal factor solution, fm=&quot;ml&quot; will do a maximum likelihood factor analysis. fm=&quot;minchi&quot; will minimize the sample size weighted chi square when treating pairwise correlations with different number of subjects per pair. fm =&quot;minrank&quot; will do a minimum rank factor analysis. &quot;old.min&quot; will do minimal residual the way it was done prior to April, 2017 (see discussion below).</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>alpha level for the confidence intervals for RMSEA</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>if doing iterations to find confidence intervals, what probability values should be found for the confidence intervals</p>
+</td></tr>
+<tr valign="top"><td><code>oblique.scores</code></td>
+<td>
+<p>When factor scores are found, should they be based on the structure matrix (default) or the pattern matrix (oblique.scores=TRUE).  </p>
+</td></tr> 
+<tr valign="top"><td><code>weight</code></td>
+<td>
+<p>If not NULL, a vector of length n.obs that contains weights for each observation. The NULL case is equivalent to all cases being weighted 1.</p>
+</td></tr>
+<tr valign="top"><td><code>use</code></td>
+<td>
+<p>How to treat missing data, use=&quot;pairwise&quot; is the default&quot;.  See cor for other options.</p>
+</td></tr>
+<tr valign="top"><td><code>cor</code></td>
+<td>
+<p>How to find the correlations: &quot;cor&quot; is Pearson&quot;, &quot;cov&quot; is covariance, 
+&quot;tet&quot; is tetrachoric, &quot;poly&quot; is polychoric, &quot;mixed&quot; uses mixed cor for a mixture of tetrachorics, polychorics, Pearsons, biserials, and polyserials, Yuleb is Yulebonett, Yuleq and YuleY are the obvious Yule coefficients as appropriate</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>additional parameters, specifically, keys may be passed if using the target rotation, or delta if using geominQ, or whether to normalize if using Varimax</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function is inspired by the wprifm function in the profileR package and the citation there to a paper by Davison, Kim and Close (2009).  The basic logic is to extract a means vector from each subject and then to analyze the resulting ipsatized data matrix.  This can be seen as removing acquiecence in the case of personality items, or the general factor, in the case of ability items.  Factors composed of items that are all keyed the same way (e.g., Neuroticism in the <code><a href="../../psychTools/html/bfi.html">bfi</a></code> data set) will be most affected by this technique. 
+</p>
+<p>The output is identical to the normal <code><a href="fa.html">fa</a></code> output with the addition of two objects:  subject and within.r.  The subject object is just the vector of the mean score for each subject on all the items. within.r is just the correlation of each item with those scores.  
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>subject</code></td>
+<td>
+<p>A vector of the  mean score on all items for each subject</p>
+</td></tr>
+<tr valign="top"><td><code>within.r</code></td>
+<td>
+<p>The correlation of each item with the subject vector</p>
+</td></tr>
+<tr valign="top"><td><code>values </code></td>
+<td>
+<p>Eigen values of the common factor solution</p>
+</td></tr>
+<tr valign="top"><td><code>e.values</code></td>
+<td>
+<p>Eigen values of the original matrix</p>
+</td></tr>
+<tr valign="top"><td><code>communality</code></td>
+<td>
+<p>Communality estimates for each item.  These are merely the sum of squared factor loadings for that item.</p>
+</td></tr>
+<tr valign="top"><td><code>communalities</code></td>
+<td>
+<p>If using minrank factor analysis, these are the communalities reflecting the total amount of common variance.  They will exceed the communality (above) which is the model estimated common variance. </p>
+</td></tr>
+<tr valign="top"><td><code>rotation</code></td>
+<td>
+<p>which rotation was requested?</p>
+</td></tr>
+<tr valign="top"><td><code>n.obs</code></td>
+<td>
+<p>number of observations specified or found</p>
+</td></tr>
+<tr valign="top"><td><code>loadings</code></td>
+<td>
+<p>An item by factor (pattern) loading matrix of class &ldquo;loadings&quot;  Suitable for use in other programs (e.g., GPA rotation or factor2cluster. To show these by sorted order, use <code><a href="print.psych.html">print.psych</a></code> with sort=TRUE</p>
+</td></tr>
+<tr valign="top"><td><code>complexity</code></td>
+<td>
+<p>Hoffman's index of complexity for each item.  This is just <i>{(&Sigma; a_i^2)^2}/{&Sigma; a_i^4}</i> where a_i is the factor loading on the ith factor. From Hofmann (1978), MBR. See also  Pettersson and Turkheimer (2010).</p>
+</td></tr>
+<tr valign="top"><td><code>Structure</code></td>
+<td>
+<p>An item by factor structure matrix of class &ldquo;loadings&quot;. This is just the loadings (pattern) matrix times the factor intercorrelation matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>fit</code></td>
+<td>
+<p>How well does the factor model reproduce the correlation matrix. This is just <i>(sum(r^2ij - sum(r*^2ij))/sum(r^2ij</i>  (See <code><a href="VSS.html">VSS</a></code>, <code><a href="ICLUST.html">ICLUST</a></code>, and <code><a href="principal.html">principal</a></code> for this fit statistic.</p>
+</td></tr>
+<tr valign="top"><td><code>fit.off</code></td>
+<td>
+<p>how well are the off diagonal elements reproduced?</p>
+</td></tr>
+<tr valign="top"><td><code>dof</code></td>
+<td>
+<p>Degrees of Freedom for this model. This is the number of observed correlations minus the number of independent parameters.  Let n=Number of items, nf = number of factors then
+<br />
+<i>dof = n * (n-1)/2 - n * nf + nf*(nf-1)/2</i></p>
+</td></tr>
+<tr valign="top"><td><code>objective</code></td>
+<td>
+<p>Value of the function that is minimized by a maximum likelihood procedures.  This is reported for comparison purposes and as a way to estimate chi square goodness of fit.  The objective function is 
+<br />
+<i>log(trace ((FF'+U2)^{-1} R) -  log(|(FF'+U2)^-1 R|) - n.items</i>. When using MLE, this function is minimized.  When using OLS (minres), although we are not minimizing this function directly, we can still calculate it in order to compare the solution to a MLE fit. </p>
+</td></tr>
+<tr valign="top"><td><code>STATISTIC</code></td>
+<td>
+<p>If the number of observations is specified or found, this is a chi square based upon the objective function, f (see above). Using the formula from <code><a href="../../stats/html/factanal.html">factanal</a></code>(which seems to be Bartlett's test) :
+<br />
+<i>chi^2 = (n.obs - 1 - (2 * p + 5)/6 - (2 * factors)/3)) * f </i> </p>
+</td></tr>
+<tr valign="top"><td><code>PVAL</code></td>
+<td>
+<p>If n.obs &gt; 0, then what is the probability of observing a chisquare this large or larger?</p>
+</td></tr>
+<tr valign="top"><td><code>Phi</code></td>
+<td>
+<p>If oblique rotations (e.g,m using oblimin from the GPArotation package or promax) are requested, what is the interfactor correlation?</p>
+</td></tr>
+<tr valign="top"><td><code>communality.iterations</code></td>
+<td>
+<p>The history of the communality estimates (For principal axis only.) Probably only useful for teaching what happens in the process of iterative fitting.</p>
+</td></tr>
+<tr valign="top"><td><code>residual</code></td>
+<td>
+<p>The matrix of residual correlations after the factor model is applied. To display it conveniently, use the <code><a href="../../stats/html/residuals.html">residuals</a></code> command. </p>
+</td></tr>
+<tr valign="top"><td><code>chi</code></td>
+<td>
+<p>When normal theory fails (e.g., in the case of non-positive definite matrices), it useful to examine the empirically derived <i>chi^2</i> based upon the sum of the squared residuals * N.  This will differ slightly from the MLE estimate which is based upon the fitting function rather than the actual residuals.</p>
+</td></tr>
+<tr valign="top"><td><code>rms</code></td>
+<td>
+<p>This is the sum of the squared (off diagonal residuals) divided by the degrees of freedom.  Comparable to an RMSEA which, because it is based upon  <i>chi^2</i>, requires the number of observations to be specified.  The rms is an empirical value while the RMSEA is based upon normal theory and the non-central <i>chi^2</i> distribution. That is to say, if the residuals are particularly non-normal, the rms value and the associated  <i>chi^2</i> and RMSEA can differ substantially. </p>
+</td></tr> 
+<tr valign="top"><td><code>crms</code></td>
+<td>
+<p>rms adjusted for degrees of freedom</p>
+</td></tr>
+<tr valign="top"><td><code>RMSEA</code></td>
+<td>
+<p>The Root Mean Square Error of Approximation is based upon the non-central 
+<i>chi^2</i> distribution and the <i>chi^2</i> estimate found from the MLE fitting function.  With normal theory data, this is fine.  But when the residuals are not distributed according to a noncentral <i>chi^2</i>, this can give very strange values.  (And thus the confidence intervals can not be calculated.) The RMSEA is a conventional index of goodness (badness) of fit but it is also useful to examine the actual rms values.  </p>
+</td></tr>   
+<tr valign="top"><td><code>TLI</code></td>
+<td>
+<p>The Tucker Lewis Index of factoring reliability which is also known as the non-normed fit index.  </p>
+</td></tr>
+<tr valign="top"><td><code>BIC</code></td>
+<td>
+<p>Based upon <i>chi^2</i> with the assumption of normal theory and using the <i>chi^2</i> found using the objective function defined above. This is just <i>chi^2 - 2 df</i></p>
+</td></tr>
+<tr valign="top"><td><code>eBIC</code></td>
+<td>
+<p>When normal theory fails (e.g., in the case of non-positive definite matrices), it useful to examine the empirically derived eBIC based upon the empirical <i>chi^2</i> - 2 df. </p>
+</td></tr>
+<tr valign="top"><td><code>R2</code></td>
+<td>
+<p>The multiple R square between the factors and factor score estimates, if they were to be found. (From Grice, 2001).  Derived from R2 is is the minimum correlation between any two factor estimates = 2R2-1. </p>
+</td></tr>
+<tr valign="top"><td><code>r.scores</code></td>
+<td>
+<p>The correlations of the factor score estimates using the specified model, if they were to be found.  Comparing these correlations with that of the scores themselves will show, if an alternative estimate of factor scores is used (e.g., the tenBerge method), the problem of factor indeterminacy.  For these correlations will not necessarily be the same.  </p>
+</td></tr>
+<tr valign="top"><td><code>weights</code></td>
+<td>
+<p>The beta weights to find the factor score estimates.  These are also used by the <code><a href="predict.psych.html">predict.psych</a></code> function to find predicted factor scores for new cases.  These weights will depend upon the scoring method requested.  </p>
+</td></tr>
+<tr valign="top"><td><code>scores</code></td>
+<td>
+<p>The factor scores as requested.  Note that these scores reflect the choice of the way scores should be estimated (see scores in the input).  That is, simple regression (&quot;Thurstone&quot;), correlaton preserving (&quot;tenBerge&quot;) as well as &quot;Anderson&quot; and &quot;Bartlett&quot; using the appropriate algorithms (see <code><a href="factor.scores.html">factor.scores</a></code>).  The correlation between factor score estimates (r.scores) is based upon using the regression/Thurstone approach.  The actual correlation between scores will reflect the rotation algorithm chosen and may be found by correlating those scores. Although the scores are found by multiplying the standarized data by the weights matrix, this will not result in standard scores if using regression. </p>
+</td></tr>
+<tr valign="top"><td><code>valid</code></td>
+<td>
+<p>The validity coffiecient of course coded (unit weighted) factor score estimates (From Grice, 2001)</p>
+</td></tr>
+<tr valign="top"><td><code>score.cor</code></td>
+<td>
+<p>The correlation matrix of course coded (unit weighted) factor score estimates, if they were to be found, based upon the loadings matrix rather than the weights matrix.  </p>
+</td></tr>
+<tr valign="top"><td><code>rot.mat</code></td>
+<td>
+<p>The rotation matrix as returned from GPArotation.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>An interesting, but not necessarily good, idea. 
+To see what this does if there is a general factor, consider the unrotated solutions to the ability data set. In particular, compare the first factor loading with its congruence to the ipsatized solution means vector correlated with the items (the within.r object).  </p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle
+</p>
+
+
+<h3>References</h3>
+
+<p>Davison, Mark L. and  Kim, Se-Kang and  Close, Catherine (2009)  Factor Analytic Modeling of Within Person Variation in Score Profiles.  Multivariate Behavioral Research (44(5) 668-687.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="fa.html">fa</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+fa.ab &lt;- fa(psychTools::ability,4,rotate="none")  #normal factor analysis
+fa.ab.ip &lt;- fa.random(psychTools::ability,3,rotate="none") 
+fa.congruence(list(fa.ab,fa.ab.ip,fa.ab.ip$within.r))
+
+
+  </pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

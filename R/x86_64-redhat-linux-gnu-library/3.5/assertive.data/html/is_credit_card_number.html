@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Does the character vector contain credit card numbers?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_credit_card_numbers {assertive.data}"><tr><td>assert_all_are_credit_card_numbers {assertive.data}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Does the character vector contain credit card numbers?</h2>
+
+<h3>Description</h3>
+
+<p>Checks that the input contains credit card numbers.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_credit_card_numbers(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_credit_card_numbers(x, na_ignore = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_credit_card_number(x, type = c("visa", "mastercard", "amex", "diners",
+  "discover", "jcb"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>na_ignore</code></td>
+<td>
+<p>A logical value.  If <code>FALSE</code>, <code>NA</code> values
+cause an error; otherwise they do not.  Like <code>na.rm</code> in many
+stats package functions, except that the position of the failing
+values does not change.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>Type of credit card.  Multiple types can be selected.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A logical vector that is <code>TRUE</code> when the input contains valid 
+credit card numbers.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Legacy card numbers, for example 13 digit Visa numbers and 15 digits 
+JCB numbers are not supported.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.regular-expressions.info/creditcard.html">http://www.regular-expressions.info/creditcard.html</a> 
+contains the regexes used by this function.
+The example valid card numbers were from PayPal developer documentation.
+The URL is no longer available.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- c(
+  #visa
+  "4111 1111 1111 1111",    #spaces are allowed where they 
+                            #would occur on the card
+  "4012888888881881",       #though they can be omitted
+  "4111 1111 1111 11111",   #too many digits
+  "4012888888881882",       #bad check digit
+  #mastercard
+  "5555 5555 5555 4444",
+  "5105 1051 0510 5100",
+  "5655 5555 5555 4443",    #starts 56
+  "51051 051 0510 5100",    #bad spacing
+  #amex
+  "3782 822463 10005",
+  "3714 496353 98431",
+  "3787 344936 71000", 
+  "3782 822463 1005",       #not enough digits
+  #diners
+  "3056 930902 5904",
+  "3852 000002 3237",
+  #discover
+  "6011 1111 1111 1117",
+  "6011 0009 9013 9424",
+  #jcb
+  "3530 1113 3330 0000",
+  "3566 0020 2036 0505"
+)
+is_credit_card_number(x)
+assert_any_are_credit_card_numbers(x)
+assertive.base::dont_stop(assert_all_are_credit_card_numbers(x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.data</em> version 0.0-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

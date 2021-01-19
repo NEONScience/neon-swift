@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Extract cluster definitions from factor loadings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for factor2cluster {psych}"><tr><td>factor2cluster {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Extract cluster definitions from factor loadings </h2>
+
+<h3>Description</h3>
+
+<p>Given a factor or principal components loading matrix, assign each item to a cluster corresponding to the largest (signed) factor loading for that item.  Essentially, this is a Very Simple Structure approach to cluster definition that corresponds to what most people actually do: highlight the largest loading for each item and ignore the rest.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+factor2cluster(loads, cut = 0,aslist=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>loads</code></td>
+<td>
+<p>either a matrix of loadings, or the result of a factor analysis/principal components analyis with a loading component </p>
+</td></tr>
+<tr valign="top"><td><code>cut</code></td>
+<td>
+<p>Extract items with absolute loadings &gt; cut</p>
+</td></tr>
+<tr valign="top"><td><code>aslist</code></td>
+<td>
+<p>if TRUE, Return a keys list, else return a keys matrix (old style) </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>A factor/principal components analysis loading matrix is converted to a cluster (-1,0,1) definition matrix where each item is assigned to one and only one cluster.  This is a fast way to extract items that will be unit weighted to form cluster composites.  Use this function in combination with cluster.cor to find the corrleations of these composite scores. 
+</p>
+<p>A typical use in the SAPA project is to form item composites by clustering or factoring (see <code><a href="ICLUST.html">ICLUST</a></code>, <code><a href="principal.html">principal</a></code>), extract the clusters from these results (<code><a href="factor2cluster.html">factor2cluster</a></code>), and then form the composite correlation matrix using <code><a href="cluster.cor.html">cluster.cor</a></code>.  The variables in this reduced matrix may then be used in multiple R procedures using mat.regress.
+</p>
+<p>The input may be a matrix of item loadings, or the output from a factor analysis which includes a loadings matrix.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a keys list (new style or a matrix of -1,0,1 cluster definitions for each item.
+</p>
+
+
+<h3>Author(s)</h3>
+
+ 
+<p><a href="https://personality-project.org/revelle.html">https://personality-project.org/revelle.html</a> <br />
+</p>
+<p>Maintainer: William Revelle  <a href="mailto:  revelle@northwestern.edu           ">  revelle@northwestern.edu           </a>
+</p>
+
+
+<h3>References</h3>
+
+ <p><a href="https://personality-project.org/r/r.vss.html">https://personality-project.org/r/r.vss.html</a>  </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="cluster.cor.html">cluster.cor</a></code>, <code><a href="factor2cluster.html">factor2cluster</a></code>, <code><a href="fa.html">fa</a></code>, <code><a href="principal.html">principal</a></code>, <code><a href="ICLUST.html">ICLUST</a></code>
+<code><a href="make.keys.html">make.keys</a></code>, <code><a href="make.keys.html">keys2list</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#matches the factanal example
+f4  &lt;- fa(Harman74.cor$cov,4,rotate="varimax")
+factor2cluster(f4) </pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

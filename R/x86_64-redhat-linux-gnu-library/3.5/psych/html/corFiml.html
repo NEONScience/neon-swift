@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find a Full Information Maximum Likelihood (FIML) correlation...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for corFiml {psych}"><tr><td>corFiml {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find a Full Information Maximum Likelihood (FIML) correlation or covariance matrix from a data matrix with missing data </h2>
+
+<h3>Description</h3>
+
+<p>Makes use of functions adapted from the lavaan package to find FIML covariance/correlation matrices.  FIML can be much slower than the normal pairwise deletion option of cor, but provides slightly more precise estimates.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+corFiml(x, covar = FALSE,show=FALSE) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A data.frame or data matrix</p>
+</td></tr>
+<tr valign="top"><td><code>covar</code></td>
+<td>
+<p>By default, just return the correlation matrix.  If covar is TRUE, return a list containing the covariance matrix and the ML fit function.</p>
+</td></tr>
+<tr valign="top"><td><code>show</code></td>
+<td>
+<p>If show=TRUE, then just show the patterns of missingness, but don't do the FIML.  Useful for understanding the process of fiml.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In the presence of missing data, Full Information Maximum Likelihood (FIML) is an alternative to simply using the pairwise correlations. The implementation in the lavaan package for structural equation modeling has been adapted for the simpler case of just finding the correlations or covariances.  
+</p>
+<p>The pairwise solution for any pair of variables is insensitive to other variables included in the matrix.  On the other hand, the ML solution depends upon the entire set of items being correlated.  This will lead to slightly different solutions for different subsets of variables.  
+</p>
+<p>The basic FIML algorithm is to find the pairwise ML solution for covariances and means for every pattern of missingness and then to weight the solution by the size of every unique pattern of missingness.  
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>cor</code></td>
+<td>
+<p>The correlation matrix found using FIML</p>
+</td></tr>
+<tr valign="top"><td><code>cov</code></td>
+<td>
+<p>The covariance matrix found using FIML</p>
+</td></tr>
+<tr valign="top"><td><code>fx</code></td>
+<td>
+<p>The ML fit function</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>The functions used in lavaan are not exported and so have been copied (and simplified) to the psych package.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Wiliam Revelle</p>
+
+
+<h3>See Also</h3>
+
+<p> To use the resulting correlations, see <code><a href="fa.html">fa</a></code>.  To see the pairwise pattern of missingness, see <code><a href="count.pairwise.html">count.pairwise</a></code>. 
+</p>
+
+
+<h3>Examples</h3>
+
+<pre> 
+rML &lt;- corFiml(psychTools::bfi[20:27])
+rpw &lt;- cor(psychTools::bfi[20:27],use="pairwise") 
+round(rML - rpw,3)
+mp &lt;- corFiml(psychTools::bfi[20:27],show=TRUE)
+mp
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Apply the Schmid Leiman transformation to a correlation...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for schmid {psych}"><tr><td>schmid {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Apply the Schmid Leiman transformation to a correlation matrix</h2>
+
+<h3>Description</h3>
+
+<p>One way to find omega is to do a factor analysis of the original data set, rotate the factors obliquely, do a Schmid Leiman transformation, and then find omega. Here is the code for Schmid Leiman.  The S-L transform takes a factor or PC solution, transforms it to an oblique solution, factors the oblique solution to find a higher order (g ) factor, and then residualizes g out of the the group factors.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+schmid(model, nfactors = 3, fm = "minres",digits=2,rotate="oblimin",
+            n.obs=NA,option="equal",Phi=NULL,covar=FALSE,...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>model</code></td>
+<td>
+<p> A correlation matrix </p>
+</td></tr>
+<tr valign="top"><td><code>nfactors</code></td>
+<td>
+<p> Number of factors to extract </p>
+</td></tr>
+<tr valign="top"><td><code>fm</code></td>
+<td>
+<p>the default is to do minres. fm=&quot;pa&quot; for principal axes, fm=&quot;pc&quot; for principal components, fm = &quot;minres&quot; for minimum residual (OLS), pc=&quot;ml&quot; for maximum likelihood </p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p>if digits not equal NULL, rounds to digits</p>
+</td></tr>
+<tr valign="top"><td><code>rotate</code></td>
+<td>
+<p>The default, oblimin, produces somewhat more correlated factors than the alternative, simplimax. Other options include Promax (not Kaiser normalized) or promax (Promax with Kaiser normalization).  See <code><a href="fa.html">fa</a></code> for possible oblique rotations.</p>
+</td></tr>
+<tr valign="top"><td><code>n.obs</code></td>
+<td>
+<p>Number of observations, used to find fit statistics if specified.  Will be calculated if input is raw data</p>
+</td></tr>
+<tr valign="top"><td><code>option</code></td>
+<td>
+<p>When asking for just two group factors, option can be for &quot;equal&quot;, &quot;first&quot; or &quot;second&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>Phi</code></td>
+<td>
+<p>If Phi is specified, then the analysis is done on a pattern matrix with the associated factor intercorrelation (Phi) matrix. This allows for reanalysess of published results</p>
+</td></tr>
+<tr valign="top"><td><code>covar</code></td>
+<td>
+<p>Defaults to FALSE and finds correlations.  If set to TRUE, then do the calculations on the unstandardized variables.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Allows additional parameters to be passed to the factoring routines</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Schmid Leiman orthogonalizations are typical in the ability domain, but are not seen as often in the non-cognitive personality domain.  S-L is one way of finding the loadings of items on the general factor for estimating omega. 
+</p>
+<p>A typical example would be in the study of anxiety and depression.  A general neuroticism factor (g) accounts for much of the variance, but smaller group factors of tense anxiety, panic disorder, depression, etc. also need to be considerd.
+</p>
+<p>An alternative model is to consider hierarchical cluster analysis techniques such as <code><a href="ICLUST.html">ICLUST</a></code>.
+</p>
+<p>Requires the GPArotation package.
+</p>
+<p>Although 3 factors are the minimum number necessary to define the solution uniquely, it is occasionally useful to allow for a two factor solution.  There are three possible options for this condition: setting the general factor loadings between the two lower order factors to be &quot;equal&quot; which will be the sqrt(oblique correlations between the factors) or to &quot;first&quot; or &quot;second&quot; in which case the general factor is equated with either the first or second group factor. A  message is issued suggesting that the model is not really well defined. 
+</p>
+<p>A diagnostic tool for testing the appropriateness of a hierarchical model is p2 which is the percent of the common variance for each variable that is general factor variance.  In general, p2 should not have much variance. 
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>sl </code></td>
+<td>
+<p>loadings on g + nfactors group factors, communalities, uniqueness, percent of g2 of h2</p>
+</td></tr>
+<tr valign="top"><td><code>orthog </code></td>
+<td>
+<p>original orthogonal factor loadings</p>
+</td></tr>
+<tr valign="top"><td><code>oblique</code></td>
+<td>
+<p>oblique factor loadings</p>
+</td></tr>
+<tr valign="top"><td><code>phi </code></td>
+<td>
+<p>correlations among the transformed factors</p>
+</td></tr>
+<tr valign="top"><td><code>gload </code></td>
+<td>
+<p>loadings of the lower order factors on g</p>
+</td></tr>
+</table>
+<p>...
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> William Revelle</p>
+
+
+<h3>References</h3>
+
+<p><a href="https://personality-project.org/r/r.omega.html">https://personality-project.org/r/r.omega.html</a> gives an example taken from Jensen and Weng, 1994 of a S-L transformation.</p>
+
+
+<h3>See Also</h3>
+
+  <p><code><a href="omega.html">omega</a></code>, <code><a href="omega.graph.html">omega.graph</a></code>, <code><a href="fa.diagram.html">fa.graph</a></code>, <code><a href="ICLUST.html">ICLUST</a></code>,<code><a href="VSS.html">VSS</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+jen &lt;- sim.hierarchical()  #create a hierarchical demo
+if(!require(GPArotation)) {
+   message("I am sorry, you must have GPArotation installed to use schmid.")} else {
+   p.jen &lt;- schmid(jen,digits=2)   #use the oblimin rotation
+p.jen &lt;- schmid(jen,rotate="promax") #use the promax rotation
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

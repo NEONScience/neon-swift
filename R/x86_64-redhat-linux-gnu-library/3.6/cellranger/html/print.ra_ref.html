@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Print ra_ref object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for print.ra_ref {cellranger}"><tr><td>print.ra_ref {cellranger}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Print ra_ref object</h2>
+
+<h3>Description</h3>
+
+<p>Print ra_ref object
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'ra_ref'
+print(x, fo = c("R1C1", "A1"), ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>an object of class <code><a href="ra_ref.html">ra_ref</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>fo</code></td>
+<td>
+<p>either <code>"R1C1"</code> (the default) or <code>"A1"</code> specifying the
+cell reference format; in many contexts, it can be inferred and is optional</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+(rar &lt;- ra_ref(3, TRUE, 1, TRUE))
+print(ra_ref(), fo = "A1")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>cellranger</em> version 1.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

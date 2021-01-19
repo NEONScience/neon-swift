@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Does the character vector contain email addresses?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_email_addresses {assertive.data}"><tr><td>assert_all_are_email_addresses {assertive.data}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Does the character vector contain email addresses?</h2>
+
+<h3>Description</h3>
+
+<p>Checks that the input contains email addresses.  (It does not check the the 
+address exists, merely that the string is in a suitable format.)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_email_addresses(x, method = c("simple", "rfc5322"),
+  na_ignore = FALSE, severity = getOption("assertive.severity",
+  "stop"))
+
+assert_any_are_email_addresses(x, method = c("simple", "rfc5322"),
+  na_ignore = FALSE, severity = getOption("assertive.severity",
+  "stop"))
+
+is_email_address(x, method = c("simple", "rfc5322"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>Name of method to check for validity.  See notes below.</p>
+</td></tr>
+<tr valign="top"><td><code>na_ignore</code></td>
+<td>
+<p>A logical value.  If <code>FALSE</code>, <code>NA</code> values
+cause an error; otherwise they do not.  Like <code>na.rm</code> in many
+stats package functions, except that the position of the failing
+values does not change.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A logical vector that is <code>TRUE</code> when the input contains valid 
+email addresses.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Each method specifies a regular expression (see 
+<code><a href="../../base/html/regex.html">regex</a></code>) to match against. The <code>simple</code> method matches 
+most email addresses in use, and is quite good at filtering out typos and 
+nonsense.  It won't match <em>every</em> email address however.  For example, 
+emails from a top level domain longer than 4 characters won't pass.  The 
+<code>rfc5322</code> method implements the official standard for emails.  Thus all 
+genuine emails will pass, but since the spec is very broad, it isn't as good 
+at filtering out nonsense.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.regular-expressions.info/email.html">http://www.regular-expressions.info/email.html</a> contains the 
+regexes used by this function and a good discussion of the pros and cons of 
+each.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+addresses &lt;- c(
+  ok       = "a@b.com", 
+  no_at    = "a_at_b.com", 
+  no_dot   = "a@bcom", 
+  long_tld = "a@b.comma", 
+  punct    = "a!$&amp;@b.com", 
+  missing  = NA
+)
+is_email_address(addresses)
+is_email_address(addresses, method = "rfc5322")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.data</em> version 0.0-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

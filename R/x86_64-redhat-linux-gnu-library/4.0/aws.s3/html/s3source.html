@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Source from S3</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for s3source {aws.s3}"><tr><td>s3source {aws.s3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Source from S3</h2>
+
+<h3>Description</h3>
+
+<p>Source R code (a la <code><a href="../../base/html/source.html">source</a></code>) from S3
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+s3source(object, bucket, ..., opts = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>Character string with the object key, or an object of class &ldquo;s3_object&rdquo;. In most cases, if <code>object</code> is specified as the latter, <code>bucket</code> can be omitted because the bucket name will be extracted from &ldquo;Bucket&rdquo; slot in <code>object</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>bucket</code></td>
+<td>
+<p>Character string with the name of the bucket, or an object of class &ldquo;s3_bucket&rdquo;.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments passed to <code><a href="s3HTTP.html">s3HTTP</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>opts</code></td>
+<td>
+<p>Additional arguments passed to <code><a href="get_object.html">get_object</a></code> for retrieving the R syntax file.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>See <code><a href="../../base/html/source.html">source</a></code>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="s3saveRDS.html">s3saveRDS</a></code>,<code><a href="s3save.html">s3save</a></code>, <code><a href="get_object.html">get_object</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# create bucket
+b &lt;- put_bucket("myexamplebucket")
+
+# save some code to the bucket
+cat("x &lt;- 'hello world!'\nx", file = "example.R")
+put_object("example.R", object = "example.R", bucket = b)
+get_bucket(b)
+
+# source the code from the bucket
+s3source(object = "example.R", bucket = b, echo = TRUE)
+
+# cleanup
+unlink("example.R")
+delete_object(object = "example.R", bucket = b)
+delete_bucket("myexamplebucket")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>aws.s3</em> version 0.3.21 <a href="00Index.html">Index</a>]</div>
+</body></html>

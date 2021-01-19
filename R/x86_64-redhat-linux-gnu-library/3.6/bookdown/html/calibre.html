@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A wrapper function to convert e-books using Calibre</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for calibre {bookdown}"><tr><td>calibre {bookdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A wrapper function to convert e-books using Calibre</h2>
+
+<h3>Description</h3>
+
+<p>This function calls the command <code>ebook-convert</code> in Calibre
+(<a href="http://calibre-ebook.com">http://calibre-ebook.com</a>) to convert e-books.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+calibre(input, output, options = "")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>input</code></td>
+<td>
+<p>The input filename.</p>
+</td></tr>
+<tr valign="top"><td><code>output</code></td>
+<td>
+<p>The output filename or extension (if only an extension is
+provided, the output filename will be the input filename with its extension
+replaced by <code>output</code>; for example, <code>calibre('foo.epub', 'mobi')</code>
+generates &lsquo;<span class="file">foo.mobi</span>&rsquo;).</p>
+</td></tr>
+<tr valign="top"><td><code>options</code></td>
+<td>
+<p>A character vector of additional options to be passed to
+<code>ebook-convert</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The output filename.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>bookdown</em> version 0.17 <a href="00Index.html">Index</a>]</div>
+</body></html>

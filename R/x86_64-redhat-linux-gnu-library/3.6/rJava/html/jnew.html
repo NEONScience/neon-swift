@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a Java object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for jnew {rJava}"><tr><td>jnew {rJava}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Create a Java object
+</h2>
+
+<h3>Description</h3>
+
+<p><code>.jnew</code> create a new Java object.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+.jnew(class, ..., check=TRUE, silent=!check, class.loader=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>class</code></td>
+<td>
+<p>fully qualified class name in JNI notation (e.g. <code>"java/lang/String"</code>).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+
+<p>Any parameters that will be passed to the corresponding
+constructor. The parameter types are determined automatically and/or
+taken from the <code>jobjRef</code> object. For details see
+<code><a href="jcall.html">.jcall</a></code>. Note that all named parameters are discarded.</p>
+</td></tr>
+<tr valign="top"><td><code>check</code></td>
+<td>
+
+<p>If set to <code>TRUE</code> then <code><a href="jcheck.html">.jcheck</a></code> is invoked before
+and after the call to the constructor to clear any pending Java
+exceptions.</p>
+</td></tr>
+<tr valign="top"><td><code>silent</code></td>
+<td>
+
+<p>If set to <code>FALSE</code> then <code>.jnew</code> will fail with an error if
+the object cannot be created, otherwise a null-reference is returned
+instead. In addition, this flag is also passed to final
+<code>.jcheck</code> if <code>check</code> above is set to <code>TRUE</code>. Note
+that the error handling also clears exceptions, so
+<code>check=FALSE, silent=FALSE</code> is usually not a meaningful
+combination.
+</p>
+</td></tr>
+<tr valign="top"><td><code>class.loader</code></td>
+<td>
+<p>optional class loader to force for loading the
+class. If not set, the rJava class loader is used first. The default
+Java class loader is always used as a last resort. This is for
+expert use only! If you set the class loader, the class loading
+behavior changes - use only in very special circumstances.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns the reference (<code>jobjRef</code>) to the newly created object or
+<code>null</code>-reference (see <code><a href="jnull.html">.jnull</a></code>) if something went wrong.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="jcall.html">.jcall</a></code>, <code><a href="jnull.html">.jnull</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+f &lt;- .jnew("java/awt/Frame","Hello")
+.jcall(f,,"setVisible",TRUE)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rJava</em> version 0.9-13 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A simple demonstration (and test) of various IRT scoring...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for test.irt {psych}"><tr><td>test.irt {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A simple demonstration (and test) of various IRT scoring algorthims.
+</h2>
+
+<h3>Description</h3>
+
+<p> Item Response Theory provides a number of alternative ways of estimating latent scores.  Here we compare 6 different ways to estimate the latent variable associated with a pattern of responses. Originally developed as a test for scoreIrt, but perhaps useful for demonstration purposes.  Items are simulated using <code><a href="sim.html">sim.irt</a></code> and then scored using factor scores from <code><a href="factor.scores.html">factor.scores</a></code> using statistics found using <code><a href="irt.fa.html">irt.fa</a></code>, simple weighted models for 1 and 2 PL and 2 PN. Results show almost perfect agreement with estimates from MIRT and ltm for the dichotomous case and with MIRT for the polytomous case.  (Results from ltm are unstable for the polytomous case, sometimes agreeing with <code><a href="score.irt.html">scoreIrt</a></code> and MIRT, sometimes being much worse.)  
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+test.irt(nvar = 9, n.obs = 1000, mod = "logistic",type="tetra", low = -3, high = 3,
+ seed = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>nvar</code></td>
+<td>
+<p>Number of variables to create (simulate) and score</p>
+</td></tr>
+<tr valign="top"><td><code>n.obs</code></td>
+<td>
+<p>Number of simulated subjects</p>
+</td></tr>
+<tr valign="top"><td><code>mod</code></td>
+<td>
+<p>&quot;logistic&quot; or &quot;normal&quot; theory data are generated</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>&quot;tetra&quot; for dichotomous, &quot;poly&quot; for polytomous</p>
+</td></tr>
+<tr valign="top"><td><code>low</code></td>
+<td>
+<p>items range from low to high</p>
+</td></tr>
+<tr valign="top"><td><code>high</code></td>
+<td>
+<p>items range from low to high</p>
+</td></tr>
+<tr valign="top"><td><code>seed</code></td>
+<td>
+<p>Set the random number seed using some non-nul value.  Otherwise, use the existing sequence of random numbers</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>n.obs observations (0/1)  on nvar variables are simulated using either a logistic or normal theory model.  Then, a number of different scoring algorithms are applied and shown graphically.  Requires the ltm package to be installed to compare ltm scores.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A dataframe of scores as well as the generating theta true score. A graphic display of the correlations is also shown.</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="score.irt.html">scoreIrt</a></code>,<code><a href="irt.fa.html">irt.fa</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#not run
+#test.irt(9,1000)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

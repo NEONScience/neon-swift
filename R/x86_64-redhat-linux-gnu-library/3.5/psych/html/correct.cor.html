@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find dis-attenuated correlations given correlations and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for correct.cor {psych}"><tr><td>correct.cor {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Find dis-attenuated correlations given correlations and reliabilities </h2>
+
+<h3>Description</h3>
+
+<p>Given a raw correlation matrix and a vector of reliabilities, report the disattenuated correlations above the diagonal.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+correct.cor(x, y)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p> A raw correlation matrix </p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p> Vector of reliabilities </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Disattenuated correlations may be thought of as  correlations between the latent variables measured by a set of observed variables. That is, what would the correlation be between two (unreliable) variables be if both variables were measured perfectly reliably.
+</p>
+<p>This function is mainly used if importing correlations and reliabilities from somewhere else.  If the raw data are available, use <code><a href="score.items.html">score.items</a></code>, or  <code><a href="cluster.loadings.html">cluster.loadings</a></code> or <code><a href="cluster.cor.html">cluster.cor</a></code>.
+</p>
+<p>Examples of the output of this function are seen in <code><a href="cluster.loadings.html">cluster.loadings</a></code> and <code><a href="cluster.cor.html">cluster.cor</a></code>
+</p>
+
+
+<h3>Value</h3>
+
+<p>Raw correlations below the diagonal, reliabilities on the diagonal, disattenuated above the diagonal.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Maintainer: William Revelle <a href="mailto:revelle@northwestern.edu">revelle@northwestern.edu</a>
+</p>
+
+
+<h3>References</h3>
+
+<p> Revelle, W. (in preparation) An Introduction to Psychometric Theory with applications in R. Springer. at <a href="https://personality-project.org/r/book/">https://personality-project.org/r/book/</a> </p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="cluster.loadings.html">cluster.loadings</a></code> and <code><a href="cluster.cor.html">cluster.cor</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+# attitude from the datasets package
+#example 1 is a rather clunky way of doing things
+
+a1 &lt;- attitude[,c(1:3)]
+a2 &lt;- attitude[,c(4:7)]
+x1 &lt;- rowSums(a1)  #find the sum of the first 3 attitudes
+x2 &lt;- rowSums(a2)   #find the sum of the last 4 attitudes
+alpha1 &lt;- alpha(a1)
+alpha2 &lt;- alpha(a2)
+x &lt;- matrix(c(x1,x2),ncol=2)
+x.cor &lt;- cor(x)
+alpha &lt;- c(alpha1$total$raw_alpha,alpha2$total$raw_alpha)
+round(correct.cor(x.cor,alpha),2)
+#
+#much better - although uses standardized alpha 
+clusters &lt;- matrix(c(rep(1,3),rep(0,7),rep(1,4)),ncol=2)
+cluster.loadings(clusters,cor(attitude))
+# or 
+clusters &lt;- matrix(c(rep(1,3),rep(0,7),rep(1,4)),ncol=2)
+cluster.cor(clusters,cor(attitude))
+#
+#best
+keys &lt;- make.keys(attitude,list(first=1:3,second=4:7))
+scores &lt;- scoreItems(keys,attitude)
+scores$corrected
+
+#However, to do the more general case of correcting correlations for reliabilty
+#corrected &lt;- cor2cov(x.cor,1/alpha)
+#diag(corrected) &lt;- 1
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

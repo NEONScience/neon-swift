@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transformations of r, d, and t including Fisher r to z and z...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for fisherz {psych}"><tr><td>fisherz {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transformations of r, d, and t  including Fisher r to z and z to r and confidence intervals</h2>
+
+<h3>Description</h3>
+
+<p>Convert a correlation to a z or t, or d, or chi or covariance matrix
+or z to r using the Fisher transformation or find the confidence intervals for a specified correlation.  r2d converts a correlation to an effect size (Cohen's d) and d2r converts a d into an r. g2r converts Hedge's g to a correlation.   t2r converts a t test to r, r2t converts a correlation to a t-test value. chi2r converts a chi square to r, r2chi converts it back.  r2c and cor2cov convert a correlation matrix to a covariance matrix. d2t and t2d convert cohen's d into a t and a t into a cohen d.  See <code><a href="cohen.d.html">cohen.d</a></code> for other conversions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fisherz(rho)
+fisherz2r(z)
+r.con(rho,n,p=.95,twotailed=TRUE)
+r2t(rho,n)
+t2r(t,df)
+g2r(g,df,n)
+chi2r(chi2,n)
+r2chi(rho,n)
+r2c(rho,sigma)
+cor2cov(rho,sigma)
+
+
+
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>rho</code></td>
+<td>
+<p> a Pearson r </p>
+</td></tr>
+<tr valign="top"><td><code>z</code></td>
+<td>
+<p>A Fisher z</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>Sample size for confidence intervals</p>
+</td></tr>
+<tr valign="top"><td><code>df</code></td>
+<td>
+<p>degrees of freedom for t, or g</p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>Confidence interval</p>
+</td></tr>
+<tr valign="top"><td><code>twotailed</code></td>
+<td>
+<p>Treat p as twotailed p</p>
+</td></tr>
+<tr valign="top"><td><code>g</code></td>
+<td>
+<p>An effect size (Hedge's g)</p>
+</td></tr>
+<tr valign="top"><td><code>t</code></td>
+<td>
+<p>A student's t value</p>
+</td></tr>
+<tr valign="top"><td><code>chi2</code></td>
+<td>
+<p>A chi square</p>
+</td></tr>
+<tr valign="top"><td><code>sigma</code></td>
+<td>
+<p>a vector of standard deviations to be used to convert a correlation matrix to a covariance matrix</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+ 
+<table summary="R valueblock">
+<tr valign="top"><td><code>z</code></td>
+<td>
+<p> value corresponding to r  (fisherz)</p>
+</td></tr> 
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>r corresponding to z (fisherz2r)</p>
+</td></tr> 
+<tr valign="top"><td><code>r.con</code></td>
+<td>
+<p>lower and upper p confidence intervals (r.con)</p>
+</td></tr>
+<tr valign="top"><td><code>t</code></td>
+<td>
+<p>t with n-2 df (r2t)</p>
+</td></tr>
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>r corresponding to effect size d or d corresponding to r.</p>
+</td></tr>
+<tr valign="top"><td><code>r2c</code></td>
+<td>
+<p>r2c  is the reverse of the cor2con function of base R.  It just converts a correlation matrix to the corresponding covariance matrix given a vector of standard deviations.</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Maintainer: William Revelle  <a href="mailto:revelle@northwestern.edu ">revelle@northwestern.edu </a>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+ n &lt;- 30
+ r &lt;- seq(0,.9,.1)
+ d &lt;- r2d(r)
+ rc &lt;- matrix(r.con(r,n),ncol=2)
+ t &lt;- r*sqrt(n-2)/sqrt(1-r^2)
+ p &lt;- (1-pt(t,n-2))*2
+ r1 &lt;- t2r(t,(n-2))
+ r2 &lt;- d2r(d)
+ chi &lt;- r2chi(r,n)
+ r3 &lt;- chi2r(chi,n)
+ r.rc &lt;- data.frame(r=r,z=fisherz(r),lower=rc[,1],upper=rc[,2],t=t,p=p,d=d,
+     chi2=chi,d2r=r2,t2r=r1,chi2r=r3)
+ round(r.rc,2)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

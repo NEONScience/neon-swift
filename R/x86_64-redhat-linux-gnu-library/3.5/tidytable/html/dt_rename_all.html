@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Rename a selection of variables</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dt_rename_all {tidytable}"><tr><td>dt_rename_all {tidytable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Rename a selection of variables</h2>
+
+<h3>Description</h3>
+
+<p>These scoped variants of <code>rename()</code> operate on a selection of variables
+</p>
+<p>There are two variants:
+</p>
+
+<ul>
+<li> <p><code>dt_rename_all()</code>
+</p>
+</li>
+<li> <p><code>dt_rename_across()</code>: Replaces both <code>dt_rename_if()</code> &amp; <code>dt_rename_at()</code>
+</p>
+</li></ul>
+
+<p>Supports enhanced selection
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dt_rename_all(.data, .fun, ...)
+
+dt_rename_at(.data, .vars, .fun, ...)
+
+dt_rename_across(.data, .cols, .fun, ...)
+
+dt_rename_if(.data, .predicate, .fun, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.data</code></td>
+<td>
+<p>A data.frame or data.table</p>
+</td></tr>
+<tr valign="top"><td><code>.fun</code></td>
+<td>
+<p>Function to pass</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other arguments for the passed function</p>
+</td></tr>
+<tr valign="top"><td><code>.vars</code></td>
+<td>
+<p>vector <code>c()</code> of bare column names for <code>dt_rename_at()</code> to use</p>
+</td></tr>
+<tr valign="top"><td><code>.cols</code></td>
+<td>
+<p>vector <code>c()</code> of bare column names for <code>dt_rename_across()</code> to use</p>
+</td></tr>
+<tr valign="top"><td><code>.predicate</code></td>
+<td>
+<p>Predicate to pass to <code>dt_rename_if()</code></p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+example_dt &lt;- data.table::data.table(
+  x = 1,
+  y = 2,
+  double_x = 2,
+  double_y = 4)
+
+as_dt(example_dt) %&gt;% dt_rename_all(~ sub("x", "stuff", .x))
+
+as_dt(example_dt) %&gt;%
+  dt_rename_across(c(x, double_x), ~ sub("x", "stuff", .x))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytable</em> version 0.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

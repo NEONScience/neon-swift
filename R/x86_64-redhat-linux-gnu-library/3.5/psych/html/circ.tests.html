@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Apply four tests of circumplex versus simple structure</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for circ.tests {psych}"><tr><td>circ.tests {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Apply four tests of circumplex versus simple structure </h2>
+
+<h3>Description</h3>
+
+<p>Rotations of factor analysis and principal components analysis solutions typically try to represent correlation matrices as simple structured.  An alternative structure, appealing to some, is a circumplex structure where the variables are uniformly spaced on the perimeter of a circle in a two dimensional space.  Generating these data is straightforward, and is useful for exploring alternative solutions to affect and personality structure.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+circ.tests(loads, loading = TRUE, sorting = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>loads</code></td>
+<td>
+<p> A matrix of loadings <code>loads</code> here </p>
+</td></tr>
+<tr valign="top"><td><code>loading</code></td>
+<td>
+<p> Are these loadings or a correlation matrix <code>loading</code> </p>
+</td></tr>
+<tr valign="top"><td><code>sorting</code></td>
+<td>
+<p> Should the variables be sorted <code>sorting</code> </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>&ldquo;A common model for representing psychological data is simple structure (Thurstone, 1947). According to one common interpretation, data are simple structured when items or scales have non-zero factor loadings on one and only one factor (Revelle &amp; Rocklin, 1979). Despite the commonplace application of simple structure, some psychological models are defined by a lack of simple structure. Circumplexes (Guttman, 1954) are one kind of model in which simple structure is lacking.
+</p>
+<p>&ldquo;A number of elementary requirements can be teased out of the idea of circumplex structure. First, circumplex structure implies minimally that variables are interrelated; random noise does not a circumplex make. Second, circumplex structure implies that the domain in question is optimally represented by two and only two dimensions. Third, circumplex structure implies that variables do not group or clump along the two axes, as in simple structure, but rather that there are always interstitial variables between any orthogonal pair of axes (Saucier, 1992). In the ideal case, this quality will be reflected in equal spacing of variables along the circumference of the circle (Gurtman, 1994; Wiggins, Steiger, &amp; Gaelick, 1981). Fourth, circumplex structure implies that variables have a constant radius from the center of the circle, which implies that all variables have equal communality on the two circumplex dimensions (Fisher, 1997; Gurtman, 1994). Fifth, circumplex structure implies that all rotations are equally good representations of the domain (Conte &amp; Plutchik, 1981; Larsen &amp; Diener, 1992). (Acton and Revelle, 2004)
+</p>
+<p>Acton and Revelle reviewed the effectiveness of 10 tests of circumplex structure and found that four did a particularly good job of discriminating circumplex structure from simple structure, or circumplexes from ellipsoidal structures. Unfortunately, their work was done in Pascal and is not easily available. Here we release R code to do the four most useful tests:
+</p>
+<p>1	The Gap test of equal spacing
+</p>
+<p>2	Fisher's test of equality of axes 
+</p>
+<p>3	A test of indifference to Rotation
+</p>
+<p>4	A test of equal Variance of squared factor loadings across arbitrary rotations.
+</p>
+<p>To interpret the values of these various tests, it is useful to compare the particular solution to simulated solutions representing pure cases of circumplex and simple structure.  See the example output from <code><a href="simulation.circ.html">circ.simulation</a></code> and compare these plots with the results of the circ.test.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A list of four items is returned.  These are the gap, fisher, rotation and variance test results.
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>gaps</code></td>
+<td>
+<p>gap.test</p>
+</td></tr>
+<tr valign="top"><td><code>fisher</code></td>
+<td>
+<p>fisher.test</p>
+</td></tr>
+<tr valign="top"><td><code>RT</code></td>
+<td>
+<p>rotation.test</p>
+</td></tr>
+<tr valign="top"><td><code>VT</code></td>
+<td>
+<p>variance.test</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p> Of the 10 criterion discussed in Acton and Revelle (2004), these tests operationalize the four most useful.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> William Revelle</p>
+
+
+<h3>References</h3>
+
+<p> Acton, G. S. and Revelle, W. (2004) Evaluation of Ten Psychometric Criteria for Circumplex Structure.  Methods of Psychological Research Online, Vol. 9, No. 1 <a href="https://personality-project.org/revelle/publications/acton.revelle.mpr110_10.pdf">https://personality-project.org/revelle/publications/acton.revelle.mpr110_10.pdf</a> </p>
+
+
+<h3>See Also</h3>
+
+<p>To understand the results of the circ.tests it it best to compare it to simulated values.  Thus, see  <code><a href="simulation.circ.html">circ.simulation</a></code>, <code><a href="sim.item.html">sim.circ</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+circ.data &lt;- circ.sim(24,500)
+circ.fa &lt;- fa(circ.data,2)
+plot(circ.fa,title="Circumplex Structure")
+ct &lt;- circ.tests(circ.fa)
+#compare with non-circumplex data
+simp.data &lt;- item.sim(24,500)
+simp.fa &lt;- fa(simp.data,2)
+plot(simp.fa,title="Simple Structure")
+st &lt;- circ.tests(simp.fa)
+res &lt;- rbind(ct[1:4],st[1:4])
+rownames(res) &lt;- c("circumplex","Simple")
+print(res,digits=2)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

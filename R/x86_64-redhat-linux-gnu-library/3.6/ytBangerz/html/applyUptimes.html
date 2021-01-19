@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Generate uptime % for L0 IS data streams</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for applyUptimes {ytBangerz}"><tr><td>applyUptimes {ytBangerz}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Generate uptime % for L0 IS data streams</h2>
+
+<h3>Description</h3>
+
+<p>This function generates a status.df for uptime conditions, and is generic to all IS data products
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+applyUptimes(site, report.df, dp.id, l0.matrix)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>site</code></td>
+<td>
+<p>character class defining site of interest, e.g., &quot;CPER&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>report.df</code></td>
+<td>
+<p>class dataframe, comprising reports of IS streams by site</p>
+</td></tr>
+<tr valign="top"><td><code>dp.id</code></td>
+<td>
+<p>character vector of full NEON Data Product Identifiers, e.g., &quot;NEON.D10.CPER.DP0.00004.001.00474.000.035.000&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>l0.matrix</code></td>
+<td>
+<p>matrix of L0 data products</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a site-specific dataframe comprising uptimes of all IS sensors for a given date
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Josh Roberti <a href="mailto:jroberti@battelleecology.org">jroberti@battelleecology.org</a>
+Robert Lee <a href="mailto:rlee@battelleecology.org">rlee@battelleecology.org</a>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>ytBangerz</em> version 0.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

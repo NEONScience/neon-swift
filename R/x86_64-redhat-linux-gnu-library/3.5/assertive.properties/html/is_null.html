@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the input (not) null?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_is_not_null {assertive.properties}"><tr><td>assert_is_not_null {assertive.properties}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the input (not) null?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the input is (not) null.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_is_not_null(x, severity = getOption("assertive.severity", "stop"))
+
+assert_is_null(x, severity = getOption("assertive.severity", "stop"))
+
+is_not_null(x, .xname = get_name_in_parent(x))
+
+is_null(x, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_null</code> wraps <code>is.null</code>, providing more 
+information on failure. <code>is_not_null</code> returns <code>TRUE</code> in
+the opposite case.  The <code>assert_*</code> functions return nothing but
+throw an error if the corresponding <code>is_*</code> function returns 
+<code>FALSE</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/is.null.html">is.null</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Predicate for NULL. 
+is_null(NULL)
+is_null(c())
+
+# Atomic vectors of length zero are not NULL!
+is_null(numeric())
+# ... and neither is NA
+is_null(NA)
+
+# The opposite check
+is_not_null(NULL)
+is_not_null(c())
+is_not_null(numeric())
+
+# These checks should pass
+assert_is_null(NULL)
+assert_is_null(c())
+assert_is_not_null(NA)
+
+# This should fail
+assertive.base::dont_stop(assert_is_null(NaN))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.properties</em> version 0.0-4 <a href="00Index.html">Index</a>]</div>
+</body></html>

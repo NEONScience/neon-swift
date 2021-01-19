@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Audio sample class and constructor</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for audioSample {audio}"><tr><td>audioSample {audio}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Audio sample class and constructor
+</h2>
+
+<h3>Description</h3>
+
+<p><code>audioSample</code> is a class encapsulating digitalized (sampled)
+audio data. Essentiually it tags numeric vectors and matrices with
+additional audio information (most importantly sample rate).
+</p>
+<p><code>audioSample</code> is the designated constructor of such objects.
+</p>
+<p>Instances of the <code>audioSample</code> are numeric vectors or matrices
+with the following additional attributes:
+</p>
+
+<ul>
+<li><p>ratesample rate (in Hz), mandatory
+</p>
+</li>
+<li><p>bitsresolution of the source (in bits), optional
+</p>
+</li></ul>
+
+<p>If the object itself is a vector, it contains only one
+channel. Otherwise it is a matrix with as many rows as there are
+channels (hence 2 for stereo).
+</p>
+<p><code>as.audioSample</code> generic converts an object into an audio
+sample object. The default method is very similar to the constructor
+except that it attempts to infer the parameters from the object's
+attributes if they are not specified. Thus they are optional although
+they don't have visible defaults.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  audioSample(x, rate=44100, bits=16, clip = TRUE)
+  as.audioSample(x, ...)
+  ## Default S3 method:
+as.audioSample(x, rate, bits, clip, ...)
+  ## S3 method for class 'Sample'
+as.audioSample(x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>object to convert or initilize with</p>
+</td></tr>
+<tr valign="top"><td><code>rate</code></td>
+<td>
+<p>sample rate</p>
+</td></tr>
+<tr valign="top"><td><code>bits</code></td>
+<td>
+<p>resolution of the source. It doesn't affect the data
+itself and is only used for playback and export.</p>
+</td></tr>
+<tr valign="top"><td><code>clip</code></td>
+<td>
+<p>boolean value determining whether the source should be
+clipped to a range between -1 and 1. Values outside this range
+result in undefined behavior.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>parameters passed to the object-specific method</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>audioSample</code> and <code>as.audioSample</code> return an audio sample
+object.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- audioSample(sin(1:8000/10), 8000)
+
+play(x)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>audio</em> version 0.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

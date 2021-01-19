@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: An R Markdown output format for 'blogdown' web pages</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for html_page {blogdown}"><tr><td>html_page {blogdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>An R Markdown output format for <span class="pkg">blogdown</span> web pages</h2>
+
+<h3>Description</h3>
+
+<p>This function is a simple wrapper of <code>bookdown::<a href="../../bookdown/html/html_document2.html">html_document2</a>()</code>
+with different default arguments, and more importantly, a special HTML
+template designed only for <span class="pkg">blogdown</span> to render R Markdown to HTML pages
+that can be processed by Hugo.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+html_page(
+  ...,
+  number_sections = FALSE,
+  self_contained = FALSE,
+  highlight = NULL,
+  template = NULL,
+  pre_knit = NULL,
+  post_processor = NULL
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>..., number_sections, self_contained, highlight, template</code></td>
+<td>
+<p>Arguments passed
+to <code>bookdown::html_document2()</code> (note the option <code>theme</code> is not
+supported and set to <code>NULL</code> internally, and when <code>template =
+NULL</code>, a default template in <span class="pkg">blogdown</span> will be used).</p>
+</td></tr>
+<tr valign="top"><td><code>pre_knit, post_processor</code></td>
+<td>
+<p>Passed to
+<code>rmarkdown::<a href="../../rmarkdown/html/output_format.html">output_format</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The HTML output is not a complete HTML document, and only meaningful to
+<span class="pkg">blogdown</span> (it will be post-processed to render valid HTML pages). The
+only purpose of this output format is for users to change options in YAML.
+</p>
+<p>The fact that it is based on <span class="pkg">bookdown</span> means most <span class="pkg">bookdown</span>
+features are supported, such as numbering and cross-referencing
+figures/tables.
+</p>
+
+
+<h3>Note</h3>
+
+<p>Do not use a custom template unless you understand how the default
+template actually works (see the <span class="pkg">blogdown</span> book).
+</p>
+<p>The argument <code>highlight</code> does not support the value <code>"textmate"</code>,
+and the argument <code>template</code> does not support the value
+<code>"default"</code>.
+</p>
+
+
+<h3>References</h3>
+
+<p>See Chapter 2 of the <span class="pkg">bookdown</span> book for the Markdown syntax:
+<a href="https://bookdown.org/yihui/bookdown">https://bookdown.org/yihui/bookdown</a>. See the <span class="pkg">blogdown</span> book for
+full details: <a href="https://bookdown.org/yihui/blogdown">https://bookdown.org/yihui/blogdown</a>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>blogdown</em> version 0.17 <a href="00Index.html">Index</a>]</div>
+</body></html>

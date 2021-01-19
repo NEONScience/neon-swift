@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the input a condition?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_is_try_error {assertive.types}"><tr><td>assert_is_try_error {assertive.types}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the input a condition?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the input is a message, warning or error.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_is_try_error(x, severity = getOption("assertive.severity", "stop"))
+
+assert_is_simple_error(x, severity = getOption("assertive.severity", "stop"))
+
+assert_is_error(x, severity = getOption("assertive.severity", "stop"))
+
+assert_is_simple_warning(x, severity = getOption("assertive.severity",
+  "stop"))
+
+assert_is_warning(x, severity = getOption("assertive.severity", "stop"))
+
+assert_is_simple_message(x, severity = getOption("assertive.severity",
+  "stop"))
+
+assert_is_message(x, severity = getOption("assertive.severity", "stop"))
+
+assert_is_condition(x, severity = getOption("assertive.severity", "stop"))
+
+is_try_error(x, .xname = get_name_in_parent(x))
+
+is_simple_error(x, .xname = get_name_in_parent(x))
+
+is_error(x, .xname = get_name_in_parent(x))
+
+is_simple_warning(x, .xname = get_name_in_parent(x))
+
+is_warning(x, .xname = get_name_in_parent(x))
+
+is_simple_message(x, .xname = get_name_in_parent(x))
+
+is_message(x, .xname = get_name_in_parent(x))
+
+is_condition(x, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The <code>is_*</code> functions return <code>TRUE</code> or <code>FALSE</code> 
+depending upon whether or not the input is a datetime object.
+</p>
+<p>The <code>assert_*</code> functions return nothing but throw an error if the 
+corresponding <code>is_*</code> function returns <code>FALSE</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# stop returns simpleErrors, unless wrapped in a call to try
+simple_err &lt;- tryCatch(stop("!!!"), error = function(e) e)
+is_simple_error(simple_err)
+try_err &lt;- try(stop("!!!"))
+is_try_error(try_err)
+
+# is_error checks for both error types
+is_error(try_err)
+is_error(simple_err)
+
+# warning returns simpleWarnings
+simple_warn &lt;- tryCatch(warning("!!!"), warning = function(w) w)
+is_simple_warning(simple_warn)
+is_warning(simple_warn)
+
+# message returns simpleMessages
+simple_msg &lt;- tryCatch(message("!!!"), message = function(m) m)
+is_simple_message(simple_msg)
+is_message(simple_msg)
+
+# These examples should fail.
+assertive.base::dont_stop(assert_is_simple_error(try_err))
+assertive.base::dont_stop(assert_is_try_error(simple_err))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.types</em> version 0.0-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

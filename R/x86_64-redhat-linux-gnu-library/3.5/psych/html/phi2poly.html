@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert a phi coefficient to a tetrachoric correlation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for phi2tetra {psych}"><tr><td>phi2tetra {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Convert a phi coefficient to a tetrachoric correlation </h2>
+
+<h3>Description</h3>
+
+<p>Given a phi coefficient (a Pearson r calculated on two dichotomous variables), and the marginal frequencies (in percentages), what is the corresponding estimate of the tetrachoric correlation?
+</p>
+<p>Given a two x two table of counts <br />
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> a </td><td style="text-align: left;"> b </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td><td style="text-align: left;"> c </td><td style="text-align: left;"> d  </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p>The phi coefficient is (a - (a+b)*(a+c))/sqrt((a+b)(a+c)(b+d)(c+c)).
+</p>
+<p>This function reproduces the cell entries for specified marginals and then calls the tetrachoric function. (Which was originally based upon John Fox's polychor function.)
+The phi2poly name will become deprecated in the future. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+phi2tetra(ph,m,n=NULL,correct=TRUE)
+phi2poly(ph,cp,cc,n=NULL,correct=TRUE) #deprecated
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ph</code></td>
+<td>
+<p>phi </p>
+</td></tr>
+<tr valign="top"><td><code>m</code></td>
+<td>
+<p>a vector of the selection ratio and probability of criterion.  In the case where ph is a matrix, m is a vector of the frequencies of the selected cases</p>
+</td></tr>
+<tr valign="top"><td><code>correct</code></td>
+<td>
+<p>When finding tetrachoric correlations, should we correct for continuity for small marginals.  See <code><a href="tetrachor.html">tetrachoric</a></code> for a discussion.</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>If the marginals are given as frequencies, what was the total number of cases?</p>
+</td></tr>
+<tr valign="top"><td><code>cp</code></td>
+<td>
+<p> probability of the predictor &ndash; the so called selection ratio </p>
+</td></tr>
+<tr valign="top"><td><code>cc</code></td>
+<td>
+<p>probability of the criterion &ndash; the so called success rate. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>used to require the mvtnorm package but this has been replaced with mnormt
+</p>
+
+
+<h3>Value</h3>
+
+<p>a tetrachoric correlation
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> William Revelle</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="tetrachor.html">tetrachoric</a></code>, <code><a href="polychor.matrix.html">Yule2phi.matrix</a></code>, <code><a href="polychor.matrix.html">phi2poly.matrix</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+ phi2tetra(.3,c(.5,.5))
+#phi2poly(.3,.3,.7)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a new blog post</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for create_post {distill}"><tr><td>create_post {distill}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a new blog post</h2>
+
+<h3>Description</h3>
+
+<p>Create a new blog post
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+create_post(title, author = "auto", slug = "auto",
+  date_prefix = TRUE, draft = FALSE, edit = interactive())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>Post title</p>
+</td></tr>
+<tr valign="top"><td><code>author</code></td>
+<td>
+<p>Post author. Automatically drawn from previous post if not provided.</p>
+</td></tr>
+<tr valign="top"><td><code>slug</code></td>
+<td>
+<p>Post slug (directory name). Automatically computed from title if not
+provided.</p>
+</td></tr>
+<tr valign="top"><td><code>date_prefix</code></td>
+<td>
+<p>Data prefix for post slug (preserves chronological order for posts
+within the filesystem).</p>
+</td></tr>
+<tr valign="top"><td><code>draft</code></td>
+<td>
+<p>Mark the post as a <code>draft</code> (don't include it in the article listing).</p>
+</td></tr>
+<tr valign="top"><td><code>edit</code></td>
+<td>
+<p>Open the post in an editor after creating it.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>This function must be called from with a working directory that is within
+a Distill website.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+library(distill)
+create_post("My Post")
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>distill</em> version 0.7 <a href="00Index.html">Index</a>]</div>
+</body></html>

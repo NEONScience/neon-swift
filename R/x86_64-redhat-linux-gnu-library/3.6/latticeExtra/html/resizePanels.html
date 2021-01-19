@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Resize panels to match data scales</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for resizePanels {latticeExtra}"><tr><td>resizePanels {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Resize panels to match data scales </h2>
+
+<h3>Description</h3>
+
+<p>Modify a <code>"trellis"</code> object so that when
+plotted, the panels have the specified relative width and height.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+
+resizePanels(x, h = 1, w = 1)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p> An object of class <code>"trellis"</code>. </p>
+</td></tr>
+<tr valign="top"><td><code>h</code></td>
+<td>
+<p> numeric vector specifying panel heights</p>
+</td></tr>
+<tr valign="top"><td><code>w</code></td>
+<td>
+<p> numeric vector specifying of panel widths</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>resizePanels</code> modifies a <code>"trellis"</code> object so that when
+plotted, the panels have the specified relative width and height; this
+is only interesting when <code>h</code> or <code>w</code> are vectors with unequal
+entries.  <code>resizePanels</code> can be called with no arguments, in
+which case the currently plotted <code>"trellis"</code> object (if any) is
+used for <code>x</code>, and a suitable <code>h</code> or <code>w</code> (based on the
+current panel layout) is chosen so that sizes are relative to the
+current panel ranges in the native coordinate system.  This is only
+interesting when <code>scales="free"</code>; the resulting object, when
+plotted again, will have varying panel sizes but the same number of
+data units per inch in all panels.
+</p>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"trellis"</code>; essentially the same as <code>x</code>,
+but with certain properties modified.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Deepayan Sarkar </p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../lattice/html/Lattice.html">Lattice</a></code>,
+<code><a href="../../lattice/html/xyplot.html">xyplot</a></code> </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+state &lt;- data.frame(state.x77, state.region, state.name)
+state$state.name &lt;-
+    with(state, reorder(reorder(state.name, Frost),
+                        as.numeric(state.region)))
+dpfrost &lt;-
+    dotplot(state.name ~ Frost | reorder(state.region, Frost),
+            data = state, layout = c(1, 4),
+            scales = list(y = list(relation = "free")))
+
+## approximate
+resizePanels(dpfrost,
+             h = with(state, table(reorder(state.region, Frost))))
+
+## exact (including boundary padding)
+resizePanels()
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

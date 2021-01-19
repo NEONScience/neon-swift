@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Build book chapters into separate HTML files</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for html_chapters {bookdown}"><tr><td>html_chapters {bookdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Build book chapters into separate HTML files</h2>
+
+<h3>Description</h3>
+
+<p>Split the HTML output into chapters while updating relative links (e.g. links
+in TOC, footnotes, citations, figure/table cross-references, and so on).
+Functions <code>html_book()</code> and <code>tufte_html_book()</code> are simple wrapper
+functions of <code>html_chapter()</code> using a specific base output format.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+html_chapters(
+  toc = TRUE,
+  number_sections = TRUE,
+  fig_caption = TRUE,
+  lib_dir = "libs",
+  template = bookdown_file("templates/default.html"),
+  pandoc_args = NULL,
+  ...,
+  base_format = rmarkdown::html_document,
+  split_bib = TRUE,
+  page_builder = build_chapter,
+  split_by = c("section+number", "section", "chapter+number", "chapter", "rmd", "none")
+)
+
+html_book(...)
+
+tufte_html_book(...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>toc, number_sections, fig_caption, lib_dir, template, pandoc_args</code></td>
+<td>
+<p>See
+<code>rmarkdown::<a href="../../rmarkdown/html/html_document.html">html_document</a></code>,
+<code>tufte::<a href="../../tufte/html/tufte_html.html">tufte_html</a></code>, or the documentation of the
+<code>base_format</code> function.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other arguments to be passed to <code>base_format</code>. For
+<code>html_book()</code> and <code>tufte_html_book()</code>, <code>...</code> is passed to
+<code>html_chapters()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>base_format</code></td>
+<td>
+<p>An output format function to be used as the base format.</p>
+</td></tr>
+<tr valign="top"><td><code>split_bib</code></td>
+<td>
+<p>Whether to split the bibliography onto separate pages where
+the citations are actually used.</p>
+</td></tr>
+<tr valign="top"><td><code>page_builder</code></td>
+<td>
+<p>A function to combine different parts of a chapter into a
+page (an HTML character vector). See <code><a href="build_chapter.html">build_chapter</a></code> for the
+specification of this function.</p>
+</td></tr>
+<tr valign="top"><td><code>split_by</code></td>
+<td>
+<p>How to name the HTML output files from the book: <code>rmd</code>
+uses the base filenames of the input Rmd files to create the HTML
+filenames, e.g. generate &lsquo;<span class="file">chapter1.html</span>&rsquo; for &lsquo;<span class="file">chapter1.Rmd</span>&rsquo;;
+<code>none</code> means do not split the HTML file (the book will be a single
+HTML file); <code>chapter</code> means split the file by the first-level headers;
+<code>section</code> means the second-level headers. For <code>chapter</code> and
+<code>section</code>, the HTML filenames will be determined by the header ID's,
+e.g. the filename for the first chapter with a chapter title <code>#
+Introduction</code> will be &lsquo;<span class="file">introduction.html</span>&rsquo;; for <code>chapter+number</code>
+and <code>section+number</code>, the chapter/section numbers will be prepended to
+the HTML filenames, e.g. &lsquo;<span class="file">1-introduction.html</span>&rsquo; and
+&lsquo;<span class="file">2-1-literature.html</span>&rsquo;.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An R Markdown output format object to be passed to
+<code>bookdown::render_book()</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>These functions are expected to be used in conjunction with
+<code><a href="render_book.html">render_book</a>()</code>. It is almost meaningless if they are used with
+<code>rmarkdown::render()</code>. Functions like <code><a href="html_document2.html">html_document2</a></code> are
+designed to work with the latter.
+</p>
+<p>If you want to use a different template, the template must contain three
+pairs of HTML comments: <span class="samp">&lt;!--bookdown:title:start--&gt;</span> and
+<span class="samp">&lt;!--bookdown:title:end--&gt;</span> to mark the title section of the book
+(this section will be placed only on the first page of the rendered book);
+<span class="samp">&lt;!--bookdown:toc:start--&gt;</span> and <span class="samp">&lt;!--bookdown:toc:end--&gt;</span> to mark
+the table of contents section (it will be placed on all chapter pages);
+<span class="samp">&lt;!--bookdown:body:start--&gt;</span> and <span class="samp">&lt;!--bookdown:body:end--&gt;</span> to
+mark the HTML body of the book (the HTML body will be split into separate
+pages for chapters). You may open the default HTML template
+(<code>bookdown:::bookdown_file('templates/default.html')</code>) to see where
+these comments were inserted.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>bookdown</em> version 0.17 <a href="00Index.html">Index</a>]</div>
+</body></html>

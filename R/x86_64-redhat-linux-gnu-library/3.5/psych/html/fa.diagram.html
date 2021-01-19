@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Graph factor loading matrices</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for fa.diagram {psych}"><tr><td>fa.diagram {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Graph factor loading matrices</h2>
+
+<h3>Description</h3>
+
+<p>Factor analysis or principal components analysis results are typically interpreted in terms of the major loadings on each factor.  These structures may be represented as a table of loadings or graphically, where all loadings with an absolute value &gt; some cut point are represented as an edge (path). <code><a href="fa.diagram.html">fa.diagram</a></code> uses the various <code><a href="diagram.html">diagram</a></code> functions to draw the diagram. <code><a href="fa.diagram.html">fa.graph</a></code> generates dot code for external plotting.  <code><a href="fa.diagram.html">fa.rgraph</a></code> uses the Rgraphviz package (if available) to draw the graph. <code><a href="fa.diagram.html">het.diagram</a></code> will draw &quot;heterarchy&quot; diagrams of factor/scale solutions at different levels.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+fa.diagram(fa.results,Phi=NULL,fe.results=NULL,sort=TRUE,labels=NULL,cut=.3,
+     simple=TRUE, errors=FALSE,g=FALSE,digits=1,e.size=.05,rsize=.15,side=2,
+    main,cex=NULL,marg=c(.5,.5,1,.5),adj=1,ic=FALSE, ...) 
+het.diagram(r,levels,cut=.3,digits=2,both=TRUE, 
+        main="Heterarchy diagram",l.cex,gap.size,...) 
+extension.diagram(fa.results,Phi=NULL,fe.results=NULL,sort=TRUE,labels=NULL,cut=.3,
+    e.cut=.1,simple=TRUE,e.simple=FALSE,errors=FALSE,g=FALSE,
+    digits=1,e.size=.05,rsize=.15,side=2,main,cex=NULL,
+    marg=c(.5,.5,1,.5),adj=1,ic=FALSE, ...)
+
+fa.graph(fa.results,out.file=NULL,labels=NULL,cut=.3,simple=TRUE,
+   size=c(8,6), node.font=c("Helvetica", 14),
+    edge.font=c("Helvetica", 10), rank.direction=c("RL","TB","LR","BT"),
+     digits=1,main="Factor Analysis", ...)
+fa.rgraph(fa.results,out.file=NULL,labels=NULL,cut=.3,simple=TRUE,
+   size=c(8,6), node.font=c("Helvetica", 14),
+    edge.font=c("Helvetica", 10), rank.direction=c("RL","TB","LR","BT"),
+     digits=1,main="Factor Analysis",graphviz=TRUE, ...)
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fa.results</code></td>
+<td>
+<p>The output of factor analysis, principal components analysis, or ICLUST analysis.  May also be a factor loading matrix from anywhere.</p>
+</td></tr>
+<tr valign="top"><td><code>Phi</code></td>
+<td>
+<p>Normally not specified (it is is found in the FA, pc, or ICLUST, solution), this may be given if the input is a loadings matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>fe.results</code></td>
+<td>
+<p>the results of a factor extension analysis (if any)</p>
+</td></tr>
+<tr valign="top"><td><code>out.file</code></td>
+<td>
+<p> If it exists, a dot representation of the graph will be stored here (fa.graph)</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p> Variable labels </p>
+</td></tr>
+<tr valign="top"><td><code>cut</code></td>
+<td>
+<p> Loadings with abs(loading) &gt; cut will be shown </p>
+</td></tr>
+<tr valign="top"><td><code>e.cut</code></td>
+<td>
+<p>extension loadings with abs(loading) &gt; e.cut will be shown</p>
+</td></tr>
+<tr valign="top"><td><code>simple</code></td>
+<td>
+<p>Only the biggest loading per item is shown</p>
+</td></tr>
+<tr valign="top"><td><code>e.simple</code></td>
+<td>
+<p>Only the biggest loading per extension item is shown </p>
+</td></tr>
+<tr valign="top"><td><code>g</code></td>
+<td>
+<p>Does the factor matrix reflect a g (first) factor.  If so, then draw this to the left of the variables, with the remaining factors to the right of the variables.  It is useful to turn off the simple parameter in this case.</p>
+</td></tr>
+<tr valign="top"><td><code>ic</code></td>
+<td>
+<p>If drawing a cluster analysis result, should we treat it as latent variable model (ic=FALSE) or as an observed variable model (ic=TRUE) </p>
+</td></tr>
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>A correlation matrix for the het.diagram function</p>
+</td></tr>
+<tr valign="top"><td><code>levels</code></td>
+<td>
+<p>A list of the elements in each level</p>
+</td></tr>
+<tr valign="top"><td><code>both</code></td>
+<td>
+<p>Should arrows have double heads (in het.diagram)</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>graph size </p>
+</td></tr>
+<tr valign="top"><td><code>sort</code></td>
+<td>
+<p>sort the factor loadings before showing the diagram</p>
+</td></tr>
+<tr valign="top"><td><code>errors</code></td>
+<td>
+<p>include error estimates (as arrows)</p>
+</td></tr>
+<tr valign="top"><td><code>e.size</code></td>
+<td>
+<p>size of ellipses</p>
+</td></tr>
+<tr valign="top"><td><code>rsize</code></td>
+<td>
+<p>size of rectangles</p>
+</td></tr>
+<tr valign="top"><td><code>side</code></td>
+<td>
+<p>on which side should error arrows go?</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>modify font size</p>
+</td></tr>
+<tr valign="top"><td><code>l.cex</code></td>
+<td>
+<p>modify the font size in arrows, defaults to cex</p>
+</td></tr>
+<tr valign="top"><td><code>gap.size</code></td>
+<td>
+<p>The gap in the arrow for the label.  Can be adjusted to compensate for variations in cex or l.cex</p>
+</td></tr>
+<tr valign="top"><td><code>marg</code></td>
+<td>
+<p>sets the margins to be wider than normal, returns them to the normal size upon exit</p>
+</td></tr>
+<tr valign="top"><td><code>adj</code></td>
+<td>
+<p>how many different positions (1-3) should be used for the numeric labels. Useful if they overlap each other.</p>
+</td></tr>
+<tr valign="top"><td><code>node.font</code></td>
+<td>
+<p>what font should be used for nodes in fa.graph  </p>
+</td></tr>
+<tr valign="top"><td><code>edge.font</code></td>
+<td>
+<p>what font should be used for edges in fa.graph  </p>
+</td></tr>
+<tr valign="top"><td><code>rank.direction</code></td>
+<td>
+<p> parameter passed to Rgraphviz&ndash; which way to draw the graph </p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p> Number of digits to show as an edgelable </p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p> Graphic title, defaults to &quot;factor analyis&quot; or &quot;factor analysis and extension&quot; </p>
+</td></tr>
+<tr valign="top"><td><code>graphviz</code></td>
+<td>
+<p>Should we try to use Rgraphviz for output?</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> other parameters </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Path diagram representations have become standard in confirmatory factor analysis, but are not yet common in exploratory factor analysis.  Representing factor structures graphically helps some people understand the structure. 
+</p>
+<p>By default the arrows come from the latent variables to the observed variables.  This is, of course, the factor model.  However, if the class of the object to be drawn is 'principal', then  reverse the direction of the arrows, and the 'latent' variables are no longer latent, and are shown as boxes. For cluster models, the default is to treat them as factors, but if ic =TRUE, then we treat it as a components model.
+</p>
+<p>fa.diagram does not use Rgraphviz and is the preferred function.  fa.graph generates dot code to be used by an external graphics program. It does not have all the bells and whistles of fa.diagram, but these may be done in the external editor. 
+</p>
+<p>Hierarchical (bifactor) models may be drawn by specifying the g parameter as TRUE.  This allows for an graphical displays of various factor transformations with a bifactor structure (e.g., <code><a href="Promax.html">bifactor</a></code> and <code><a href="Promax.html">biquartimin</a></code>.  See <code><a href="omega.html">omega</a></code> for an alternative way to find these structures.  
+</p>
+<p>The <code><a href="fa.diagram.html">het.diagram</a></code> function will show the case of a hetarchical structure at multiple levels.  It can also be used to show the patterns of correlations between sets of scales (e.g., EPI, NEO, BFI).  The example is for showing the relationship between 3 sets of 4 variables from the Thurstone data set. The parameters l.cex and gap.size are used to adjust the font size of the labels and the gap in the lines.  
+</p>
+<p><code><a href="fa.diagram.html">extension.diagram</a></code> will draw a <code><a href="fa.extension.html">fa.extend</a></code> result with slightly more control than using <code><a href="fa.diagram.html">fa.diagram</a></code> or the more generic <code><a href="diagram.html">diagram</a></code> function.
+</p>
+<p>In fa.rgraph although a nice graph is drawn for the orthogonal factor case, the oblique factor drawing is acceptable, but is better if cleaned up outside of R or done using fa.diagram. 
+</p>
+<p>The normal input is taken from the output of either <code><a href="fa.html">fa</a></code> or <code><a href="ICLUST.html">ICLUST</a></code>. This latter case displays the ICLUST results in terms of the cluster loadings, not in terms of the cluster structure.  Actually an interesting option.
+</p>
+<p>It is also possible to just give a factor loading matrix as input.  In this case, supplying a Phi matrix of factor correlations is also possible. 
+</p>
+<p>It is possible, using fa.graph, to export dot code for an omega solution.  fa.graph should be applied to the schmid$sl object with labels specified as the rownames of schmid$sl.  The results will need editing to make fully compatible with dot language plotting.  
+</p>
+<p>To specify the model for a structural equation confirmatory analysis of the results, use <code><a href="structure.diagram.html">structure.diagram</a></code> instead. 
+</p>
+
+
+<h3>Value</h3>
+
+<p>fa.diagram: A path diagram is drawn without using Rgraphviz.  This is probably the more useful function.
+</p>
+<p>fa.rgraph: A graph is drawn using rgraphviz.  If an output file is specified, the graph instructions are also saved in the dot language. 
+</p>
+<p>fa.graph: the graph instructions are saved in the dot language. </p>
+
+
+<h3>Note</h3>
+
+<p> fa.rgraph requires Rgraphviz. Because there are occasional difficulties installing Rgraphviz from Bioconductor in that some libraries are misplaced and need to be relinked, it is probably better to use fa.diagram or fa.graph.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle </p>
+
+
+<h3>See Also</h3>
+
+  <p><code><a href="omega.graph.html">omega.graph</a></code>, <code><a href="ICLUST.graph.html">ICLUST.graph</a></code>, <code><a href="bassAckward.html">bassAckward.diagram</a></code>.  <code><a href="structure.diagram.html">structure.diagram</a></code> will convert the factor diagram to sem modeling code.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+test.simple &lt;- fa(item.sim(16),2,rotate="oblimin")
+#if(require(Rgraphviz)) {fa.graph(test.simple) } 
+fa.diagram(test.simple)
+f3 &lt;- fa(Thurstone,3,rotate="cluster")
+fa.diagram(f3,cut=.4,digits=2)
+f3l &lt;- f3$loadings
+fa.diagram(f3l,main="input from a matrix")
+Phi &lt;- f3$Phi
+fa.diagram(f3l,Phi=Phi,main="Input from a matrix")
+fa.diagram(ICLUST(Thurstone,2,title="Two cluster solution of Thurstone"),main="Input from ICLUST")
+het.diagram(Thurstone,levels=list(1:4,5:8,3:7))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

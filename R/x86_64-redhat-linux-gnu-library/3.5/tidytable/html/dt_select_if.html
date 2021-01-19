@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Select variables</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dt_select_if {tidytable}"><tr><td>dt_select_if {tidytable}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Select variables</h2>
+
+<h3>Description</h3>
+
+<p>Scoped variants of 'select()'
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dt_select_if(.data, .predicate)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.data</code></td>
+<td>
+<p>A data.table</p>
+</td></tr>
+<tr valign="top"><td><code>.predicate</code></td>
+<td>
+<p>Predicate to specify columns for 'dt_select_if()'</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A data.table
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+example_dt &lt;- data.table::data.table(x = 1, y = 2, z = "a")
+
+example_dt %&gt;% dt_select_if(is.double)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>tidytable</em> version 0.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

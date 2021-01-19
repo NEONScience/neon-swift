@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Java exception handling</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for jcheck {rJava}"><tr><td>jcheck {rJava}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Java exception handling
+</h2>
+
+<h3>Description</h3>
+
+<p><code>.jcheck</code> checks the Java VM for any pending exceptions and
+clears them.
+</p>
+<p><code>.jthrow</code> throws a Java exception.
+</p>
+<p><code>.jgetEx</code> polls for any pending expections and returns the exception object.
+</p>
+<p><code>.jclear</code> clears a pending exception.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+.jcheck(silent = FALSE)
+
+.jthrow(exception, message = NULL)
+.jgetEx(clear = FALSE)
+.jclear()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>silent</code></td>
+<td>
+<p>If set to <code>FALSE</code> then Java is instructed to print
+the exception on <code>stderr</code>. Note that Windows Rgui doesn't show
+<code>stderr</code> so it will not appear there (as of rJava 0.5-1 some
+errors that the JVM prints using the vfprintf callback are passed
+to R. However, some parts are printed using <code>System.err</code> in
+which case the ususal redirection using the <code>System</code> class
+can be used by the user).</p>
+</td></tr>
+<tr valign="top"><td><code>exception</code></td>
+<td>
+<p>is either a class name of an exception to create or a
+throwable object reference that is to be thrown.</p>
+</td></tr>
+<tr valign="top"><td><code>message</code></td>
+<td>
+<p>if <code>exception</code> is a class name then this parameter
+specifies the string to be used as the message of the exception. This
+parameter is ignored if <code>exception</code> is a reference.</p>
+</td></tr>
+<tr valign="top"><td><code>clear</code></td>
+<td>
+<p>if set to <code>TRUE</code> then the returned exception is also
+cleared, otherwise the throwable is returned without clearing the
+cause.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Please note that some functions (such as <code><a href="jnew.html">.jnew</a></code> or
+<code><a href="jcall.html">.jcall</a></code>) call <code>.jcheck</code> implicitly unless
+instructed to not do so. If you want to handle Java exceptions, you
+should make sure that those function don't clear the exception you may
+want to catch.
+</p>
+<p>The exception handling is still as a very low-level and experimental,
+because it requires polling of exceptions. A more elaboate system
+using constructs similar to <code>try</code> ... <code>catch</code> is planned for
+next major version of <code>rJava</code>.
+</p>
+<p><em>Warning:</em> When requesting exceptions to not be cleared
+automatically, please note that the <code>show</code> method (which is
+called by <code>print</code>) has a side-effect of making a Java call to get
+the string representation of a Java object. This implies that it will
+be impeded by any pending exceptions. Therefore exceptions obtained
+through <code>.jgetEx</code> can be stored, but should not be printed
+(or otherwise used in Java calls) until after the exception is
+cleared. In general, all Java calls will fail (possibly silently)
+until the exception is cleared.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>.jcheck</code> returns <code>TRUE</code> if an exception occurred or
+<code>FALSE</code> otherwise.
+</p>
+<p><code>.jgetEx</code> returns <code>NULL</code> if there are no pending exceptions
+or an object of the class &quot;java.lang.Throwable&quot; representing the
+current exception.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="jcall.html">.jcall</a></code>, <code><a href="jnew.html">.jnew</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+# we try to create a bogus object and
+# instruct .jnew to not clear the exception
+# this will raise an exception
+v &lt;- .jnew("foo/bar", check=FALSE)
+
+# you can poll for the exception, but don't try to print it
+# (see details above)
+if (!is.null(e&lt;-.jgetEx())) print("Java exception was raised")
+
+# expect TRUE result here because the exception was still not cleared
+print(.jcheck(silent=TRUE))
+# next invocation will be FALSE because the exception is now cleared
+print(.jcheck(silent=TRUE))
+
+# now you can print the actual expection (even after it was cleared)
+print(e)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rJava</em> version 0.9-13 <a href="00Index.html">Index</a>]</div>
+</body></html>

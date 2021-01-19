@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the input unsorted?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_is_unsorted {assertive.properties}"><tr><td>assert_is_unsorted {assertive.properties}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the input unsorted?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the input is unsorted (without the cost of sorting it).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_is_unsorted(x, na.rm = FALSE, strictly = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_unsorted(x, na.rm = FALSE, strictly = FALSE,
+  .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>na.rm</code></td>
+<td>
+<p>If <code>TRUE</code>, remove <code>NA</code>s before checking.</p>
+</td></tr>
+<tr valign="top"><td><code>strictly</code></td>
+<td>
+<p>If <code>TRUE</code>, equal values count as unsorted.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_unsorted</code> reimplements <code>is.unsorted</code>, providing
+more information on failure.  <code>assert_is_unsorted</code> returns nothing 
+but throws an error if <code>is_unsorted</code> returns <code>FALSE</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The builtin function <code>is.unsorted</code> usually returns <code>NA</code>
+when the input is recursive and has length 2, though for some
+classes (particularly data.frames) it returns a <code>TRUE</code> or
+<code>FALSE</code> value.  The logic behind those is difficult to
+interpret, and gives odd results, so <code>is_unsorted</code> always
+returns <code>NA</code> in this case.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/is.unsorted.html">is.unsorted</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+assert_is_unsorted(c(1, 3, 2))
+assert_is_unsorted(c(1, 1, 2), strictly = TRUE)
+# These checks should fail.
+assertive.base::dont_stop({
+  assert_is_unsorted(c(1, 1, 2))
+  assert_is_unsorted(c(2, 1, 0))
+})
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.properties</em> version 0.0-4 <a href="00Index.html">Index</a>]</div>
+</body></html>

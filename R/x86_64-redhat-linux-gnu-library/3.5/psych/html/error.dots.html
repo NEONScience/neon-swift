@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Show a dot.chart with error bars for different groups or...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for error.dots {psych}"><tr><td>error.dots {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Show a  dot.chart with error bars for different groups or variables</h2>
+
+<h3>Description</h3>
+
+<p>Yet one more of the graphical ways of showing data with error bars for different groups.
+A dot.chart with error bars for different groups or variables is found using from <code><a href="describe.html">describe</a></code>,  <code><a href="describe.by.html">describeBy</a></code>,  <code><a href="statsBy.html">statsBy</a></code> or data from <code><a href="best.scales.html">bestScales</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+error.dots(x=NULL, var = NULL, se = NULL, group = NULL, sd = FALSE, effect=NULL
+,stats=NULL, head = 12, tail = 12, sort = TRUE, decreasing = TRUE, main = NULL,
+ alpha = 0.05, eyes = FALSE, min.n = NULL, max.labels = 40, labels = NULL, groups = NULL,
+  gdata = NULL, cex =  par("cex"),  pt.cex = cex, pch = 21, gpch = 21, bg = par("bg"), 
+ color = par("fg"), gcolor = par("fg"), lcolor = "gray", xlab = NULL, ylab = NULL,
+  xlim = NULL,add=FALSE,order=NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A data frame or matrix of raw data, or the resulting object from <code><a href="describe.html">describe</a></code>,  <code><a href="describe.by.html">describeBy</a></code>,  <code><a href="statsBy.html">statsBy</a></code> or <code><a href="best.scales.html">bestScales</a></code> 
+</p>
+</td></tr>
+<tr valign="top"><td><code>var</code></td>
+<td>
+<p>The variable to show (particularly if doing describeBy or StatsBy plots).</p>
+</td></tr>
+<tr valign="top"><td><code>se</code></td>
+<td>
+<p>Source of a standard error</p>
+</td></tr>
+<tr valign="top"><td><code>group</code></td>
+<td>
+<p>A grouping variable, if desired. Will group the data on group for one variable (var) </p>
+</td></tr>
+<tr valign="top"><td><code>sd</code></td>
+<td>
+<p>if FALSE, confidence intervals in terms of standard errors, otherwise draw one standard deviation</p>
+</td></tr>
+<tr valign="top"><td><code>effect</code></td>
+<td>
+<p>Should the data be compared to a specified group (with mean set to 0) in effect size units?</p>
+</td></tr> 
+<tr valign="top"><td><code>stats</code></td>
+<td>
+<p>A matrix of means and se to use instead of finding them from the data</p>
+</td></tr>
+<tr valign="top"><td><code>head</code></td>
+<td>
+<p>The number of largest values to report</p>
+</td></tr>
+<tr valign="top"><td><code>tail</code></td>
+<td>
+<p>The number of smallest values to report</p>
+</td></tr>     
+<tr valign="top"><td><code>sort</code></td>
+<td>
+<p>Sort the groups/variables by value</p>
+</td></tr>
+<tr valign="top"><td><code>decreasing</code></td>
+<td>
+<p>Should they be sorted in increasing or decreasing order (from top to bottom)</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p>The caption for the figure</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>p value for confidence intervals</p>
+</td></tr>
+<tr valign="top"><td><code>eyes</code></td>
+<td>
+<p>Draw catseyes for error limits</p>
+</td></tr>
+<tr valign="top"><td><code>min.n</code></td>
+<td>
+<p>If using describeBy or statsBy, what should be the minimum sample size to draw</p>
+</td></tr>
+<tr valign="top"><td><code>max.labels</code></td>
+<td>
+<p>Length of labels  (truncate after this value)</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>Specify the labels versus find them from the row names</p>
+</td></tr>
+<tr valign="top"><td><code>groups</code></td>
+<td>
+<p>ignored</p>
+</td></tr>
+<tr valign="top"><td><code>gdata</code></td>
+<td>
+<p>ignored</p>
+</td></tr>
+<tr valign="top"><td><code>cex</code></td>
+<td>
+<p>The standard meaning of cex for graphics</p>
+</td></tr>
+<tr valign="top"><td><code>pt.cex</code></td>
+<td>
+<p>ignored</p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p>Plot character</p>
+</td></tr>
+<tr valign="top"><td><code>gpch</code></td>
+<td>
+<p>ignored</p>
+</td></tr>
+<tr valign="top"><td><code>bg</code></td>
+<td>
+<p>background color</p>
+</td></tr>
+<tr valign="top"><td><code>color</code></td>
+<td>
+<p>Color</p>
+</td></tr>
+<tr valign="top"><td><code>gcolor</code></td>
+<td>
+<p>ignored</p>
+</td></tr>
+<tr valign="top"><td><code>lcolor</code></td>
+<td>
+<p>ignored?</p>
+</td></tr>
+<tr valign="top"><td><code>xlab</code></td>
+<td>
+<p>Label the x axis, if NULL, the variable name is used</p>
+</td></tr>
+<tr valign="top"><td><code>ylab</code></td>
+<td>
+<p>If NULL, then the group rownames are used</p>
+</td></tr>
+<tr valign="top"><td><code>xlim</code></td>
+<td>
+<p>If NULL, then calculated to show nice values</p>
+</td></tr>
+<tr valign="top"><td><code>add</code></td>
+<td>
+<p>If TRUE, will add the plot to a previous plot (e.g., from dotchart)</p>
+</td></tr>
+<tr valign="top"><td><code>order</code></td>
+<td>
+<p>if sort=TRUE, if order is NULL, sort on values, otherwise, if order is returned from a previous figure, use that order. </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>And any other graphic parameters we have forgotten</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Adapted from the dot.chart function to include error bars and to use the output of<code><a href="describe.html">describe</a></code>,  <code><a href="describe.by.html">describeBy</a></code>,   <code><a href="statsBy.html">statsBy</a></code>, <code><a href="fa.html">fa</a></code> and <code><a href="best.scales.html">bestScales</a></code>.   
+To speed up multiple plots, the function can work from the output of a previous run.  Thus describeBy will be done and the results can be show for multiple variables.
+</p>
+<p>If using the add=TRUE option to add an error.dots plot to a dotplot, note that the order of variables in dot plots goes from last to first (highest y value is actually the last value in a vector.)  Also note that the xlim parameter should be set to make sure the plots line up correctly.</p>
+
+
+<h3>Value</h3>
+
+<p>Returns (invisibily) either a describeBy or describe object as well as the order if sorted
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle</p>
+
+
+<h3>References</h3>
+
+<p>Used in particular for showing https://sapa-project.org output.</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="describe.html">describe</a></code>,  <code><a href="describe.by.html">describeBy</a></code>, or  <code><a href="statsBy.html">statsBy</a></code> as well as  <code><a href="error.bars.html">error.bars</a></code>,  <code><a href="error.bars.by.html">error.bars.by</a></code>,  <code><a href="statsBy.html">statsBy</a></code> or <code><a href="best.scales.html">bestScales</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+temp &lt;- error.dots(psychTools::bfi[1:25],sort=TRUE, 
+xlab="Mean score for the item, sorted by difficulty")
+error.dots(psychTools::bfi[1:25],sort=TRUE, order=temp$order,
+ add=TRUE, eyes=TRUE) #over plot with eyes
+
+error.dots(psychTools::ability,eyes=TRUE, xlab="Mean score for the item")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

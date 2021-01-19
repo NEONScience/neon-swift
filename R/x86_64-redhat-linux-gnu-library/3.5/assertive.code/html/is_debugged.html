@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the input function being debugged?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_is_debugged {assertive.code}"><tr><td>assert_is_debugged {assertive.code}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the input function being debugged?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the input DLL (a.k.a. shared object) is loaded.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_is_debugged(x, severity = getOption("assertive.severity", "stop"))
+
+is_debugged(x, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_debugged</code> wraps <code><a href="../../base/html/isdebugged.html">isdebugged</a></code>, providing 
+more information on failure.  <code>assert_is_debugged</code> returns nothing but
+throws an error if <code>is_debugged</code> returns <code>FALSE</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/isdebugged.html">isdebugged</a></code>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.code</em> version 0.0-3 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Coerce variable to a different class</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for coerce_to {assertive.base}"><tr><td>coerce_to {assertive.base}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Coerce variable to a different class</h2>
+
+<h3>Description</h3>
+
+<p>Coerce the input to a different class, with a warning.  More reliable then 
+<code><a href="../../methods/html/as.html">as</a></code>, and supports coercion to multiple classes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+coerce_to(x, target_class, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to coerce.</p>
+</td></tr>
+<tr valign="top"><td><code>target_class</code></td>
+<td>
+<p>The desired class of x.  Multiple values allowed (see 
+note).</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The input <code>x</code> after attempted coercion to the target class.
+</p>
+
+
+<h3>Note</h3>
+
+<p>If x does not already have the target class, a warning is given
+before coercion.  
+The function will try and convert the <code>x</code> to each of the classes given
+in <code>target_class</code>, in order, until it succeeds or runs out of classes
+to try.  It will first try and convert <code>x</code> using a dedicated 
+<code>as.target_class</code> function if that exists.  If it does not exist, or 
+throws an error then <code>coerce_to</code> will try to use 
+<code>as(x, target_class)</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../methods/html/is.html">is</a></code> and <code><a href="../../methods/html/as.html">as</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Numbers can be coerced to characters but not to calls.
+dont_stop(coerce_to(1:5, c("call", "character")))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.base</em> version 0.0-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

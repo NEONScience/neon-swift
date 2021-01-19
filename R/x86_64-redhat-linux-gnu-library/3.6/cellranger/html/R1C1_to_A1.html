@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert R1C1 positioning notation to A1 notation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for R1C1_to_A1 {cellranger}"><tr><td>R1C1_to_A1 {cellranger}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert R1C1 positioning notation to A1 notation</h2>
+
+<h3>Description</h3>
+
+<p>Convert cell reference strings from R1C1 to A1 format. This only makes sense
+for absolute references, such as <code>"R4C2"</code>. Why? Because otherwise, we'd
+have to know the host cell of the reference. Relative and mixed references,
+like (<code>"R[3]C[-1]"</code> and <code>"R[1]C5"</code>), will therefore return
+<code>NA</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+R1C1_to_A1(x, strict = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>vector of cell positions in R1C1 notation</p>
+</td></tr>
+<tr valign="top"><td><code>strict</code></td>
+<td>
+<p>logical, affects reading and writing of A1 formatted cell
+references. When <code>strict = TRUE</code>, references must be declared absolute
+through the use of dollar signs, e.g., <code>$A$1</code>,  for parsing. When
+making a string, <code>strict = TRUE</code> requests dollar signs for absolute
+reference. When <code>strict = FALSE</code>, pure relative reference strings will
+be interpreted as absolute, i.e. <code>A1</code> and <code>$A$1</code> are treated the
+same. When making a string, <code>strict = FALSE</code> will cause dollars signs
+to be omitted in the reference string.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>character vector of absolute cell references in A1 notation
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+R1C1_to_A1("R1C1")
+R1C1_to_A1("R10C52", strict = FALSE)
+R1C1_to_A1(c("R1C1", "R10C52", "RC4", "R[-3]C[9]"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>cellranger</em> version 1.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

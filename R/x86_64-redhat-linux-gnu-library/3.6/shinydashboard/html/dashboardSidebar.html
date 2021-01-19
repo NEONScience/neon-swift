@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a dashboard sidebar.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for dashboardSidebar {shinydashboard}"><tr><td>dashboardSidebar {shinydashboard}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a dashboard sidebar.</h2>
+
+<h3>Description</h3>
+
+<p>A dashboard sidebar typically contains a <code><a href="sidebarMenu.html">sidebarMenu</a></code>, although
+it may also contain a <code><a href="sidebarSearchForm.html">sidebarSearchForm</a></code>, or other Shiny inputs.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+dashboardSidebar(..., disable = FALSE, width = NULL, collapsed = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Items to put in the sidebar.</p>
+</td></tr>
+<tr valign="top"><td><code>disable</code></td>
+<td>
+<p>If <code>TRUE</code>, the sidebar will be disabled.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the sidebar. This must either be a number which
+specifies the width in pixels, or a string that specifies the width in CSS
+units.</p>
+</td></tr>
+<tr valign="top"><td><code>collapsed</code></td>
+<td>
+<p>If <code>TRUE</code>, the sidebar will be collapsed on app startup.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sidebarMenu.html">sidebarMenu</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Only run this example in interactive R sessions
+if (interactive()) {
+header &lt;- dashboardHeader()
+
+sidebar &lt;- dashboardSidebar(
+  sidebarUserPanel("User Name",
+    subtitle = a(href = "#", icon("circle", class = "text-success"), "Online"),
+    # Image file should be in www/ subdir
+    image = "userimage.png"
+  ),
+  sidebarSearchForm(label = "Enter a number", "searchText", "searchButton"),
+  sidebarMenu(
+    # Setting id makes input$tabs give the tabName of currently-selected tab
+    id = "tabs",
+    menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+    menuItem("Widgets", icon = icon("th"), tabName = "widgets", badgeLabel = "new",
+             badgeColor = "green"),
+    menuItem("Charts", icon = icon("bar-chart-o"),
+      menuSubItem("Sub-item 1", tabName = "subitem1"),
+      menuSubItem("Sub-item 2", tabName = "subitem2")
+    )
+  )
+)
+
+body &lt;- dashboardBody(
+  tabItems(
+    tabItem("dashboard",
+      div(p("Dashboard tab content"))
+    ),
+    tabItem("widgets",
+      "Widgets tab content"
+    ),
+    tabItem("subitem1",
+      "Sub-item 1 tab content"
+    ),
+    tabItem("subitem2",
+      "Sub-item 2 tab content"
+    )
+  )
+)
+
+shinyApp(
+  ui = dashboardPage(header, sidebar, body),
+  server = function(input, output) { }
+)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinydashboard</em> version 0.7.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

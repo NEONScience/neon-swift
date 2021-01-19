@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Field/method operator for Java objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for JavaAccess {rJava}"><tr><td>JavaAccess {rJava}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Field/method operator for Java objects
+</h2>
+
+<h3>Description</h3>
+
+<p>The <code>$</code> operator for <code>jobjRef</code> Java object references provides convenience access to object attributes and calling Java methods.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+	## S3 method for class 'jobjRef'
+   .DollarNames(x, pattern = "" )
+	## S3 method for class 'jarrayRef'
+ .DollarNames(x, pattern = "" )
+	## S3 method for class 'jrectRef'
+  .DollarNames(x, pattern = "" )
+	## S3 method for class 'jclassName'
+.DollarNames(x, pattern = "" )
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>object to complete</p>
+</td></tr>
+<tr valign="top"><td><code>pattern</code></td>
+<td>
+<p>pattern</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>rJava provies two levels of API: low-level JNI-API in the form of <code><a href="jcall.html">.jcall</a></code> function and high-level reflection API based on the <code>$</code> operator. The former is very fast, but inflexible. The latter is a convenient way to use Java-like programming at the cost of performance. The reflection API is build around the <code>$</code> operator on <code><a href="jobjRef-class.html">jobjRef-class</a></code> objects that allows to access Java attributes and call object methods.
+</p>
+<p><code>$</code> returns either the value of the attribute or calls a method, depending on which name matches first.
+</p>
+<p><code>$&lt;-</code> assigns a value to the corresponding Java attribute.
+</p>
+<p><code>names</code> and <code>.DollarNames</code> returns all fields and methods associated with the object. 
+Method names are followed by <code>(</code> or <code>()</code> depending on arity. 
+This use of names is mainly useful for code completion, it is not intended to be used programmatically.
+</p>
+<p>This is just a convenience API. Internally all calls are mapped into <code><a href="jcall.html">.jcall</a></code> calls, therefore the calling conventions and returning objects use the same rules. For time-critical Java calls <code><a href="jcall.html">.jcall</a></code> should be used directly.
+</p>
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt><code>$</code></dt><dd><p><code>signature(x = "jobjRef")</code>: ... </p>
+</dd>
+<dt><code>$</code></dt><dd><p><code>signature(x = "jclassName")</code>: ... </p>
+</dd>
+<dt><code>$&lt;-</code></dt><dd><p><code>signature(x = "jobjRef")</code>: ... </p>
+</dd>
+<dt><code>$&lt;-</code></dt><dd><p><code>signature(x = "jclassName")</code>: ... </p>
+</dd>
+<dt><code>names</code></dt><dd><p><code>signature(x = "jobjRef")</code>: ... </p>
+</dd>
+<dt><code>names</code></dt><dd><p><code>signature(x = "jarrayRef")</code>: ... </p>
+</dd>
+<dt><code>names</code></dt><dd><p><code>signature(x = "jrectRef")</code>: ... </p>
+</dd>
+<dt><code>names</code></dt><dd><p><code>signature(x = "jclassName")</code>: ... </p>
+</dd>
+</dl>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="J.html">J</a></code>, <code><a href="jcall.html">.jcall</a></code>, <code><a href="jnew.html">.jnew</a></code>, <code><a href="jobjRef-class.html">jobjRef-class</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+
+v &lt;- new(J("java.lang.String"), "Hello World!")
+v$length()
+v$indexOf("World")
+names(v)
+
+
+
+J("java.lang.String")$valueOf(10)
+
+Double &lt;- J("java.lang.Double")
+# the class pseudo field - instance of Class for the associated class
+# similar to java Double.class
+Double$class 
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rJava</em> version 0.9-13 <a href="00Index.html">Index</a>]</div>
+</body></html>

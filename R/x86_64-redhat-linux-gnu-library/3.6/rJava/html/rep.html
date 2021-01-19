@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Creates java arrays by cloning</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rep {rJava}"><tr><td>rep {rJava}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Creates java arrays by cloning</h2>
+
+<h3>Description</h3>
+
+ 
+<p>Creates a java array by cloning a reference several times
+</p>
+
+
+<h3>Methods</h3>
+
+
+<dl>
+<dt>rep</dt><dd><p><code>signature(object = "jobjRef")</code>: ... </p>
+</dd>
+<dt>rep</dt><dd><p><code>signature(object = "jarrayRef")</code>: ... </p>
+</dd>
+<dt>rep</dt><dd><p><code>signature(object = "jrectRef")</code>: ... </p>
+</dd>
+</dl>
+
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/rep.html">rep</a></code> or <code><a href="jarray.html">.jarray</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+if (!nzchar(Sys.getenv("NOAWT"))) {
+  p &lt;- .jnew( "java.awt.Point" )
+  a &lt;- rep( p, 10 )
+
+  stopifnot( dim(a) == c(10L ) )
+  a[[1]]$move( 10L, 50L )
+  stopifnot( a[[2]]$getX() == 0.0 )
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rJava</em> version 0.9-13 <a href="00Index.html">Index</a>]</div>
+</body></html>

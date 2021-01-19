@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get string representation of cell references</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for to_string {cellranger}"><tr><td>to_string {cellranger}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get string representation of cell references</h2>
+
+<h3>Description</h3>
+
+<p>Convert various representations of a cell reference to character
+</p>
+
+<ul>
+<li> <p><code>to_string</code> is not necessarily vectorized. For example, when the
+the input is of class <code><a href="ra_ref.html">ra_ref</a></code>, it must of be of length one.
+However, to be honest, this will actually work for <code><a href="cell_addr.html">cell_addr</a></code>,
+even when length &gt; 1.
+</p>
+</li>
+<li> <p><code>to_string_v</code> is guaranteed to be vectorized. In particular, input
+can be a <code><a href="cell_addr.html">cell_addr</a></code> of length &gt;= 1 or a list of
+<code><a href="ra_ref.html">ra_ref</a></code> objects.
+</p>
+</li></ul>
+
+<p>If either the row or column reference is relative, note that, in general,
+it's impossible to convert to an &quot;A1&quot; formatted string. We would have to know
+&quot;relative to what?&quot;.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+to_string(x, fo = c("R1C1", "A1"), strict = TRUE, sheet = NULL, ...)
+
+to_string_v(x, fo = c("R1C1", "A1"), strict = TRUE, sheet = NULL, ...)
+
+## S3 method for class 'ra_ref'
+to_string(x, fo = c("R1C1", "A1"), strict = TRUE,
+  sheet = NULL, ...)
+
+## S3 method for class 'list'
+to_string_v(x, fo = c("R1C1", "A1"), strict = TRUE,
+  sheet = NULL, ...)
+
+## S3 method for class 'cell_addr'
+to_string(x, fo = c("R1C1", "A1"), strict = TRUE,
+  sheet = FALSE, ...)
+
+## S3 method for class 'cell_addr'
+to_string_v(x, fo = c("R1C1", "A1"), strict = TRUE,
+  sheet = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a suitable representation of a cell or cell area reference: a single
+<code><a href="ra_ref.html">ra_ref</a></code> object or a list of them or a <code><a href="cell_addr.html">cell_addr</a></code>
+object</p>
+</td></tr>
+<tr valign="top"><td><code>fo</code></td>
+<td>
+<p>either <code>"R1C1"</code> (the default) or <code>"A1"</code> specifying the
+cell reference format; in many contexts, it can be inferred and is optional</p>
+</td></tr>
+<tr valign="top"><td><code>strict</code></td>
+<td>
+<p>logical, affects reading and writing of A1 formatted cell
+references. When <code>strict = TRUE</code>, references must be declared absolute
+through the use of dollar signs, e.g., <code>$A$1</code>,  for parsing. When
+making a string, <code>strict = TRUE</code> requests dollar signs for absolute
+reference. When <code>strict = FALSE</code>, pure relative reference strings will
+be interpreted as absolute, i.e. <code>A1</code> and <code>$A$1</code> are treated the
+same. When making a string, <code>strict = FALSE</code> will cause dollars signs
+to be omitted in the reference string.</p>
+</td></tr>
+<tr valign="top"><td><code>sheet</code></td>
+<td>
+<p>logical, indicating whether to include worksheet name; if
+<code>NULL</code>, worksheet is included if worksheet name is not <code>NA</code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a character vector
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## exactly one ra_ref --&gt; string
+to_string(ra_ref())
+to_string(ra_ref(), fo = "A1")
+to_string(ra_ref(), fo = "A1", strict = FALSE)
+to_string(ra_ref(row_ref = 3, col_ref = 2))
+to_string(ra_ref(row_ref = 3, col_ref = 2, sheet = "helloooo"))
+(mixed_ref &lt;- ra_ref(row_ref = 10, row_abs = FALSE, col_ref = 3))
+to_string(mixed_ref)
+
+## this will raise warning and generate NA, because row reference is
+## relative and format is A1
+to_string(mixed_ref, fo = "A1")
+
+## a list of ra_ref's --&gt; character vector
+ra_ref_list &lt;-
+  list(ra_ref(), ra_ref(2, TRUE, 5, TRUE), ra_ref(2, FALSE, 5, TRUE))
+to_string_v(ra_ref_list)
+
+## cell_addr --&gt; string
+(ca &lt;- cell_addr(3, 8))
+to_string(ca)
+to_string(ca, fo = "A1")
+
+(ca &lt;- cell_addr(1:4, 3))
+to_string(ca)
+to_string(ca, fo = "A1")
+## explicitly go from cell_addr, length &gt; 1 --&gt; character vector
+(ca &lt;- cell_addr(1:4, 3))
+to_string_v(ca)
+to_string_v(ca, fo = "A1")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>cellranger</em> version 1.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get or set the number of threads used in parallel operations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for threads_fst {fst}"><tr><td>threads_fst {fst}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get or set the number of threads used in parallel operations</h2>
+
+<h3>Description</h3>
+
+<p>For parallel operations, the performance is determined to a great extend by the number of threads
+used. More threads will allow the CPU to perform more computational intensive tasks simultaneously,
+speeding up the operation. Using more threads also introduces some overhead that will scale with the
+number of threads used. Therefore, using the maximum number of available threads is not always the
+fastest solution. With <code>threads_fst</code> the number of threads can be adjusted to the users
+specific requirements. As a default, <code>fst</code> uses a number of threads equal to the number of
+logical cores in the system.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+threads_fst(nr_of_threads = NULL, reset_after_fork = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>nr_of_threads</code></td>
+<td>
+<p>number of threads to use or <code>NULL</code> to get the current number of threads used in
+multithreaded operations.</p>
+</td></tr>
+<tr valign="top"><td><code>reset_after_fork</code></td>
+<td>
+<p>when <code>fst</code> is running in a forked process, the usage of OpenMP can
+create problems. To prevent these, <code>fst</code> switches back to single core usage when it detects a fork.
+After the fork, the number of threads is reset to it's initial setting. However, on some compilers
+(e.g. Intel), switching back to multi-threaded mode can lead to issues. When <code>reset_after_fork</code>
+is set to <code>FALSE</code>, <code>fst</code> is left in single-threaded mode after the fork ends. After the fork,
+multithreading can be activated again manually by calling <code>threads_fst</code> with an appropriate value
+for <code>nr_of_threads</code>. The default (<code>reset_after_fork = NULL</code>) leaves the fork behavior unchanged.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The number of threads can also be set with <code>options(fst_threads = N)</code>.
+NOTE: This option is only read when the package's namespace is first loaded, with commands like
+<code>library</code>, <code>require</code>, or <code>::</code>. If you have already used one of these, you
+must use <code>threads_fst</code> to set the number of threads.
+</p>
+
+
+<h3>Value</h3>
+
+<p>the number of threads (previously) used
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>fst</em> version 0.9.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

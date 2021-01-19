@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Class &quot;jobjRef&quot; - Reference to a Java object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for jobjRef-class {rJava}"><tr><td>jobjRef-class {rJava}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Class &quot;jobjRef&quot; - Reference to a Java object </h2>
+
+<h3>Description</h3>
+
+<p> This class describes a reference to an object held in a JavaVM. </p>
+
+
+<h3>Objects from the Class</h3>
+
+<p>Objects of this class should *not* be created directly. Instead, the function <code><a href="jnew.html">.jnew</a></code> should be use to create new Java objects. They can also be created as results of the <code><a href="jcall.html">.jcall</a></code> function.
+</p>
+
+
+<h3>Slots</h3>
+
+
+<dl>
+<dt><code>jobj</code>:</dt><dd><p>Internal identifier of the object (external pointer to be precise)</p>
+</dd>
+<dt><code>jclass</code>:</dt><dd><p>Java class name of the object (in JNI notation)</p>
+</dd>
+</dl>
+
+<p>Java-side attributes are not accessed via slots, but the <code>$</code> operator instead.
+</p>
+
+
+<h3>Methods</h3>
+
+<p>This object's Java methods are not accessed directly. Instead, <code><a href="jcall.html">.jcall</a></code> JNI-API should be used for invoking Java methods. For convenience the <code>$</code> operator can be used to call methods via reflection API.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Simon Urbanek </p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="jnew.html">.jnew</a></code>, <code><a href="jcall.html">.jcall</a></code>  or <code><a href="jarrayRef-class.html">jarrayRef-class</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rJava</em> version 0.9-13 <a href="00Index.html">Index</a>]</div>
+</body></html>

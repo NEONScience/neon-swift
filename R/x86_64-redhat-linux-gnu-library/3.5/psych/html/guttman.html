@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Alternative estimates of test reliabiity</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for splitHalf {psych}"><tr><td>splitHalf {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Alternative estimates of test reliabiity </h2>
+
+<h3>Description</h3>
+
+<p>Eight alternative estimates of test reliability include the six discussed by Guttman (1945), four discussed by ten Berge and Zergers (1978) (<i>&mu;_0 &hellip; &mu;_3)</i> as well as <i>&beta;</i> (the worst split half, Revelle, 1979),  the glb (greatest lowest bound) discussed by Bentler and Woodward (1980), and <i>&omega;_h</i> and <i>&omega;_t</i> (McDonald, 1999; Zinbarg et al., 2005). Greatest and lowest split-half values are found by brute force or sampling. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+splitHalf(r,raw=FALSE,brute=FALSE,n.sample=10000,covar=FALSE,check.keys=TRUE,
+           key=NULL,ci=.05,use="pairwise")
+guttman(r,key=NULL) 
+tenberge(r)
+glb(r,key=NULL)
+glb.fa(r,key=NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>r</code></td>
+<td>
+<p>A correlation or covariance matrix or raw data matrix.</p>
+</td></tr>
+<tr valign="top"><td><code>raw</code></td>
+<td>
+<p>return a vector of split half reliabilities</p>
+</td></tr>
+<tr valign="top"><td><code>brute</code></td>
+<td>
+<p>Use brute force to try all combinations of n take n/2. </p>
+</td></tr>
+<tr valign="top"><td><code>n.sample</code></td>
+<td>
+<p>if brute is false, how many samples of split halves should be tried?</p>
+</td></tr>
+<tr valign="top"><td><code>covar</code></td>
+<td>
+<p>Should the covariances or correlations be used for reliability calculations</p>
+</td></tr>
+<tr valign="top"><td><code>check.keys</code></td>
+<td>
+<p>If TRUE, any item with a negative loading on the first factor will be flipped in sign</p>
+</td></tr>
+<tr valign="top"><td><code>key</code></td>
+<td>
+<p>a vector of -1, 0, 1 to select or reverse key items.  See if the key vector is less than the number of variables, then item numbers to be reverse can be specified.</p>
+</td></tr>
+<tr valign="top"><td><code>use</code></td>
+<td>
+<p>Should we find the correlations using &quot;pairwise&quot; or &quot;complete&quot; (see ?cor)</p>
+</td></tr>
+<tr valign="top"><td><code>ci</code></td>
+<td>
+<p>The alpha level to use for the confidence intervals of the split half estimates</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Surprisingly, more than a century after Spearman (1904) introduced the concept of reliability to psychologists, there are still multiple approaches for measuring it. Although very popular, Cronbach's <i>&alpha;</i>  (1951) underestimates the reliability of a test and over estimates the first factor saturation. Using <code><a href="guttman.html">splitHalf</a></code> for tests with 16 or fewer items, all possible splits may be found fairly easily.  For tests with 17 or more items, n.sample splits are randomly found. Thus, for 16 or fewer items, the upper and lower bounds are precise.  For 17 or more items, they are close but will probably slightly underestimate the highest and overestimate the lowest reliabilities.  
+</p>
+<p>The guttman function includes the six estimates discussed by Guttman (1945), four of ten Berge and Zergers (1978), as well as Revelle's <i>&beta;</i> (1979) using <code><a href="guttman.html">splitHalf</a></code>. The companion function, <code><a href="omega.html">omega</a></code> calculates omega hierarchical (<i>&omega;_h</i>)  and omega total (<i>&omega;_t</i>). 
+</p>
+<p>Guttman's first estimate <i>&lambda;_1</i> assumes that all the variance of an item is error:
+</p>
+<p style="text-align: center;"><i>lambda 1= 1-tr(Vx)/Vx</i></p>
+
+<p>This is a clear underestimate.
+</p>
+<p>The second bound, <i>&lambda;_2</i>, replaces the diagonal with a function of the square root of the  sums of squares of the off diagonal elements.  Let <i>C_2 = \vec{1}( \vec{V}-diag(\vec{V})^2 \vec{1}' </i>, then 
+</p>
+<p style="text-align: center;"><i>&lambda;_2= &lambda;_1 + sqrt(n *(n-1)C_2)/V_x)</i></p>
+
+<p>Effectively, this is replacing the diagonal with  n * the square root of the average squared off diagonal element.  
+</p>
+<p>Guttman's 3rd lower bound, <i>&lambda;_3</i>, also  modifies <i>&lambda;_1</i> and estimates the true variance of each item as the average covariance between items and is, of course, the same as Cronbach's <i>&alpha;</i>. 
+</p>
+<p style="text-align: center;"><i>&lambda; 3 = ((n)/(n-1))(1-tr(Vx)/(Vx)  = ((n)/(n-1))(Vx-tr(Vx)/Vx  = &alpha;</i></p>
+
+<p>This is just replacing the diagonal elements with the average off diagonal elements.  <i>&lambda;_2 &ge; &lambda;_3</i> with  <i>&lambda;_2 &gt; &lambda;_3</i> if the covariances are not identical.
+</p>
+<p><i>&lambda;_3</i> and <i>&lambda;_2</i> are both corrections to <i>&lambda;_1</i> and this correction may  be  generalized  as an infinite set of successive improvements. (Ten Berge and Zegers, 1978) 
+</p>
+<p style="text-align: center;"><i>(1/(Vx))(po + p1 = (p2 + ... (pr1) + pr^.5 )^.5^ ... .5)</i></p>
+
+<p>where 
+</p>
+<p style="text-align: center;"><i>p_h = sum(&sigma;^2h,  h = 0, 1, 2, ... r-1  </i></p>
+
+<p>and
+</p>
+<p style="text-align: center;"><i>p_h = n/((n-1) &sigma;^2h) </i></p>
+
+<p>tenberge and Zegers (1978).  Clearly <i>&mu;_0 = &lambda;_3 = &alpha;</i> and <i> &mu;_1 = &lambda;_2</i>.  <i>&mu;_r &ge; &mu;_{r-1} &ge; &hellip; &mu;_1 &ge; &mu;_0</i>, although the series does not improve much after the first two steps.
+</p>
+<p>Guttman's fourth lower bound, <i>&lambda;_4</i> was originally proposed as any spit half reliability  but has been interpreted as the greatest split half reliability. If <i>\vec{X}</i> is split into  two parts, <i>\vec{X}_a</i> and <i>\vec{X}_b</i>, with correlation <i>r_{ab}</i> then
+</p>
+<p style="text-align: center;"><i>&lambda; 4 = 4rab/(Va + Vb + 2rabVaVb)</i></p>
+
+<p>which is just the normal split half reliability, but in this case, of the most similar splits. For 16 or fewer items, this is found by trying all possible splits.  For 17 or more items, this is estimated by taking n.sample random splits. 
+</p>
+<p><i>&lambda;_5</i>, Guttman's fifth lower bound, replaces the diagonal values with twice the square root of the maximum (across items) of the sums of squared interitem covariances
+</p>
+<p style="text-align: center;"><i>&lambda;_5 = &lambda;_1 +2/sqrt(average(C_2)/V_X.) </i></p>
+
+<p>Although superior to <i>&lambda;_1</i>, <i>&lambda;_5</i> underestimates the correction to the diagonal.  A better estimate would be analogous to the correction used in <i>&lambda;_3</i>:
+</p>
+<p style="text-align: center;"><i>&lambda; 5+ = &lambda; 1 + ((n/(n-1))2/sqrt(av covariance 12)/Vx</i></p>
+
+<p><i>&lambda;_6</i>,Guttman's final bound considers the amount of variance in each item that can be accounted for the linear regression of all of the other items (the squared multiple correlation or smc), or more precisely, the variance of the errors, <i>e_j^2</i>,  and is
+</p>
+<p style="text-align: center;"><i>&lambda; 6 = 1 - sum(e^2)/Vx = 1-sum(1-r^2(smc))/Vx</i></p>
+<p>.
+</p>
+<p>The smc is found from all the items.  A modification to Guttman <i>&lambda;_6</i>, <i>&lambda;_6*</i> reported by the <code><a href="score.items.html">score.items</a></code> function is to find the smc from the entire pool of items given, not just the items on the selected scale.  
+</p>
+<p>Guttman's <i>&lambda;_4</i> is the greatest split half reliability.  Although originally found here by combining the output from three different approaches,this has now been replaced by using <code><a href="guttman.html">splitHalf</a></code> to find the maximum value by brute force (for 16 or fewer items) or by taking a substantial number of random splits.
+</p>
+<p>The algorithms that had been tried before included:
+</p>
+<p>a) Do an ICLUST of the reversed correlation matrix.  ICLUST normally forms the most distinct clusters.  By reversing the correlations, it will tend to find the most related clusters.  Truly a weird approach but tends to work.
+</p>
+<p>b) Alternatively, a kmeans clustering of the correlations (with the diagonal replaced with 0 to make pseudo distances) can produce 2 similar clusters.
+</p>
+<p>c) Clusters identified by assigning items to two clusters based upon their order on the first principal factor.  (Highest to cluster 1, next 2 to cluster 2, etc.)
+</p>
+<p>These three procedures will produce keys vectors for assigning items to the two splits.  The maximum split half reliability is found by taking the maximum of these three approaches.  This is not elegant but is fast.
+</p>
+<p>The brute force and the sampling procedures seem to provide more stable and larger estimates. 
+</p>
+<p>Yet another procedure, implemented in <code><a href="guttman.html">splitHalf</a></code> is actually form all possible (for n items &lt;= 16) or sample 10,000 (or more) split halfs corrected for test length.  This function returns the best and worst splits as item keys that can be used for scoring purposes, if desired.  Can do up to 24 items in reasonable time, but gets much slower for more than about 24 items.  
+</p>
+<p>There are three greatest lower bound functions.  One, glb finds the greatest split half reliability, <i>&lambda;_4</i>. This considers the test as set of items and examines how best to partition the items into splits. The other two, <code><a href="guttman.html">glb.fa</a></code> and <code><a href="glb.algebraic.html">glb.algebraic</a></code>, are alternative ways of weighting the diagonal of the matrix. 
+</p>
+<p><code><a href="guttman.html">glb.fa</a></code> estimates the communalities of the variables from a factor model where the number of factors is the number with positive eigen values.  Then reliability is found by 
+</p>
+<p style="text-align: center;"><i>glb = 1 - sum(e^2)/Vx = 1-sum(1-h^2)/Vx</i></p>
+
+<p>This estimate will differ slightly from that found by  <code><a href="glb.algebraic.html">glb.algebraic</a></code>, written by Andreas Moeltner which uses calls to  csdp in the Rcsdp package. His algorithm, which more closely matches the description of the glb by Jackson and Woodhouse, seems to have a positive bias (i.e., will over estimate the reliability of some items; they are said to be = 1) for small sample sizes.  More exploration of these two algorithms is underway. 
+</p>
+<p>Compared to <code><a href="glb.algebraic.html">glb.algebraic</a></code>, <code><a href="guttman.html">glb.fa</a></code> seems to have less (positive) bias for smallish sample sizes (n &lt; 500) but larger for large (&gt; 1000) sample sizes. This interacts with the number of variables so that equal bias sample size differs as a function of the number of variables.  The differences are, however small. As samples sizes grow,  <code><a href="glb.algebraic.html">glb.algebraic</a></code> seems to converge on the population value while glb.fa has a positive bias. 
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>beta</code></td>
+<td>
+<p>The worst split half reliability. This is an estimate of the general factor saturation.</p>
+</td></tr>
+<tr valign="top"><td><code>maxrb</code></td>
+<td>
+<p>The maximimum split half reliability.  This is Guttman's lambda 4</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>Also known as Guttman's Lambda 3</p>
+</td></tr>
+<tr valign="top"><td><code>ci</code></td>
+<td>
+<p>The 2.5%, 50%, and 97.5%  values of the raw or sampled split half</p>
+</td></tr>
+<tr valign="top"><td><code>tenberge$mu1</code></td>
+<td>
+<p>tenBerge mu 1 is functionally alpha</p>
+</td></tr>
+<tr valign="top"><td><code>tenberge$mu2</code></td>
+<td>
+<p>one of the sequence of estimates mu1 ... mu3</p>
+</td></tr>
+<tr valign="top"><td><code>glb</code></td>
+<td>
+<p>glb found from factor analysis</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p> William Revelle </p>
+
+
+<h3>References</h3>
+
+<p>Cronbach, L.J. (1951) Coefficient alpha and the internal strucuture of tests.  Psychometrika, 16, 297-334.
+</p>
+<p>Guttman, L. (1945). A basis for analyzing test-retest reliability. Psychometrika, 10 (4), 255-282. 
+</p>
+<p>Revelle, W. (1979). Hierarchical cluster-analysis and the internal structure of tests. Multivariate Behavioral Research, 14 (1), 57-74. 
+</p>
+<p>Revelle, W. and Zinbarg, R. E. (2009) Coefficients alpha, beta, omega and the glb: comments on Sijtsma. Psychometrika, 2009. 
+</p>
+<p>Ten Berge, J. M. F., &amp; Zegers, F. E. (1978). A series of lower bounds to the reliability of a test. Psychometrika, 43 (4), 575-579. 
+</p>
+<p>Zinbarg, R. E., Revelle, W., Yovel, I., &amp; Li, W. (2005). Cronbach's <i>&alpha;</i> , Revelle's <i>&beta;</i> , and McDonald's <i>&omega;_h</i> ): Their relations with each other and two alternative conceptualizations of reliability. Psychometrika, 70 (1), 123-133.
+</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="alpha.html">alpha</a></code>, <code><a href="omega.html">omega</a></code>, <code><a href="ICLUST.html">ICLUST</a></code>, <code><a href="glb.algebraic.html">glb.algebraic</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+data(attitude)
+splitHalf(attitude)
+splitHalf(attitude,covar=TRUE) #do it on the covariances
+glb(attitude)
+glb.fa(attitude)
+if(require(Rcsdp)) {glb.algebraic(cor(attitude)) }
+guttman(attitude)
+
+#to show the histogram of all possible splits for the ability test
+#sp &lt;- splitHalf(psychTools::ability,raw=TRUE)  #this saves the results
+#hist(sp$raw,breaks=101,ylab="SplitHalf reliability",main="SplitHalf 
+#    reliabilities of a test with 16 ability items")
+sp &lt;- splitHalf(psychTools::bfi[1:10],key=c(1,9,10))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

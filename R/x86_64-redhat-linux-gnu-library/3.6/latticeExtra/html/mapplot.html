@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Trellis displays on Maps a.k.a. Choropleth maps</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for mapplot {latticeExtra}"><tr><td>mapplot {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Trellis displays on Maps a.k.a. Choropleth maps </h2>
+
+<h3>Description</h3>
+
+<p>Produces Trellis displays of numeric (and eventually categorical) data
+on a map.  This is largely meant as a demonstration, and users looking
+for serious map drawing capabilities should look elsewhere (see below).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+
+mapplot(x, data, ...)
+
+## S3 method for class 'formula'
+mapplot(x, data, map, outer = TRUE,
+        prepanel = prepanel.mapplot,
+        panel = panel.mapplot,
+        aspect = "iso",
+        legend = NULL,
+        breaks, cuts = 30,
+        colramp = colorRampPalette(hcl.colors(n = 11, palette = "Spectral")),
+        colorkey = TRUE,
+        ...)
+
+
+prepanel.mapplot(x, y, map, ...)
+panel.mapplot(x, y, map, breaks, colramp, exact = FALSE, lwd = 0.5, ...)
+
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x, y</code></td>
+<td>
+<p> For <code>mapplot</code>, an object on which method dispatch is
+carried out.  For the formula method, a formula of the form <code>y
+      ~ x</code>, with additional conditioning variables as desired.  The
+extended form of conditioning using <code>y ~ x1 + x2</code> etc. is also
+allowed.  The formula might be interpreted as in a dot plot, except
+that <code>y</code> is taken to be the names of geographical units in
+<code>map</code>.
+</p>
+<p>Suitable subsets (packets) of <code>x</code> and <code>y</code> are passed to
+the prepanel and panel functions.
+</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p> A data source where names in the formula are evaluated </p>
+</td></tr>
+<tr valign="top"><td><code>map</code></td>
+<td>
+<p> An object of class <code>"map"</code> (package <code>maps</code>),
+containing boundary information.  The names of the geographical
+units must match the <code>y</code> variable in the formula.  </p>
+</td></tr>
+</table>
+<p>The remaining arguments are standard lattice arguments, relvant here
+mostly because they have different defaults than usual:
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>outer</code></td>
+<td>
+<p> logical; how variables separated by <code>+</code> in the
+formula are interpreted.  It is not advisable to change the
+default.  </p>
+</td></tr>
+<tr valign="top"><td><code>prepanel, panel</code></td>
+<td>
+<p> the prepanel and panel functions </p>
+</td></tr>
+<tr valign="top"><td><code>aspect</code></td>
+<td>
+<p> aspect ratio</p>
+</td></tr>
+<tr valign="top"><td><code>breaks, cuts, colramp</code></td>
+<td>
+<p> controls conversion of numeric <code>x</code>
+values to a false color.  <code>colramp</code> should be
+a function that produces colors (such as <code><a href="../../grDevices/html/palettes.html">cm.colors</a></code>).
+If it is <code>NULL</code>, colors are taken from
+<code>trellis.par.get("regions")</code>. </p>
+</td></tr>
+<tr valign="top"><td><code>exact</code></td>
+<td>
+<p> the default <code>exact = FALSE</code> allows the given
+<code>y</code> values to match sub-regions of <code>map</code>,
+i.e. region names with a qualifier following <code>":"</code>, like
+<code>"michigan:north", "michigan:south"</code>. These will both match a
+<code>y</code> value of <code>"Michigan"</code>. </p>
+</td></tr>
+<tr valign="top"><td><code>legend, colorkey</code></td>
+<td>
+<p> controls legends; usually just a color key
+giving the association between numeric values of <code>x</code> and
+color.  </p>
+</td></tr>
+<tr valign="top"><td><code>lwd</code></td>
+<td>
+<p>line width</p>
+</td></tr> 
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> Further arguments passed on to the underlying engine.
+See <code><a href="../../lattice/html/xyplot.html">xyplot</a></code> for details.  </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An object of class <code>"trellis"</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>This function is meant to demonstrate how maps can be incorporated in
+a Trellis display.  Users seriously interested in geographical data
+should consider using software written by people who know what they
+are doing.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Deepayan Sarkar </p>
+
+
+<h3>References</h3>
+
+ <p><a href="http://en.wikipedia.org/wiki/Choropleth_map">http://en.wikipedia.org/wiki/Choropleth_map</a> </p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../lattice/html/Lattice.html">Lattice</a></code>  </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+library(maps)
+library(mapproj)
+
+## Note: Alaska, Hawaii and others are not included in county map;
+## this generates warnings with both USCancerRates and ancestry.
+
+data(USCancerRates)
+
+suppressWarnings(print(
+mapplot(rownames(USCancerRates) ~ log(rate.male) + log(rate.female),
+        data = USCancerRates,
+        map = map("county", plot = FALSE, fill = TRUE,
+                  projection = "mercator"))
+))
+
+suppressWarnings(print(
+mapplot(rownames(USCancerRates) ~ log(rate.male) + log(rate.female),
+        data = USCancerRates,
+        map = map("county", plot = FALSE, fill = TRUE,
+                  projection = "tetra"),
+        scales = list(draw = FALSE))
+))
+
+data(ancestry)
+
+county.map &lt;- 
+    map('county', plot = FALSE, fill = TRUE, 
+        projection = "azequalarea")
+
+## set a sequential color palette as current theme, and use it
+opar &lt;- trellis.par.get()
+trellis.par.set(custom.theme(region = rev(hcl.colors(9, "Purp")),
+                             alpha.line = 0.5))
+suppressWarnings(print(
+mapplot(county ~ log10(population), ancestry, map = county.map,
+    colramp = NULL, border = "transparent")
+))
+trellis.par.set(opar)
+
+## Not run: 
+
+## this may take a while (should get better area records)
+
+county.areas &lt;- 
+    area.map(county.map, regions = county.map$names, sqmi = FALSE)
+    
+ancestry$density &lt;- 
+    with(ancestry, population / county.areas[as.character(county)])
+
+mapplot(county ~ log(density), ancestry,
+        map = county.map, border = NA,
+        colramp = colorRampPalette(c("white", "black")))
+
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

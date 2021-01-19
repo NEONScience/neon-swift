@@ -1,0 +1,11 @@
+create.doc              Create a new directory with a clean RMarkdown
+                        file
+html_clean              Convert to an HTML document
+html_docco              Convert to an HTML document
+knit_print.pilltabs     knitr printing function for pilltabs
+material                Material design - bootstrap HTML output format
+pilltabs                Given a cross-table, outputs HTML code to
+                        display several views of with a tabbed
+                        interface
+print.pilltabs          Printing function for pilltabs
+readthedown             Convert to an HTML document

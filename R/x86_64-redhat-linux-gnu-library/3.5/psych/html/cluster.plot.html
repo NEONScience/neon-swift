@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot factor/cluster loadings and assign items to clusters by...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cluster.plot {psych}"><tr><td>cluster.plot {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot factor/cluster loadings and assign items to clusters by their highest loading.</h2>
+
+<h3>Description</h3>
+
+<p>Cluster analysis and factor analysis are procedures for grouping items in terms of a smaller number of (latent) factors or (observed) clusters.  Graphical presentations of clusters typically show tree structures, although they can be represented in terms of item by cluster correlations.  
+</p>
+<p>Cluster.plot plots items by their cluster loadings (taken, e.g., from <code><a href="ICLUST.html">ICLUST</a></code>) or factor loadings (taken, eg., from <code><a href="fa.html">fa</a></code>).  Cluster membership may be assigned apriori or may be determined in terms of the highest (absolute) cluster loading for each item.  
+</p>
+<p>If the input is an object of class &quot;kmeans&quot;, then the cluster centers are plotted. 
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+
+
+cluster.plot(ic.results, cluster = NULL, cut = 0, labels=NULL,
+          title = "Cluster plot",pch=18,pos,show.points=TRUE,choose=NULL,...)
+fa.plot(ic.results, cluster = NULL, cut = 0, labels=NULL,title, 
+             jiggle=FALSE,amount=.02,pch=18,pos,show.points=TRUE,choose=NULL,...)
+factor.plot(ic.results, cluster = NULL, cut = 0, labels=NULL,title,jiggle=FALSE,
+                  amount=.02,pch=18,pos,show.points=TRUE,...)  #deprecated
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ic.results</code></td>
+<td>
+<p>A factor analysis or cluster analysis output including the loadings, or a matrix of item by cluster correlations. Or the output from a kmeans cluster analysis. </p>
+</td></tr>
+<tr valign="top"><td><code>cluster</code></td>
+<td>
+<p> A vector of cluster membership </p>
+</td></tr>
+<tr valign="top"><td><code>cut</code></td>
+<td>
+<p> Assign items to clusters if the absolute loadings are &gt; cut </p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>If row.names exist they will be added to the plot, or, if they don't, labels can be specified.  If labels =NULL, and there are no row names, then variables are labeled by row number.)</p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p> Any title</p>
+</td></tr>
+<tr valign="top"><td><code>jiggle</code></td>
+<td>
+<p>When plotting with factor loadings that are almost identical, it is sometimes useful to &quot;jiggle&quot; the points by jittering them. The default is to not jiggle.</p>
+</td></tr>
+<tr valign="top"><td><code>amount</code></td>
+<td>
+<p>if jiggle=TRUE, then how much should the points be jittered?</p>
+</td></tr>
+<tr valign="top"><td><code>pch</code></td>
+<td>
+<p>factor and clusters are shown with different pch values, starting at pch+1</p>
+</td></tr>
+<tr valign="top"><td><code>pos</code></td>
+<td>
+<p>Position of the text for labels for two dimensional plots. 1=below, 2 = left, 3 = above, 4= right</p>
+</td></tr>
+<tr valign="top"><td><code>show.points</code></td>
+<td>
+<p>When adding labels to the points, should we show the points as well as the labels.  For many points, better to not show them, just the labels.</p>
+</td></tr>
+<tr valign="top"><td><code>choose</code></td>
+<td>
+<p>Specify the factor/clusters to plot</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Further options to plot</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Results of either a factor analysis or cluster analysis are plotted.  Each item is assigned to its highest loading factor, and then identified by variable name as well as cluster (by color). 
+The cluster assignments can be specified to override the automatic clustering by loading.
+Both of these functions may be called directly or by calling the generic plot function.  (see example).
+</p>
+
+
+<h3>Value</h3>
+
+<p>Graphical output is presented.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle</p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="ICLUST.html">ICLUST</a></code>, <code><a href="ICLUST.graph.html">ICLUST.graph</a></code>, <code><a href="fa.diagram.html">fa.graph</a></code>, <code><a href="plot.psych.html">plot.psych</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+circ.data &lt;- circ.sim(24,500)
+circ.fa &lt;- fa(circ.data,2)
+plot(circ.fa,cut=.5)
+f5 &lt;- fa(psychTools::bfi[1:25],5) 
+plot(f5,labels=colnames(psychTools::bfi)[1:25],show.points=FALSE)
+plot(f5,labels=colnames(psychTools::bfi)[1:25],show.points=FALSE,choose=c(1,2,4))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

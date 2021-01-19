@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Play audio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for play {audio}"><tr><td>play {audio}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Play audio
+</h2>
+
+<h3>Description</h3>
+
+<p><code>play</code> plays audio
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+play(x, ...)
+## S3 method for class 'audioSample'
+play(x, rate, ...)
+## S3 method for class 'Sample'
+play(x, ...) 
+## Default S3 method:
+play(x, rate = 44100, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>data to play</p>
+</td></tr>
+<tr valign="top"><td><code>rate</code></td>
+<td>
+<p>sample rate - it is inferred from the object (where possible) if not specified</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>optional arguments passed to the method specific to the object being played</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Returns an audio instance object which can be used to control the playback subsequently.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+play(sin(1:10000/20))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>audio</em> version 0.1-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

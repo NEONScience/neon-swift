@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get Min/Mean/Max values</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for getMinMeanMax {ytBangerz}"><tr><td>getMinMeanMax {ytBangerz}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get Min/Mean/Max values</h2>
+
+<h3>Description</h3>
+
+<p>Get Min/Mean/Max values
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getMinMeanMax(site, l0.data, streams)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>site</code></td>
+<td>
+<p>The 4-Letter site code for a NEON site. Please, no OKSR.</p>
+</td></tr>
+<tr valign="top"><td><code>l0.data</code></td>
+<td>
+<p>a data frame of 1) timestamps, 2) stream IDs, and 3) values</p>
+</td></tr>
+<tr valign="top"><td><code>streams</code></td>
+<td>
+<p>A list of streams expected at the site</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>From a set of L0 data, extract all min mean max values for all expected streams.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A data frame of min mean max values, along with site, English data product names, term names, English locations, and the generic stream string.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Robert 'n' Josh
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>ytBangerz</em> version 0.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

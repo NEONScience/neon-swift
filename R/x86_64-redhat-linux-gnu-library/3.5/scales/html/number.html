@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: A low-level numeric formatter</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for number {scales}"><tr><td>number {scales}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>A low-level numeric formatter</h2>
+
+<h3>Description</h3>
+
+<p>This function is a low-level helper that powers many of the labelling
+functions. You should generally not need to call it directly unless you
+are creating your own labelling function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+number(x, accuracy = NULL, scale = 1, prefix = "", suffix = "",
+  big.mark = " ", decimal.mark = ".", trim = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A numeric vector to format.</p>
+</td></tr>
+<tr valign="top"><td><code>accuracy</code></td>
+<td>
+<p>A number to round to. Use (e.g.) <code>0.01</code> to show 2 decimal
+places of precision. If <code>NULL</code>, the default, uses a heuristic that should
+ensure breaks have the minimum number of digits needed to show the
+difference between adjacent values.
+</p>
+<p>Applied to rescaled data.</p>
+</td></tr>
+<tr valign="top"><td><code>scale</code></td>
+<td>
+<p>A scaling factor: <code>x</code> will be multiplied by <code>scale</code> before
+formating. This is useful if the underlying data is very small or very
+large.</p>
+</td></tr>
+<tr valign="top"><td><code>prefix</code></td>
+<td>
+<p>Symbols to display before and after value.</p>
+</td></tr>
+<tr valign="top"><td><code>suffix</code></td>
+<td>
+<p>Symbols to display before and after value.</p>
+</td></tr>
+<tr valign="top"><td><code>big.mark</code></td>
+<td>
+<p>Character used between every 3 digits to separate thousands.</p>
+</td></tr>
+<tr valign="top"><td><code>decimal.mark</code></td>
+<td>
+<p>The character to be used to indicate the numeric
+decimal point.</p>
+</td></tr>
+<tr valign="top"><td><code>trim</code></td>
+<td>
+<p>Logical, if <code>FALSE</code>, values are right-justified to a common
+width (see <code><a href="../../base/html/format.html">base::format()</a></code>).</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other arguments passed on to <code><a href="../../base/html/format.html">base::format()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A character vector of <code>length(x)</code>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>scales</em> version 1.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

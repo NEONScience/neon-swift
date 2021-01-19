@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Find various test-retest statistics, including test, person...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for testRetest {psych}"><tr><td>testRetest {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Find various test-retest statistics, including test, person and item reliability</h2>
+
+<h3>Description</h3>
+
+<p>Given two presentations of a test, it is straightforward to find the test-retest reliablity, as well as the item reliability and person stability across items.  Using the multi-level structure of the data, it is also possible to do a variance deomposition to find variance components for people, items, time, people x time, people x items, and items x time as well as the residual variance. This leads to various generalizability cofficients.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+testRetest(t1,t2=NULL,keys=NULL,id="id", time=  "time", select=NULL, 
+check.keys=TRUE, warnings=TRUE,lmer=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>t1</code></td>
+<td>
+<p>a data.frame or matrix for the first time of measurement.</p>
+</td></tr>
+<tr valign="top"><td><code>t2</code></td>
+<td>
+<p>a data.frame or matrix for the second time of measurement. May be NULL if time is specifed in t1</p>
+</td></tr>
+<tr valign="top"><td><code>keys</code></td>
+<td>
+<p>item names (or locations) to analyze, preface by &quot;-&quot; to reverse score. </p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>subject identification codes to match across time</p>
+</td></tr>
+<tr valign="top"><td><code>time</code></td>
+<td>
+<p>The name of the time variable identifying time 1 or 2 if just one data set is supplied. </p>
+</td></tr>
+<tr valign="top"><td><code>select</code></td>
+<td>
+<p>A subset of items to analyze</p>
+</td></tr>
+<tr valign="top"><td><code>check.keys</code></td>
+<td>
+<p>If TRUE will automatically reverse items based upon their correlation with the first principal component.  Will throw a warning when doing so, but some people seem to miss this kind of message.</p>
+</td></tr>
+<tr valign="top"><td><code>warnings</code></td>
+<td>
+<p>If TRUE, then warn when items are reverse scored</p>
+</td></tr>
+<tr valign="top"><td><code>lmer</code></td>
+<td>
+<p>If TRUE, include the lmer variance decomposition. By default, this is true, but this can lead to long times for large data sets. </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>There are many ways of measuring reliability. Test - Retest is one way.  If the time interval is very short (or immediate), this is known as a dependability correlation, if the time interval is longer, a stability coefficient.  In all cases, this is a correlation between two measures at different time points.  Given the multi-level nature of these data, it is possible to find variance components associated with individuals, time, item, and time by item, etc.  This leads to several different estimates of reliability (see <code><a href="multilevel.reliability.html">multilevel.reliability</a></code> for a discussion and references).
+</p>
+<p>It is also possible to find the subject reliability across time (this is the correlation across the items at time 1 with time 2 for each subject).  This is a sign of subject reliability (Wood et al, 2017).  Items can show differing amounts of test-retest reliability over time.  Unfortunately, the within person correlation has problems if people do not differ very much across items.  If all items are in the same keyed direction, and measuring the same construct, then the response profile for an individual is essentially flat. This implies that the even with almost perfect reproducibility, that the correlation can actually be negative.  The within person distance (d2) across items is just the mean of the squared differences for each item.  Although highly negatively correlated with the rqq score, this does distinguish between random responders (high dqq and low rqq) from consistent responders with lower variance (low dqq and low rqq). 
+</p>
+<p>Several individual statistics are reported in the scores object.  These can be displayed by using <code><a href="pairs.panels.html">pairs.panels</a></code> for a graphic display of the relationship and ranges of the various measures.
+</p>
+<p>Although meant to decompose the variance for tests with items nested within tests, if just given two tests, the variance components for people and for time will also be shown.  The resulting variance ratio of people to total variance is the intraclass correlation between the two tests.  See also <code><a href="ICC.html">ICC</a></code> for the more general case.
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>r12</code></td>
+<td>
+<p>The time 1 time 2 correlation of scaled scores across time</p>
+</td></tr>
+<tr valign="top"><td><code>alpha</code></td>
+<td>
+<p>Guttman's lambda 3 (aka alpha) and lambda 6* (item reliabilities based upon smcs) are found for the scales at times 1 and 2.</p>
+</td></tr>
+<tr valign="top"><td><code>rqq</code></td>
+<td>
+<p>The within subject test retest reliability of response patterns over items</p>
+</td></tr>
+<tr valign="top"><td><code>item.stats</code></td>
+<td>
+<p>Item reliabilities, item loadings at time 1 and 2, item means at time 1 and time 2</p>
+</td></tr>
+<tr valign="top"><td><code>scores</code></td>
+<td>
+<p>A data frame of principal component scores at time 1 and time 2, raw scores from time 1 and time 2, the within person standard deviation for time 1 and time 2, and the rqq  and dqq scores for each subject.  </p>
+</td></tr>
+<tr valign="top"><td><code>xy.df</code></td>
+<td>
+<p>If given separate t1 and t2 data.frames, this is combination suitable for using <code><a href="multilevel.reliability.html">multilevel.reliability</a></code> </p>
+</td></tr>
+<tr valign="top"><td><code>key</code></td>
+<td>
+<p>A key vector showing which items have been reversed</p>
+</td></tr>
+<tr valign="top"><td><code>ml</code></td>
+<td>
+<p>The multilevel output</p>
+</td></tr> 
+</table>
+
+
+<h3>Note</h3>
+
+<p>lmer=TRUE is the default and will do the variance decomposition using lmer.  This will take some time.  For 3032 cases with 10 items from the msqR and sai data set, this takes 92 seconds, but just .63 seconds if lmer = FALSE.
+For the 1895 subjects with repeated measures on the <code><a href="../../psychTools/html/sai.html">sai</a></code>, it takes 85 seconds with lmer and .38 without out lmer.
+</p>
+<p>In the case of just two tests (no items specified), the item based statistics (alpha, rqq, item.stats, scores, xy.df) are not reported. 
+</p>
+<p>Two examples are given.  The first takes 200 cases from the <code><a href="../../psychTools/html/sai.html">sai</a></code> data set.  Subjects were given the <code>link[psychTools]{sai}</code> twice with an intervening mood manipulation (four types of short film clips, with or without placebo/caffeine).  The test retest stability of the sai are based upon the 20 sai items.  The second example compares the scores of the 10 sai items that overlap with 10 items from the <code><a href="../../psychTools/html/msqR.html">msqR</a></code> data set from the same study.  <code>link[psychTools]{sai}</code> and  <code><a href="../../psychTools/html/msqR.html">msqR</a></code> were given immediately after each other and although the format differs slightly, can be seen as measures of dependability.  
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle
+</p>
+
+
+<h3>References</h3>
+
+<p>Cattell, R. B. (1964). Validity and reliability: A proposed more basic set of concepts. Journal of Educational Psychology, 55(1), 1 - 22. doi: 10.1037/h0046462
+</p>
+<p>Cranford, J. A., Shrout, P. E., Iida, M., Rafaeli, E., Yip, T., \&amp; Bolger, N. (2006). A procedure for evaluating sensitivity to within-person change: Can mood measures in diary studies detect change reliably? Personality and Social Psychology Bulletin, 32(7), 917-929.
+</p>
+<p>DeSimone, J. A. (2015). New techniques for evaluating temporal consistency. Organizational Research Methods, 18(1), 133-152. doi: 10.1177/1094428114553061
+</p>
+<p>Revelle, W. and Condon, D. Reliability  (in prep)
+</p>
+<p>Revelle, W.  (in preparation) An introduction to psychometric theory with applications in R. Springer.  (Available online at <a href="https://personality-project.org/r/book">https://personality-project.org/r/book</a>). 
+</p>
+<p>Shrout, P. E., &amp; Lane, S. P. (2012). Psychometrics. In Handbook of research methods for studying daily life. Guilford Press.
+</p>
+<p>Wood, D., Harms, P. D., Lowman, G. H., &amp; DeSimone, J. A. (2017). Response speed and response consistency as mutually validating indicators of data quality in online samples. Social Psychological and Personality Science, 8(4), 454-464. doi: 10.1177/1948550617703168
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="alpha.html">alpha</a></code>, <code><a href="omega.html">omega</a></code> <code><a href="score.items.html">scoreItems</a></code>, <code><a href="misc.html">cor2</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#lmer set to FALSE for speed.
+#set lmer to TRUE to get variance components
+sai.xray &lt;- subset(psychTools::sai,psychTools::sai$study=="XRAY")
+#The case where the two measures are identified by time
+#automatically reverses items but throws a warning
+stability &lt;- testRetest(sai.xray[-c(1,3)],lmer=FALSE) 
+stability  #show the results
+#get a second data set
+sai.xray1 &lt;- subset(sai.xray,sai.xray$time==1)
+msq.xray &lt;- subset(psychTools::msqR,
+ (psychTools::msqR$study=="XRAY") &amp; (psychTools::msqR$time==1))
+select &lt;- colnames(sai.xray1)[is.element(colnames(sai.xray1 ),colnames(psychTools::msqR))] 
+
+select &lt;-select[-c(1:3)]  #get rid of the id information
+#The case where the two times are in the form x, y
+
+dependability &lt;-  testRetest(sai.xray1,msq.xray,keys=select,lmer=FALSE)
+dependability  #show the results
+
+#now examine the Impulsivity subscale of the EPI
+#use the epiR data set which includes epi.keys
+data("epiR",package="psychTools")
+#Imp &lt;- selectFromKeys(epi.keys$Imp)   #fixed temporarily with 
+Imp &lt;- c("V1", "V3", "V8", "V10","V13" ,"V22", "V39" , "V5" , "V41")
+imp.analysis &lt;- testRetest(psychTools::epiR,select=Imp) #test-retest = .7, alpha=.51,.51 
+imp.analysis
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

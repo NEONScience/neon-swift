@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a lattice theme based on specified colors</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for custom.theme {latticeExtra}"><tr><td>custom.theme {latticeExtra}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Create a lattice theme based on specified colors </h2>
+
+<h3>Description</h3>
+
+<p>Creates a lattice theme given a few colors.  Non-color settings
+are not included.  The colors are typically used to define the
+standard grouping (superposition) colors, and the first color is used
+for ungrouped displays.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+custom.theme(symbol = RColorBrewer::brewer.pal(n = 8, name = "Dark2"),
+             fill = RColorBrewer::brewer.pal(n = 12, name = "Set3"),
+             region = RColorBrewer::brewer.pal(n = 11, name = "Spectral"),
+             reference = "#e8e8e8",
+             bg = "transparent",
+             fg = "black",
+             ...)
+
+## different defaults ("Set1", "Accent", "RdBu"):
+custom.theme.2(...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>symbol</code></td>
+<td>
+<p> a vector of symbol colors.   </p>
+</td></tr>
+<tr valign="top"><td><code>fill</code></td>
+<td>
+<p> a vector of fill colors (for barcharts, etc.) </p>
+</td></tr>
+<tr valign="top"><td><code>region</code></td>
+<td>
+<p> a vector of colors that is used to define a continuous
+color gradient using <code><a href="../../grDevices/html/colorRamp.html">colorRampPalette</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>reference</code></td>
+<td>
+<p> a color for reference lines and such  </p>
+</td></tr>
+<tr valign="top"><td><code>bg</code></td>
+<td>
+<p> a background color </p>
+</td></tr>
+<tr valign="top"><td><code>fg</code></td>
+<td>
+<p> a foreground color, primarily for annotation </p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> further arguments passed to <code><a href="../../lattice/html/simpleTheme.html">simpleTheme</a></code>
+and used to modify the theme. </p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list that can be supplied to
+<code><a href="../../lattice/html/trellis.par.get.html">trellis.par.get</a></code> or as the
+<code>theme</code> argument to
+<code><a href="../../lattice/html/trellis.device.html">trellis.device</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Deepayan Sarkar </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+set.seed(0)
+
+## create a plot to demonstrate graphical settings
+obj &lt;-
+xyplot(Sepal.Length + Sepal.Width ~ Petal.Length + Petal.Width, iris,
+       type = c("p", "r"), jitter.x = TRUE, jitter.y = TRUE, factor = 5,
+       auto.key = list(lines = TRUE, rectangles = TRUE))
+obj &lt;- update(obj, legend = list(right =
+         list(fun = "draw.colorkey", args = list(list(at = 0:100)))))
+
+
+## draw with default theme
+obj
+
+## draw with custom.theme()
+update(obj, par.settings = custom.theme())
+
+## create a theme with paired colours, filled points, etc
+update(obj, par.settings =
+  custom.theme(symbol = RColorBrewer::brewer.pal(12, "Paired"),
+               fill = RColorBrewer::brewer.pal(12, "Paired"),
+               region = RColorBrewer::brewer.pal(9, "Blues"),
+               bg = "grey90", fg = "grey20", pch = 16))
+
+## draw with custom.theme.2()
+update(obj, par.settings = custom.theme.2())
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>latticeExtra</em> version 0.6-29 <a href="00Index.html">Index</a>]</div>
+</body></html>

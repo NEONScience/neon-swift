@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get the name of a variable in the parent frame</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for get_name_in_parent {assertive.base}"><tr><td>get_name_in_parent {assertive.base}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get the name of a variable in the parent frame</h2>
+
+<h3>Description</h3>
+
+<p>Gets the name of the input in the parent frame.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+get_name_in_parent(x, escape_percent = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Variable to get the name of.</p>
+</td></tr>
+<tr valign="top"><td><code>escape_percent</code></td>
+<td>
+<p>Logical. If <code>TRUE</code>, percent signs are doubled, 
+making the value suitable for use with <code>sprintf</code> (and hence by 
+<code>false</code> and <code>na</code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A string giving the name of the input in the parent frame.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+outside &lt;- 1
+f &lt;- function(inside, escape_percent) 
+{
+  get_name_in_parent(inside, escape_percent)
+}
+f(outside, TRUE) 
+f('10%', TRUE) 
+f('10%', FALSE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.base</em> version 0.0-7 <a href="00Index.html">Index</a>]</div>
+</body></html>

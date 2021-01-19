@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Publish a book to the web</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for publish_book {bookdown}"><tr><td>publish_book {bookdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Publish a book to the web</h2>
+
+<h3>Description</h3>
+
+<p>Publish a book to the web. Note that you should be sure to render all
+versions of the book before publishing, unless you have specified
+<code>render = TRUE</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+publish_book(
+  name = NULL,
+  account = NULL,
+  server = NULL,
+  render = c("none", "local", "server")
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>Name of the book (this will be used in the URL path of the
+published book). Defaults to the <code>book_filename</code> in
+<code>_bookdown.yml</code> if not specified.</p>
+</td></tr>
+<tr valign="top"><td><code>account</code></td>
+<td>
+<p>Account name to publish to. Will default to any previously
+published to account or any single account already associated with
+<code>server</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>server</code></td>
+<td>
+<p>Server to publish to (by default beta.rstudioconnect.com but
+any RStudio Connect server can be published to).</p>
+</td></tr>
+<tr valign="top"><td><code>render</code></td>
+<td>
+<p>Rendering behavior for site: &quot;none&quot; to upload a
+static version of the current contents of the site directory;
+&quot;local&quot; to render the site locally then upload it; &quot;server&quot; to
+render the site on the server. Note that for &quot;none&quot; and &quot;local&quot;
+R scripts (.R) and markdown documents (.Rmd and .md) will not be
+uploaded to the server.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>bookdown</em> version 0.17 <a href="00Index.html">Index</a>]</div>
+</body></html>

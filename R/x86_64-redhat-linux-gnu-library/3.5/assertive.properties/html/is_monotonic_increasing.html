@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is the vector monotonically increasing or decreasing?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_is_monotonic_increasing {assertive.properties}"><tr><td>assert_is_monotonic_increasing {assertive.properties}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is the vector monotonically increasing or decreasing?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the input is monotonically increasing or decreasing.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_is_monotonic_increasing(x, strictly = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+assert_is_monotonic_decreasing(x, strictly = FALSE,
+  severity = getOption("assertive.severity", "stop"))
+
+is_monotonic_increasing(x, strictly = FALSE, .xname = get_name_in_parent(x))
+
+is_monotonic_decreasing(x, strictly = FALSE, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>strictly</code></td>
+<td>
+<p>Logical. If <code>TRUE</code>, the input is checked for being 
+strictly monotonic; that is, consecutive values cannot be equal.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- c(1, 2, 2, 1, 3, 2)
+is_monotonic_increasing(x)
+is_monotonic_increasing(x, TRUE)
+is_monotonic_decreasing(x)
+is_monotonic_decreasing(x, TRUE)
+
+# Also works with, e.g., dates &amp; times
+is_monotonic_increasing(Sys.time() + x)
+
+# These checks should fail
+assertive.base::dont_stop({
+  assert_is_monotonic_increasing(x)
+  assert_is_monotonic_decreasing(x)
+})
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.properties</em> version 0.0-4 <a href="00Index.html">Index</a>]</div>
+</body></html>

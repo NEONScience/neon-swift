@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Draw an ICLUST graph using the Rgraphviz package</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ICLUST.rgraph {psych}"><tr><td>ICLUST.rgraph {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2> Draw an ICLUST graph using the Rgraphviz package </h2>
+
+<h3>Description</h3>
+
+<p>Given a cluster structure determined by <code><a href="ICLUST.html">ICLUST</a></code>, create a rgraphic directly using Rgraphviz.  To create dot code to describe the <code><a href="ICLUST.html">ICLUST</a></code> output with more precision, use <code><a href="ICLUST.graph.html">ICLUST.graph</a></code>.  As an option, dot code is also generated and saved in a file. To  use the dot code, use either https://www.graphviz.org/ Graphviz or a commercial viewer (e.g., OmniGraffle).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ICLUST.rgraph(ic.results, out.file = NULL, min.size = 1, short = FALSE, 
+    labels = NULL, size = c(8, 6), node.font = c("Helvetica", 14), 
+   edge.font = c("Helvetica", 10), rank.direction=c("RL","TB","LR","BT"),
+    digits = 2, title = "ICLUST",label.font=2, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>ic.results</code></td>
+<td>
+<p>output list from ICLUST </p>
+</td></tr>
+<tr valign="top"><td><code>out.file</code></td>
+<td>
+<p> File name to save optional dot code. </p>
+</td></tr>
+<tr valign="top"><td><code>min.size</code></td>
+<td>
+<p>draw a smaller node (without all the information) for clusters &lt; min.size &ndash; useful for large problems</p>
+</td></tr>
+<tr valign="top"><td><code>short</code></td>
+<td>
+<p>if short==TRUE, don't use variable names</p>
+</td></tr>
+<tr valign="top"><td><code>labels</code></td>
+<td>
+<p>vector of text labels (contents) for the variables</p>
+</td></tr>
+<tr valign="top"><td><code>size</code></td>
+<td>
+<p>size of output </p>
+</td></tr>
+<tr valign="top"><td><code>node.font</code></td>
+<td>
+<p> Font to use for nodes in the graph </p>
+</td></tr>
+<tr valign="top"><td><code>edge.font</code></td>
+<td>
+<p> Font to use for the labels of the arrows (edges)</p>
+</td></tr>
+<tr valign="top"><td><code>rank.direction</code></td>
+<td>
+<p>LR or TB  or RL  </p>
+</td></tr>
+<tr valign="top"><td><code>digits</code></td>
+<td>
+<p> number of digits to show </p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p> any title </p>
+</td></tr>
+<tr valign="top"><td><code>label.font</code></td>
+<td>
+<p>The variable labels can be a different size than the other nodes.  This is particularly helpful if the number of variables is large or the labels are long.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p> other options to pass </p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Will create (or overwrite) an output file and print out the dot code to show a cluster structure. This dot file may be imported directly into a dot viewer (e.g.,  https://www.graphviz.org/).  The &quot;dot&quot; language is a powerful graphic description language that is particulary appropriate for viewing cluster output.  Commercial graphics programs (e.g., OmniGraffle) can also read (and clean up) dot files.  
+</p>
+<p>ICLUST.rgraph takes the output from <code><a href="ICLUST.html">ICLUST</a></code> results and processes it to provide a pretty picture of the results.  Original variables shown as rectangles and ordered on the left hand side (if rank direction is RL) of the graph.  Clusters are drawn as ellipses and include the alpha, beta, and size of the cluster.  Edges show the cluster intercorrelations.
+</p>
+<p>It is possible to trim the output to not show all cluster information. Clusters &lt; min.size are shown as small ovals without alpha, beta, and size information.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Output is a set of dot commands written either to console or to the output file.  These commands may then be used as input to any &quot;dot&quot; viewer, e.g., Graphviz.
+</p>
+<p>ICLUST.rgraph is a version of <code><a href="ICLUST.graph.html">ICLUST.graph</a></code> that uses Rgraphviz to draw on the screen as well.  
+</p>
+<p>Additional output is drawn to main graphics screen. </p>
+
+
+<h3>Note</h3>
+
+<p> Requires Rgraphviz</p>
+
+
+<h3>Author(s)</h3>
+
+<p><a href="mailto:revelle@northwestern.edu ">revelle@northwestern.edu </a> <br />
+<a href="https://personality-project.org/revelle.html">https://personality-project.org/revelle.html</a></p>
+
+
+<h3>References</h3>
+
+<p> ICLUST: https://personality-project.org/r/r.ICLUST.html</p>
+
+
+<h3>See Also</h3>
+
+  <p><code><a href="VSS.plot.html">VSS.plot</a></code>,  <code><a href="ICLUST.html">ICLUST</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+test.data &lt;- Harman74.cor$cov
+ic.out &lt;- ICLUST(test.data)   #uses iclust.diagram instead 
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

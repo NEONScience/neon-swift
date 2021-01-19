@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert to a cell_addr object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for as.cell_addr {cellranger}"><tr><td>as.cell_addr {cellranger}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert to a cell_addr object</h2>
+
+<h3>Description</h3>
+
+<p>Convert various representations of a cell reference into an object of class
+<code><a href="cell_addr.html">cell_addr</a></code>. Recall that <code><a href="cell_addr.html">cell_addr</a></code> objects hold
+absolute row and column location, so <code><a href="ra_ref.html">ra_ref</a></code> objects or cell
+reference strings with relative or mixed references will raise a warning and
+generate <code>NA</code>s.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+as.cell_addr(x, ...)
+
+as.cell_addr_v(x, ...)
+
+## S3 method for class 'ra_ref'
+as.cell_addr(x, ...)
+
+## S3 method for class 'list'
+as.cell_addr_v(x, ...)
+
+## S3 method for class 'character'
+as.cell_addr(x, fo = NULL, strict = TRUE, ...)
+
+## S3 method for class 'character'
+as.cell_addr_v(x, fo = NULL, strict = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a cell reference</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>further arguments passed to or from other methods</p>
+</td></tr>
+<tr valign="top"><td><code>fo</code></td>
+<td>
+<p>either <code>"R1C1"</code> (the default) or <code>"A1"</code> specifying the
+cell reference format; in many contexts, it can be inferred and is optional</p>
+</td></tr>
+<tr valign="top"><td><code>strict</code></td>
+<td>
+<p>logical, affects reading and writing of A1 formatted cell
+references. When <code>strict = TRUE</code>, references must be declared absolute
+through the use of dollar signs, e.g., <code>$A$1</code>,  for parsing. When
+making a string, <code>strict = TRUE</code> requests dollar signs for absolute
+reference. When <code>strict = FALSE</code>, pure relative reference strings will
+be interpreted as absolute, i.e. <code>A1</code> and <code>$A$1</code> are treated the
+same. When making a string, <code>strict = FALSE</code> will cause dollars signs
+to be omitted in the reference string.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code><a href="cell_addr.html">cell_addr</a></code> object
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+as.cell_addr(ra_ref())
+rar &lt;- ra_ref(2, TRUE, 5, TRUE)
+as.cell_addr(rar)
+## mixed reference
+rar &lt;- ra_ref(2, FALSE, 5, TRUE)
+as.cell_addr(rar)
+ra_ref_list &lt;-
+  list(ra_ref(), ra_ref(2, TRUE, 5, TRUE), ra_ref(2, FALSE, 5, TRUE))
+as.cell_addr_v(ra_ref_list)
+as.cell_addr("$D$12")
+as.cell_addr("R4C3")
+as.cell_addr(c("$C$4", "$D$12"))
+as.cell_addr("$F2")
+as.cell_addr("R[-4]C3")
+as.cell_addr("F2", strict = FALSE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>cellranger</em> version 1.1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

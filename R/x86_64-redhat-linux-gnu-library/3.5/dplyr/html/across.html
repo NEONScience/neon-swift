@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Apply a function (or a set of functions) to a set of columns</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for across {dplyr}"><tr><td>across {dplyr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Apply a function (or a set of functions) to a set of columns</h2>
+
+<h3>Description</h3>
+
+<p><code>across()</code> makes it easy to apply the same transformation to multiple
+columns, allowing you to use <code><a href="select.html">select()</a></code> semantics inside in <code><a href="summarise.html">summarise()</a></code> and
+<code><a href="mutate.html">mutate()</a></code>. <code>across()</code> supersedes the family of &quot;scoped variants&quot; like
+<code>summarise_at()</code>, <code>summarise_if()</code>, and <code>summarise_all()</code>. See
+<code>vignette("colwise")</code> for more details.
+</p>
+<p><code>c_across()</code> is designed to work with <code><a href="rowwise.html">rowwise()</a></code> to make it easy to
+perform row-wise aggregations. It has two differences from <code>c()</code>:
+</p>
+
+<ul>
+<li><p> It uses tidy select semantics so you can easily select multiple variables.
+See <code>vignette("rowwise")</code> for more details.
+</p>
+</li>
+<li><p> It uses <code><a href="../../vctrs/html/vec_c.html">vctrs::vec_c()</a></code> in order to give safer outputs.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+across(.cols = everything(), .fns = NULL, ..., .names = NULL)
+
+c_across(cols = everything())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.fns</code></td>
+<td>
+<p>Functions to apply to each of the selected columns.
+Possible values are:
+</p>
+
+<ul>
+<li> <p><code>NULL</code>, to returns the columns untransformed.
+</p>
+</li>
+<li><p> A function, e.g. <code>mean</code>.
+</p>
+</li>
+<li><p> A purrr-style lambda, e.g. <code>~ mean(.x, na.rm = TRUE)</code>
+</p>
+</li>
+<li><p> A list of functions/lambdas, e.g.
+<code style="white-space: pre;">list(mean = mean, n_miss = ~ sum(is.na(.x))</code>
+</p>
+</li></ul>
+
+<p>Within these functions you can use <code><a href="context.html">cur_column()</a></code> and <code><a href="context.html">cur_group()</a></code>
+to access the current column and grouping keys respectively.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments for the function calls in <code>.fns</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.names</code></td>
+<td>
+<p>A glue specification that describes how to name the output
+columns. This can use <code>{col}</code> to stand for the selected column name, and
+<code>{fn}</code> to stand for the name of the function being applied. The default
+(<code>NULL</code>) is equivalent to <code>"{col}"</code> for the single function case and
+<code>"{col}_{fn}"</code> for the case where a list is used for <code>.fns</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>cols, .cols</code></td>
+<td>
+<p>&lt;<code><a href="dplyr_tidy_select.html">tidy-select</a></code>&gt; Columns to transform.
+Because <code>across()</code> is used within functions like <code>summarise()</code> and
+<code>mutate()</code>, you can't select or compute upon grouping variables.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A tibble with one column for each column in <code>.cols</code> and each function in <code>.fns</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# across() -----------------------------------------------------------------
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarise(across(starts_with("Sepal"), mean))
+iris %&gt;%
+  as_tibble() %&gt;%
+  mutate(across(where(is.factor), as.character))
+
+# A purrr-style formula
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarise(across(starts_with("Sepal"), ~mean(.x, na.rm = TRUE)))
+
+# A named list of functions
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarise(across(starts_with("Sepal"), list(mean = mean, sd = sd)))
+
+# Use the .names argument to control the output names
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarise(across(starts_with("Sepal"), mean, .names = "mean_{col}"))
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarise(across(starts_with("Sepal"), list(mean = mean, sd = sd), .names = "{col}.{fn}"))
+iris %&gt;%
+  group_by(Species) %&gt;%
+  summarise(across(starts_with("Sepal"), list(mean, sd), .names = "{col}.fn{fn}"))
+
+# c_across() ---------------------------------------------------------------
+df &lt;- tibble(id = 1:4, w = runif(4), x = runif(4), y = runif(4), z = runif(4))
+df %&gt;%
+  rowwise() %&gt;%
+  mutate(
+    sum = sum(c_across(w:z)),
+    sd = sd(c_across(w:z))
+ )
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>dplyr</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

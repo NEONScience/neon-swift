@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Plot the successive eigen values for a scree test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for VSS.scree {psych}"><tr><td>VSS.scree {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Plot the successive eigen values for a scree test</h2>
+
+<h3>Description</h3>
+
+<p>Cattell's scree test is one of most simple ways of testing the number of components or factors in  a correlation matrix. Here we plot the  eigen values of a correlation matrix as well as the eigen values of a factor analysis.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+scree(rx,factors=TRUE,pc=TRUE,main="Scree plot",hline=NULL,add=FALSE) 
+VSS.scree(rx, main = "scree plot")
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>rx</code></td>
+<td>
+<p> a correlation matrix or a data matrix. If data, then correlations are found using pairwise deletions. </p>
+</td></tr>
+<tr valign="top"><td><code>factors</code></td>
+<td>
+<p>If true, draw the scree for factors </p>
+</td></tr>
+<tr valign="top"><td><code>pc</code></td>
+<td>
+<p>If true, draw the scree for components</p>
+</td></tr>
+<tr valign="top"><td><code>hline</code></td>
+<td>
+<p>if null, draw a horizontal line at 1, otherwise draw it at hline (make negative to not draw it)</p>
+</td></tr>
+<tr valign="top"><td><code>main</code></td>
+<td>
+<p> Title </p>
+</td></tr>
+<tr valign="top"><td><code>add</code></td>
+<td>
+<p>Should multiple plots be drawn?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Among the many ways to choose the optimal number of factors is the scree test.  A better function to show the scree as well as compare it to randomly parallel solutions is found found in <code><a href="fa.parallel.html">fa.parallel</a></code>
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle 
+</p>
+
+
+<h3>References</h3>
+
+ <p><a href="https://personality-project.org/r/vss.html">https://personality-project.org/r/vss.html</a></p>
+
+
+<h3>See Also</h3>
+
+  <p><code><a href="fa.parallel.html">fa.parallel</a></code> <code><a href="VSS.plot.html">VSS.plot</a></code>,  <code><a href="ICLUST.html">ICLUST</a></code>, <code><a href="omega.html">omega</a></code></p>
+
+
+<h3>Examples</h3>
+
+<pre>
+scree(attitude)
+#VSS.scree(cor(attitude)
+
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

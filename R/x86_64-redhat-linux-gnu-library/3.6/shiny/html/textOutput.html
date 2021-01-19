@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a text output element</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for textOutput {shiny}"><tr><td>textOutput {shiny}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a text output element</h2>
+
+<h3>Description</h3>
+
+<p>Render a reactive output variable as text within an application page.
+<code>textOutput()</code> is usually paired with <code><a href="renderText.html">renderText()</a></code> and puts regular text
+in <code style="white-space: pre;">&lt;div&gt;</code> or <code style="white-space: pre;">&lt;span&gt;</code>; <code>verbatimTextOutput()</code> is usually paired with
+<code><a href="renderPrint.html">renderPrint()</a></code> and provudes fixed-width text in a <code style="white-space: pre;">&lt;pre&gt;</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+textOutput(outputId, container = if (inline) span else div, inline = FALSE)
+
+verbatimTextOutput(outputId, placeholder = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>outputId</code></td>
+<td>
+<p>output variable to read the value from</p>
+</td></tr>
+<tr valign="top"><td><code>container</code></td>
+<td>
+<p>a function to generate an HTML element to contain the text</p>
+</td></tr>
+<tr valign="top"><td><code>inline</code></td>
+<td>
+<p>use an inline (<code>span()</code>) or block container (<code>div()</code>)
+for the output</p>
+</td></tr>
+<tr valign="top"><td><code>placeholder</code></td>
+<td>
+<p>if the output is empty or <code>NULL</code>, should an empty
+rectangle be displayed to serve as a placeholder? (does not affect
+behavior when the the output in nonempty)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In both funtions, text is HTML-escaped prior to rendering.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A output element for use in UI.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Only run this example in interactive R sessions
+if (interactive()) {
+  shinyApp(
+    ui = basicPage(
+      textInput("txt", "Enter the text to display below:"),
+      textOutput("text"),
+      verbatimTextOutput("verb")
+    ),
+    server = function(input, output) {
+      output$text &lt;- renderText({ input$txt })
+      output$verb &lt;- renderText({ input$txt })
+    }
+  )
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

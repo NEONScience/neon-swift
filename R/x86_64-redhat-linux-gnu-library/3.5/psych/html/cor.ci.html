@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bootstrapped and normal confidence intervals for raw and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for corCi {psych}"><tr><td>corCi {psych}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bootstrapped and normal confidence intervals for raw and composite correlations</h2>
+
+<h3>Description</h3>
+
+<p>Although normal theory provides confidence intervals for correlations, this is particularly problematic with Synthetic Aperture Personality Assessment (SAPA) data where the individual items are Massively Missing at Random.  Bootstrapped confidence intervals are found for Pearson, Spearman, Kendall, tetrachoric, or polychoric correlations and for scales made from those correlations. If given a correlation matrix and sample size(s), normal theory confidence intervals are provided.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+corCi(x, keys = NULL, n.iter = 100,  p = 0.05,overlap = FALSE, 
+ poly = FALSE, method = "pearson", plot=TRUE,minlength=5,n=NULL,...)
+ 
+cor.ci(x, keys = NULL, n.iter = 100,  p = 0.05,overlap = FALSE, 
+ poly = FALSE, method = "pearson", plot=TRUE,minlength=5,n=NULL,...)
+ 
+
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>The raw data, or a correlation matrix if not doing bootstrapping</p>
+</td></tr>
+<tr valign="top"><td><code>keys</code></td>
+<td>
+<p>If NULL, then the confidence intervals of the raw correlations are found.  Otherwise, composite scales are formed from the keys applied to the correlation matrix (in a logic similar to <code><a href="cluster.cor.html">cluster.cor</a></code> but without the bells and whistles) and the confidence of those composite scales intercorrelations. </p>
+</td></tr>
+<tr valign="top"><td><code>n.iter</code></td>
+<td>
+<p>The number of iterations to bootstrap over. This will be very slow if using tetrachoric/or polychoric correlations. </p>
+</td></tr>
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>The upper and lower confidence region will include 1-p of the distribution.</p>
+</td></tr>
+<tr valign="top"><td><code>overlap</code></td>
+<td>
+<p>If true, the correlation between overlapping scales is corrected for item overlap.</p>
+</td></tr>
+<tr valign="top"><td><code>poly</code></td>
+<td>
+<p>if FALSE, then find the correlations using the method specified (defaults to Pearson).  If TRUE, the polychoric correlations will be found (slowly).  Because the polychoric function uses multicores (if available), and corCi does as well, the number of cores used is options(&quot;mc.cores&quot;)^2. </p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>&quot;pearson&quot;,&quot;spearman&quot;, &quot;kendall&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>plot</code></td>
+<td>
+<p>Show the correlation plot with correlations scaled by the probability values.  To show the matrix in terms of the confidence intervals, use <code><a href="cor.plot.html">cor.plot.upperLowerCi</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>minlength</code></td>
+<td>
+<p>What is the minlength to use in abbreviations of the cis? Defaults to 5</p>
+</td></tr>
+<tr valign="top"><td><code>n</code></td>
+<td>
+<p>If finding confidence intervals from a correlation matrix, specify the n</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Other parameters for axis (e.g., cex.axis to change the font size, srt to rotate the numbers in the plot)</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If given a correlation matrix, then confidence intervals are found based upon the sample sizes using the conventional r2z fisher transformation (<code><a href="fisherz.html">fisherz</a></code> and the normal distribution.
+</p>
+<p>If given raw data, correlations are found.  If keys are specified (the normal case), then composite scales based upon the correlations are found and reported.  This is the same procedure as done using <code><a href="cluster.cor.html">cluster.cor</a></code> or <code><a href="score.items.html">scoreItems</a></code>.
+</p>
+<p>Then (with raw data) the data are recreated n.iter times by sampling subjects (rows) with replacement and the correlations (and composite scales) are found again (and again and again).  Mean and standard deviations of these values are calculated based upon the Fisher Z transform of the correlations.  Summary statistics include the original correlations and their confidence intervals.  For those who want the complete set of replications, those are available as an object in the resulting output.
+</p>
+<p>Although particularly useful for SAPA (<a href="https://sapa-project.org">https://sapa-project.org</a>) type data where we have lots of missing data, this will work for any normal data set as well. 
+</p>
+<p>Although the correlations are shown automatically as a <code><a href="cor.plot.html">cor.plot</a></code>, it is possible to show the upper and lower confidence intervals by using <code><a href="cor.plot.html">cor.plot.upperLowerCi</a></code>. This will also return, invisibly, a matrix for printing with the lower and upper bounds of the correlations shown below and above the diagonal (see the first example).
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R valueblock">
+<tr valign="top"><td><code>rho </code></td>
+<td>
+<p>The original (composite) correlation matrix. </p>
+</td></tr>
+<tr valign="top"><td><code>means </code></td>
+<td>
+<p>Mean (of Fisher transformed) correlation retransformed back to the r units</p>
+</td></tr>
+<tr valign="top"><td><code>sds</code></td>
+<td>
+<p>Standard deviation of Fisher transformed correlations</p>
+</td></tr>
+<tr valign="top"><td><code>ci</code></td>
+<td>
+<p>Mean +/- alpha/2 of the z scores as well as the alpha/2 and 1-alpha/2 quantiles. These are labeled as lower.emp(ircal), lower.norm(al), upper.norm and upper.emp.</p>
+</td></tr>
+<tr valign="top"><td><code>replicates</code></td>
+<td>
+<p>The observed replication values so one can do one's own estimates</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>William Revelle</p>
+
+
+<h3>References</h3>
+
+<p>For SAPA type data, see Revelle, W., Wilt, J.,  and Rosenthal, A. (2010)  Personality and Cognition: The Personality-Cognition Link. In Gruszka, A.  and Matthews, G. and Szymura, B. (Eds.) Handbook of Individual Differences in Cognition: Attention, Memory and Executive Control, Springer. 
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="make.keys.html">make.keys</a></code>, <code><a href="cluster.cor.html">cluster.cor</a></code>, and <code><a href="score.items.html">scoreItems</a></code> for forming synthetic correlation matrices from composites of item correlations.  See <code><a href="cluster.cor.html">scoreOverlap</a></code> for correcting for item overlap in scales. See also <code><a href="corr.test.html">corr.test</a></code> for standard significance testing of correlation matrices.  See also <code><a href="misc.html">lowerCor</a></code> for finding and printing correlation matrices, as well as <code><a href="misc.html">lowerMat</a></code> for displaying them. Also see <code><a href="cor.plot.html">cor.plot.upperLowerCi</a></code> for displaying the confidence intervals graphically.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+#find confidence intervals of a correlation matrix with specified sample size
+ci &lt;- corCi(Thurstone[1:6,1:6],n=213)
+ci  #show them
+R &lt;- cor.plot.upperLowerCi(ci)  #show them graphically
+R #show them as a matrix 
+
+
+#confidence intervals by bootstrapping requires raw data
+corCi(psychTools::bfi[1:200,1:10])  # just the first 10 variables
+#The keys have overlapping scales
+keys &lt;- list(agree=c("-A1","A2","A3","A4","A5"), conscientious= c("C1", 
+  "C2","C3","-C4","-C5"),extraversion=c("-E1","-E2","E3","E4","E5"), neuroticism= 
+  c("N1", "N2", "N3","N4","N5"), openness = c("O1","-O2","O3","O4","-O5"), 
+  alpha=c("-A1","A2","A3","A4","A5","C1","C2","C3","-C4","-C5","N1","N2","N3","N4","N5"),
+beta = c("-E1","-E2","E3","E4","E5","O1","-O2","O3","O4","-O5") )
+
+  
+#do not correct for item overlap
+rci &lt;-  corCi(psychTools::bfi[1:200,],keys,n.iter=10,main="correlation with overlapping scales") 
+#also shows the graphic -note the overlap
+#correct for overlap
+rci &lt;-  cor.ci(psychTools::bfi[1:200,],keys,overlap=TRUE, n.iter=10,main="Correct for overlap") 
+#show the confidence intervals
+ci &lt;- cor.plot.upperLowerCi(rci)  #to show the upper and lower confidence intervals
+ci   #print the confidence intervals in matrix form
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>psych</em> version 1.9.12 <a href="00Index.html">Index</a>]</div>
+</body></html>

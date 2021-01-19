@@ -1,0 +1,18 @@
+assert_all_are_cas_numbers
+                        Does the character vector contain CAS registry
+                        numbers?
+assert_all_are_credit_card_numbers
+                        Does the character vector contain credit card
+                        numbers?
+assert_all_are_email_addresses
+                        Does the character vector contain email
+                        addresses?
+assert_all_are_hex_colors
+                        Does the character vector contain hex colors?
+assert_all_are_honorifics
+                        Is the string an honorific?
+assert_all_are_ip_addresses
+                        Does the character vector contain IP addresses?
+assert_all_are_isbn_codes
+                        Does the character vector contain ISBN book
+                        codes?

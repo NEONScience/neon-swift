@@ -1,0 +1,2 @@
+assert_has_terms        Does the input have terms?
+assert_is_empty_model   Is the input the empty model?

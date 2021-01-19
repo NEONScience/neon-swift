@@ -1,0 +1,1652 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>R: Readable Check Functions to Ensure Code Integrity</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+<h1> Readable Check Functions to Ensure Code Integrity
+<img class="toplogo" src="../../../doc/html/Rlogo.svg" alt="[R logo]" />
+</h1>
+<hr/>
+<div style="text-align: center;">
+<a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
+<a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
+</div><h2>Documentation for package &lsquo;assertive&rsquo; version 0.3-5</h2>
+
+<ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
+<li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
+<li><a href="../NEWS">Package NEWS</a>.</li>
+</ul>
+
+<h2>Help Pages</h2>
+
+
+<p style="text-align: center;">
+<a href="# "> </a>
+<a href="#A">A</a>
+<a href="#B">B</a>
+<a href="#C">C</a>
+<a href="#D">D</a>
+<a href="#F">F</a>
+<a href="#G">G</a>
+<a href="#H">H</a>
+<a href="#I">I</a>
+<a href="#M">M</a>
+<a href="#N">N</a>
+<a href="#P">P</a>
+<a href="#R">R</a>
+<a href="#S">S</a>
+<a href="#T">T</a>
+<a href="#U">U</a>
+</p>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="assertive.html">assertive-package</a></td>
+<td>Readable check functions to ensure code integrity.</td></tr>
+<tr><td style="width: 25%;"><a href="changes.html">changes-package</a></td>
+<td>Important changes to assertive</td></tr>
+</table>
+
+<h2><a name="A">-- A --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="are_set_equal.html">are_disjoint_sets</a></td>
+<td>Set comparisons</td></tr>
+<tr><td style="width: 25%;"><a href="are_identical.html">are_identical</a></td>
+<td>Are the inputs identical?</td></tr>
+<tr><td style="width: 25%;"><a href="are_identical.html">are_identical_legacy</a></td>
+<td>Are the inputs identical?</td></tr>
+<tr><td style="width: 25%;"><a href="are_set_equal.html">are_intersecting_sets</a></td>
+<td>Set comparisons</td></tr>
+<tr><td style="width: 25%;"><a href="are_same_length.html">are_same_length</a></td>
+<td>Are the inputs the same length/dimension?</td></tr>
+<tr><td style="width: 25%;"><a href="are_same_length.html">are_same_length_legacy</a></td>
+<td>Are the inputs the same length/dimension?</td></tr>
+<tr><td style="width: 25%;"><a href="are_set_equal.html">are_set_equal</a></td>
+<td>Set comparisons</td></tr>
+<tr><td style="width: 25%;"><a href="assertionError.html">assertionError</a></td>
+<td>Condition classes</td></tr>
+<tr><td style="width: 25%;"><a href="assertionError.html">assertionMessage</a></td>
+<td>Condition classes</td></tr>
+<tr><td style="width: 25%;"><a href="assertionError.html">assertionWarning</a></td>
+<td>Condition classes</td></tr>
+<tr><td style="width: 25%;"><a href="assertive.html">assertive</a></td>
+<td>Readable check functions to ensure code integrity.</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_past.html">assert_all_are_after</a></td>
+<td>Is the input in the past/future?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_past.html">assert_all_are_before</a></td>
+<td>Is the input in the past/future?</td></tr>
+<tr><td style="width: 25%;"><a href="is_cas_number.html">assert_all_are_cas_numbers</a></td>
+<td>Does the character vector contain CAS registry numbers?</td></tr>
+<tr><td style="width: 25%;"><a href="is_class.html">assert_all_are_classes</a></td>
+<td>Is the input the name of a (formally defined) class?</td></tr>
+<tr><td style="width: 25%;"><a href="is_credit_card_number.html">assert_all_are_credit_card_numbers</a></td>
+<td>Does the character vector contain credit card numbers?</td></tr>
+<tr><td style="width: 25%;"><a href="is_package_current.html">assert_all_are_current_packages</a></td>
+<td>Is the installed version of a package current?</td></tr>
+<tr><td style="width: 25%;"><a href="is_date_string.html">assert_all_are_date_strings</a></td>
+<td>Does the character vector contain dates?</td></tr>
+<tr><td style="width: 25%;"><a href="is_dir.html">assert_all_are_dirs</a></td>
+<td>Is the path a directory?</td></tr>
+<tr><td style="width: 25%;"><a href="is_divisible_by.html">assert_all_are_divisible_by</a></td>
+<td>Is the input divisible by a number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_email_address.html">assert_all_are_email_addresses</a></td>
+<td>Does the character vector contain email addresses?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_all_are_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_file.html">assert_all_are_empty_files</a></td>
+<td>Is a file too big or small?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">assert_all_are_equal_to</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_divisible_by.html">assert_all_are_even</a></td>
+<td>Is the input divisible by a number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_executable_file.html">assert_all_are_executable_files</a></td>
+<td>Is the file accessible?</td></tr>
+<tr><td style="width: 25%;"><a href="is_existing.html">assert_all_are_existing</a></td>
+<td>Does the variable exist? See 'is_existing'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_existing_file.html">assert_all_are_existing_files</a></td>
+<td>Does the file exist?</td></tr>
+<tr><td style="width: 25%;"><a href="is_executable_file.html">assert_all_are_ex_files</a></td>
+<td>Is the file accessible?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_all_are_false</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_finite.html">assert_all_are_finite</a></td>
+<td>Are the inputs (in)finite?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">assert_all_are_greater_than</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">assert_all_are_greater_than_or_equal_to</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_hex_color.html">assert_all_are_hex_colors</a></td>
+<td>Does the character vector contain hex colors?</td></tr>
+<tr><td style="width: 25%;"><a href="is_hex_color.html">assert_all_are_hex_colours</a></td>
+<td>Does the character vector contain hex colors?</td></tr>
+<tr><td style="width: 25%;"><a href="is_honorific.html">assert_all_are_honorifics</a></td>
+<td>Is the string an honorific?</td></tr>
+<tr><td style="width: 25%;"><a href="are_identical.html">assert_all_are_identical_legacy</a></td>
+<td>Are the inputs identical?</td></tr>
+<tr><td style="width: 25%;"><a href="is_real.html">assert_all_are_imaginary</a></td>
+<td>Is the input real/imaginary?</td></tr>
+<tr><td style="width: 25%;"><a href="is_finite.html">assert_all_are_infinite</a></td>
+<td>Are the inputs (in)finite?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_all_are_in_closed_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_past.html">assert_all_are_in_future</a></td>
+<td>Is the input in the past/future?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_all_are_in_left_open_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_all_are_in_open_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_past.html">assert_all_are_in_past</a></td>
+<td>Is the input in the past/future?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_all_are_in_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_all_are_in_right_open_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_ip_address.html">assert_all_are_ip_addresses</a></td>
+<td>Does the character vector contain IP addresses?</td></tr>
+<tr><td style="width: 25%;"><a href="is_isbn_code.html">assert_all_are_isbn_codes</a></td>
+<td>Does the character vector contain ISBN book codes?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">assert_all_are_less_than</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">assert_all_are_less_than_or_equal_to</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_library.html">assert_all_are_libraries</a></td>
+<td>Is the directory a known R library?</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric_string.html">assert_all_are_logical_strings</a></td>
+<td>Does the string contain a number? See 'is_numeric_string'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_matching_fixed.html">assert_all_are_matching_fixed</a></td>
+<td>Does the string match a pattern? See 'is_matching_fixed'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_matching_fixed.html">assert_all_are_matching_regex</a></td>
+<td>Does the string match a pattern? See 'is_matching_fixed'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_all_are_missing_or_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_all_are_na</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_nan.html">assert_all_are_nan</a></td>
+<td>Is the input (not) NaN?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_all_are_negative</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_finite.html">assert_all_are_negative_infinity</a></td>
+<td>Are the inputs (in)finite?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_all_are_non_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_file.html">assert_all_are_non_empty_files</a></td>
+<td>Is a file too big or small?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_all_are_non_missing_nor_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_all_are_non_negative</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_all_are_non_positive</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">assert_all_are_not_equal_to</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_all_are_not_false</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_matching_fixed.html">assert_all_are_not_matching_fixed</a></td>
+<td>Does the string match a pattern? See 'is_matching_fixed'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_matching_fixed.html">assert_all_are_not_matching_regex</a></td>
+<td>Does the string match a pattern? See 'is_matching_fixed'.</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_all_are_not_na</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_nan.html">assert_all_are_not_nan</a></td>
+<td>Is the input (not) NaN?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_all_are_not_true</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric_string.html">assert_all_are_numeric_strings</a></td>
+<td>Does the string contain a number? See 'is_numeric_string'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_divisible_by.html">assert_all_are_odd</a></td>
+<td>Is the input divisible by a number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_on_os_path.html">assert_all_are_on_os_path</a></td>
+<td>Is the path on the OS path?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_all_are_percentages</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_all_are_positive</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_finite.html">assert_all_are_positive_infinity</a></td>
+<td>Are the inputs (in)finite?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_all_are_proportions</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_executable_file.html">assert_all_are_readable_files</a></td>
+<td>Is the file accessible?</td></tr>
+<tr><td style="width: 25%;"><a href="is_real.html">assert_all_are_real</a></td>
+<td>Is the input real/imaginary?</td></tr>
+<tr><td style="width: 25%;"><a href="are_same_length.html">assert_all_are_same_length</a></td>
+<td>Are the inputs the same length/dimension?</td></tr>
+<tr><td style="width: 25%;"><a href="are_same_length.html">assert_all_are_same_length_legacy</a></td>
+<td>Are the inputs the same length/dimension?</td></tr>
+<tr><td style="width: 25%;"><a href="is_single_character.html">assert_all_are_single_characters</a></td>
+<td>Is the input a single character? See 'is_single_character'.</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_all_are_true</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_car_licence.html">assert_all_are_uk_car_licences</a></td>
+<td>Is the string a valid UK car licence plate number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_car_licence.html">assert_all_are_uk_car_licenses</a></td>
+<td>Is the string a valid UK car licence plate number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_national_insurance_number.html">assert_all_are_uk_national_insurance_numbers</a></td>
+<td>Is the string a valid UK national insurance number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_postcode.html">assert_all_are_uk_postcodes</a></td>
+<td>Is the string a valid UK postcode?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_telephone_number.html">assert_all_are_uk_telephone_numbers</a></td>
+<td>Is the string a valid UK telephone number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_us_social_security_number.html">assert_all_are_us_social_security_numbers</a></td>
+<td>Is the string a valid US SSN?</td></tr>
+<tr><td style="width: 25%;"><a href="is_us_telephone_number.html">assert_all_are_us_telephone_numbers</a></td>
+<td>Is the string a valid US telephone number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_us_zip_code.html">assert_all_are_us_zip_codes</a></td>
+<td>Is the string a valid US zip code?</td></tr>
+<tr><td style="width: 25%;"><a href="is_valid_variable_name.html">assert_all_are_valid_variable_names</a></td>
+<td>Is the string a valid variable name? See 'is_valid_variable_name'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_whole_number.html">assert_all_are_whole_numbers</a></td>
+<td>Is the input a whole number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_executable_file.html">assert_all_are_writable_files</a></td>
+<td>Is the file accessible?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_file.html">assert_all_file_sizes_are_in_range</a></td>
+<td>Is a file too big or small?</td></tr>
+<tr><td style="width: 25%;"><a href="is_whole_number.html">assert_all_numbers_are_whole_numbers</a></td>
+<td>Is the input a whole number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_all_strings_are_not_missing_nor_empty</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_past.html">assert_any_are_after</a></td>
+<td>Is the input in the past/future?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_past.html">assert_any_are_before</a></td>
+<td>Is the input in the past/future?</td></tr>
+<tr><td style="width: 25%;"><a href="is_cas_number.html">assert_any_are_cas_numbers</a></td>
+<td>Does the character vector contain CAS registry numbers?</td></tr>
+<tr><td style="width: 25%;"><a href="is_class.html">assert_any_are_classes</a></td>
+<td>Is the input the name of a (formally defined) class?</td></tr>
+<tr><td style="width: 25%;"><a href="is_credit_card_number.html">assert_any_are_credit_card_numbers</a></td>
+<td>Does the character vector contain credit card numbers?</td></tr>
+<tr><td style="width: 25%;"><a href="is_package_current.html">assert_any_are_current_packages</a></td>
+<td>Is the installed version of a package current?</td></tr>
+<tr><td style="width: 25%;"><a href="is_date_string.html">assert_any_are_date_strings</a></td>
+<td>Does the character vector contain dates?</td></tr>
+<tr><td style="width: 25%;"><a href="is_dir.html">assert_any_are_dirs</a></td>
+<td>Is the path a directory?</td></tr>
+<tr><td style="width: 25%;"><a href="is_divisible_by.html">assert_any_are_divisible_by</a></td>
+<td>Is the input divisible by a number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_email_address.html">assert_any_are_email_addresses</a></td>
+<td>Does the character vector contain email addresses?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_any_are_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_file.html">assert_any_are_empty_files</a></td>
+<td>Is a file too big or small?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">assert_any_are_equal_to</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_divisible_by.html">assert_any_are_even</a></td>
+<td>Is the input divisible by a number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_executable_file.html">assert_any_are_executable_files</a></td>
+<td>Is the file accessible?</td></tr>
+<tr><td style="width: 25%;"><a href="is_existing.html">assert_any_are_existing</a></td>
+<td>Does the variable exist? See 'is_existing'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_existing_file.html">assert_any_are_existing_files</a></td>
+<td>Does the file exist?</td></tr>
+<tr><td style="width: 25%;"><a href="is_executable_file.html">assert_any_are_ex_files</a></td>
+<td>Is the file accessible?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_any_are_false</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_finite.html">assert_any_are_finite</a></td>
+<td>Are the inputs (in)finite?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">assert_any_are_greater_than</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">assert_any_are_greater_than_or_equal_to</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_hex_color.html">assert_any_are_hex_colors</a></td>
+<td>Does the character vector contain hex colors?</td></tr>
+<tr><td style="width: 25%;"><a href="is_hex_color.html">assert_any_are_hex_colours</a></td>
+<td>Does the character vector contain hex colors?</td></tr>
+<tr><td style="width: 25%;"><a href="is_honorific.html">assert_any_are_honorifics</a></td>
+<td>Is the string an honorific?</td></tr>
+<tr><td style="width: 25%;"><a href="are_identical.html">assert_any_are_identical_legacy</a></td>
+<td>Are the inputs identical?</td></tr>
+<tr><td style="width: 25%;"><a href="is_real.html">assert_any_are_imaginary</a></td>
+<td>Is the input real/imaginary?</td></tr>
+<tr><td style="width: 25%;"><a href="is_finite.html">assert_any_are_infinite</a></td>
+<td>Are the inputs (in)finite?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_any_are_in_closed_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_past.html">assert_any_are_in_future</a></td>
+<td>Is the input in the past/future?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_any_are_in_left_open_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_any_are_in_open_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_past.html">assert_any_are_in_past</a></td>
+<td>Is the input in the past/future?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_any_are_in_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_any_are_in_right_open_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_ip_address.html">assert_any_are_ip_addresses</a></td>
+<td>Does the character vector contain IP addresses?</td></tr>
+<tr><td style="width: 25%;"><a href="is_isbn_code.html">assert_any_are_isbn_codes</a></td>
+<td>Does the character vector contain ISBN book codes?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">assert_any_are_less_than</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">assert_any_are_less_than_or_equal_to</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_library.html">assert_any_are_libraries</a></td>
+<td>Is the directory a known R library?</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric_string.html">assert_any_are_logical_strings</a></td>
+<td>Does the string contain a number? See 'is_numeric_string'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_matching_fixed.html">assert_any_are_matching_fixed</a></td>
+<td>Does the string match a pattern? See 'is_matching_fixed'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_matching_fixed.html">assert_any_are_matching_regex</a></td>
+<td>Does the string match a pattern? See 'is_matching_fixed'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_any_are_missing_or_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_any_are_na</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_nan.html">assert_any_are_nan</a></td>
+<td>Is the input (not) NaN?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_any_are_negative</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_finite.html">assert_any_are_negative_infinity</a></td>
+<td>Are the inputs (in)finite?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_any_are_non_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_file.html">assert_any_are_non_empty_files</a></td>
+<td>Is a file too big or small?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_any_are_non_missing_nor_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_any_are_non_negative</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_any_are_non_positive</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">assert_any_are_not_equal_to</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_any_are_not_false</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_matching_fixed.html">assert_any_are_not_matching_fixed</a></td>
+<td>Does the string match a pattern? See 'is_matching_fixed'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_matching_fixed.html">assert_any_are_not_matching_regex</a></td>
+<td>Does the string match a pattern? See 'is_matching_fixed'.</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_any_are_not_na</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_nan.html">assert_any_are_not_nan</a></td>
+<td>Is the input (not) NaN?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_any_are_not_true</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric_string.html">assert_any_are_numeric_strings</a></td>
+<td>Does the string contain a number? See 'is_numeric_string'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_divisible_by.html">assert_any_are_odd</a></td>
+<td>Is the input divisible by a number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_on_os_path.html">assert_any_are_on_os_path</a></td>
+<td>Is the path on the OS path?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_any_are_percentages</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_any_are_positive</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_finite.html">assert_any_are_positive_infinity</a></td>
+<td>Are the inputs (in)finite?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">assert_any_are_proportions</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_executable_file.html">assert_any_are_readable_files</a></td>
+<td>Is the file accessible?</td></tr>
+<tr><td style="width: 25%;"><a href="is_real.html">assert_any_are_real</a></td>
+<td>Is the input real/imaginary?</td></tr>
+<tr><td style="width: 25%;"><a href="are_same_length.html">assert_any_are_same_length</a></td>
+<td>Are the inputs the same length/dimension?</td></tr>
+<tr><td style="width: 25%;"><a href="are_same_length.html">assert_any_are_same_length_legacy</a></td>
+<td>Are the inputs the same length/dimension?</td></tr>
+<tr><td style="width: 25%;"><a href="is_single_character.html">assert_any_are_single_characters</a></td>
+<td>Is the input a single character? See 'is_single_character'.</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_any_are_true</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_car_licence.html">assert_any_are_uk_car_licences</a></td>
+<td>Is the string a valid UK car licence plate number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_car_licence.html">assert_any_are_uk_car_licenses</a></td>
+<td>Is the string a valid UK car licence plate number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_national_insurance_number.html">assert_any_are_uk_national_insurance_numbers</a></td>
+<td>Is the string a valid UK national insurance number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_postcode.html">assert_any_are_uk_postcodes</a></td>
+<td>Is the string a valid UK postcode?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_telephone_number.html">assert_any_are_uk_telephone_numbers</a></td>
+<td>Is the string a valid UK telephone number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_us_social_security_number.html">assert_any_are_us_social_security_numbers</a></td>
+<td>Is the string a valid US SSN?</td></tr>
+<tr><td style="width: 25%;"><a href="is_us_telephone_number.html">assert_any_are_us_telephone_numbers</a></td>
+<td>Is the string a valid US telephone number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_us_zip_code.html">assert_any_are_us_zip_codes</a></td>
+<td>Is the string a valid US zip code?</td></tr>
+<tr><td style="width: 25%;"><a href="is_valid_variable_name.html">assert_any_are_valid_variable_names</a></td>
+<td>Is the string a valid variable name? See 'is_valid_variable_name'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_whole_number.html">assert_any_are_whole_numbers</a></td>
+<td>Is the input a whole number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_executable_file.html">assert_any_are_writable_files</a></td>
+<td>Is the file accessible?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_file.html">assert_any_file_sizes_are_in_range</a></td>
+<td>Is a file too big or small?</td></tr>
+<tr><td style="width: 25%;"><a href="is_whole_number.html">assert_any_numbers_are_whole_numbers</a></td>
+<td>Is the input a whole number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_any_strings_are_not_missing_nor_empty</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="are_set_equal.html">assert_are_disjoint_sets</a></td>
+<td>Set comparisons</td></tr>
+<tr><td style="width: 25%;"><a href="are_identical.html">assert_are_identical</a></td>
+<td>Are the inputs identical?</td></tr>
+<tr><td style="width: 25%;"><a href="are_set_equal.html">assert_are_intersecting_sets</a></td>
+<td>Set comparisons</td></tr>
+<tr><td style="width: 25%;"><a href="are_same_length.html">assert_are_same_length</a></td>
+<td>Are the inputs the same length/dimension?</td></tr>
+<tr><td style="width: 25%;"><a href="are_set_equal.html">assert_are_set_equal</a></td>
+<td>Set comparisons</td></tr>
+<tr><td style="width: 25%;"><a href="assert_engine.html">assert_engine</a></td>
+<td>Throws an error if a condition isn't met</td></tr>
+<tr><td style="width: 25%;"><a href="has_attributes.html">assert_has_all_attributes</a></td>
+<td>Does the input have the specified attributes?</td></tr>
+<tr><td style="width: 25%;"><a href="has_attributes.html">assert_has_any_attributes</a></td>
+<td>Does the input have the specified attributes?</td></tr>
+<tr><td style="width: 25%;"><a href="has_arg.html">assert_has_arg</a></td>
+<td>Does the current call have an argument? See 'has_arg'.</td></tr>
+<tr><td style="width: 25%;"><a href="has_names.html">assert_has_colnames</a></td>
+<td>Does the input have names?</td></tr>
+<tr><td style="width: 25%;"><a href="has_cols.html">assert_has_cols</a></td>
+<td>Does the input have rows/columns?</td></tr>
+<tr><td style="width: 25%;"><a href="has_names.html">assert_has_dimnames</a></td>
+<td>Does the input have names?</td></tr>
+<tr><td style="width: 25%;"><a href="has_dims.html">assert_has_dims</a></td>
+<td>Does the input have dimensions?</td></tr>
+<tr><td style="width: 25%;"><a href="has_duplicates.html">assert_has_duplicates</a></td>
+<td>Does the input have duplicates?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">assert_has_elements</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="has_names.html">assert_has_names</a></td>
+<td>Does the input have names?</td></tr>
+<tr><td style="width: 25%;"><a href="has_duplicates.html">assert_has_no_duplicates</a></td>
+<td>Does the input have duplicates?</td></tr>
+<tr><td style="width: 25%;"><a href="has_names.html">assert_has_rownames</a></td>
+<td>Does the input have names?</td></tr>
+<tr><td style="width: 25%;"><a href="has_cols.html">assert_has_rows</a></td>
+<td>Does the input have rows/columns?</td></tr>
+<tr><td style="width: 25%;"><a href="has_slot.html">assert_has_slot</a></td>
+<td>Does the S4 input have a slot?</td></tr>
+<tr><td style="width: 25%;"><a href="has_terms.html">assert_has_terms</a></td>
+<td>Does the input have terms?</td></tr>
+<tr><td style="width: 25%;"><a href="are_same_length.html">assert_have_same_dims</a></td>
+<td>Are the inputs the same length/dimension?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_32_bit</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_32_bit_os</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_64_bit</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_64_bit_os</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="assert_is_all_of.html">assert_is_all_of</a></td>
+<td>Does x belong to these classes?</td></tr>
+<tr><td style="width: 25%;"><a href="assert_is_all_of.html">assert_is_any_of</a></td>
+<td>Does x belong to these classes?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_is_an_empty_string</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_integer.html">assert_is_an_integer</a></td>
+<td>Is the input an integer?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_architect</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_array.html">assert_is_array</a></td>
+<td>Is the input an array or matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_atomic.html">assert_is_atomic</a></td>
+<td>Is the input atomic/recursive/vector?</td></tr>
+<tr><td style="width: 25%;"><a href="is_logical.html">assert_is_a_bool</a></td>
+<td>Is the input logical?</td></tr>
+<tr><td style="width: 25%;"><a href="is_complex.html">assert_is_a_complex</a></td>
+<td>Is the input complex?</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric.html">assert_is_a_double</a></td>
+<td>Is the input numeric?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_is_a_missing_or_empty_string</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_is_a_non_empty_string</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">assert_is_a_non_missing_nor_empty_string</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric.html">assert_is_a_number</a></td>
+<td>Is the input numeric?</td></tr>
+<tr><td style="width: 25%;"><a href="is_raw.html">assert_is_a_raw</a></td>
+<td>Is the input raw?</td></tr>
+<tr><td style="width: 25%;"><a href="is_character.html">assert_is_a_string</a></td>
+<td>Is the input of type character?</td></tr>
+<tr><td style="width: 25%;"><a href="is_batch_mode.html">assert_is_batch_mode</a></td>
+<td>How is R running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_binding_locked.html">assert_is_binding_locked</a></td>
+<td>Is the binding of a variable locked? See 'is_binding_locked'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_bsd</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_closure_function.html">assert_is_builtin_function</a></td>
+<td>Is the input a closure, builtin or special function?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_bzfile_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_language.html">assert_is_call</a></td>
+<td>Is the input a language object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_character.html">assert_is_character</a></td>
+<td>Is the input of type character?</td></tr>
+<tr><td style="width: 25%;"><a href="is_closure_function.html">assert_is_closure_function</a></td>
+<td>Is the input a closure, builtin or special function?</td></tr>
+<tr><td style="width: 25%;"><a href="is_xxx_for_decimal_point.html">assert_is_comma_for_decimal_point</a></td>
+<td>What does the current locale specify for the decimal point?</td></tr>
+<tr><td style="width: 25%;"><a href="is_complex.html">assert_is_complex</a></td>
+<td>Is the input complex?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">assert_is_condition</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r_current.html">assert_is_current_r</a></td>
+<td>Is this version of R up to date?</td></tr>
+<tr><td style="width: 25%;"><a href="is_data.frame.html">assert_is_data.frame</a></td>
+<td>Is the input is a data.frame?</td></tr>
+<tr><td style="width: 25%;"><a href="is_data.table.html">assert_is_data.table</a></td>
+<td>Is the input a data.table?</td></tr>
+<tr><td style="width: 25%;"><a href="is_date.html">assert_is_date</a></td>
+<td>Is the input a date?</td></tr>
+<tr><td style="width: 25%;"><a href="is_debugged.html">assert_is_debugged</a></td>
+<td>Is the input function being debugged? See 'is_debugged'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_diagonal_matrix.html">assert_is_diagonal_matrix</a></td>
+<td>Is the input a diagonal matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric.html">assert_is_double</a></td>
+<td>Is the input numeric?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_emacs</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">assert_is_empty</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_model.html">assert_is_empty_model</a></td>
+<td>Is the input the empty model?</td></tr>
+<tr><td style="width: 25%;"><a href="is_environment.html">assert_is_environment</a></td>
+<td>Is the input an environment?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">assert_is_error</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_language.html">assert_is_expression</a></td>
+<td>Is the input a language object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_externalptr.html">assert_is_externalptr</a></td>
+<td>Is the input an external pointer?</td></tr>
+<tr><td style="width: 25%;"><a href="is_factor.html">assert_is_factor</a></td>
+<td>Is the input a factor?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_fifo_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_file_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_formula.html">assert_is_formula</a></td>
+<td>Is the input a formula?</td></tr>
+<tr><td style="width: 25%;"><a href="is_function.html">assert_is_function</a></td>
+<td>Is the input a function?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_gzfile_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_is_identical_to_false</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_is_identical_to_na</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">assert_is_identical_to_true</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_identity_matrix.html">assert_is_identity_matrix</a></td>
+<td>Is the input an identity matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_if_condition.html">assert_is_if_condition</a></td>
+<td>Is suitable to be used as an if condition See 'is_if_condition'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_incomplete_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_inherited_from.html">assert_is_inherited_from</a></td>
+<td>Does the object inherit from some class?</td></tr>
+<tr><td style="width: 25%;"><a href="is_integer.html">assert_is_integer</a></td>
+<td>Is the input an integer?</td></tr>
+<tr><td style="width: 25%;"><a href="is_batch_mode.html">assert_is_interactive</a></td>
+<td>How is R running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_internal_function.html">assert_is_internal_function</a></td>
+<td>Is the input an internal function?</td></tr>
+<tr><td style="width: 25%;"><a href="is_language.html">assert_is_language</a></td>
+<td>Is the input a language object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_leaf.html">assert_is_leaf</a></td>
+<td>Is the input a (dendrogram) leaf?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_linux</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_list.html">assert_is_list</a></td>
+<td>Is the input a list?</td></tr>
+<tr><td style="width: 25%;"><a href="is_loaded.html">assert_is_loaded</a></td>
+<td>Is the input DLL loaded? See 'is_loaded'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_logical.html">assert_is_logical</a></td>
+<td>Is the input logical?</td></tr>
+<tr><td style="width: 25%;"><a href="is_lower_triangular_matrix.html">assert_is_lower_triangular_matrix</a></td>
+<td>Is the matrix upper/lower triangular?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_mac</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_macos_sierra</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_array.html">assert_is_matrix</a></td>
+<td>Is the input an array or matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">assert_is_message</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_monotonic_increasing.html">assert_is_monotonic_decreasing</a></td>
+<td>Is the vector monotonically increasing or decreasing?</td></tr>
+<tr><td style="width: 25%;"><a href="is_monotonic_increasing.html">assert_is_monotonic_increasing</a></td>
+<td>Is the vector monotonically increasing or decreasing?</td></tr>
+<tr><td style="width: 25%;"><a href="is_ts.html">assert_is_mts</a></td>
+<td>Is the input a time series?</td></tr>
+<tr><td style="width: 25%;"><a href="is_language.html">assert_is_name</a></td>
+<td>Is the input a language object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_atomic.html">assert_is_nested</a></td>
+<td>Is the input atomic/recursive/vector?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">assert_is_non_empty</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_model.html">assert_is_non_empty_model</a></td>
+<td>Is the input the empty model?</td></tr>
+<tr><td style="width: 25%;"><a href="is_atomic.html">assert_is_non_nested</a></td>
+<td>Is the input atomic/recursive/vector?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">assert_is_non_scalar</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="is_null.html">assert_is_not_null</a></td>
+<td>Checks to see if the input is (not) null.</td></tr>
+<tr><td style="width: 25%;"><a href="is_null.html">assert_is_null</a></td>
+<td>Checks to see if the input is (not) null.</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric.html">assert_is_numeric</a></td>
+<td>Is the input numeric?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">assert_is_of_dimension</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">assert_is_of_length</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="is_formula.html">assert_is_one_sided_formula</a></td>
+<td>Is the input a formula?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_open_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_factor.html">assert_is_ordered</a></td>
+<td>Is the input a factor?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx_cheetah</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx_el_capitan</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx_jaguar</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx_leopard</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx_lion</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx_mavericks</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx_mountain_lion</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx_panther</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx_puma</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx_snow_leopard</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx_tiger</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_osx_yosemite</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_package_current.html">assert_is_package_current</a></td>
+<td>Is the installed version of a package current?</td></tr>
+<tr><td style="width: 25%;"><a href="is_list.html">assert_is_pairlist</a></td>
+<td>Is the input a list?</td></tr>
+<tr><td style="width: 25%;"><a href="is_xxx_for_decimal_point.html">assert_is_period_for_decimal_point</a></td>
+<td>What does the current locale specify for the decimal point?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_pipe_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_date.html">assert_is_posixct</a></td>
+<td>Is the input a date?</td></tr>
+<tr><td style="width: 25%;"><a href="is_date.html">assert_is_posixlt</a></td>
+<td>Is the input a date?</td></tr>
+<tr><td style="width: 25%;"><a href="is_function.html">assert_is_primitive</a></td>
+<td>Is the input a function?</td></tr>
+<tr><td style="width: 25%;"><a href="is_qr.html">assert_is_qr</a></td>
+<td>Is the input a QR decomposition of a matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_r</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_raster.html">assert_is_raster</a></td>
+<td>Is the input a raster?</td></tr>
+<tr><td style="width: 25%;"><a href="is_raw.html">assert_is_raw</a></td>
+<td>Is the input raw?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_readable_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_atomic.html">assert_is_recursive</a></td>
+<td>Is the input atomic/recursive/vector?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s4.html">assert_is_ref_class_generator</a></td>
+<td>Is the input an S4 object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s4.html">assert_is_ref_class_object</a></td>
+<td>Is the input an S4 object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_relistable.html">assert_is_relistable</a></td>
+<td>Is the input relistable?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_revo_r</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_rstudio</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_rstudio_current.html">assert_is_rstudio_current</a></td>
+<td>Is RStudio the current version?</td></tr>
+<tr><td style="width: 25%;"><a href="is_rstudio_desktop.html">assert_is_rstudio_desktop</a></td>
+<td>Is RStudio running in desktop or server mode?</td></tr>
+<tr><td style="width: 25%;"><a href="is_rstudio_desktop.html">assert_is_rstudio_server</a></td>
+<td>Is RStudio running in desktop or server mode?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_r_alpha</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_r_beta</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r_current.html">assert_is_r_current</a></td>
+<td>Is this version of R up to date?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_r_devel</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_r_patched</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_r_release</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_r_release_candidate</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_r_revised</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_batch_mode.html">assert_is_r_slave</a></td>
+<td>How is R running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_r_stable</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s3_generic.html">assert_is_s3_generic</a></td>
+<td>Is the input an S3 generic or method?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s3_generic.html">assert_is_s3_group_generic</a></td>
+<td>Is the input an S3 generic or method?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s3_generic.html">assert_is_s3_internal_generic</a></td>
+<td>Is the input an S3 generic or method?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s3_generic.html">assert_is_s3_method</a></td>
+<td>Is the input an S3 generic or method?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s3_generic.html">assert_is_s3_primitive_generic</a></td>
+<td>Is the input an S3 generic or method?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s4.html">assert_is_S4</a></td>
+<td>Is the input an S4 object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s4.html">assert_is_s4</a></td>
+<td>Is the input an S4 object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s3_generic.html">assert_is_s4_group_generic</a></td>
+<td>Is the input an S3 generic or method?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">assert_is_scalar</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="are_set_equal.html">assert_is_set_equal</a></td>
+<td>Set comparisons</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">assert_is_simple_error</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">assert_is_simple_message</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">assert_is_simple_warning</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_batch_mode.html">assert_is_slave_r</a></td>
+<td>How is R running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_socket_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_solaris</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_closure_function.html">assert_is_special_function</a></td>
+<td>Is the input a closure, builtin or special function?</td></tr>
+<tr><td style="width: 25%;"><a href="is_square_matrix.html">assert_is_square_matrix</a></td>
+<td>Is the input a square matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_stderr</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_stdin</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_stdout</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_function.html">assert_is_stepfun</a></td>
+<td>Is the input a function?</td></tr>
+<tr><td style="width: 25%;"><a href="are_set_equal.html">assert_is_subset</a></td>
+<td>Set comparisons</td></tr>
+<tr><td style="width: 25%;"><a href="are_set_equal.html">assert_is_superset</a></td>
+<td>Set comparisons</td></tr>
+<tr><td style="width: 25%;"><a href="is_language.html">assert_is_symbol</a></td>
+<td>Is the input a language object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_symmetric_matrix.html">assert_is_symmetric_matrix</a></td>
+<td>Is the input a symmetric matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_table.html">assert_is_table</a></td>
+<td>Is the input a table?</td></tr>
+<tr><td style="width: 25%;"><a href="is_tbl.html">assert_is_tbl</a></td>
+<td>Is the input a tbl?</td></tr>
+<tr><td style="width: 25%;"><a href="is_tbl.html">assert_is_tbl_cube</a></td>
+<td>Is the input a tbl?</td></tr>
+<tr><td style="width: 25%;"><a href="is_tbl.html">assert_is_tbl_df</a></td>
+<td>Is the input a tbl?</td></tr>
+<tr><td style="width: 25%;"><a href="is_tbl.html">assert_is_tbl_dt</a></td>
+<td>Is the input a tbl?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_terminal_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_text_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">assert_is_try_error</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_ts.html">assert_is_ts</a></td>
+<td>Is the input a time series?</td></tr>
+<tr><td style="width: 25%;"><a href="is_ts.html">assert_is_tskernel</a></td>
+<td>Is the input a time series?</td></tr>
+<tr><td style="width: 25%;"><a href="is_formula.html">assert_is_two_sided_formula</a></td>
+<td>Is the input a formula?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_unix</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_unsorted.html">assert_is_unsorted</a></td>
+<td>Is the input unsorted?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_unz_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_lower_triangular_matrix.html">assert_is_upper_triangular_matrix</a></td>
+<td>Is the matrix upper/lower triangular?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_url_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_valid_r_code.html">assert_is_valid_r_code</a></td>
+<td>Is the input valid R code? See 'is_valid_r_code'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_atomic.html">assert_is_vector</a></td>
+<td>Is the input atomic/recursive/vector?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">assert_is_visual_studio</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">assert_is_warning</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_windows</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_windows_10</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_windows_7</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_windows_8</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_windows_8.1</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_windows_server_2008</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_windows_server_2008_r2</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_windows_server_2012</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_windows_server_2012_r2</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">assert_is_windows_vista</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_writable_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">assert_is_xzfile_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_zero_matrix.html">assert_is_zero_matrix</a></td>
+<td>Is the input a zero matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="r_can_find_tools.html">assert_r_can_build_translations</a></td>
+<td>Can R find tools?</td></tr>
+<tr><td style="width: 25%;"><a href="r_can_find_tools.html">assert_r_can_compile_code</a></td>
+<td>Can R find tools?</td></tr>
+<tr><td style="width: 25%;"><a href="r_can_find_tools.html">assert_r_can_find_java</a></td>
+<td>Can R find tools?</td></tr>
+<tr><td style="width: 25%;"><a href="r_can_find_tools.html">assert_r_can_find_tools</a></td>
+<td>Can R find tools?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_aqua_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_cairo_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_cledit_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_fifo_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_http_ftp_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_iconv_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_icu_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_jpeg_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_libcurl_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_libxml_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_long_double_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_nls_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_png_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_profmem_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_sockets_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_tcltk_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_tiff_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">assert_r_has_x11_capability</a></td>
+<td>Does R have a capability?</td></tr>
+</table>
+
+<h2><a name="B">-- B --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="bapply.html">bapply</a></td>
+<td>Wrapper to vapply that returns booleans.</td></tr>
+</table>
+
+<h2><a name="C">-- C --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="call_and_name.html">call_and_name</a></td>
+<td>Call a function, and give the result names.</td></tr>
+<tr><td style="width: 25%;"><a href="cause.html">cause</a></td>
+<td>Get or set the '"cause"' attribute</td></tr>
+<tr><td style="width: 25%;"><a href="cause.html">cause&lt;-</a></td>
+<td>Get or set the '"cause"' attribute</td></tr>
+<tr><td style="width: 25%;"><a href="changes.html">changes</a></td>
+<td>Important changes to assertive</td></tr>
+<tr><td style="width: 25%;"><a href="character_to_list_of_integer_vectors.html">character_to_list_of_integer_vectors</a></td>
+<td>Convert a character vector to a list of integer vectors See 'character_to_list_of_integer_vectors'.</td></tr>
+<tr><td style="width: 25%;"><a href="coerce_to.html">coerce_to</a></td>
+<td>Coerce variable to a different class</td></tr>
+</table>
+
+<h2><a name="D">-- D --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="DIM.html">DIM</a></td>
+<td>Get the dimensions of an object</td></tr>
+<tr><td style="width: 25%;"><a href="dont_stop.html">dont_stop</a></td>
+<td>Run code without stopping</td></tr>
+</table>
+
+<h2><a name="F">-- F --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="false.html">false</a></td>
+<td>FALSE, with a cause of failure</td></tr>
+</table>
+
+<h2><a name="G">-- G --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="get_name_in_parent.html">get_name_in_parent</a></td>
+<td>Get the name of a variable in the parent frame</td></tr>
+</table>
+
+<h2><a name="H">-- H --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="has_any_attributes.html">has_any_attributes</a></td>
+<td>Does the input have any attributes?</td></tr>
+<tr><td style="width: 25%;"><a href="has_arg.html">has_arg</a></td>
+<td>Does the current call have an argument? See 'has_arg'.</td></tr>
+<tr><td style="width: 25%;"><a href="has_arg.html">has_arg_</a></td>
+<td>Does the current call have an argument? See 'has_arg'.</td></tr>
+<tr><td style="width: 25%;"><a href="has_attributes.html">has_attributes</a></td>
+<td>Does the input have the specified attributes?</td></tr>
+<tr><td style="width: 25%;"><a href="has_names.html">has_colnames</a></td>
+<td>Does the input have names?</td></tr>
+<tr><td style="width: 25%;"><a href="has_cols.html">has_cols</a></td>
+<td>Does the input have rows/columns?</td></tr>
+<tr><td style="width: 25%;"><a href="has_names.html">has_dimnames</a></td>
+<td>Does the input have names?</td></tr>
+<tr><td style="width: 25%;"><a href="has_dims.html">has_dims</a></td>
+<td>Does the input have dimensions?</td></tr>
+<tr><td style="width: 25%;"><a href="has_duplicates.html">has_duplicates</a></td>
+<td>Does the input have duplicates?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">has_elements</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="has_names.html">has_names</a></td>
+<td>Does the input have names?</td></tr>
+<tr><td style="width: 25%;"><a href="has_any_attributes.html">has_no_attributes</a></td>
+<td>Does the input have any attributes?</td></tr>
+<tr><td style="width: 25%;"><a href="has_duplicates.html">has_no_duplicates</a></td>
+<td>Does the input have duplicates?</td></tr>
+<tr><td style="width: 25%;"><a href="has_names.html">has_rownames</a></td>
+<td>Does the input have names?</td></tr>
+<tr><td style="width: 25%;"><a href="has_cols.html">has_rows</a></td>
+<td>Does the input have rows/columns?</td></tr>
+<tr><td style="width: 25%;"><a href="has_slot.html">has_slot</a></td>
+<td>Does the S4 input have a slot?</td></tr>
+<tr><td style="width: 25%;"><a href="has_terms.html">has_terms</a></td>
+<td>Does the input have terms?</td></tr>
+<tr><td style="width: 25%;"><a href="are_same_length.html">have_same_dims</a></td>
+<td>Are the inputs the same length/dimension?</td></tr>
+</table>
+
+<h2><a name="I">-- I --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="is2.html">is2</a></td>
+<td>Alternative version of is</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_32_bit</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_32_bit_os</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_64_bit</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_64_bit_os</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_past.html">is_after</a></td>
+<td>Is the input in the past/future?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">is_an_empty_string</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_integer.html">is_an_integer</a></td>
+<td>Is the input an integer?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_architect</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_array.html">is_array</a></td>
+<td>Is the input an array or matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_atomic.html">is_atomic</a></td>
+<td>Is the input atomic/recursive/vector?</td></tr>
+<tr><td style="width: 25%;"><a href="is_logical.html">is_a_bool</a></td>
+<td>Is the input logical?</td></tr>
+<tr><td style="width: 25%;"><a href="is_complex.html">is_a_complex</a></td>
+<td>Is the input complex?</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric.html">is_a_double</a></td>
+<td>Is the input numeric?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">is_a_missing_or_empty_string</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">is_a_non_empty_string</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">is_a_non_missing_nor_empty_string</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric.html">is_a_number</a></td>
+<td>Is the input numeric?</td></tr>
+<tr><td style="width: 25%;"><a href="is_raw.html">is_a_raw</a></td>
+<td>Is the input raw?</td></tr>
+<tr><td style="width: 25%;"><a href="is_character.html">is_a_string</a></td>
+<td>Is the input of type character?</td></tr>
+<tr><td style="width: 25%;"><a href="is_batch_mode.html">is_batch_mode</a></td>
+<td>How is R running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_past.html">is_before</a></td>
+<td>Is the input in the past/future?</td></tr>
+<tr><td style="width: 25%;"><a href="is_binding_locked.html">is_binding_locked</a></td>
+<td>Is the binding of a variable locked? See 'is_binding_locked'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_bsd</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_closure_function.html">is_builtin_function</a></td>
+<td>Is the input a closure, builtin or special function?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_bzfile_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_language.html">is_call</a></td>
+<td>Is the input a language object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_cas_number.html">is_cas_number</a></td>
+<td>Does the character vector contain CAS registry numbers?</td></tr>
+<tr><td style="width: 25%;"><a href="is_character.html">is_character</a></td>
+<td>Is the input of type character?</td></tr>
+<tr><td style="width: 25%;"><a href="is_class.html">is_class</a></td>
+<td>Is the input the name of a (formally defined) class?</td></tr>
+<tr><td style="width: 25%;"><a href="is_closure_function.html">is_closure_function</a></td>
+<td>Is the input a closure, builtin or special function?</td></tr>
+<tr><td style="width: 25%;"><a href="is_xxx_for_decimal_point.html">is_comma_for_decimal_point</a></td>
+<td>What does the current locale specify for the decimal point?</td></tr>
+<tr><td style="width: 25%;"><a href="is_complex.html">is_complex</a></td>
+<td>Is the input complex?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">is_condition</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_credit_card_number.html">is_credit_card_number</a></td>
+<td>Does the character vector contain credit card numbers?</td></tr>
+<tr><td style="width: 25%;"><a href="is_data.frame.html">is_data.frame</a></td>
+<td>Is the input is a data.frame?</td></tr>
+<tr><td style="width: 25%;"><a href="is_data.table.html">is_data.table</a></td>
+<td>Is the input a data.table?</td></tr>
+<tr><td style="width: 25%;"><a href="is_date.html">is_date</a></td>
+<td>Is the input a date?</td></tr>
+<tr><td style="width: 25%;"><a href="is_date_string.html">is_date_string</a></td>
+<td>Does the character vector contain dates?</td></tr>
+<tr><td style="width: 25%;"><a href="is_debugged.html">is_debugged</a></td>
+<td>Is the input function being debugged? See 'is_debugged'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_diagonal_matrix.html">is_diagonal_matrix</a></td>
+<td>Is the input a diagonal matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_dir.html">is_dir</a></td>
+<td>Is the path a directory?</td></tr>
+<tr><td style="width: 25%;"><a href="is_divisible_by.html">is_divisible_by</a></td>
+<td>Is the input divisible by a number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric.html">is_double</a></td>
+<td>Is the input numeric?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_emacs</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_email_address.html">is_email_address</a></td>
+<td>Does the character vector contain email addresses?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">is_empty</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">is_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_file.html">is_empty_file</a></td>
+<td>Is a file too big or small?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_model.html">is_empty_model</a></td>
+<td>Is the input the empty model?</td></tr>
+<tr><td style="width: 25%;"><a href="is_environment.html">is_environment</a></td>
+<td>Is the input an environment?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">is_equal_to</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">is_error</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_error_free.html">is_error_free</a></td>
+<td>Does the code run without throwing an error? See 'is_error_free'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_divisible_by.html">is_even</a></td>
+<td>Is the input divisible by a number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_executable_file.html">is_executable_file</a></td>
+<td>Is the file accessible?</td></tr>
+<tr><td style="width: 25%;"><a href="is_existing.html">is_existing</a></td>
+<td>Does the variable exist? See 'is_existing'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_existing_file.html">is_existing_file</a></td>
+<td>Does the file exist?</td></tr>
+<tr><td style="width: 25%;"><a href="is_language.html">is_expression</a></td>
+<td>Is the input a language object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_externalptr.html">is_externalptr</a></td>
+<td>Is the input an external pointer?</td></tr>
+<tr><td style="width: 25%;"><a href="is_executable_file.html">is_ex_file</a></td>
+<td>Is the file accessible?</td></tr>
+<tr><td style="width: 25%;"><a href="is_factor.html">is_factor</a></td>
+<td>Is the input a factor?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">is_false</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_fifo_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_file_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_file.html">is_file_size_in_range</a></td>
+<td>Is a file too big or small?</td></tr>
+<tr><td style="width: 25%;"><a href="is_finite.html">is_finite</a></td>
+<td>Are the inputs (in)finite?</td></tr>
+<tr><td style="width: 25%;"><a href="is_formula.html">is_formula</a></td>
+<td>Is the input a formula?</td></tr>
+<tr><td style="width: 25%;"><a href="is_function.html">is_function</a></td>
+<td>Is the input a function?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">is_greater_than</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">is_greater_than_or_equal_to</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_gzfile_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_hex_color.html">is_hex_color</a></td>
+<td>Does the character vector contain hex colors?</td></tr>
+<tr><td style="width: 25%;"><a href="is_hex_color.html">is_hex_colour</a></td>
+<td>Does the character vector contain hex colors?</td></tr>
+<tr><td style="width: 25%;"><a href="is_honorific.html">is_honorific</a></td>
+<td>Is the string an honorific?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">is_identical_to_false</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">is_identical_to_na</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">is_identical_to_true</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_identity_matrix.html">is_identity_matrix</a></td>
+<td>Is the input an identity matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_if_condition.html">is_if_condition</a></td>
+<td>Is suitable to be used as an if condition See 'is_if_condition'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_real.html">is_imaginary</a></td>
+<td>Is the input real/imaginary?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_incomplete_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_finite.html">is_infinite</a></td>
+<td>Are the inputs (in)finite?</td></tr>
+<tr><td style="width: 25%;"><a href="is_inherited_from.html">is_inherited_from</a></td>
+<td>Does the object inherit from some class?</td></tr>
+<tr><td style="width: 25%;"><a href="is_integer.html">is_integer</a></td>
+<td>Is the input an integer?</td></tr>
+<tr><td style="width: 25%;"><a href="is_batch_mode.html">is_interactive</a></td>
+<td>How is R running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_internal_function.html">is_internal_function</a></td>
+<td>Is the input an internal function?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">is_in_closed_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_past.html">is_in_future</a></td>
+<td>Is the input in the past/future?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">is_in_left_open_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">is_in_open_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_past.html">is_in_past</a></td>
+<td>Is the input in the past/future?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">is_in_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">is_in_right_open_range</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_ip_address.html">is_ip_address</a></td>
+<td>Does the character vector contain IP addresses?</td></tr>
+<tr><td style="width: 25%;"><a href="is_isbn_code.html">is_isbn10_code</a></td>
+<td>Does the character vector contain ISBN book codes?</td></tr>
+<tr><td style="width: 25%;"><a href="is_isbn_code.html">is_isbn13_code</a></td>
+<td>Does the character vector contain ISBN book codes?</td></tr>
+<tr><td style="width: 25%;"><a href="is_isbn_code.html">is_isbn_code</a></td>
+<td>Does the character vector contain ISBN book codes?</td></tr>
+<tr><td style="width: 25%;"><a href="is_language.html">is_language</a></td>
+<td>Is the input a language object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_leaf.html">is_leaf</a></td>
+<td>Is the input a (dendrogram) leaf?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">is_less_than</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">is_less_than_or_equal_to</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="is_library.html">is_library</a></td>
+<td>Is the directory a known R library?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_linux</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_list.html">is_list</a></td>
+<td>Is the input a list?</td></tr>
+<tr><td style="width: 25%;"><a href="is_loaded.html">is_loaded</a></td>
+<td>Is the input DLL loaded? See 'is_loaded'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_logical.html">is_logical</a></td>
+<td>Is the input logical?</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric_string.html">is_logical_string</a></td>
+<td>Does the string contain a number? See 'is_numeric_string'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_lower_triangular_matrix.html">is_lower_triangular_matrix</a></td>
+<td>Is the matrix upper/lower triangular?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_mac</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_macos_sierra</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_matching_fixed.html">is_matching_fixed</a></td>
+<td>Does the string match a pattern? See 'is_matching_fixed'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_matching_fixed.html">is_matching_regex</a></td>
+<td>Does the string match a pattern? See 'is_matching_fixed'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_array.html">is_matrix</a></td>
+<td>Is the input an array or matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">is_message</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">is_missing_or_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_monotonic_increasing.html">is_monotonic</a></td>
+<td>Is the vector monotonically increasing or decreasing?</td></tr>
+<tr><td style="width: 25%;"><a href="is_monotonic_increasing.html">is_monotonic_decreasing</a></td>
+<td>Is the vector monotonically increasing or decreasing?</td></tr>
+<tr><td style="width: 25%;"><a href="is_monotonic_increasing.html">is_monotonic_increasing</a></td>
+<td>Is the vector monotonically increasing or decreasing?</td></tr>
+<tr><td style="width: 25%;"><a href="is_ts.html">is_mts</a></td>
+<td>Is the input a time series?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">is_na</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_language.html">is_name</a></td>
+<td>Is the input a language object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_nan.html">is_nan</a></td>
+<td>Is the input (not) NaN?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">is_negative</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_finite.html">is_negative_infinity</a></td>
+<td>Are the inputs (in)finite?</td></tr>
+<tr><td style="width: 25%;"><a href="is_atomic.html">is_nested</a></td>
+<td>Is the input atomic/recursive/vector?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">is_non_empty</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">is_non_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_file.html">is_non_empty_file</a></td>
+<td>Is a file too big or small?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_model.html">is_non_empty_model</a></td>
+<td>Is the input the empty model?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">is_non_missing_nor_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">is_non_negative</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_atomic.html">is_non_nested</a></td>
+<td>Is the input atomic/recursive/vector?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">is_non_positive</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">is_non_scalar</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="is_equal_to.html">is_not_equal_to</a></td>
+<td>How does the input relate to a value?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">is_not_false</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_matching_fixed.html">is_not_matching_fixed</a></td>
+<td>Does the string match a pattern? See 'is_matching_fixed'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_matching_fixed.html">is_not_matching_regex</a></td>
+<td>Does the string match a pattern? See 'is_matching_fixed'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty_character.html">is_not_missing_nor_empty_character</a></td>
+<td>Does the input contain empty or missing strings?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">is_not_na</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_nan.html">is_not_nan</a></td>
+<td>Is the input (not) NaN?</td></tr>
+<tr><td style="width: 25%;"><a href="is_null.html">is_not_null</a></td>
+<td>Checks to see if the input is (not) null.</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">is_not_true</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_null.html">is_null</a></td>
+<td>Checks to see if the input is (not) null.</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric.html">is_numeric</a></td>
+<td>Is the input numeric?</td></tr>
+<tr><td style="width: 25%;"><a href="is_numeric_string.html">is_numeric_string</a></td>
+<td>Does the string contain a number? See 'is_numeric_string'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_divisible_by.html">is_odd</a></td>
+<td>Is the input divisible by a number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">is_of_dimension</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">is_of_length</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="is_formula.html">is_one_sided_formula</a></td>
+<td>Is the input a formula?</td></tr>
+<tr><td style="width: 25%;"><a href="is_on_os_path.html">is_on_os_path</a></td>
+<td>Is the path on the OS path?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_open_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_factor.html">is_ordered</a></td>
+<td>Is the input a factor?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx_cheetah</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx_el_capitan</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx_jaguar</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx_leopard</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx_lion</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx_mavericks</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx_mountain_lion</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx_panther</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx_puma</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx_snow_leopard</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx_tiger</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_osx_yosemite</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_package_current.html">is_package_current</a></td>
+<td>Is the installed version of a package current?</td></tr>
+<tr><td style="width: 25%;"><a href="is_list.html">is_pairlist</a></td>
+<td>Is the input a list?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">is_percentage</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_xxx_for_decimal_point.html">is_period_for_decimal_point</a></td>
+<td>What does the current locale specify for the decimal point?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_pipe_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">is_positive</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_finite.html">is_positive_infinity</a></td>
+<td>Are the inputs (in)finite?</td></tr>
+<tr><td style="width: 25%;"><a href="is_date.html">is_posixct</a></td>
+<td>Is the input a date?</td></tr>
+<tr><td style="width: 25%;"><a href="is_date.html">is_posixlt</a></td>
+<td>Is the input a date?</td></tr>
+<tr><td style="width: 25%;"><a href="is_function.html">is_primitive</a></td>
+<td>Is the input a function?</td></tr>
+<tr><td style="width: 25%;"><a href="is_in_range.html">is_proportion</a></td>
+<td>Is the input in range?</td></tr>
+<tr><td style="width: 25%;"><a href="is_qr.html">is_qr</a></td>
+<td>Is the input a QR decomposition of a matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_r</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_raster.html">is_raster</a></td>
+<td>Is the input a raster?</td></tr>
+<tr><td style="width: 25%;"><a href="is_raw.html">is_raw</a></td>
+<td>Is the input raw?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_readable_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_executable_file.html">is_readable_file</a></td>
+<td>Is the file accessible?</td></tr>
+<tr><td style="width: 25%;"><a href="is_real.html">is_real</a></td>
+<td>Is the input real/imaginary?</td></tr>
+<tr><td style="width: 25%;"><a href="is_atomic.html">is_recursive</a></td>
+<td>Is the input atomic/recursive/vector?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s4.html">is_ref_class_generator</a></td>
+<td>Is the input an S4 object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s4.html">is_ref_class_object</a></td>
+<td>Is the input an S4 object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_relistable.html">is_relistable</a></td>
+<td>Is the input relistable?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_revo_r</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_rstudio</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_rstudio_current.html">is_rstudio_current</a></td>
+<td>Is RStudio the current version?</td></tr>
+<tr><td style="width: 25%;"><a href="is_rstudio_desktop.html">is_rstudio_desktop</a></td>
+<td>Is RStudio running in desktop or server mode?</td></tr>
+<tr><td style="width: 25%;"><a href="is_rstudio_desktop.html">is_rstudio_server</a></td>
+<td>Is RStudio running in desktop or server mode?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_r_alpha</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_r_beta</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r_current.html">is_r_current</a></td>
+<td>Is this version of R up to date?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_r_devel</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_r_patched</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_r_release</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_r_release_candidate</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_r_revised</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_batch_mode.html">is_r_slave</a></td>
+<td>How is R running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_r_stable</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s3_generic.html">is_s3_generic</a></td>
+<td>Is the input an S3 generic or method?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s3_generic.html">is_s3_group_generic</a></td>
+<td>Is the input an S3 generic or method?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s3_generic.html">is_s3_internal_generic</a></td>
+<td>Is the input an S3 generic or method?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s3_generic.html">is_s3_method</a></td>
+<td>Is the input an S3 generic or method?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s3_generic.html">is_s3_primitive_generic</a></td>
+<td>Is the input an S3 generic or method?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s4.html">is_S4</a></td>
+<td>Is the input an S4 object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s4.html">is_s4</a></td>
+<td>Is the input an S4 object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_s3_generic.html">is_s4_group_generic</a></td>
+<td>Is the input an S3 generic or method?</td></tr>
+<tr><td style="width: 25%;"><a href="is_empty.html">is_scalar</a></td>
+<td>Is the input empty/scalar?</td></tr>
+<tr><td style="width: 25%;"><a href="are_set_equal.html">is_set_equal</a></td>
+<td>Set comparisons</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">is_simple_error</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">is_simple_message</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">is_simple_warning</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_single_character.html">is_single_character</a></td>
+<td>Is the input a single character? See 'is_single_character'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_batch_mode.html">is_slave_r</a></td>
+<td>How is R running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_socket_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_solaris</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_closure_function.html">is_special_function</a></td>
+<td>Is the input a closure, builtin or special function?</td></tr>
+<tr><td style="width: 25%;"><a href="is_square_matrix.html">is_square_matrix</a></td>
+<td>Is the input a square matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_stderr</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_stdin</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_stdout</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_function.html">is_stepfun</a></td>
+<td>Is the input a function?</td></tr>
+<tr><td style="width: 25%;"><a href="are_set_equal.html">is_subset</a></td>
+<td>Set comparisons</td></tr>
+<tr><td style="width: 25%;"><a href="are_set_equal.html">is_superset</a></td>
+<td>Set comparisons</td></tr>
+<tr><td style="width: 25%;"><a href="is_language.html">is_symbol</a></td>
+<td>Is the input a language object?</td></tr>
+<tr><td style="width: 25%;"><a href="is_symmetric_matrix.html">is_symmetric_matrix</a></td>
+<td>Is the input a symmetric matrix?</td></tr>
+<tr><td style="width: 25%;"><a href="is_table.html">is_table</a></td>
+<td>Is the input a table?</td></tr>
+<tr><td style="width: 25%;"><a href="is_tbl.html">is_tbl</a></td>
+<td>Is the input a tbl?</td></tr>
+<tr><td style="width: 25%;"><a href="is_tbl.html">is_tbl_cube</a></td>
+<td>Is the input a tbl?</td></tr>
+<tr><td style="width: 25%;"><a href="is_tbl.html">is_tbl_df</a></td>
+<td>Is the input a tbl?</td></tr>
+<tr><td style="width: 25%;"><a href="is_tbl.html">is_tbl_dt</a></td>
+<td>Is the input a tbl?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_terminal_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_text_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="Truth.html">is_true</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">is_try_error</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_ts.html">is_ts</a></td>
+<td>Is the input a time series?</td></tr>
+<tr><td style="width: 25%;"><a href="is_ts.html">is_tskernel</a></td>
+<td>Is the input a time series?</td></tr>
+<tr><td style="width: 25%;"><a href="is_formula.html">is_two_sided_formula</a></td>
+<td>Is the input a formula?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_car_licence.html">is_uk_car_licence</a></td>
+<td>Is the string a valid UK car licence plate number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_car_licence.html">is_uk_car_license</a></td>
+<td>Is the string a valid UK car licence plate number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_national_insurance_number.html">is_uk_national_insurance_number</a></td>
+<td>Is the string a valid UK national insurance number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_postcode.html">is_uk_postcode</a></td>
+<td>Is the string a valid UK postcode?</td></tr>
+<tr><td style="width: 25%;"><a href="is_uk_telephone_number.html">is_uk_telephone_number</a></td>
+<td>Is the string a valid UK telephone number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_unix</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_unsorted.html">is_unsorted</a></td>
+<td>Is the input unsorted?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_unz_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_lower_triangular_matrix.html">is_upper_triangular_matrix</a></td>
+<td>Is the matrix upper/lower triangular?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_url_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_us_social_security_number.html">is_us_social_security_number</a></td>
+<td>Is the string a valid US SSN?</td></tr>
+<tr><td style="width: 25%;"><a href="is_us_telephone_number.html">is_us_telephone_number</a></td>
+<td>Is the string a valid US telephone number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_us_zip_code.html">is_us_zip_code</a></td>
+<td>Is the string a valid US zip code?</td></tr>
+<tr><td style="width: 25%;"><a href="is_valid_r_code.html">is_valid_r_code</a></td>
+<td>Is the input valid R code? See 'is_valid_r_code'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_valid_variable_name.html">is_valid_variable_name</a></td>
+<td>Is the string a valid variable name? See 'is_valid_variable_name'.</td></tr>
+<tr><td style="width: 25%;"><a href="is_atomic.html">is_vector</a></td>
+<td>Is the input atomic/recursive/vector?</td></tr>
+<tr><td style="width: 25%;"><a href="is_r.html">is_visual_studio</a></td>
+<td>Are you running R?</td></tr>
+<tr><td style="width: 25%;"><a href="is_try_error.html">is_warning</a></td>
+<td>Is the input a condition?</td></tr>
+<tr><td style="width: 25%;"><a href="is_whole_number.html">is_whole_number</a></td>
+<td>Is the input a whole number?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_windows</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_windows_10</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_windows_7</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_windows_8</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_windows_8.1</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_windows_server_2008</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_windows_server_2008_r2</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_windows_server_2012</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_windows_server_2012_r2</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_windows.html">is_windows_vista</a></td>
+<td>What OS is running?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_writable_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_executable_file.html">is_writable_file</a></td>
+<td>Is the file accessible?</td></tr>
+<tr><td style="width: 25%;"><a href="is_xxx_for_decimal_point.html">is_xxx_for_decimal_point</a></td>
+<td>What does the current locale specify for the decimal point?</td></tr>
+<tr><td style="width: 25%;"><a href="is_connection.html">is_xzfile_connection</a></td>
+<td>Is the input a connection?</td></tr>
+<tr><td style="width: 25%;"><a href="is_zero_matrix.html">is_zero_matrix</a></td>
+<td>Is the input a zero matrix?</td></tr>
+</table>
+
+<h2><a name="M">-- M --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="merge_dots_with_list.html">merge_dots_with_list</a></td>
+<td>Merge ellipsis args with a list.</td></tr>
+</table>
+
+<h2><a name="N">-- N --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="na.html">na</a></td>
+<td>NA, with a cause of failure</td></tr>
+<tr><td style="width: 25%;"><a href="n_elements.html">n_elements</a></td>
+<td>Get the number of elements</td></tr>
+</table>
+
+<h2><a name="P">-- P --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="parenthesize.html">parenthesise</a></td>
+<td>Wrap a string in brackets</td></tr>
+<tr><td style="width: 25%;"><a href="parenthesize.html">parenthesize</a></td>
+<td>Wrap a string in brackets</td></tr>
+<tr><td style="width: 25%;"><a href="print_and_capture.html">print_and_capture</a></td>
+<td>Print a variable and capture the output</td></tr>
+</table>
+
+<h2><a name="R">-- R --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="r_can_find_tools.html">r_can_build_translations</a></td>
+<td>Can R find tools?</td></tr>
+<tr><td style="width: 25%;"><a href="r_can_find_tools.html">r_can_compile_code</a></td>
+<td>Can R find tools?</td></tr>
+<tr><td style="width: 25%;"><a href="r_can_find_tools.html">r_can_find_java</a></td>
+<td>Can R find tools?</td></tr>
+<tr><td style="width: 25%;"><a href="r_can_find_tools.html">r_can_find_tools</a></td>
+<td>Can R find tools?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_aqua_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_cairo_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_cledit_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_fifo_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_http_ftp_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_iconv_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_icu_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_jpeg_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_libcurl_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_libxml_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_long_double_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_nls_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_png_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_profmem_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_sockets_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_tcltk_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_tiff_capability</a></td>
+<td>Does R have a capability?</td></tr>
+<tr><td style="width: 25%;"><a href="r_has_jpeg_capability.html">r_has_x11_capability</a></td>
+<td>Does R have a capability?</td></tr>
+</table>
+
+<h2><a name="S">-- S --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="safe_deparse.html">safe_deparse</a></td>
+<td>Safe version of deparse</td></tr>
+<tr><td style="width: 25%;"><a href="set_cause.html">set_cause</a></td>
+<td>Set a cause and return the input</td></tr>
+<tr><td style="width: 25%;"><a href="strip_attributes.html">strip_attributes</a></td>
+<td>Strip all attributes from a variable</td></tr>
+<tr><td style="width: 25%;"><a href="sys_get_locale.html">sys_get_locale</a></td>
+<td>Get or set the system locale</td></tr>
+<tr><td style="width: 25%;"><a href="sys_get_locale.html">sys_set_locale</a></td>
+<td>Get or set the system locale</td></tr>
+</table>
+
+<h2><a name="T">-- T --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="Truth.html">Truth</a></td>
+<td>Is the input TRUE/FALSE/NA?</td></tr>
+</table>
+
+<h2><a name="U">-- U --</a></h2>
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="use_first.html">use_first</a></td>
+<td>Only use the first element of a vector</td></tr>
+</table>
+</body></html>

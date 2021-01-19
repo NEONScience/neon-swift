@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get object metadata</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for head_object {aws.s3}"><tr><td>head_object {aws.s3}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get object metadata</h2>
+
+<h3>Description</h3>
+
+<p>Check if an object from an S3 bucket exists. To retrieve the object, see <code><a href="get_object.html">get_object</a></code>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+head_object(object, bucket, ...)
+
+object_exists(object, bucket, ...)
+
+object_size(object, bucket, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>Character string with the object key, or an object of class &ldquo;s3_object&rdquo;. In most cases, if <code>object</code> is specified as the latter, <code>bucket</code> can be omitted because the bucket name will be extracted from &ldquo;Bucket&rdquo; slot in <code>object</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>bucket</code></td>
+<td>
+<p>Character string with the name of the bucket, or an object of class &ldquo;s3_bucket&rdquo;.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments passed to <code><a href="s3HTTP.html">s3HTTP</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>head_object</code> is a low-level API wrapper that checks whether an object exists by executing an HTTP HEAD request; this can be useful for checking object headers such as &ldquo;content-length&rdquo; or &ldquo;content-type&rdquo;. <code>object_exists</code> is sugar that returns only the logical.
+</p>
+<p><code>object_size</code> returns the size of the object (from the &ldquo;content-length&rdquo; attribute returned by <code>head_object</code>).
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>head_object</code> returns a logical. <code>object_exists</code> returns <code>TRUE</code> if bucket exists and is accessible, else <code>FALSE</code>. <code>object_size</code> returns an integer, which is <code>NA</code> if the request fails.
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html">API Documentation: HEAD Object</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="bucket_exists.html">bucket_exists</a></code>, <code><a href="get_object.html">get_object</a></code>, <code><a href="put_object.html">put_object</a></code>, <code><a href="delete_object.html">delete_object</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+  # get an object in memory
+  ## create bucket
+  b &lt;- put_bucket("myexamplebucket")
+  
+  ## save a dataset to the bucket
+  s3save(mtcars, bucket = b, object = "mtcars")
+  
+  # check that object exists
+  object_exists("mtcars", "myexamplebucket")
+  object_exists("s3://myexamplebucket/mtcars")
+  
+  # get the object's size
+  object_size("s3://myexamplebucket/mtcars")
+  
+  # get the object
+  get_object("s3://myexamplebucket/mtcars")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>aws.s3</em> version 0.3.21 <a href="00Index.html">Index</a>]</div>
+</body></html>

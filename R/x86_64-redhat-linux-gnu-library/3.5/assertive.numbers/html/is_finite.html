@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Are the inputs (in)finite?</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for assert_all_are_finite {assertive.numbers}"><tr><td>assert_all_are_finite {assertive.numbers}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Are the inputs (in)finite?</h2>
+
+<h3>Description</h3>
+
+<p>Checks to see if the inputs are (in)finite.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+assert_all_are_finite(x, severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_finite(x, severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_infinite(x, severity = getOption("assertive.severity", "stop"))
+
+assert_any_are_infinite(x, severity = getOption("assertive.severity", "stop"))
+
+assert_all_are_negative_infinity(x, severity = getOption("assertive.severity",
+  "stop"))
+
+assert_any_are_negative_infinity(x, severity = getOption("assertive.severity",
+  "stop"))
+
+assert_all_are_positive_infinity(x, severity = getOption("assertive.severity",
+  "stop"))
+
+assert_any_are_positive_infinity(x, severity = getOption("assertive.severity",
+  "stop"))
+
+is_finite(x, .xname = get_name_in_parent(x))
+
+is_infinite(x, .xname = get_name_in_parent(x))
+
+is_negative_infinity(x, .xname = get_name_in_parent(x))
+
+is_positive_infinity(x, .xname = get_name_in_parent(x))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>Input to check.</p>
+</td></tr>
+<tr valign="top"><td><code>severity</code></td>
+<td>
+<p>How severe should the consequences of the assertion be?
+Either <code>"stop"</code>, <code>"warning"</code>, <code>"message"</code>, or <code>"none"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.xname</code></td>
+<td>
+<p>Not intended to be used directly.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>is_finite</code> wraps <code>is.finite</code>, showing the 
+names of the inputs in the answer. <code>is_infinite</code> works 
+likewise for <code>is.infinite</code>.  The <code>assert_*</code> functions 
+return nothing but throw an error if the corresponding 
+<code>is_*</code> function returns <code>FALSE</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/is.finite.html">is.finite</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+x &lt;- c(0, Inf, -Inf, NA, NaN)
+is_finite(x)
+is_infinite(x)
+is_positive_infinity(x)
+is_negative_infinity(x)
+assert_all_are_finite(1:10)
+assert_any_are_finite(c(1, Inf))
+assert_all_are_infinite(c(Inf, -Inf))
+assertive.base::dont_stop(assert_all_are_finite(c(0, Inf, -Inf, NA, NaN)))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>assertive.numbers</em> version 0.0-2 <a href="00Index.html">Index</a>]</div>
+</body></html>
