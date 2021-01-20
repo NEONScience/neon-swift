@@ -1,4 +1,5 @@
-r.library = ("/home/NEON/kstyers/R/x86_64-redhat-linux-gnu-library/3.6/")
+# r.library = ("C:/1_GitHub/neon-swift/R/win10/4.0/")
+r.library = ("C:/1_GitHub/neon-swift/R/x86_64-redhat-linux-gnu-library/3.6/")
 
 library(shiny,           lib.loc = r.library)
 library(plyr,            lib.loc = r.library)
@@ -22,7 +23,8 @@ library(xml2,            lib.loc = r.library)
 library(aws.s3,          lib.loc = r.library)
 library(lubridate,       lib.loc = r.library)
 
-swft.server.folder.path = "/srv/shiny-server/neon-swift/"
+# swft.server.folder.path = "C:/1_GitHub/neon-swift/"
+swft.server.folder.path = "/srv/shiny-server/neon-swift"
 
 # Essential Site Lookup Tables
 swft.full.site.lookup <- data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.full.site.lookup.csv"))
@@ -45,8 +47,8 @@ shiny::shinyUI(
         shinydashboard::menuItem("LC Services",     tabName = "swft_lcservices_tab", icon = shiny::icon("signal",         lib = "font-awesome")),
         shinydashboard::menuItem("Timestamp Check", tabName = "swft_timestamp_tab",  icon = shiny::icon("hourglass-half", lib = "font-awesome")),
         shinydashboard::menuItem("Gas Cylinders",   tabName = "swft_spangas_tab",    icon = shiny::icon("adjust",         lib = "font-awesome")),
-        shinydashboard::menuItem("Cvals Fast",      tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
-        shinydashboard::menuItem("Eddy-Co Fast",    tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome"))
+        shinydashboard::menuItem("CVAL Plotting",      tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
+        shinydashboard::menuItem("Eddy-Co Plotting",    tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome"))
       )
     ),
     # Body
@@ -57,7 +59,7 @@ shiny::shinyUI(
         shinydashboard::tabItem(tabName = "swft_home_tab",
           shinydashboard::box(width = 12, 
               shiny::column(width = 7,
-              shiny::h1("An Eddy-Covariance State of Health Dashboard (and Aquatics)"),
+              shiny::h1("An Eddy-Covariance State of Health Dashboard"),
               # shiny::tags$h3(
               #   shiny::helpText(a("How to use this application!",href="http://den-devshiny-1.ci.neoninternal.org/TheAviary/pages/SwiftHowTo.html",target="_blank"))
               # ),
@@ -72,10 +74,10 @@ shiny::shinyUI(
               shiny::tags$b("Gas Cylinders"),
               shiny::h4("Check current cylinder pressures, delivery pressures, and average pressure loss overtime. Also features a table showing expected cylinder depletion rates based upon average pressure loss."),
               shiny::icon("atom", lib = "font-awesome"),
-              shiny::tags$b("Cvals Fast"),
+              shiny::tags$b("CVAL Plotting"),
               shiny::h4("This tab that uses `fst` files that renders all daily CVALs and visualizes all CVALs phase shifted by month!"),
               shiny::icon("sun", lib = "font-awesome"),
-              shiny::tags$b("Eddy-Co Fast"),
+              shiny::tags$b("Eddy-Co Plotting"),
               shiny::h4("A tab that uses `fst` data files to render Eddy-Co data; from Co2 measurements, CSAT3 wind data, and measurement level flows.")
             ),
             shiny::column(width = 4, offset = 1,
@@ -178,7 +180,7 @@ shiny::shinyUI(
             shinydashboard::box(width = 12,
               shiny::fluidRow(width = "100%",
                 shiny::fluidRow(
-                  shiny::plotOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
+                  plotly::plotlyOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
                   DT::dataTableOutput("swft_timestamp_table") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
                 ) # End fluidRow
               ) # End fluidRow
@@ -236,11 +238,10 @@ shiny::shinyUI(
         
         shinydashboard::tabItem(tabName = "swft_cvalfast_tab",
           shinydashboard::box(width = 12,
-              shiny::column(width = 7,
+              shiny::column(width = 12,
                 shiny::fluidRow(
-                  shiny::h1("CVAL Fast Plots [Dev]"),
+                  shiny::h1("Calibrations and Validations Plotting"),
                   shiny::br(),
-                  shiny::p("Calibration data is collected daily via a SQL query to the L0 database. The start and end times are determined by an LC file. "),
                   shiny::p("Use the data here to verify Cvals are occuring as expected. Check that span gases are being delivered properly. Zero*, Low, Int, High")
                 ),
                   shiny::fluidRow(
@@ -251,19 +252,21 @@ shiny::shinyUI(
                                             selected = "HARV"),
                       shiny::selectInput(inputId = "swft_cval_sensor",
                                          label = "Select Cal/Val to Render",
-                                         choices = c("G2131 Validations" = "G2131i","Li840 CVALs" = "Li840A", "Li7200 Validations" = "Li7200")),
-                      shiny::uiOutput('swft_cval_react_unique_cvals')
+                                         choices = c("G2131 Validations" = "G2131i","Li840 CVALs" = "Li840A", "Li7200 Validations" = "Li7200"))
                     ),
+                    
+                    shiny::column(width = 4,
+                                  shiny::uiOutput('swft_cval_react_unique_cvals')
+                                  ), # End Column
                     shiny::column(width = 4,       
-                      shiny::fluidRow(
-                        shiny::tags$ol(
-                          shiny::tags$li("Check that span gases are being delivered properly. Zero*, Low, Int, High"),
-                          shiny::tags$li("Verify Cval's are occuring regularly. Daily for validations and weekly for Li840 calibrations."),
-                          shiny::tags$li("Verify span gases are installed in the correct maximo location. Low, Int, High are all occuring in the correct order and have the correct span concentrations.")
-                        ) # End OrderList
-                      )                              
-                    ),
-                    shiny::column(width = 4) # End Column
+                                  shiny::fluidRow(
+                                    shiny::tags$ol(
+                                      shiny::tags$li("Check that span gases are being delivered properly. Zero*, Low, Int, High"),
+                                      shiny::tags$li("Verify Cval's are occuring regularly. Daily for validations and weekly for Li840 calibrations."),
+                                      shiny::tags$li("Verify span gases are installed in the correct maximo location. Low, Int, High are all occuring in the correct order and have the correct span concentrations.")
+                                    ) # End Ordered List
+                                  )                              
+                    )
                   ) # End fluidRow
               ) # End Top Master column
           ), # End tabBox
@@ -297,19 +300,19 @@ shiny::shinyUI(
                 shiny::fluidRow(
                   shiny::fluidRow(
                     shiny::column(width = 4,
-                      shiny::h1("Eddy Covariance Plots"),
-                      shiny::br(),
-                      shiny::p("Data is collected from an automated Presto pulled designed by IS Science and CI. Data is updated in the early morning (10:00:00 UTC)."),
-                      shiny::p("Daily sensor files are then stored at an S3 bucket, and retrieved by a IS Science designed function. All data are 2-minute point data, meaning that what ever the values was at the 2 minute interval, is the value that is stored."),
-                      shiny::a("Open the Eddy-Co Architecture Map",target="_blank",href="EC_ArchMap.pdf"),
-                      shiny::br(),
-                      shiny::br(),
-                      shiny::br()
-                    ),
-                    shiny::column(width = 4),
+                      shiny::h1("Eddy Covariance Plots")
+                    )
+                  ),
+                  shiny::fluidRow(
                     shiny::column(width = 4,
-                      shinydashboard::valueBoxOutput("swft_ec_fast_collect_data_time", width = 12),
-                      shinydashboard::valueBoxOutput("swft_ec_fast_data_points", width = 12),
+                      shiny::p("Data is collected from an automated Presto pulled designed by IS Science and CI. Data is updated in the early morning (10:00:00 UTC)."),
+                      shiny::a("Open the Eddy-Co Architecture Map",target="_blank",href="EC_ArchMap.pdf")
+                    ),
+                    shiny::column(width = 4,
+                      shiny::p("Daily sensor files are then stored at an S3 bucket, and retrieved by a IS Science designed function. All data are 2-minute point data, meaning that what ever the values was at the 2 minute interval, is the value that is stored.")
+                    ),
+                    shiny::column(width = 4,          
+                      shinydashboard::valueBoxOutput("swft_ec_fast_collect_data_time", width = 12)
                     )
                   ),
                   shiny::column(width = 3,
@@ -322,7 +325,7 @@ shiny::shinyUI(
                       )
                     )
                   ),
-                  shiny::column(width = 3,
+                  shiny::column(width = 2,
                     shiny::fluidRow(
                       shiny::selectizeInput(inputId = "swft_EddyCo_site", multiple = FALSE,
                                         label = "Select Site",
@@ -352,7 +355,7 @@ shiny::shinyUI(
                       )
                     )
                   ),
-                  shiny::column(width = 3,
+                  shiny::column(width = 2,
                     shiny::fluidRow(
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'G2131'",
                         shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_G2131', label = 'Sub Data Type', choices = c("CO2","H2O", "Isotopes", "Sample Valves"))
@@ -370,29 +373,27 @@ shiny::shinyUI(
                         shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_HMP155', label = 'Sub Data Type', choices = c("Relative Humidity", "Temperature", "Dew Point"))
                       )
                     )
-                  )
+                  ),
+                  shiny::column(width = 2,
+                    shiny::radioButtons(inputId = "swft_EddyCo_radioButton", label = "Advanced Options",choices = c("Enabled", "Disabled"), selected = "Disabled")
+                  ),
                 ),
                 shiny::fluidRow(
                   shiny::column(width = 5,
-                    shiny::column(width = 1,
-                      shiny::radioButtons(inputId = "swft_EddyCo_radioButton", label = "Advanced Options",choices = c("Enabled", "Disabled"), selected = "Disabled")
-                    ),
-                    shiny::column(width = 1),
-                    shiny::column(width = 8,
+                    shiny::column(width = 12,
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_radioButton == 'Enabled' ",
-                                              
-                        shiny::column(width = 3,
+                        shiny::column(width = 4,
                           shiny::selectInput(inputId = "swft_EddyCo_radio_y_custom", label = "Customize Y-axis", choices = c("Yes", "No"), selected = "No")
                         ),
                         shiny::conditionalPanel(condition = "input.swft_EddyCo_radio_y_custom == 'Yes'",
-                          shiny::column(width = 3,
-                            shiny::numericInput(inputId = "swft_EddyCo_y_lower",label = "Min Y", value = "")
+                          shiny::column(width = 2,
+                            shiny::numericInput(inputId = "swft_EddyCo_y_lower",label = "Min Y", value = 350)
                           ),
-                          shiny::column(width = 3,
+                          shiny::column(width = 2,
                             shiny::numericInput(inputId = "swft_EddyCo_y_upper",label = "Max Y", value = 500)
                           )
                         ),
-                        shiny::column(width = 3,
+                        shiny::column(width = 4,
                           shiny::selectInput(inputId = "swft_EddyCo_facet_wrap", label = "Facet by stream name?", choices = c("Yes", "No"), selected = "No")
                         )
                       )
@@ -400,8 +401,7 @@ shiny::shinyUI(
                   ),
                   shiny::column(width = 3,
                     shiny::actionButton(inputId = "swft_ec_fast_actionButton", label = "  Start Plotting!", icon = icon(name = "play-circle"))
-                  ),
-                  shiny::column(width = 4)
+                  )
                 )
               ) # End Top Full Column
             )

@@ -1,7 +1,4 @@
-# Server Code for LC Services Tab
-
-# R script to spread out server code into more well defined chunks
-library(shiny)
+# Server Code for Timestamp Checker
 shiny::observeEvent(input$menu, {
   if(input$menu == "swft_timestamp_tab"){
     library(fst)
@@ -16,24 +13,16 @@ shiny::observeEvent(input$menu, {
                "AWS_DEFAULT_REGION"    = "s3.data")
     
     # Read in Timestamp data
-    swft_timestamp_date_list = seq.Date(from = Sys.Date()-14, to = Sys.Date(), by = 1)
+    swft_timestamp_date_list = seq.Date(from = Sys.Date()-7, to = Sys.Date(), by = 1)
     
     timestampData = data.table::data.table()
     for(days in swft_timestamp_date_list){
       days = as.Date(days, origin = "1970-01-01")
-      message(days)
-
-
       if(aws.s3::object_exists(object = paste0("sensor_timestamp_check/", days, ".RDS"), bucket = "research-eddy-inquiry") == TRUE){
-        message("\t Exists!!!")
-        
         swft_timestamp_data.in = aws.s3::s3readRDS(object = paste0("sensor_timestamp_check/", days, ".RDS"), bucket = "research-eddy-inquiry")
-
-        # swft_timestamp_data.in = aws.s3::s3readRDS(object = paste0("sensor_timestamp_check/", days, ".RDS"), bucket = "research-eddy-inquiry")
         timestampData = data.table::rbindlist(l = list(timestampData, swft_timestamp_data.in))
 
       }
-
     }
     
     timestampData = timestampData %>%
@@ -54,22 +43,19 @@ shiny::observeEvent(input$menu, {
     })
     
     # Give table `readable` names
-    # names(timestampData) <- c(
-    #   "TimeStamp","MacAddress","Eeprom","StreamNumber","Data","StartTime","EndTime","PullDate","Sensor's Timestamp Difference2","Sensor's Timestamp Difference",
-    #   "Site's Median Timestamp Difference", "Sensor's Deviation from the Site's Median Timestamp"
-    # )
-    
     # Filter the data down a little and select only certain columns sensible to users
     timestampData.plot <- timestampData %>%
       dplyr::filter(`Sensor's Deviation from the Site's Median Timestamp` > 10 &
                     `Sensor's Deviation from the Site's Median Timestamp` < 1000  ) %>%
+      dplyr::mutate(`Sensor's Deviation from the Site's Median Timestamp` = as.numeric(`Sensor's Deviation from the Site's Median Timestamp`)) %>%
+      dplyr::mutate(`Site's Median Timestamp Difference` = as.numeric(`Site's Median Timestamp Difference`)) %>%
       dplyr::select(siteID, MacAddress, Eeprom, PullDate, `Site's Median Timestamp Difference`, `Sensor's Deviation from the Site's Median Timestamp`)
     
       
     # Check if there are any issues, if not, give a blank plot
     if(nrow(timestampData.plot) > 0) {
       analysisPlot <- ggplot2::ggplot(data=timestampData.plot,aes(x=`Sensor's Deviation from the Site's Median Timestamp`,SensorMac=MacAddress,fill=siteID, SiteMedianDifferenceTime = `Site's Median Timestamp Difference`))+
-        ggplot2::geom_histogram(binwidth = 1, color = "grey")+
+        ggplot2::geom_histogram(binwidth = 5, color = "grey")+
         ggplot2::theme(axis.text.x = element_text(angle = 325))+ # Change axis text to Battelle Blue
         ggplot2::labs(x = "Sensor Delay (s)", 
                       y = "Count of Streams in Bin",
@@ -77,19 +63,21 @@ shiny::observeEvent(input$menu, {
                       title = paste0("Time Difference Histogram Analysis"))+
         ggplot2::facet_grid(~PullDate)
     } else {
-      analysisPlot <- ggplot()+
-        geom_text(label = "text")+
-        annotate("text", label = paste0("NO DATA: \n(No Timestamp Issues Identified)"), x = 0, y = 0, color = "black")+
-        theme_minimal()
+      analysisPlot <- ggplot2::ggplot()+
+        ggplot2::geom_text(label = "text")+
+        ggplot2::annotate("text", label = paste0("NO DATA: \n(No Timestamp Issues Identified)"), x = 0, y = 0, color = "black")+
+        ggplot2::theme_minimal()
     }
     
     # Shiny Output of plot
-    output$swft_timestamp_plot <- renderPlot({
-      analysisPlot
+    output$swft_timestamp_plot <- plotly::renderPlotly({
+      plotly::ggplotly(
+        analysisPlot
+      )
     })
     
     # Table data from plot
-    output$swft_timestamp_table <- renderDT({
+    output$swft_timestamp_table <- DT::renderDT({
       
       timestampData.table = timestampData %>%
         dplyr::group_by(PullDate, siteID) %>%
@@ -101,8 +89,5 @@ shiny::observeEvent(input$menu, {
       DT::datatable(timestampData.table
                     ,  escape = FALSE,filter='top', options = list(pageLength = 10, autoWidth = FALSE))
     })
-    
-    
-    # This is the end.
-    }
+  }
 })

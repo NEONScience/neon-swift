@@ -34,12 +34,8 @@ shiny::observeEvent(input$menu, {
       
       cvalReadTime <- Sys.time()
       
-      
       ### Grab the DATES!
       dateData <- shiny::reactive({
-        
-        
-        # unique(all.cvals.meta$Sensor)
         all.cvals.meta = read.eddy.inquiry(dataType = "meta", sensor = "cval") %>%
           dplyr::filter(Sensor == "Li7200") %>%
           dplyr::filter(Site == "UNDE")

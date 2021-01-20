@@ -16,11 +16,6 @@ shiny::observeEvent(input$menu, {
       
       read.eddy.inquiry(dataType = "CnC", siteID = input$swft_lcservices_site, startDate = input$swft_lcservices_date_range[1], endDate = input$swft_lcservices_date_range[2]) %>%
         dplyr::filter(LCNumber == input$swft_lcservices_lc_number)
-      
-      # read.eddy.inquiry(dataType = "CnC", siteID = "HOPB", startDate = Sys.Date() - 30, endDate = Sys.Date() ) %>%
-      #   dplyr::filter(LCNumber == 1)
-      
-      
     })
     
     #### Plot Data ####

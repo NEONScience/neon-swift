@@ -4,7 +4,7 @@
 # application by clicking 'Run App' above.
 
 # Specified path to the server folder for Swift. This MUST point to the Swift folder ie /srv/shiny-server/swift/
-swft.server.folder.path = "/srv/shiny-server/neon-swift/"
+swft.server.folder.path = "C:/1_GitHub/neon-swift/"
 
 Sys.setenv("AWS_ACCESS_KEY_ID"     = "research-eddy-inquiry",
            "AWS_S3_ENDPOINT"       = "neonscience.org",
