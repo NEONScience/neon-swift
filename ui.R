@@ -1,6 +1,6 @@
 # r.library = ("C:/1_GitHub/neon-swift/R/win10/4.0/")
-# r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/3.6/")
-r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/4.0/")
+r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/3.6/")
+# r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/4.0/")
 
 library(shiny,           lib.loc = r.library)
 library(plyr,            lib.loc = r.library)
@@ -301,19 +301,26 @@ shiny::shinyUI(
                 shiny::fluidRow(
                   shiny::fluidRow(
                     shiny::column(width = 4,
-                      shiny::h1("Eddy Covariance Plots")
+                      shiny::h1("Eddy Covariance Plots"),
+                      shiny::br()
                     )
                   ),
                   shiny::fluidRow(
                     shiny::column(width = 4,
                       shiny::p("Data is collected from an automated Presto pulled designed by IS Science and CI. Data is updated in the early morning (10:00:00 UTC)."),
-                      shiny::a("Open the Eddy-Co Architecture Map",target="_blank",href="EC_ArchMap.pdf")
+                      shiny::a("Open the Eddy-Co Architecture Map",target="_blank",href="EC_ArchMap.pdf"),
+                      shiny::br(),
+                      shiny::br()
                     ),
                     shiny::column(width = 4,
-                      shiny::p("Daily sensor files are then stored at an S3 bucket, and retrieved by a IS Science designed function. All data are 2-minute point data, meaning that what ever the values was at the 2 minute interval, is the value that is stored.")
+                      shiny::p("Daily sensor files are then stored at an S3 bucket, and retrieved by a IS Science designed function. All data are 2-minute point data, meaning that what ever the values was at the 2 minute interval, is the value that is stored."),
+                      shiny::br(),
+                      shiny::br()
                     ),
                     shiny::column(width = 4,          
-                      shinydashboard::valueBoxOutput("swft_ec_fast_collect_data_time", width = 12)
+                      shinydashboard::valueBoxOutput("swft_ec_fast_collect_data_time", width = 12),
+                      shiny::br(),
+                      shiny::br()
                     )
                   ),
                   shiny::column(width = 3,
