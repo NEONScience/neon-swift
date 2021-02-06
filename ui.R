@@ -24,7 +24,11 @@ library(xml2,            lib.loc = r.library)
 library(aws.s3,          lib.loc = r.library)
 library(lubridate,       lib.loc = r.library)
 
+<<<<<<< HEAD
 #swft.server.folder.path = "C:/1_GitHub/neon-swift/"
+=======
+# swft.server.folder.path = "C:/1_GitHub/neon-swift/"
+>>>>>>> b417791121ccafebcee805abede44145008acb4e
 swft.server.folder.path = "/srv/shiny-server/neon-swift/"
 
 # Essential Site Lookup Tables
