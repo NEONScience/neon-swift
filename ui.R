@@ -24,8 +24,8 @@ library(xml2,            lib.loc = r.library)
 library(aws.s3,          lib.loc = r.library)
 library(lubridate,       lib.loc = r.library)
 
-# swft.server.folder.path = "C:/1_GitHub/neon-swift/"
-swft.server.folder.path = "/srv/shiny-server/neon-swift/"
+swft.server.folder.path = "C:/1_GitHub/neon-swift/"
+# swft.server.folder.path = "/srv/shiny-server/neon-swift/"
 
 # Essential Site Lookup Tables
 swft.full.site.lookup <- data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.full.site.lookup.csv"))
@@ -195,15 +195,15 @@ shiny::shinyUI(
           shinydashboard::box(width = 12,
             shiny::fluidRow(
               shiny::column(width = 2,
-                shiny::selectizeInput(inputId = 'swft_spangas_site',label = 'Select SiteID',
-                                   choices = swft.tis.site.lookup$SiteID, multiple = TRUE, options = list(maxItems = 3),
-                                   selected = c("HARV"),
+                shiny::selectInput(inputId = 'swft_spangas_site',label = 'Select SiteID',
+                                   choices = swft.tis.site.lookup$SiteID, 
+                                   selected = sample(swft.tis.site.lookup$SiteID, 1),
                                    width='100%'
                 )
               ),
               shiny::column(width = 3,    
                   shiny::dateRangeInput(inputId = "swft_spangas_date_range", label = "Select Date Range for Plot",
-                                        start = Sys.Date() - 14, end = Sys.Date() + 1, max = Sys.Date() + 1
+                                        start = Sys.Date() - 28, end = Sys.Date() + 1, max = Sys.Date() + 1
                   )
               )
             ), 
@@ -225,11 +225,6 @@ shiny::shinyUI(
                 shiny::fluidRow(width = "100%",
                   plotly::plotlyOutput("swft_spangas_loss_plot", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
                 ) # End fluidRow
-              ), # End tabPanel
-              shiny::tabPanel("Covid-19 Cylinder Data",width=12,
-                shiny::fluidRow(width = "100%",
-                  DT::dataTableOutput("swft.covid19.table") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
-                ) # End fluidRow 
               ) # End tabPanel
             ) # End tabBox
           ) # End Cval Fst box
@@ -277,8 +272,15 @@ shiny::shinyUI(
                 shiny::fluidRow(
                   shiny::column(width =12,
                     # Co2 Analyzers Data
-                    shiny::fluidRow(
-                      shinydashboard::valueBoxOutput("swiftEcseLow", width = 4),shinydashboard::valueBoxOutput("swiftEcseInt", width = 4),shinydashboard::valueBoxOutput("swiftEcseHigh", width = 4)
+                    shiny::conditionalPanel(condition = 'input.swft_cval_sensor != "Li7200"',                  
+                      shiny::fluidRow(
+                        shinydashboard::valueBoxOutput("swiftEcseLow", width = 4),shinydashboard::valueBoxOutput("swiftEcseInt", width = 4),shinydashboard::valueBoxOutput("swiftEcseHigh", width = 4)
+                      )
+                    ),
+                    shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li7200"',                  
+                      shiny::fluidRow(
+                        shinydashboard::valueBoxOutput("swiftEcteLow", width = 4),shinydashboard::valueBoxOutput("swiftEcteInt", width = 4),shinydashboard::valueBoxOutput("swiftEcteHigh", width = 4)
+                      )
                     ),
                     shiny::fluidRow(
                       plotly::plotlyOutput("plot_co2_ecse", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
