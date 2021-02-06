@@ -1,6 +1,6 @@
 # r.library = ("C:/1_GitHub/neon-swift/R/win10/4.0/")
-r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/3.6/")
-# r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/4.0/")
+# r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/3.6/")
+r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/4.0/")
 
 library(shiny,           lib.loc = r.library)
 library(plyr,            lib.loc = r.library)
@@ -24,8 +24,8 @@ library(xml2,            lib.loc = r.library)
 library(aws.s3,          lib.loc = r.library)
 library(lubridate,       lib.loc = r.library)
 
-swft.server.folder.path = "C:/1_GitHub/neon-swift/"
-# swft.server.folder.path = "/srv/shiny-server/neon-swift/"
+#swft.server.folder.path = "C:/1_GitHub/neon-swift/"
+swft.server.folder.path = "/srv/shiny-server/neon-swift/"
 
 # Essential Site Lookup Tables
 swft.full.site.lookup <- data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.full.site.lookup.csv"))

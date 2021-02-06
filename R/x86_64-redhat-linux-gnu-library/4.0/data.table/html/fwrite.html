@@ -163,7 +163,7 @@ A fully flexible format string (such as <code>"%m/%d/%Y"</code>) is not supporte
 
 <h3>Details</h3>
 
-<p><code>fwrite</code> began as a community contribution with <a href="https://github.com/Rdatatable/data.table/pull/1613">pull request #1613</a> by Otto Seiskari. This gave Matt Dowle the impetus to specialize the numeric formatting and to parallelize: <a href="https://blog.h2o.ai/2016/04/fast-csv-writing-for-r/">https://blog.h2o.ai/2016/04/fast-csv-writing-for-r/</a>. Final items were tracked in <a href="https://github.com/Rdatatable/data.table/issues/1664">issue #1664</a> such as automatic quoting, <code>bit64::integer64</code> support, decimal/scientific formatting exactly matching <code>write.csv</code> between 2.225074e-308 and 1.797693e+308 to 15 significant figures, <code>row.names</code>, dates (between 0000-03-01 and 9999-12-31), times and <code>sep2</code> for <code>list</code> columns where each cell can itself be a vector.
+<p><code>fwrite</code> began as a community contribution with <a href="https://github.com/Rdatatable/data.table/pull/1613">pull request #1613</a> by Otto Seiskari. This gave Matt Dowle the impetus to specialize the numeric formatting and to parallelize: <a href="https://www.h2o.ai/blog/fast-csv-writing-for-r/">https://www.h2o.ai/blog/fast-csv-writing-for-r/</a>. Final items were tracked in <a href="https://github.com/Rdatatable/data.table/issues/1664">issue #1664</a> such as automatic quoting, <code>bit64::integer64</code> support, decimal/scientific formatting exactly matching <code>write.csv</code> between 2.225074e-308 and 1.797693e+308 to 15 significant figures, <code>row.names</code>, dates (between 0000-03-01 and 9999-12-31), times and <code>sep2</code> for <code>list</code> columns where each cell can itself be a vector.
 </p>
 <p>To save space, <code>fwrite</code> prefers to write wide numeric values in scientific notation &ndash; e.g. <code>10000000000</code> takes up much more space than <code>1e+10</code>. Most file readers (e.g. <code><a href="fread.html">fread</a></code>) understand scientific notation, so there's no fidelity loss. Like in base R, users can control this by specifying the <code>scipen</code> argument, which follows the same rules as <code><a href="../../base/html/options.html">options</a>('scipen')</code>. <code>fwrite</code> will see how much space a value will take to write in scientific vs. decimal notation, and will only write in scientific notation if the latter is more than <code>scipen</code> characters wider. For <code>10000000000</code>, then, <code>1e+10</code> will be written whenever <code>scipen&lt;6</code>.
 </p>
@@ -278,5 +278,5 @@ unlink("/dev/shm/tmp2.csv")
 
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>data.table</em> version 1.13.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>data.table</em> version 1.13.6 <a href="00Index.html">Index</a>]</div>
 </body></html>
