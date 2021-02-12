@@ -19,5 +19,6 @@ server <- function(input, output,session) {
   base::source(file=paste0(swft.server.folder.path, 'server/swiftLcServices.R'), local = T, echo = T)
   base::source(file=paste0(swft.server.folder.path, 'server/swiftTimestampCheck.R'), local = T, echo = T)
   base::source(file=paste0(swft.server.folder.path, 'server/swiftSpanGases.R'), local = T, echo = T)
-
+  base::source(file=paste0(swft.server.folder.path, 'server/swiftQfQm.R'), local = T, echo = T)
+  
 }

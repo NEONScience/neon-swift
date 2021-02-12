@@ -1,6 +1,6 @@
 # r.library = ("C:/1_GitHub/neon-swift/R/win10/4.0/")
-# r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/3.6/")
-r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/4.0/")
+r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/3.6/")
+# r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/4.0/")
 
 library(shiny,           lib.loc = r.library)
 library(plyr,            lib.loc = r.library)
@@ -24,11 +24,7 @@ library(xml2,            lib.loc = r.library)
 library(aws.s3,          lib.loc = r.library)
 library(lubridate,       lib.loc = r.library)
 
-#<<<<<<< HEAD
 #swft.server.folder.path = "C:/1_GitHub/neon-swift/"
-#=======
-# swft.server.folder.path = "C:/1_GitHub/neon-swift/"
-#>>>>>>> b417791121ccafebcee805abede44145008acb4e
 swft.server.folder.path = "/srv/shiny-server/neon-swift/"
 
 # Essential Site Lookup Tables
@@ -53,7 +49,8 @@ shiny::shinyUI(
         shinydashboard::menuItem("Timestamp Check", tabName = "swft_timestamp_tab",  icon = shiny::icon("hourglass-half", lib = "font-awesome")),
         shinydashboard::menuItem("Gas Cylinders",   tabName = "swft_spangas_tab",    icon = shiny::icon("adjust",         lib = "font-awesome")),
         shinydashboard::menuItem("CVAL Plotting",      tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
-        shinydashboard::menuItem("Eddy-Co Plotting",    tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome"))
+        shinydashboard::menuItem("Eddy-Co Plotting",    tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
+        shinydashboard::menuItem("QFQM Plotting",    tabName = "swft_qfqm_tab",     icon = shiny::icon("flask",            lib = "font-awesome"))
       )
     ),
     # Body
@@ -83,7 +80,10 @@ shiny::shinyUI(
               shiny::h4("This tab that uses `fst` files that renders all daily CVALs and visualizes all CVALs phase shifted by month!"),
               shiny::icon("sun", lib = "font-awesome"),
               shiny::tags$b("Eddy-Co Plotting"),
-              shiny::h4("A tab that uses `fst` data files to render Eddy-Co data; from Co2 measurements, CSAT3 wind data, and measurement level flows.")
+              shiny::h4("A tab that uses `fst` data files to render Eddy-Co data; from Co2 measurements, CSAT3 wind data, and measurement level flows."),
+              shiny::tags$b("QFQM Plotting"),
+              shiny::h4("This tab is for investigateing the Quality Flag and Quality Metric data from Eddy4R."),
+              
             ),
             shiny::column(width = 4, offset = 1,
               shiny::img(src = 'swiftlogo.jpg', width = '300px', height = '240px')
@@ -249,7 +249,7 @@ shiny::shinyUI(
                       shiny::selectizeInput(inputId = "swft_cval_site", multiple = FALSE,
                                             label = "Select Site",
                                             choices = swft.tis.site.lookup$SiteID,
-                                            selected = "HARV"),
+                                            selected = sample(swft.tis.site.lookup$SiteID, 1)),
                       shiny::selectInput(inputId = "swft_cval_sensor",
                                          label = "Select Cal/Val to Render",
                                          choices = c("G2131 Validations" = "G2131i","Li840 CVALs" = "Li840A", "Li7200 Validations" = "Li7200"))
@@ -288,8 +288,9 @@ shiny::shinyUI(
                     ),
                     shiny::fluidRow(
                       plotly::plotlyOutput("plot_co2_ecse", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
-                      DT::dataTableOutput("table_co2_ecse") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
-                      DT::dataTableOutput("table_ecse_span") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                      DT::dataTableOutput("table_ecse_span") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
+                      DT::dataTableOutput("table_co2_ecse") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                      
                     )
                   ) # End column
                 ) # End Cval Fast shiny::column for Conditional Panels
@@ -433,7 +434,50 @@ shiny::shinyUI(
               ) # End blank tabPanel
             ) # End EC Fst Tab Panel for Condtional panels
           ) # End EC Fst box
-        ) # End EC Fst
+        ), # End EC Fst
+        shinydashboard::tabItem(tabName = "swft_qfqm_tab",
+          shinydashboard::box(width = 12,
+            shiny::column(width = 12,
+              shiny::fluidRow(
+                shiny::h1("QFQM Plotting"),
+                shiny::h2("Please give the code a few moments to load in the QFQM data..."),
+                shiny::selectizeInput(inputId = "swft_qfqm_site", multiple = FALSE,
+                                      label = "Select Site",
+                                      choices = swft.tis.site.lookup$SiteID,
+                                      selected = sample(swft.tis.site.lookup$SiteID, 1)
+                ),
+                shiny::br(),
+                shiny::conditionalPanel(condition = "output.qfqm_data_loaded == 'True'",  
+                                 shiny::actionButton("swift_qfqm_run_analysis", "Run Analysis?"),
+                                 shiny::selectInput(inputId = "swift_qfqm_dp", 
+                                                    label = "Select Date Product",
+                                                    choices = c("CO2 Storage" = "co2Stor", "CO2 Turbulent" = "co2Turb", "Flux Heat Soil" = "fluxHeatSoil", "H2O Soil Vol" = "h2oSoilVol", 
+                                                                "H2O Storage" = "h2oStor", "H2O Turbulent" = "h2oTurb", "Isotopic CO2" = "isoCo2", "Isotopic H2O" = "isoH2o",      
+                                                                "Net Radiation" = "radiNet", "Sonic Wind" = "soni", "Air Temperature Level" =  "tempAirLvl", "Air Temperature Top Level" = "tempAirTop",
+                                                                "Soil Temperature" = "tempSoil")),
+                                 shiny::selectInput(inputId = "swft_qfqm_focus_in", label = "Focus in on a specific variables?", choices = c("Yes","No"), selected = "No"),
+                                 shiny::conditionalPanel(condition = "input.swft_qfqm_focus_in == 'Yes'",
+                                                         shiny::uiOutput('swft_qfqm_vars')
+                                                         )
+                                 
+                                 
+                                 
+                                 
+                                 )
+              )
+            ), # End Column 7
+            shiny::column(width = 1),
+            shiny::column(width = 7,
+              )
+          ),
+          shinydashboard::box(width = 12,
+            shiny::fluidRow(width = "100%",
+              shiny::fluidRow(
+                shiny::plotOutput("swft_qfqm_plot") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+              ) # End fluidRow
+            ) # End fluidRow
+          ) # End box
+        ) # End QFQM Fst box
       ) # End Tab Items 
     ) # End Dashboard Body
   ) # End of Page
