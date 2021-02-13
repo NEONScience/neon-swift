@@ -448,13 +448,13 @@ shiny::shinyUI(
                 ),
                 shiny::br(),
                 shiny::conditionalPanel(condition = "output.qfqm_data_loaded == 'True'",  
-                                 shiny::actionButton("swift_qfqm_run_analysis", "Run Analysis?"),
-                                 shiny::selectInput(inputId = "swift_qfqm_dp", 
-                                                    label = "Select Date Product",
+                                 shiny::selectInput(inputId = "swft_qfqm_dp", 
+                                                    label = "Select Data Product",
                                                     choices = c("CO2 Storage" = "co2Stor", "CO2 Turbulent" = "co2Turb", "Flux Heat Soil" = "fluxHeatSoil", "H2O Soil Vol" = "h2oSoilVol", 
                                                                 "H2O Storage" = "h2oStor", "H2O Turbulent" = "h2oTurb", "Isotopic CO2" = "isoCo2", "Isotopic H2O" = "isoH2o",      
                                                                 "Net Radiation" = "radiNet", "Sonic Wind" = "soni", "Air Temperature Level" =  "tempAirLvl", "Air Temperature Top Level" = "tempAirTop",
                                                                 "Soil Temperature" = "tempSoil")),
+                                 shiny::dateInput(inputId = "swft_qfqm_date", label = "Select Date", value = "2021-01-31", max = Sys.Date() - 8, min = "2021-01-01"),
                                  shiny::selectInput(inputId = "swft_qfqm_focus_in", label = "Focus in on a specific variables?", choices = c("Yes","No"), selected = "No"),
                                  shiny::conditionalPanel(condition = "input.swft_qfqm_focus_in == 'Yes'",
                                                          shiny::uiOutput('swft_qfqm_vars')
@@ -473,7 +473,7 @@ shiny::shinyUI(
           shinydashboard::box(width = 12,
             shiny::fluidRow(width = "100%",
               shiny::fluidRow(
-                shiny::plotOutput("swft_qfqm_plot") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                plotly::plotlyOutput("swft_qfqm_plot") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
               ) # End fluidRow
             ) # End fluidRow
           ) # End box

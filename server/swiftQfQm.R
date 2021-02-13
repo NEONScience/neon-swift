@@ -22,15 +22,22 @@ shiny::observeEvent(input$menu, {
       
       # Sys.sleep(.5)
       
-        data.in %>%
-          dplyr::filter(site == input$swft_qfqm_site) %>%
-          dplyr::filter(metric %in% c("qmAlph","qmBeta")) %>%
-          dplyr::group_by(site, dp, var, metric, date, levlTowr) %>%
-          dplyr::summarise(
-            qfFinlTotl = sum(qfFinlTotl)
-          ) %>%
-          dplyr::filter(date == max(date)) %>%
-          dplyr::filter(dp == input$swift_qfqm_dp)
+      data.in %>%
+        dplyr::filter(site == input$swft_qfqm_site) %>%
+        dplyr::filter(date == input$swft_qfqm_date) %>%
+        dplyr::filter(dp == input$swft_qfqm_dp) %>%
+        dplyr::filter(metric %in% c("qmAlph","qmBeta")) %>%
+        dplyr::group_by(site, dp, var, metric, date, levlTowr) %>%
+        dplyr::summarise(
+          qfFinlTotl = sum(qfFinlTotl)
+        ) %>% 
+        dplyr::mutate(date=as.Date(date, origin = "1970-01-01", format = "%Y-%m-%d")) %>%
+        dplyr::filter(stringr::str_detect(string = levlTowr, pattern = "co2") == FALSE) %>%
+        dplyr::filter(stringr::str_detect(string = levlTowr, pattern = "h2o") == FALSE) %>%
+        dplyr::mutate(levlTowr = stringr::str_remove(string = levlTowr, pattern = "000_")) %>%
+        dplyr::mutate(levlTowr = base::gsub(pattern = "0",replacement = "", x = levlTowr))  %>%
+        dplyr::mutate(levlTowr = paste0("ML-", levlTowr)) 
+      
       
     })
     
@@ -39,22 +46,24 @@ shiny::observeEvent(input$menu, {
     })
     
     
-    output$swft_qfqm_plot <- shiny::renderPlot({
+    output$swft_qfqm_plot <- plotly::renderPlotly({
       Sys.sleep(1)
       if(nrow(swft_qfqm_plot()) > 0 ){
         if(input$swft_qfqm_focus_in == "Yes" ){
           
           ggplot() +
-            geom_histogram(data = swft_qfqm_plot() %>% dplyr::filter(var == input$swft_qfqm_vars), aes(x = qfFinlTotl, fill = metric), bins = 30) +
-            facet_grid(~var) +
+            geom_histogram(data = swft_qfqm_plot() %>% dplyr::filter(var == input$swft_qfqm_vars), aes(x = qfFinlTotl, fill = var), bins = 30) +
+            facet_grid(levlTowr~metric) +
+            scale_x_continuous(limits = c(0, 50))+
             labs(title = paste0(swft_qfqm_plot()$site[1], "'s ", swft_qfqm_plot()$dp[1], " QFQM Alpha and Beta Report"))+
             theme(legend.position = "none")
           
         } else {
         
           ggplot() +
-            geom_histogram(data = swft_qfqm_plot(), aes(x = qfFinlTotl, fill = metric), bins = 30) +
-            facet_grid(~var) +
+            geom_histogram(data = swft_qfqm_plot(), aes(x = qfFinlTotl, fill = var), bins = 30) +
+            facet_grid(levlTowr~metric) +
+            scale_x_continuous(limits = c(0, 50))+
             labs(title = paste0(swft_qfqm_plot()$site[1], "'s ", swft_qfqm_plot()$dp[1], " QFQM Alpha and Beta Report"))+
             theme(legend.position = "none")
           
