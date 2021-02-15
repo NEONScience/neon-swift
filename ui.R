@@ -185,7 +185,7 @@ shiny::shinyUI(
             shinydashboard::box(width = 12,
               shiny::fluidRow(width = "100%",
                 shiny::fluidRow(
-                  plotly::plotlyOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
+                  shiny::plotOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
                   DT::dataTableOutput("swft_timestamp_table") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
                 ) # End fluidRow
               ) # End fluidRow
