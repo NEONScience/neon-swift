@@ -24,7 +24,7 @@ library(xml2,            lib.loc = r.library)
 library(aws.s3,          lib.loc = r.library)
 library(lubridate,       lib.loc = r.library)
 
-#swft.server.folder.path = "C:/1_GitHub/neon-swift/"
+# swft.server.folder.path = "C:/1_GitHub/neon-swift/"
 swft.server.folder.path = "/srv/shiny-server/neon-swift/"
 
 # Essential Site Lookup Tables
@@ -256,16 +256,16 @@ shiny::shinyUI(
                     ),
                     
                     shiny::column(width = 4,
-                                  shiny::uiOutput('swft_cval_react_unique_cvals')
+                      shiny::uiOutput('swft_cval_react_unique_cvals')
                                   ), # End Column
                     shiny::column(width = 4,       
-                                  shiny::fluidRow(
-                                    shiny::tags$ol(
-                                      shiny::tags$li("Check that span gases are being delivered properly. Zero*, Low, Int, High"),
-                                      shiny::tags$li("Verify Cval's are occuring regularly. Daily for validations and weekly for Li840 calibrations."),
-                                      shiny::tags$li("Verify span gases are installed in the correct maximo location. Low, Int, High are all occuring in the correct order and have the correct span concentrations.")
-                                    ) # End Ordered List
-                                  )                              
+                      shiny::fluidRow(
+                        shiny::tags$ol(
+                          shiny::tags$li("Check that span gases are being delivered properly. Zero*, Low, Int, High"),
+                          shiny::tags$li("Verify Cval's are occuring regularly. Daily for validations and weekly for Li840 calibrations."),
+                          shiny::tags$li("Verify span gases are installed in the correct maximo location. Low, Int, High are all occuring in the correct order and have the correct span concentrations.")
+                        ) # End Ordered List
+                      )                              
                     )
                   ) # End fluidRow
               ) # End Top Master column
@@ -289,6 +289,13 @@ shiny::shinyUI(
                     shiny::fluidRow(
                       plotly::plotlyOutput("plot_co2_ecse", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
                       DT::dataTableOutput("table_ecse_span") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
+                      shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li7200"',   
+                                              shinydashboard::box(width = 12,
+                                                                  shiny::fluidRow(
+                                                                    plotly::plotlyOutput("plot_co2_ecte_leak_check", height = "400px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                                                                  )
+                                              )
+                      ),
                       DT::dataTableOutput("table_co2_ecse") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
                       
                     )
