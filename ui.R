@@ -44,13 +44,13 @@ shiny::shinyUI(
     shinydashboard::dashboardSidebar(
       width = 150,
       shinydashboard::sidebarMenu( id = "menu",
-        shinydashboard::menuItem("Home Page",       tabName = "swft_home_tab"                                                                  ),
-        shinydashboard::menuItem("LC Services",     tabName = "swft_lcservices_tab", icon = shiny::icon("signal",         lib = "font-awesome")),
-        shinydashboard::menuItem("Timestamp Check", tabName = "swft_timestamp_tab",  icon = shiny::icon("hourglass-half", lib = "font-awesome")),
-        shinydashboard::menuItem("Gas Cylinders",   tabName = "swft_spangas_tab",    icon = shiny::icon("adjust",         lib = "font-awesome")),
-        shinydashboard::menuItem("CVAL Plotting",      tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
-        shinydashboard::menuItem("Eddy-Co Plotting",    tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
-        shinydashboard::menuItem("QFQM Plotting",    tabName = "swft_qfqm_tab",     icon = shiny::icon("flask",            lib = "font-awesome"))
+        shinydashboard::menuItem("Home Page",        tabName = "swft_home_tab"                                                                  ),
+        shinydashboard::menuItem("LC Services",      tabName = "swft_lcservices_tab", icon = shiny::icon("signal",         lib = "font-awesome")),
+        shinydashboard::menuItem("Timestamp Check",  tabName = "swft_timestamp_tab",  icon = shiny::icon("hourglass-half", lib = "font-awesome")),
+        shinydashboard::menuItem("Gas Cylinders",    tabName = "swft_spangas_tab",    icon = shiny::icon("adjust",         lib = "font-awesome")),
+        shinydashboard::menuItem("CVAL Plotting",    tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
+        shinydashboard::menuItem("Eddy-Co Plotting", tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
+        shinydashboard::menuItem("QFQM Plotting",    tabName = "swft_qfqm_tab",       icon = shiny::icon("flask",          lib = "font-awesome"))
       )
     ),
     # Body
@@ -239,33 +239,52 @@ shiny::shinyUI(
         shinydashboard::tabItem(tabName = "swft_cvalfast_tab",
           shinydashboard::box(width = 12,
               shiny::column(width = 12,
+                            
                 shiny::fluidRow(
+                  shiny::column(width = 4,
                   shiny::h1("Calibrations and Validations Plotting"),
                   shiny::br(),
-                  shiny::p("Use the data here to verify Cvals are occuring as expected. Check that span gases are being delivered properly. Zero*, Low, Int, High")
-                ),
+                  shiny::p("Use the data here to verify Cvals are occuring as expected. Check that span gases are being delivered properly. Zero*, Low, Int, High"),
+                  shiny::column(width = 5,
                   shiny::fluidRow(
-                    shiny::column(width = 4,
-                      shiny::selectizeInput(inputId = "swft_cval_site", multiple = FALSE,
-                                            label = "Select Site",
-                                            choices = swft.tis.site.lookup$SiteID,
-                                            selected = sample(swft.tis.site.lookup$SiteID, 1)),
-                      shiny::selectInput(inputId = "swft_cval_sensor",
-                                         label = "Select Cal/Val to Render",
-                                         choices = c("G2131 Validations" = "G2131i","Li840 CVALs" = "Li840A", "Li7200 Validations" = "Li7200"))
-                    ),
-                    
-                    shiny::column(width = 4,
-                      shiny::uiOutput('swft_cval_react_unique_cvals')
-                                  ), # End Column
-                    shiny::column(width = 4,       
+                    shiny::selectizeInput(inputId = "swft_cval_site", multiple = FALSE,
+                                          label = "Select Site",
+                                          choices = swft.tis.site.lookup$SiteID,
+                                          selected = sample(swft.tis.site.lookup$SiteID, 1)),
+                    shiny::selectInput(inputId = "swft_cval_sensor",
+                                       label = "Select Cal/Val to Render",
+                                       choices = c("G2131 Validations" = "G2131i","Li840 CVALs" = "Li840A", "Li7200 Validations" = "Li7200", "L2130-i Validations" = "L2130i"))
+                    )
+                  ),
+                  shiny::column(width = 7,
+                    shiny::uiOutput('swft_cval_react_unique_cvals'),
+                    shiny::conditionalPanel(condition = "input.swft_cval_sensor == 'L2130i'", 
+                                            shiny::radioButtons(inputId = "swft_cval_l2130_options", label = "Choose Stream", inline = TRUE, choices = c("H2O" = "L2130_H2O", "18O" = "L2130_18O_isotope", "2H" = "L2130_2H_isotope"))
+                    )
+                  )
+                  ),
+                    shiny::column(width = 8,
+                      # shiny::h4("QC'ing CVALs Tips"),
+                      # shiny::fluidRow(
+                      #   shiny::tags$ol(
+                      #     shiny::tags$li("Check that span gases are being delivered properly. Zero*, Low, Int, High"),
+                      #     shiny::tags$li("Verify Cval's are occuring regularly. Daily for validations and weekly for Li840 calibrations."),
+                      #     shiny::tags$li("Verify span gases are installed in the correct maximo location. Low, Int, High are all occuring in the correct order and have the correct span concentrations.")
+                      #   ) # End Ordered List
+                      # ),
+                      shiny::h2("Observatory CVAL Records"),
                       shiny::fluidRow(
-                        shiny::tags$ol(
-                          shiny::tags$li("Check that span gases are being delivered properly. Zero*, Low, Int, High"),
-                          shiny::tags$li("Verify Cval's are occuring regularly. Daily for validations and weekly for Li840 calibrations."),
-                          shiny::tags$li("Verify span gases are installed in the correct maximo location. Low, Int, High are all occuring in the correct order and have the correct span concentrations.")
-                        ) # End Ordered List
-                      )                              
+                        shinydashboard::valueBoxOutput("swft_cval_g2131_records",  width = 3),
+                        shinydashboard::valueBoxOutput("swft_cval_li840_records",  width = 3),
+                        shinydashboard::valueBoxOutput("swft_cval_li7200_records", width = 3),
+                        shinydashboard::valueBoxOutput("swft_cval_l2130_records",  width = 3),
+                      ),
+                      shiny::fluidRow(
+                        shinydashboard::valueBoxOutput("swft_cval_site_records", width = 3),
+                        shinydashboard::valueBoxOutput("swft_cval_site_sensor_records", width = 3),
+                        shinydashboard::valueBoxOutput("swft_cval_total_records",  width = 3)
+                        
+                      )
                     )
                   ) # End fluidRow
               ) # End Top Master column
@@ -276,9 +295,14 @@ shiny::shinyUI(
                 shiny::fluidRow(
                   shiny::column(width =12,
                     # Co2 Analyzers Data
-                    shiny::conditionalPanel(condition = 'input.swft_cval_sensor != "Li7200"',                  
+                    shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li840A"',                  
                       shiny::fluidRow(
                         shinydashboard::valueBoxOutput("swiftEcseLow", width = 4),shinydashboard::valueBoxOutput("swiftEcseInt", width = 4),shinydashboard::valueBoxOutput("swiftEcseHigh", width = 4)
+                      )
+                    ),
+                    shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "G2131i"',                  
+                      shiny::fluidRow(
+                        shinydashboard::valueBoxOutput("swiftEcseLow2", width = 4),shinydashboard::valueBoxOutput("swiftEcseInt2", width = 4),shinydashboard::valueBoxOutput("swiftEcseHigh2", width = 4)
                       )
                     ),
                     shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li7200"',                  
@@ -286,15 +310,32 @@ shiny::shinyUI(
                         shinydashboard::valueBoxOutput("swiftEcteLow", width = 4),shinydashboard::valueBoxOutput("swiftEcteInt", width = 4),shinydashboard::valueBoxOutput("swiftEcteHigh", width = 4)
                       )
                     ),
+                    # EC First Plot for all systems
                     shiny::fluidRow(
                       plotly::plotlyOutput("plot_co2_ecse", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
-                      DT::dataTableOutput("table_ecse_span") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
+                      # Only output Span Gas Cylinder table if the sensor is not L2130i, since this sensor does not have span gas cylinders associated with it.
+                      shiny::conditionalPanel(condition = 'input.swft_cval_sensor != "L2130i"',   
+                        shinydashboard::box(width = 12,
+                          shiny::fluidRow(
+                            shiny::conditionalPanel(condition = "input.swft_cval_sensor != 'Li7200'",
+                              DT::dataTableOutput("table_ecse_span") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                            ),
+                            shiny::conditionalPanel(condition = "input.swft_cval_sensor == 'Li7200'",
+                              DT::dataTableOutput("table_ecte_span") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                            ),
+                          )
+                        )
+                      ),
+                      # ECTE Post-Validation Leak Check
                       shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li7200"',   
-                                              shinydashboard::box(width = 12,
-                                                                  shiny::fluidRow(
-                                                                    plotly::plotlyOutput("plot_co2_ecte_leak_check", height = "400px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
-                                                                  )
-                                              )
+                        shinydashboard::box(width = 12,
+                          shiny::fluidRow(
+                            shiny::h2("ECTE Post-Validation Leak Check"),
+                            shiny::p("This plot shows the leak check valve status and the flow through the sensor. Ideally this flow is 0 while the valve status is 1, if there is flow during the leak check; a leak is occuring."),
+                            shiny::p("The leak check lasts 15 minutes performing three 5-minute checks."),
+                            plotly::plotlyOutput("plot_co2_ecte_leak_check", height = "400px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                          )
+                        )
                       ),
                       DT::dataTableOutput("table_co2_ecse") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
                       
@@ -373,7 +414,7 @@ shiny::shinyUI(
                                                     "ECSE Pump Voltages - NEON Pump"         = "ecse.voltage",
                                                     "EC Temperatures - Comet/Others"         = "ec.temps"
                                                     ),
-                                         selected = "G2131"
+                                         selected = sample(x = c("G2131", "L2130", "Li840", "Li7200", "CO2", "H2O", "CSAT3", "amrs", "HMP155", "ecse.mfm", "ecse.voltage", "ec.temps"),size = 1)
                       )
                     )
                   ),

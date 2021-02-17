@@ -13,12 +13,12 @@ Sys.setenv("AWS_ACCESS_KEY_ID"     = "research-eddy-inquiry",
 
 # Define server logic required to draw a histogram
 server <- function(input, output,session) {
-  base::source(file=paste0(swft.server.folder.path, 'server/swiftCvalFst.R'),                  local=T,echo=T)
-  base::source(file=paste0(swft.server.folder.path, 'server/swiftAqua.R'),                     local=T,echo=T)
-  base::source(file=paste0(swft.server.folder.path, 'server/swftEddyCo.R'),                    local=T,echo=T)
-  base::source(file=paste0(swft.server.folder.path, 'server/swiftLcServices.R'), local = T, echo = T)
-  base::source(file=paste0(swft.server.folder.path, 'server/swiftTimestampCheck.R'), local = T, echo = T)
-  base::source(file=paste0(swft.server.folder.path, 'server/swiftSpanGases.R'), local = T, echo = T)
-  base::source(file=paste0(swft.server.folder.path, 'server/swiftQfQm.R'), local = T, echo = T)
+  base::source(file=paste0(swft.server.folder.path, 'server/swiftCvalFst.R'),        local = TRUE, echo = TRUE)
+  base::source(file=paste0(swft.server.folder.path, 'server/swiftAqua.R'),           local = TRUE, echo = TRUE)
+  base::source(file=paste0(swft.server.folder.path, 'server/swftEddyCo.R'),          local = TRUE, echo = TRUE)
+  base::source(file=paste0(swft.server.folder.path, 'server/swiftLcServices.R'),     local = TRUE, echo = TRUE)
+  base::source(file=paste0(swft.server.folder.path, 'server/swiftTimestampCheck.R'), local = TRUE, echo = TRUE)
+  base::source(file=paste0(swft.server.folder.path, 'server/swiftSpanGases.R'),      local = TRUE, echo = TRUE)
+  base::source(file=paste0(swft.server.folder.path, 'server/swiftQfQm.R'),           local = TRUE, echo = TRUE)
   
 }

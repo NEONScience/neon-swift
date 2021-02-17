@@ -12,7 +12,6 @@ shiny::observeEvent(input$menu, {
     
     base::source(paste0(swft.server.folder.path, "R/read.eddy.inquiry.swift.R"))
     
-    
     swft.tis.site.meta <- data.table::fread(paste0(swft.server.folder.path, "data/lookup/tis.site.meta.csv"))
 
     # Plot Data
