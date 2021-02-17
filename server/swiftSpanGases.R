@@ -153,7 +153,7 @@ shiny::observeEvent(input$menu, {
             ggplot2::scale_fill_manual(values= swft.spangas.linefills, aesthetics = "fill") +                                             # Make fill same as cylinder color
             ggplot2::geom_hline(yintercept = -4, linetype = "dashed") +
             ggplot2::labs(x= "",  y="PSI", color = "Cylinder Type", fill = "", linetype = "",
-                          title = paste0("Cylinder Pressure Loss from: ", input$spanDateRange[1], " to ", input$spanDateRange[2])) +    
+                          title = paste0("Cylinder Pressure Loss from: ", input$swft_spangas_date_range[1], " to ", input$swft_spangas_date_range[2])) +    
             ggplot2::facet_grid(~SiteID) +                                                                                                # Facet by site ID
             ggplot2::theme(axis.text.x = element_text(angle = 270, size = 12))                                       # Change axis text to Battelle Blue
           plotly::ggplotly(swft.spangas.loss.plot, tooltip = c("text")) %>% plotly::config(displayModeBar = F)                                  # Specify Tool tips and remove display bar
