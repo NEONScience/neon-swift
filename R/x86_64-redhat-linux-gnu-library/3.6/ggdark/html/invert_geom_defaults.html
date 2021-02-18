@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Invert geom defaults for fill and color/colour</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for invert_geom_defaults {ggdark}"><tr><td>invert_geom_defaults {ggdark}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Invert geom defaults for fill and color/colour</h2>
+
+<h3>Description</h3>
+
+<p>Invert geom defaults for fill and color/colour
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+invert_geom_defaults(geoms = get_geoms())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>geoms</code></td>
+<td>
+<p>List of geoms as ggproto objects</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(ggplot2)
+
+p &lt;- ggplot(iris, aes(Sepal.Width, Sepal.Length)) +
+  geom_point() +
+  facet_wrap(~ Species)
+
+p + dark_theme_gray()  # geom defaults changed
+
+p + theme_gray()  # oh no! geoms are not visible on light background
+
+invert_geom_defaults()  # geom defaults changed back
+
+p + theme_gray() # back to normal
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>ggdark</em> version 0.2.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,6 @@
+dark_mode               Activate dark mode on a 'ggplot2' theme
+dark_theme_bw           Complete dark themes
+ggdark                  'ggdark': Dark mode for 'ggplot2'
+invert_color            Invert color(s)
+invert_geom_defaults    Invert geom defaults for fill and color/colour
+invert_theme_elements   Invert theme elements
