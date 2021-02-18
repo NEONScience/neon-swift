@@ -93,7 +93,7 @@ shiny::observeEvent(input$menu, {
       
       # # For Function Testing
       # swft.data.in = read.eddy.inquiry(dataType  = "2min",
-      #                                  sensor    = "G2131",
+      #                                  sensor    = "ec.temps",
       #                                  siteID    = "WREF",
       #                                  startDate = Sys.Date()-7,
       #                                  endDate   = Sys.Date(),
@@ -516,7 +516,7 @@ shiny::observeEvent(input$menu, {
       if(nrow(swft.data.out) > 0){
         
         # Aesthetics
-        ggplot2::theme_set(ggdark::dark_theme_bw()) 
+        ggplot2::theme_set(ggdark::dark_theme_gray()) 
         
         # Storage Isotope Analyzer - G2131-i
         if(input$swft_EddyCo_data_type == "G2131"){
@@ -968,9 +968,9 @@ shiny::observeEvent(input$menu, {
           plot.max <- max(swft.data.out$by30, na.rm = TRUE)
           
           swft.data.out = swft.data.out %>%
-            dplyr::mutate(strm_name = ec.system)
+            dplyr::mutate(strm_name_test = ec.system)
           
-          swft.plot <- ggplot(swft.data.out, aes(x = by30, y= mean, color = type))+
+          swft.plot <- ggplot(swft.data.out, aes(x = by30, y= mean, color = strm_name))+
             geom_point(alpha = .63) +
             geom_line(alpha = .63) +
             annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 35, ymax = 50, alpha = 0.2, fill = "red")+
@@ -979,7 +979,9 @@ shiny::observeEvent(input$menu, {
             scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
             labs(title = paste0(swft.data.out$SiteID[1], ": Hut Temperature 2-minute point data"), subtitle = "Averaged hourly",
                  x = "", y = "Temp in Celcius", color = "Temp Sensor") +
-            theme(axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) # Option to angle the facet grid y panel text
+            theme(axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) + # Option to angle the facet grid y panel text
+            facet_wrap(~ec.system)
+          
         }
       } else { 
         # If there are not rows in swft.data.out generate blank plot

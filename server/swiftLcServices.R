@@ -5,7 +5,7 @@ shiny::observeEvent(input$menu, {
   if(input$menu == "swft_lcservices_tab"){
     
     # Aesthetics
-    ggplot2::theme_set(ggdark::dark_theme_bw()) 
+    ggplot2::theme_set(ggdark::dark_theme_gray()) 
     
     ######################## Start of LC Services Tab ######################## 
 

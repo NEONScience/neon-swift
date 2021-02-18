@@ -16,7 +16,7 @@ shiny::observeEvent(input$menu, {
       dplyr::select(date,siteID,`ECSE-LOW`,`ECSE-MEDIUM`,`ECSE-HIGH`,`ECSE-Archive`,`ECTE-LOW`,`ECTE-MEDIUM`,`ECTE-HIGH`,`ECTE-Archive`)
     
     # Aesthetics
-    ggplot2::theme_set(ggdark::dark_theme_bw()) 
+    ggplot2::theme_set(ggdark::dark_theme_gray()) 
     # Custom color palettes' for cylinders
     colorBlindPal <- c('#d73027','#f46d43','#fdae61','#fee090','#ffffbf','#e0f3f8','#abd9e9','#74add1','#4575b4') # Actual Colorblind Safe Pallette
     colorRegular <- c('#e41a1c', # Red

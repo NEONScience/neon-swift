@@ -5,7 +5,7 @@ shiny::observeEvent(input$menu, {
   if(input$menu == "swft_spangas_tab"){
 
     # Aesthetics
-    ggplot2::theme_set(ggdark::dark_theme_bw()) 
+    ggplot2::theme_set(ggdark::dark_theme_gray()) 
     # Specify Colors and Linetypes for Overall Pressure Gas Plots
     swft.spangas.linefills <- c("ECTE High"     = "blue",     "ECTE Zero"     = "cyan", 
                                 "ECTE Int"      = "red",      "ECSE High"     = "#9400D3",
