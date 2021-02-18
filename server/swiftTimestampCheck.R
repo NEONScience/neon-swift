@@ -39,7 +39,7 @@ shiny::observeEvent(input$menu, {
         value = paste0("Last Updated: ", swft_timestamp_last_update),
         subtitle = "",
         width = 12,
-        color = "navy"
+        color = "black"
       )
     })
     

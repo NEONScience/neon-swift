@@ -181,8 +181,8 @@ shiny::shinyUI(
                 shiny::p("Difference between actual UTC and the sensor's timestamp must be smaller than 10 seconds to appear in this reports.")
               )
             ), # End Column 7
-            shiny::column(width = 1),
-            shiny::column(width = 7,
+            shiny::column(width = 4),
+            shiny::column(width = 4,
               shiny::fluidRow(
                 shinydashboard::valueBoxOutput("swft_timestamp_last_update_box", width = 12),
                 shiny::br(),
@@ -368,6 +368,9 @@ shiny::shinyUI(
                     ),
                     shiny::column(width = 4,          
                       shinydashboard::valueBoxOutput("swft_ec_fast_collect_data_time", width = 12),
+                      shiny::br(),
+                      shiny::br(),
+                      shiny::br(),
                       shiny::br(),
                       shiny::br()
                     )
