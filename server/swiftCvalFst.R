@@ -16,7 +16,7 @@ shiny::observeEvent(input$menu, {
       dplyr::select(date,siteID,`ECSE-LOW`,`ECSE-MEDIUM`,`ECSE-HIGH`,`ECSE-Archive`,`ECTE-LOW`,`ECTE-MEDIUM`,`ECTE-HIGH`,`ECTE-Archive`)
     
     # Aesthetics
-    ggplot2::theme_set(ggplot2::theme_dark()) 
+    ggplot2::theme_set(ggdark::dark_theme_bw()) 
     # Custom color palettes' for cylinders
     colorBlindPal <- c('#d73027','#f46d43','#fdae61','#fee090','#ffffbf','#e0f3f8','#abd9e9','#74add1','#4575b4') # Actual Colorblind Safe Pallette
     colorRegular <- c('#e41a1c', # Red
@@ -29,6 +29,15 @@ shiny::observeEvent(input$menu, {
                       '#ff52ad', # Pink
                       '#7a7a7a'  # Gray
     ) 
+    
+    
+    toListen <- shiny::reactive({
+      list(input$swft_cval_site,input$cvalDateRange,input$swft_cval_sensor, input$cvalShape)
+    })
+    
+    # this Observe event looks for any changes to the list of input in the toListen call
+    shiny::observeEvent(toListen(), {
+      message(input$swft_cval_sensor)
     
     
     ###                                     Span Gas Value Boxes and Associated Logics                                    ###
@@ -147,7 +156,6 @@ shiny::observeEvent(input$menu, {
           deferRender = FALSE,
           scrollY = 300,
           scrollCollapse = TRUE,
-          scrollX = FALSE,
           paging = FALSE),rownames = FALSE) 
     )
     
@@ -225,13 +233,7 @@ shiny::observeEvent(input$menu, {
       )
     })
     
-    toListen <- shiny::reactive({
-      list(input$swft_cval_site,input$cvalDateRange,input$swft_cval_sensor, input$cvalShape)
-    })
-    
-    # this Observe event looks for any changes to the list of input in the toListen call
-    shiny::observeEvent(toListen(), {
-      message(input$swft_cval_sensor)
+
       
       # This function checks the Site/Sensor inputs and returns a list of available CVAL's to the end users
       dateData <- shiny::reactive({
@@ -289,7 +291,7 @@ shiny::observeEvent(input$menu, {
               dplyr::filter(strm_name == "G2131_fwMoleCo2") %>%
               dplyr::mutate(readout_val_double = round(readout_val_double, 2))
           } else {
-            message("Key is NA, giving empty table")
+            # Key is NA, giving empty table
             cval = data.table::data.table()
           }
         }
@@ -299,9 +301,8 @@ shiny::observeEvent(input$menu, {
               dplyr::filter(strm_name == "Li840_CO2_fwMole") %>%
               dplyr::mutate(readout_val_double = round(readout_val_double, 2))
           } else {
-            message("Key is NA, giving empty table")
+            # Key is NA, giving empty table
             cval = data.table::data.table()
-
           }
         }
         if(input$swft_cval_sensor == "L2130i"){
@@ -316,7 +317,7 @@ shiny::observeEvent(input$menu, {
                 readout_val_double = mean(readout_val_double)
               )
           } else {
-            message("Key is NA, giving empty table")
+            # Key is NA, giving empty table
             cval = data.table::data.table()
           }
         }
@@ -327,22 +328,17 @@ shiny::observeEvent(input$menu, {
               dplyr::filter(strm_name %in% c("Li7200_CO2","Li7200_MFCSampleFlow", "Li7200_leakCheckValve")) %>%
               dplyr::mutate(mean = round(mean, 2))
           } else {
-            message("Key is NA, giving empty table")
+            # Key is NA, giving empty table
             cval = data.table::data.table()
           }
         }
-        
         # If there is no data, make a blank table to graph.
         if(nrow(cval)>1){
           cval
         } else {
-          # Create blank data frame to join all the site data together
-          blankDataframe <- data.frame(matrix(ncol=8,nrow=0, dimnames=list(NULL, 
-                                       c("SiteID","CvalType","TimeStamp","Co2","H2o","Temp","Pressure","Date"))))
-          names(blankDataframe)<- c("SiteID","CvalType","TimeStamp","Co2","H2o","Temp","Pressure","Date")
-          blankDataframe
+          # Create blank data frame to pass to the next logic step where it will be kicked out
+          data.table::data.table()
         }
-        
       })
           
       ###                                     Plotting Reactive Data from Above and Associated Logics                                    ###  
@@ -386,7 +382,6 @@ shiny::observeEvent(input$menu, {
                 ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(n = 8.5)) +
                 ggplot2::scale_x_datetime(date_breaks = "15 mins", date_labels = ("%m-%d\n%H:%M")) +
                 ggplot2::theme(legend.position = "none")+
-                ggplot2::theme_dark() +
                 ggplot2::labs(title = paste0(input$swft_cval_site,": ", input$swft_cval_l2130_options, " Validation " ,as.Date(cvalFstInput()$readout_time[1], format = "%Y-%m-%d")), subtitle = expression(paste(H[2],O)), x = "", y = "Concentration (ppm)")
               
             } else if(input$swft_cval_l2130_options == "L2130_18O_isotope") {
@@ -399,7 +394,6 @@ shiny::observeEvent(input$menu, {
                 ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(n = 10), sec.axis = dup_axis(name = "", breaks = c(-4.22, -18.38, -27.77))) +
                 ggplot2::scale_x_datetime(date_breaks = "15 mins", date_labels = ("%m-%d\n%H:%M")) +
                 ggplot2::theme(legend.position = "none")+
-                ggplot2::theme_dark() +
                 ggplot2::labs(title = paste0(input$swft_cval_site,": ", input$swft_cval_l2130_options, " Validation " ,as.Date(cvalFstInput()$readout_time[1], format = "%Y-%m-%d")), subtitle = expression(paste(H[2],O)), x = "", y = "Concentration (per mil)")
               
             } else if(input$swft_cval_l2130_options == "L2130_2H_isotope") {
@@ -412,7 +406,6 @@ shiny::observeEvent(input$menu, {
                 ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(n = 10), sec.axis = dup_axis(name = "", breaks = c(-29.17, -136.51, -217.66))) +
                 ggplot2::scale_x_datetime(date_breaks = "15 mins", date_labels = ("%m-%d\n%H:%M")) +
                 ggplot2::theme(legend.position = "none")+
-                ggplot2::theme_dark() +
                 ggplot2::labs(title = paste0(input$swft_cval_site,": ", input$swft_cval_l2130_options, " Validation " , as.Date(cvalFstInput()$readout_time[1], format = "%Y-%m-%d")), subtitle = expression(paste(H[2],O)), x = "", y = "Concentration (per mil)")
               
             } else {
@@ -434,18 +427,20 @@ shiny::observeEvent(input$menu, {
         if(input$swft_cval_sensor == "Li7200"){
           # Data must be available and greater than 0
           if(input$swft_cval_react_unique_cvals > as.Date("2021-01-01") & nrow(cvalFstInput()) > 0){
-            cvalFstInput() %>%
+            cval.test.take.1 = cvalFstInput() %>%
               dplyr::filter(strm_name %in% c("Li7200_MFCSampleFlow","Li7200_leakCheckValve")) %>%
               reshape2::dcast(timestamp ~ strm_name, value.var = "mean") %>%
               dplyr::filter(Li7200_leakCheckValve == 1) %>%
-              reshape2::melt(id.vars = "timestamp",value.name = "mean") %>%
-              ggplot()+
-                geom_line(aes(x=timestamp, y=mean, color = variable)) +
-                scale_x_datetime(date_breaks = "2 mins", date_labels = "%H:%M")+
-                scale_y_continuous(breaks = scales::pretty_breaks(n = 9)) +
-                theme(legend.position = "none") +
-                labs(x="",y="Flow Rate (SLPM) \t\t Valve Status",color = "Stream Type",title = paste0(input$swft_cval_site," ", input$swft_cval_sensor, " Leak Check ", input$swft_cval_react_unique_cvals)) +
-                facet_wrap(~variable, scales = "free")
+              reshape2::melt(id.vars = "timestamp",value.name = "mean") 
+            
+            ggplot(cval.test.take.1)+
+              geom_line(aes(x=timestamp, y=mean, color = variable)) +
+              scale_x_datetime(date_breaks = "2 mins", date_labels = "%H:%M")+
+              scale_y_continuous(breaks = scales::pretty_breaks(n = 9)) +
+              geom_hline(yintercept = 0, color = "white", linetype = "dashed") +
+              theme(legend.position = "none") +
+              labs(x="",y="Flow Rate (SLPM) \t\t Valve Status",color = "Stream Type",title = paste0(input$swft_cval_site," ", input$swft_cval_sensor, " Leak Check ", input$swft_cval_react_unique_cvals)) +
+              facet_wrap(~variable, scales = "free")
           } else {
             # If data is not available or = to zero, provide this plot
             ggplot()+
@@ -459,7 +454,7 @@ shiny::observeEvent(input$menu, {
         
       })
       # Immediately out put this plot once reactive plot is completed
-      output$plot_co2_ecte_leak_check <- plotly::renderPlotly({
+      output$plotly_co2_ecte_leak_check <- plotly::renderPlotly({
         plot_co2_ecte_leak_check()
       })
       

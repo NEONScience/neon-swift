@@ -4,8 +4,8 @@
 shiny::observeEvent(input$menu, {
   if(input$menu == "swft_spangas_tab"){
 
-    ### Aesthetics ######
-    ggplot2::theme_set(theme_dark())
+    # Aesthetics
+    ggplot2::theme_set(ggdark::dark_theme_bw()) 
     # Specify Colors and Linetypes for Overall Pressure Gas Plots
     swft.spangas.linefills <- c("ECTE High"     = "blue",     "ECTE Zero"     = "cyan", 
                                 "ECTE Int"      = "red",      "ECSE High"     = "#9400D3",
@@ -65,7 +65,7 @@ shiny::observeEvent(input$menu, {
             ggplot2::geom_line( size = 1, ggplot2::aes(x = date, y = meanVal)) +                                          # Make Lines
             ggplot2::geom_point(size = 1, ggplot2::aes(x = date, y = meanVal)) +
             ggplot2::scale_y_continuous(breaks = c(0,250,400,800,1000,1250,1500,1750,2000,2100), sec.axis = dup_axis(name = "")) +
-            ggplot2::scale_x_date(breaks = scales::pretty_breaks(n = 20), date_labels = "%Y\n%b-%d") +
+            ggplot2::scale_x_date(breaks = scales::pretty_breaks(n = 20), date_labels = "%Y\n%m-%d") +
             ggplot2::labs(x= "", y= "Cylinder Pressure (PSI)", color = "Cylinder Type", linetype="")+                                    # Labels to make plot legible
             ggplot2::geom_hline(aes(yintercept = 800),linetype = 3, size = 1.1, color = "red") +                 # Upper limit for Cylinder Pressure
             ggplot2::geom_hline(aes(yintercept = 400), linetype = 3, size = 1.1, color = "green") +              # Lower Limit for Cylinder Pressure
@@ -108,7 +108,7 @@ shiny::observeEvent(input$menu, {
             ggplot2::geom_line( size = 1,  ggplot2::aes(x = date, y = meanVal)) +                                            # Make Lines
             ggplot2::geom_point(size = 1,  ggplot2::aes(x = date, y = meanVal)) +
             ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(n = 12), sec.axis = dup_axis(name = "")) +
-            ggplot2::scale_x_date(breaks = scales::pretty_breaks(n = 20), date_labels = "%Y\n%b-%d") +
+            ggplot2::scale_x_date(breaks = scales::pretty_breaks(n = 20), date_labels = "%Y\n%m-%d") +
             ggplot2::labs(x= "", y="Cylinder Pressure Loss (PSI)", color = "Cylinder Type", linetype="") +                                     # Labels to make plot legible
             ggplot2::geom_hline(aes(yintercept = 13),linetype = 3, size = 1.1, color = "firebrick") +              # Upper limit for Cylinder Pressure
             ggplot2::geom_hline(aes(yintercept = 9), linetype = 3, size = 1.1, color = "firebrick") +              # Lower Limit for Cylinder Pressure

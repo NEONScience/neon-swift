@@ -23,6 +23,10 @@ library(aws.signature,   lib.loc = r.library)
 library(xml2,            lib.loc = r.library)
 library(aws.s3,          lib.loc = r.library)
 library(lubridate,       lib.loc = r.library)
+library(dashboardthemes, lib.loc = r.library)
+library(ggdark,          lib.loc = r.library)
+# install.packages("ggdark", lib = r.library)
+# install.packages("dashboardthemes", lib = r.library)
 
 # swft.server.folder.path = "C:/1_GitHub/neon-swift/"
 swft.server.folder.path = "/srv/shiny-server/neon-swift/"
@@ -38,15 +42,15 @@ shiny::shinyUI(
   shinydashboard::dashboardPage(skin = "black",
     # Header
     shinydashboard::dashboardHeader(title = 'Swift',
-                                    titleWidth = 170
+                                    titleWidth = 200
                                     ),
     # Menu bar
     shinydashboard::dashboardSidebar(
       width = 150,
-      shinydashboard::sidebarMenu( id = "menu",
+      shinydashboard::sidebarMenu(id = "menu",
         shinydashboard::menuItem("Home Page",        tabName = "swft_home_tab"                                                                  ),
         shinydashboard::menuItem("LC Services",      tabName = "swft_lcservices_tab", icon = shiny::icon("signal",         lib = "font-awesome")),
-        shinydashboard::menuItem("Timestamp Check",  tabName = "swft_timestamp_tab",  icon = shiny::icon("hourglass-half", lib = "font-awesome")),
+        shinydashboard::menuItem("LC Time Check",  tabName = "swft_timestamp_tab",  icon = shiny::icon("hourglass-half", lib = "font-awesome")),
         shinydashboard::menuItem("Gas Cylinders",    tabName = "swft_spangas_tab",    icon = shiny::icon("adjust",         lib = "font-awesome")),
         shinydashboard::menuItem("CVAL Plotting",    tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
         shinydashboard::menuItem("Eddy-Co Plotting", tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
@@ -55,6 +59,9 @@ shiny::shinyUI(
     ),
     # Body
     shinydashboard::dashboardBody(
+      
+      dashboardthemes::shinyDashboardThemes(theme = "grey_dark"),
+
       tags$head(tags$link(rel = "shortcut icon", href = "favicon.ico")),
       shinydashboard::tabItems(
         # ----------- Swift Tab ---------
@@ -70,7 +77,7 @@ shiny::shinyUI(
               shiny::tags$b("LC Sevices"),
               shiny::h4("Raw LC Service uptimes! This tab features an overview plot and site specific LC Service plots. You can use the LC Services tab to quickly identify sites with LC Service issues and investigate site specific LC Service outages."),
               shiny::icon("hourglass-half", lib = "font-awesome"),
-              shiny::tags$b("Timestamp Check"),
+              shiny::tags$b("LC Time Check"),
               shiny::h4("Some IS sensors can have timestamp drift due to a variety of causes. Technicians/Engineers can use tab to see if there are any IS sensors that have large timestamp differentials (the difference between actual time and the sensor's time)."),
               shiny::icon("adjust", lib = "font-awesome"),
               shiny::tags$b("Gas Cylinders"),
@@ -118,26 +125,26 @@ shiny::shinyUI(
                                               choices = list("TIS" = 1, "AIS" = 2),selected = 1, inline = TRUE),
                             shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'cnc'",
                                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",                                              
-                                  plotly::plotlyOutput("CnCUptimePlot") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
+                                  plotly::plotlyOutput("CnCUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
                                 ),
                                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
-                                  plotly::plotlyOutput("CnCUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
+                                  plotly::plotlyOutput("CnCUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
                                 )
                               ),
                               shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'rtu'",
                                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",                                              
-                                  plotly::plotlyOutput("RTUUptimePlot") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                                  plotly::plotlyOutput("RTUUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                                 ),
                                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
-                                  plotly::plotlyOutput("RTUUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                                  plotly::plotlyOutput("RTUUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                                 )
                               ),
                               shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'hornetq'",
                                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",                                              
-                                  plotly::plotlyOutput("HornetQUptimePlot") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                                  plotly::plotlyOutput("HornetQUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                                 ),
                                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
-                                  plotly::plotlyOutput("HornetQUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                                  plotly::plotlyOutput("HornetQUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                                 )
                               )
                             )
@@ -147,13 +154,13 @@ shiny::shinyUI(
                   shiny::fluidRow(width = "100%",
                     shiny::fluidRow(
                       shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'cnc'",
-                        plotly::plotlyOutput("CnCPlot", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                        plotly::plotlyOutput("CnCPlot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                       ), # End Conditional Panel
                       shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'rtu'",
-                        plotly::plotlyOutput("RTUPlot", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                        plotly::plotlyOutput("RTUPlot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                       ), # End Conditional Panel
                       shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'hornetq'",
-                        plotly::plotlyOutput("HornetQPlot", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                        plotly::plotlyOutput("HornetQPlot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                       ) # End Conditional Panel
                     )
                   )
@@ -177,7 +184,7 @@ shiny::shinyUI(
             shiny::column(width = 1),
             shiny::column(width = 7,
               shiny::fluidRow(
-                shinydashboard::valueBoxOutput("swft_timestamp_last_update_box", width = 6),
+                shinydashboard::valueBoxOutput("swft_timestamp_last_update_box", width = 12),
                 shiny::br(),
                 shiny::br()
               )
@@ -185,8 +192,8 @@ shiny::shinyUI(
             shinydashboard::box(width = 12,
               shiny::fluidRow(width = "100%",
                 shiny::fluidRow(
-                  shiny::plotOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
-                  DT::dataTableOutput("swft_timestamp_table") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                  shiny::plotOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
+                  DT::dataTableOutput("swft_timestamp_table") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                 ) # End fluidRow
               ) # End fluidRow
             ) # End box
@@ -215,19 +222,19 @@ shiny::shinyUI(
             shinydashboard::tabBox(width = 12,
               shiny::tabPanel("Total Pressure",width=12,
                 shiny::fluidRow(width = "100%",
-                  plotly::plotlyOutput("swft_spangas_overall_plot", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                  plotly::plotlyOutput("swft_spangas_overall_plot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                 ) # End fluidRow 
               ), # End tabPanel
               shiny::tabPanel("Delivery Pressure",width=12,
                 shiny::p("Ideal delivery pressure is 11.6 PSI, but an acceptable range is between 9.5 and 13 PSI."),
                 shiny::fluidRow(width = "100%",
-                  plotly::plotlyOutput("swft_spangas_delivery_plot", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                  plotly::plotlyOutput("swft_spangas_delivery_plot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                 ) # End fluidRow 
               ), # End tabPanel
               shiny::tabPanel("Avg Pressure Loss",width=12,
                 shiny::p("Ideal pressure loss in a fully functional Cval system is ~ 4 PSI."),
                 shiny::fluidRow(width = "100%",
-                  plotly::plotlyOutput("swft_spangas_loss_plot", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                  plotly::plotlyOutput("swft_spangas_loss_plot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                 ) # End fluidRow
               ) # End tabPanel
             ) # End tabBox
@@ -312,20 +319,7 @@ shiny::shinyUI(
                     ),
                     # EC First Plot for all systems
                     shiny::fluidRow(
-                      plotly::plotlyOutput("plot_co2_ecse", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
-                      # Only output Span Gas Cylinder table if the sensor is not L2130i, since this sensor does not have span gas cylinders associated with it.
-                      shiny::conditionalPanel(condition = 'input.swft_cval_sensor != "L2130i"',   
-                        shinydashboard::box(width = 12,
-                          shiny::fluidRow(
-                            shiny::conditionalPanel(condition = "input.swft_cval_sensor != 'Li7200'",
-                              DT::dataTableOutput("table_ecse_span") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
-                            ),
-                            shiny::conditionalPanel(condition = "input.swft_cval_sensor == 'Li7200'",
-                              DT::dataTableOutput("table_ecte_span") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
-                            ),
-                          )
-                        )
-                      ),
+                      plotly::plotlyOutput("plot_co2_ecse", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
                       # ECTE Post-Validation Leak Check
                       shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li7200"',   
                         shinydashboard::box(width = 12,
@@ -333,11 +327,11 @@ shiny::shinyUI(
                             shiny::h2("ECTE Post-Validation Leak Check"),
                             shiny::p("This plot shows the leak check valve status and the flow through the sensor. Ideally this flow is 0 while the valve status is 1, if there is flow during the leak check; a leak is occuring."),
                             shiny::p("The leak check lasts 15 minutes performing three 5-minute checks."),
-                            plotly::plotlyOutput("plot_co2_ecte_leak_check", height = "400px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                            plotly::plotlyOutput("plotly_co2_ecte_leak_check", height = "400px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                           )
                         )
                       ),
-                      DT::dataTableOutput("table_co2_ecse") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                      DT::dataTableOutput("table_co2_ecse") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                       
                     )
                   ) # End column
@@ -475,8 +469,8 @@ shiny::shinyUI(
                 shiny::fluidRow(
                   shiny::column(width =12,
                     # EC fast plot
-                    shiny::plotOutput("swft_ec_fast_plot", height = "600px") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white"),
-                    DT::dataTableOutput("swft_ec_fast_table") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                    shiny::plotOutput("swft_ec_fast_plot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
+                    DT::dataTableOutput("swft_ec_fast_table") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                   ) # End EC Fast shiny::column for Conditional Panels
                 ) # End EC Fst shiny::fluidRow for Condtional panels
               ) # End blank tabPanel
@@ -521,7 +515,7 @@ shiny::shinyUI(
           shinydashboard::box(width = 12,
             shiny::fluidRow(width = "100%",
               shiny::fluidRow(
-                plotly::plotlyOutput("swft_qfqm_plot") %>% shinycssloaders::withSpinner(color="#012D74",type="8",color.background = "white")
+                plotly::plotlyOutput("swft_qfqm_plot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
               ) # End fluidRow
             ) # End fluidRow
           ) # End box

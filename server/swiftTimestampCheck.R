@@ -6,7 +6,8 @@ shiny::observeEvent(input$menu, {
     library(dplyr)
     library(ggplot2)
     
-    theme_set(theme_bw()) 
+    # Aesthetics
+    ggplot2::theme_set(ggdark::dark_theme_bw()) 
     
     Sys.setenv("AWS_ACCESS_KEY_ID"     = "research-eddy-inquiry",
                "AWS_S3_ENDPOINT"       = "neonscience.org",
