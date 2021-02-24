@@ -3,31 +3,31 @@
 # R script to spread out server code into more well defined chunks
 shiny::observeEvent(input$menu, {
   if(input$menu == "swft_lcservices_tab"){
-    
+
     # Aesthetics
-    ggplot2::theme_set(ggdark::dark_theme_gray()) 
-    
-    ######################## Start of LC Services Tab ######################## 
+    ggplot2::theme_set(ggdark::dark_theme_gray())
+
+    ######################## Start of LC Services Tab ########################
 
     # Filter Site Plot by Site Selected, LC Number, and date range
     swft.lcservices.user.data <- shiny::reactive({
       shiny::req(input$swft_lcservices_date_range, input$swft_lcservices_site)
-      
+
       base::source(paste0(swft.server.folder.path, "R/read.eddy.inquiry.swift.R"))
-      
+
       read.eddy.inquiry(dataType = "CnC", siteID = input$swft_lcservices_site, startDate = input$swft_lcservices_date_range[1], endDate = input$swft_lcservices_date_range[2]) %>%
-        dplyr::filter(LCNumber == input$swft_lcservices_lc_number) %>%
+        dplyr::filter(LCNumber == input$y) %>%
         dplyr::mutate(`CnC Status` = as.integer(cnc)) %>%
         dplyr::mutate(`RTU Status` = as.integer(rtu)) %>%
         dplyr::mutate(`HornetQ Status` = as.integer(hornetq)) %>%
         dplyr::mutate(`CnC` = as.factor(cnc)) %>%
         dplyr::mutate(`RTU` = as.factor(rtu)) %>%
-        dplyr::mutate(`HornetQ` = as.factor(hornetq)) 
+        dplyr::mutate(`HornetQ` = as.factor(hornetq))
     })
-    
+
     #### Plot Data ####
     #### CnC ####
-    
+
       cncPlot <- shiny::reactive({
         # Check if there is data, else make blank plot
         if(nrow(swft.lcservices.user.data()) != 0){
@@ -48,13 +48,13 @@ shiny::observeEvent(input$menu, {
             ggplot2::theme_minimal()
           }
       })
-    
+
     output$CnCPlot <- plotly::renderPlotly({
       cncPlot()
     })
-    
+
     #### RTU ####
-    
+
     RTUPlot <- shiny::reactive({
       if(nrow(swft.lcservices.user.data()) != 0){
         ggplot2::ggplot(swft.lcservices.user.data(), ggplot2::aes(x=TimeStamp, y = `RTU Status`)) +
@@ -66,7 +66,7 @@ shiny::observeEvent(input$menu, {
           ggplot2::theme(legend.position = "none") +                                                      # Remove Legend
           ggplot2::expand_limits(y = -1) +                                                                # Expand limits to show bottom of plot
           ggplot2::expand_limits(y =  1) +                                                                # Expand limits to show top of plot
-          ggplot2::labs(x= "", y= "")                                                                     # Remove GenericAxis Labels 
+          ggplot2::labs(x= "", y= "")                                                                     # Remove GenericAxis Labels
       } else {
         ggplot2::ggplot()+
           ggplot2::geom_text(label = "text")+
@@ -77,9 +77,9 @@ shiny::observeEvent(input$menu, {
     output$RTUPlot <- plotly::renderPlotly({
       RTUPlot()
     })
-    
+
     #### HornetQ ####
-    
+
     HornetQPlot <- shiny::reactive({
       if(nrow(swft.lcservices.user.data()) != 0){
         ggplot2::ggplot(swft.lcservices.user.data(), ggplot2::aes(x = TimeStamp, y = `HornetQ Status`)) +
@@ -91,7 +91,7 @@ shiny::observeEvent(input$menu, {
           ggplot2::theme(legend.position = "none") +                                                      # Remove Legend
           ggplot2::expand_limits(y = -1) +                                                                # Expand limits to show bottom of plot
           ggplot2::expand_limits(y =  1) +                                                                # Expand limits to show top of plot
-          ggplot2::labs(x= "", y= "")                                                                     # Remove GenericAxis Labels 
+          ggplot2::labs(x= "", y= "")                                                                     # Remove GenericAxis Labels
       } else {
         ggplot2::ggplot()+
           ggplot2::geom_text(label = "text")+
@@ -102,13 +102,13 @@ shiny::observeEvent(input$menu, {
     output$HornetQPlot <- plotly::renderPlotly({
       HornetQPlot()
     })
-    
-    
+
+
     ## Summary Panel Plots
-    
+
     # Plot TIS CnC Summary
     CnCUptimePlot <- aws.s3::s3readRDS(object = "CnC/plots/swft.tis.cnc.plot.RDS", bucket = "research-eddy-inquiry")
-    
+
     output$CnCUptimePlot <- plotly::renderPlotly({
       suppressWarnings(CnCUptimePlot)
     })
@@ -130,13 +130,13 @@ shiny::observeEvent(input$menu, {
     output$CnCUptimePlotAquatics <- plotly::renderPlotly({
       suppressWarnings(CnCUptimePlotAquatics)
     })
-  
+
     # Plot AIS RTU Summary
     RTUUptimePlotAquatics <- aws.s3::s3readRDS(object = "CnC/plots/swft.ais.rtu.plot.RDS", bucket = "research-eddy-inquiry")
     output$RTUUptimePlotAquatics <- plotly::renderPlotly({
       suppressWarnings(RTUUptimePlotAquatics)
     })
-    
+
     # Summarize AIS HornetQ
     HQUptimePlotAquatics <- aws.s3::s3readRDS(object = "CnC/plots/swft.ais.hornetq.plot.RDS", bucket = "research-eddy-inquiry")
     output$HornetQUptimePlotAquatics <- plotly::renderPlotly({
