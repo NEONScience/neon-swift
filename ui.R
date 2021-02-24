@@ -1,35 +1,60 @@
 # r.library = ("C:/1_GitHub/neon-swift/R/win10/4.0/")
-r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/3.6/")
-# r.library = ("/srv/shiny-server/neon-swift/R/x86_64-redhat-linux-gnu-library/4.0/")
+r.library = ("/R/x86_64-redhat-linux-gnu-library/3.6/")
+# r.library = ("/R/x86_64-redhat-linux-gnu-library/4.0/")
+#r.library="/home/NEON/rlee/GitHub/neon-swift/R/x86_64-redhat-linux-gnu-library/3.6/)"
 
-library(shiny,           lib.loc = r.library)
-library(plyr,            lib.loc = r.library)
-library(vctrs,           lib.loc = r.library)
-library(glue,            lib.loc = r.library)
-library(tidyselect,      lib.loc = r.library)
-library(dplyr,           lib.loc = r.library)
-library(htmlwidgets,     lib.loc = r.library)
-library(plotly,          lib.loc = r.library)
-library(ggplot2,         lib.loc = r.library)
-library(DT,              lib.loc = r.library)
-library(tidyr,           lib.loc = r.library)
-library(data.table,      lib.loc = r.library)
-library(shinycssloaders, lib.loc = r.library)
-library(shinydashboard,  lib.loc = r.library)
-library(viridis,         lib.loc = r.library)
-library(stringr,         lib.loc = r.library)
-library(scales,          lib.loc = r.library)
-library(aws.signature,   lib.loc = r.library)
-library(xml2,            lib.loc = r.library)
-library(aws.s3,          lib.loc = r.library)
-library(lubridate,       lib.loc = r.library)
-library(dashboardthemes, lib.loc = r.library)
-library(ggdark,          lib.loc = r.library)
+# library(shiny,           lib.loc = r.library)
+# library(plyr,            lib.loc = r.library)
+# library(vctrs,           lib.loc = r.library)
+# library(glue,            lib.loc = r.library)
+# library(tidyselect,      lib.loc = r.library)
+# library(dplyr,           lib.loc = r.library)
+# library(htmlwidgets,     lib.loc = r.library)
+# library(plotly,          lib.loc = r.library)
+# library(ggplot2,         lib.loc = r.library)
+# library(DT,              lib.loc = r.library)
+# library(tidyr,           lib.loc = r.library)
+# library(data.table,      lib.loc = r.library)
+# library(shinycssloaders, lib.loc = r.library)
+# library(shinydashboard,  lib.loc = r.library)
+# library(viridis,         lib.loc = r.library)
+# library(stringr,         lib.loc = r.library)
+# library(scales,          lib.loc = r.library)
+# library(aws.signature,   lib.loc = r.library)
+# library(xml2,            lib.loc = r.library)
+# library(aws.s3,          lib.loc = r.library)
+# library(lubridate,       lib.loc = r.library)
+# library(dashboardthemes, lib.loc = r.library)
+# library(ggdark,          lib.loc = r.library)
+
+library(shiny)
+library(plyr)
+library(vctrs)
+library(glue)
+library(tidyselect)
+library(dplyr)
+library(htmlwidgets)
+library(plotly)
+library(ggplot2)
+library(DT)
+library(tidyr)
+library(data.table)
+library(shinycssloaders)
+library(shinydashboard)
+library(viridis)
+library(stringr)
+library(scales)
+library(aws.signature)
+library(xml2)
+library(aws.s3)
+library(lubridate)
+library(dashboardthemes)
+library(ggdark)
 # install.packages("ggdark", lib = r.library)
 # install.packages("dashboardthemes", lib = r.library)
 
 # swft.server.folder.path = "C:/1_GitHub/neon-swift/"
-swft.server.folder.path = "/srv/shiny-server/neon-swift/"
+swft.server.folder.path = "./"
 
 # Essential Site Lookup Tables
 swft.full.site.lookup <- data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.full.site.lookup.csv"))
@@ -59,14 +84,14 @@ shiny::shinyUI(
     ),
     # Body
     shinydashboard::dashboardBody(
-      
+
       dashboardthemes::shinyDashboardThemes(theme = "grey_dark"),
 
       tags$head(tags$link(rel = "shortcut icon", href = "favicon.ico")),
       shinydashboard::tabItems(
         # ----------- Swift Tab ---------
         shinydashboard::tabItem(tabName = "swft_home_tab",
-          shinydashboard::box(width = 12, 
+          shinydashboard::box(width = 12,
               shiny::column(width = 7,
               shiny::h1("An Eddy-Covariance State of Health Dashboard"),
               # shiny::tags$h3(
@@ -90,16 +115,16 @@ shiny::shinyUI(
               shiny::h4("A tab that uses `fst` data files to render Eddy-Co data; from Co2 measurements, CSAT3 wind data, and measurement level flows."),
               shiny::tags$b("QFQM Plotting"),
               shiny::h4("This tab is for investigateing the Quality Flag and Quality Metric data from Eddy4R."),
-              
+
             ),
             shiny::column(width = 4, offset = 1,
               shiny::img(src = 'swiftlogo.jpg', width = '300px', height = '240px')
             )
           ) # End Box
         ), # End home tabName
-        
+
         ############################################                       LC Services                            ############################################
-        
+
         shinydashboard::tabItem(tabName = "swft_lcservices_tab",
           shinydashboard::box(width = 12,
               shiny::column(width = 3,
@@ -124,7 +149,7 @@ shiny::shinyUI(
                             shiny::radioButtons("swft_lcservices_radio_overall", "Select IS System",
                                               choices = list("TIS" = 1, "AIS" = 2),selected = 1, inline = TRUE),
                             shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'cnc'",
-                                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",                                              
+                                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",
                                   plotly::plotlyOutput("CnCUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
                                 ),
                                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
@@ -132,7 +157,7 @@ shiny::shinyUI(
                                 )
                               ),
                               shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'rtu'",
-                                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",                                              
+                                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",
                                   plotly::plotlyOutput("RTUUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                                 ),
                                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
@@ -140,7 +165,7 @@ shiny::shinyUI(
                                 )
                               ),
                               shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'hornetq'",
-                                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",                                              
+                                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",
                                   plotly::plotlyOutput("HornetQUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                                 ),
                                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
@@ -168,9 +193,9 @@ shiny::shinyUI(
               ) # End tabPanel
           ) # End Cval Fst box
         ), # End Cval Fst
-        
+
         ############################################                       Timestamp Checker                      ############################################
-  
+
         shinydashboard::tabItem(tabName = "swft_timestamp_tab",
           shinydashboard::box(width = 12,
             shiny::column(width = 4,
@@ -199,37 +224,37 @@ shiny::shinyUI(
             ) # End box
           ) # End Cval Fst box
         ), # End Cval Fst
-        
+
         ############################################                       Span Gas Cylinder Plotter                      ############################################
-        
+
         shinydashboard::tabItem(tabName = "swft_spangas_tab",
           shinydashboard::box(width = 12,
             shiny::fluidRow(
               shiny::column(width = 2,
                 shiny::selectInput(inputId = 'swft_spangas_site',label = 'Select SiteID',
-                                   choices = swft.tis.site.lookup$SiteID, 
+                                   choices = swft.tis.site.lookup$SiteID,
                                    selected = sample(swft.tis.site.lookup$SiteID, 1),
                                    width='100%'
                 )
               ),
-              shiny::column(width = 3,    
+              shiny::column(width = 3,
                   shiny::dateRangeInput(inputId = "swft_spangas_date_range", label = "Select Date Range for Plot",
                                         start = Sys.Date() - 28, end = Sys.Date() + 1, max = Sys.Date() + 1
                   )
               )
-            ), 
+            ),
             # ), # End Column 7
             shinydashboard::tabBox(width = 12,
               shiny::tabPanel("Total Pressure",width=12,
                 shiny::fluidRow(width = "100%",
                   plotly::plotlyOutput("swft_spangas_overall_plot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
-                ) # End fluidRow 
+                ) # End fluidRow
               ), # End tabPanel
               shiny::tabPanel("Delivery Pressure",width=12,
                 shiny::p("Ideal delivery pressure is 11.6 PSI, but an acceptable range is between 9.5 and 13 PSI."),
                 shiny::fluidRow(width = "100%",
                   plotly::plotlyOutput("swft_spangas_delivery_plot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
-                ) # End fluidRow 
+                ) # End fluidRow
               ), # End tabPanel
               shiny::tabPanel("Avg Pressure Loss",width=12,
                 shiny::p("Ideal pressure loss in a fully functional Cval system is ~ 4 PSI."),
@@ -240,13 +265,13 @@ shiny::shinyUI(
             ) # End tabBox
           ) # End Cval Fst box
         ), # End Cval Fst
-        
+
         ############################################                            Cval Fast                         ############################################
-        
+
         shinydashboard::tabItem(tabName = "swft_cvalfast_tab",
           shinydashboard::box(width = 12,
               shiny::column(width = 12,
-                            
+
                 shiny::fluidRow(
                   shiny::column(width = 4,
                   shiny::h1("Calibrations and Validations Plotting"),
@@ -265,7 +290,7 @@ shiny::shinyUI(
                   ),
                   shiny::column(width = 7,
                     shiny::uiOutput('swft_cval_react_unique_cvals'),
-                    shiny::conditionalPanel(condition = "input.swft_cval_sensor == 'L2130i'", 
+                    shiny::conditionalPanel(condition = "input.swft_cval_sensor == 'L2130i'",
                                             shiny::radioButtons(inputId = "swft_cval_l2130_options", label = "Choose Stream", inline = TRUE, choices = c("H2O" = "L2130_H2O", "18O" = "L2130_18O_isotope", "2H" = "L2130_2H_isotope"))
                     )
                   )
@@ -290,7 +315,7 @@ shiny::shinyUI(
                         shinydashboard::valueBoxOutput("swft_cval_site_records", width = 3),
                         shinydashboard::valueBoxOutput("swft_cval_site_sensor_records", width = 3),
                         shinydashboard::valueBoxOutput("swft_cval_total_records",  width = 3)
-                        
+
                       )
                     )
                   ) # End fluidRow
@@ -302,17 +327,17 @@ shiny::shinyUI(
                 shiny::fluidRow(
                   shiny::column(width =12,
                     # Co2 Analyzers Data
-                    shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li840A"',                  
+                    shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li840A"',
                       shiny::fluidRow(
                         shinydashboard::valueBoxOutput("swiftEcseLow", width = 4),shinydashboard::valueBoxOutput("swiftEcseInt", width = 4),shinydashboard::valueBoxOutput("swiftEcseHigh", width = 4)
                       )
                     ),
-                    shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "G2131i"',                  
+                    shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "G2131i"',
                       shiny::fluidRow(
                         shinydashboard::valueBoxOutput("swiftEcseLow2", width = 4),shinydashboard::valueBoxOutput("swiftEcseInt2", width = 4),shinydashboard::valueBoxOutput("swiftEcseHigh2", width = 4)
                       )
                     ),
-                    shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li7200"',                  
+                    shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li7200"',
                       shiny::fluidRow(
                         shinydashboard::valueBoxOutput("swiftEcteLow", width = 4),shinydashboard::valueBoxOutput("swiftEcteInt", width = 4),shinydashboard::valueBoxOutput("swiftEcteHigh", width = 4)
                       )
@@ -321,7 +346,7 @@ shiny::shinyUI(
                     shiny::fluidRow(
                       plotly::plotlyOutput("plot_co2_ecse", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
                       # ECTE Post-Validation Leak Check
-                      shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li7200"',   
+                      shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li7200"',
                         shinydashboard::box(width = 12,
                           shiny::fluidRow(
                             shiny::h2("ECTE Post-Validation Leak Check"),
@@ -332,7 +357,7 @@ shiny::shinyUI(
                         )
                       ),
                       DT::dataTableOutput("table_co2_ecse") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
-                      
+
                     )
                   ) # End column
                 ) # End Cval Fast shiny::column for Conditional Panels
@@ -340,9 +365,9 @@ shiny::shinyUI(
             ) # End Cval Fst Tab Panel for Condtional panels
           ) # End Cval Fst box
         ), # End Cval Fst
-        
+
         ############################################                            EC Fast                           ############################################
-        
+
         shinydashboard::tabItem(tabName = "swft_ecfast_tab",
           shinydashboard::box(width = 12,
             shiny::column(width = 12,
@@ -366,7 +391,7 @@ shiny::shinyUI(
                       shiny::br(),
                       shiny::br()
                     ),
-                    shiny::column(width = 4,          
+                    shiny::column(width = 4,
                       shinydashboard::valueBoxOutput("swft_ec_fast_collect_data_time", width = 12),
                       shiny::br(),
                       shiny::br(),
@@ -492,11 +517,11 @@ shiny::shinyUI(
                                       selected = sample(swft.tis.site.lookup$SiteID, 1)
                 ),
                 shiny::br(),
-                shiny::conditionalPanel(condition = "output.qfqm_data_loaded == 'True'",  
-                                 shiny::selectInput(inputId = "swft_qfqm_dp", 
+                shiny::conditionalPanel(condition = "output.qfqm_data_loaded == 'True'",
+                                 shiny::selectInput(inputId = "swft_qfqm_dp",
                                                     label = "Select Data Product",
-                                                    choices = c("CO2 Storage" = "co2Stor", "CO2 Turbulent" = "co2Turb", "Flux Heat Soil" = "fluxHeatSoil", "H2O Soil Vol" = "h2oSoilVol", 
-                                                                "H2O Storage" = "h2oStor", "H2O Turbulent" = "h2oTurb", "Isotopic CO2" = "isoCo2", "Isotopic H2O" = "isoH2o",      
+                                                    choices = c("CO2 Storage" = "co2Stor", "CO2 Turbulent" = "co2Turb", "Flux Heat Soil" = "fluxHeatSoil", "H2O Soil Vol" = "h2oSoilVol",
+                                                                "H2O Storage" = "h2oStor", "H2O Turbulent" = "h2oTurb", "Isotopic CO2" = "isoCo2", "Isotopic H2O" = "isoH2o",
                                                                 "Net Radiation" = "radiNet", "Sonic Wind" = "soni", "Air Temperature Level" =  "tempAirLvl", "Air Temperature Top Level" = "tempAirTop",
                                                                 "Soil Temperature" = "tempSoil")),
                                  shiny::dateInput(inputId = "swft_qfqm_date", label = "Select Date", value = "2021-01-31", max = Sys.Date() - 8, min = "2021-01-01"),
@@ -504,10 +529,10 @@ shiny::shinyUI(
                                  shiny::conditionalPanel(condition = "input.swft_qfqm_focus_in == 'Yes'",
                                                          shiny::uiOutput('swft_qfqm_vars')
                                                          )
-                                 
-                                 
-                                 
-                                 
+
+
+
+
                                  )
               )
             ), # End Column 7
@@ -523,7 +548,7 @@ shiny::shinyUI(
             ) # End fluidRow
           ) # End box
         ) # End QFQM Fst box
-      ) # End Tab Items 
+      ) # End Tab Items
     ) # End Dashboard Body
   ) # End of Page
 ) # End of UI
