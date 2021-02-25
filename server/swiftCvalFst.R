@@ -289,7 +289,8 @@ shiny::observeEvent(input$menu, {
           if(is.na(file.pull$Key[1]) == FALSE){
             cval <- aws.s3::s3read_using(FUN = fst::read.fst, bucket = "research-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
               dplyr::filter(strm_name == "G2131_fwMoleCo2") %>%
-              dplyr::mutate(readout_val_double = round(readout_val_double, 2))
+              dplyr::mutate(readout_val_double = round(readout_val_double, 3)) %>%
+              dplyr::select(meas_strm_name, strm_name, readout_time, readout_val_double)
           } else {
             # Key is NA, giving empty table
             cval = data.table::data.table()
@@ -299,7 +300,8 @@ shiny::observeEvent(input$menu, {
           if(is.na(file.pull$Key[1]) == FALSE){
             cval <- aws.s3::s3read_using(FUN = fst::read.fst, bucket = "research-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
               dplyr::filter(strm_name == "Li840_CO2_fwMole") %>%
-              dplyr::mutate(readout_val_double = round(readout_val_double, 2))
+              dplyr::mutate(readout_val_double = round(readout_val_double, 2))%>%
+              dplyr::select(meas_strm_name, strm_name, readout_time, readout_val_double)
           } else {
             # Key is NA, giving empty table
             cval = data.table::data.table()
@@ -315,7 +317,8 @@ shiny::observeEvent(input$menu, {
               dplyr::group_by(strm_name, readout_time) %>%
               dplyr::summarise(
                 readout_val_double = mean(readout_val_double)
-              )
+              )%>%
+              dplyr::select(strm_name, readout_time, readout_val_double)
           } else {
             # Key is NA, giving empty table
             cval = data.table::data.table()
@@ -326,7 +329,8 @@ shiny::observeEvent(input$menu, {
             # Read in all the data here, no need for filtering
             cval <- aws.s3::s3read_using(FUN = fst::read.fst, bucket = "research-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
               dplyr::filter(strm_name %in% c("Li7200_CO2","Li7200_MFCSampleFlow", "Li7200_leakCheckValve")) %>%
-              dplyr::mutate(mean = round(mean, 2))
+              dplyr::mutate(readout_val_double = round(mean, 2)) %>%
+              dplyr::select(-mean)
           } else {
             # Key is NA, giving empty table
             cval = data.table::data.table()
@@ -366,7 +370,7 @@ shiny::observeEvent(input$menu, {
               ggplot2::geom_hline(data = swiftCylAssayWideEcte(),  aes(yintercept = `ECTE-HIGH`),   alpha = .65, linetype = 3,size= 1.1, color = "blue")+
               ggplot2::geom_hline(data = swiftCylAssayWideEcte(),  aes(yintercept = `ECTE-MEDIUM`), alpha = .65, linetype = 3,size= 1.1, color = "red")+
               ggplot2::geom_hline(data = swiftCylAssayWideEcte(),  aes(yintercept = `ECTE-LOW`),    alpha = .65, linetype = 3,size= 1.1, color = "orange")+
-              ggplot2::geom_line(aes(x=timestamp, y=mean),color = "white") +
+              ggplot2::geom_line(aes(x=timestamp, y=readout_val_double),color = "white") +
               ggplot2::scale_x_datetime(date_breaks = "2 mins", date_labels = "%H:%M")+
               ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(n = 9)) +
               ggplot2::labs(x="",y="Co2 (PPM)",color = "Stream Type",title = paste0(input$swft_cval_site," ", input$swft_cval_sensor, " Validation on ", as.Date(input$swft_cval_react_unique_cvals, format = "%Y-%m-%d", origin = "1970-01-01")))
@@ -429,12 +433,12 @@ shiny::observeEvent(input$menu, {
           if(input$swft_cval_react_unique_cvals > as.Date("2021-01-01") & nrow(cvalFstInput()) > 0){
             cval.test.take.1 = cvalFstInput() %>%
               dplyr::filter(strm_name %in% c("Li7200_MFCSampleFlow","Li7200_leakCheckValve")) %>%
-              reshape2::dcast(timestamp ~ strm_name, value.var = "mean") %>%
+              reshape2::dcast(timestamp ~ strm_name, value.var = "readout_val_double") %>%
               dplyr::filter(Li7200_leakCheckValve == 1) %>%
-              reshape2::melt(id.vars = "timestamp",value.name = "mean") 
+              reshape2::melt(id.vars = "timestamp",value.name = "readout_val_double") 
             
             ggplot(cval.test.take.1)+
-              geom_line(aes(x=timestamp, y=mean, color = variable)) +
+              geom_line(aes(x=timestamp, y=readout_val_double, color = variable)) +
               scale_x_datetime(date_breaks = "2 mins", date_labels = "%H:%M")+
               scale_y_continuous(breaks = scales::pretty_breaks(n = 9)) +
               geom_hline(yintercept = 0, color = "white", linetype = "dashed") +
@@ -445,8 +449,7 @@ shiny::observeEvent(input$menu, {
             # If data is not available or = to zero, provide this plot
             ggplot()+
               geom_text(label = "text")+
-              annotate("text", label = "No Validation Check data for this time period", x = 0, y = 0, color = "black")+
-              theme_minimal()
+              annotate("text", label = "No Validation Check data for this time period", x = 0, y = 0, color = "white", size = 12)
           }
         } else {
           # message("doing nothing just like you asked")

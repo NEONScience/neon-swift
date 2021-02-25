@@ -93,7 +93,7 @@ shiny::observeEvent(input$menu, {
       
       # # For Function Testing
       # swft.data.in = read.eddy.inquiry(dataType  = "2min",
-      #                                  sensor    = "ec.temps",
+      #                                  sensor    = "G2131",
       #                                  siteID    = "WREF",
       #                                  startDate = Sys.Date()-7,
       #                                  endDate   = Sys.Date(),
@@ -108,7 +108,7 @@ shiny::observeEvent(input$menu, {
           
           # Used in every permuation, so lets make this Valve Data frame first! By joining this to the subsequent data frame, we can see what level was being sampled
           swft.g2131.valves = swft.data.in %>%
-            dplyr::filter(stringr::str_detect(string = strm_name, pattern = "_Valve_")) %>%
+            dplyr::filter(stringr::str_detect(string = strm_name, pattern = "_Valve_") == TRUE) %>%
             tidyr::separate(col = strm_name, into = c("Sensor", "Delete", "SampleLevel"), sep = "_") %>% 
             dplyr::filter(readout_val_double == 1) %>%
             dplyr::select(readout_time, SampleLevel) %>%
@@ -161,11 +161,19 @@ shiny::observeEvent(input$menu, {
               dplyr::summarise(
                 n = n[1],
                 Open  = sum(readout_val_double, na.rm = TRUE),
-                Closed = n - Open,
-                percentage = paste0(100*round(mean(readout_val_double, na.rm = TRUE),3), "%")
-              ) %>%
-              reshape2::melt(id.vars = c("SiteID","strm_name", "percentage")) %>%
-              dplyr::filter(variable != "n")
+                Closed = n - Open
+              ) %>% 
+              dplyr::mutate(Open =  paste0(100*round((Open/n),3), "%")) %>% 
+              dplyr::mutate(Closed = paste0(100*round((Closed/n),3), "%")) %>% 
+              reshape2::melt(id.vars = c("SiteID","strm_name")) %>% 
+              dplyr::filter(variable != "n") %>%
+              dplyr::mutate(Percentage = as.numeric(gsub(x = value, pattern = "%", replacement = ""))) %>% 
+              dplyr::mutate(`Valve Status` = variable) %>% 
+              dplyr::select(SiteID, strm_name, `Valve Status`, Percentage) %>%
+              dplyr::arrange(strm_name)
+            
+            names(swft.data.out) = c("SiteID", "Stream Name", "Valve Status", "Percentage")
+            
           } else {
             swft.data.out = data.table::data.table()
           }
@@ -249,11 +257,18 @@ shiny::observeEvent(input$menu, {
                 dplyr::summarise(
                   n = n[1],
                   Open  = sum(readout_val_double, na.rm = TRUE),
-                  Closed = n - Open,
-                  percentage = paste0(100*round(mean(readout_val_double, na.rm = TRUE),3), "%")
-                ) %>%
-                reshape2::melt(id.vars = c("SiteID","strm_name", "percentage")) %>%
-                dplyr::filter(variable != "n")
+                  Closed = n - Open
+                ) %>% 
+                dplyr::mutate(Open =  paste0(100*round((Open/n),3), "%")) %>% 
+                dplyr::mutate(Closed = paste0(100*round((Closed/n),3), "%")) %>% 
+                reshape2::melt(id.vars = c("SiteID","strm_name")) %>% 
+                dplyr::filter(variable != "n") %>%
+                dplyr::mutate(Percentage = as.numeric(gsub(x = value, pattern = "%", replacement = ""))) %>% 
+                dplyr::mutate(`Valve Status` = variable) %>% 
+                dplyr::select(SiteID, strm_name, `Valve Status`, Percentage) %>%
+                dplyr::arrange(strm_name)
+              
+              names(swft.data.out) = c("SiteID", "Stream Name", "Valve Status", "Percentage")
             } else {
               # Else create blank table to tell future logic to create a blank plot 
               swft.data.out = data.table::data.table()
@@ -310,17 +325,25 @@ shiny::observeEvent(input$menu, {
               tidyr::separate(col = strm_name, into = c("Sensor", "Delete", "SampleLevel"), sep = "_") %>%
               dplyr::mutate(Sensor = ifelse (Sensor == "L2130", yes = "L2130-I", no = Sensor))  %>%
               dplyr::mutate(SampleLevel = ifelse (SampleLevel == "Valve", yes = "Validation", no = SampleLevel)) %>%
-              dplyr::mutate(strm_name = paste0("ML Solenoid ", SampleLevel) )  %>%
+              dplyr::mutate(strm_name = paste0("ML ", SampleLevel, " Solenoid ") )  %>%
+              dplyr::mutate(strm_name = ifelse(test = strm_name == "ML Validation Solenoid ", yes = "Validation Solenoid", no = strm_name)) %>% 
               dplyr::group_by(SiteID, strm_name) %>%
               dplyr::add_tally() %>%
               dplyr::summarise(
                 n = n[1],
                 Open  = sum(readout_val_double, na.rm = TRUE),
-                Closed = n - Open,
-                percentage = paste0(100*round(mean(readout_val_double, na.rm = TRUE),3), "%")
-              ) %>%
-              reshape2::melt(id.vars = c("SiteID","strm_name", "percentage")) %>%
-              dplyr::filter(variable != "n")
+                Closed = n - Open
+              ) %>% 
+              dplyr::mutate(Open =  paste0(100*round((Open/n),3), "%")) %>% 
+              dplyr::mutate(Closed = paste0(100*round((Closed/n),3), "%")) %>% 
+              reshape2::melt(id.vars = c("SiteID","strm_name")) %>% 
+              dplyr::filter(variable != "n") %>%
+              dplyr::mutate(Percentage = as.numeric(gsub(x = value, pattern = "%", replacement = ""))) %>% 
+              dplyr::mutate(`Valve Status` = variable) %>% 
+              dplyr::select(SiteID, strm_name, `Valve Status`, Percentage) %>%
+              dplyr::arrange(strm_name)
+            
+            names(swft.data.out) = c("SiteID", "Stream Name", "Valve Status", "Percentage")
           }
           
         } else if(input$swft_EddyCo_data_type == "Li7200"){
@@ -571,17 +594,15 @@ shiny::observeEvent(input$menu, {
           if(input$swft_EddyCo_sub_data_type_G2131 == "Sample Valves"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_G2131, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
-            # swft.data.out = swft.data.out %>%
-            #   dplyr::mutate(strm_name = variable)
-            
             swft.plot = ggplot() +
-              geom_col(data = swft.data.out, aes(x = variable, y = value, fill = variable)) +
-              geom_text(data = swft.data.out %>% dplyr::filter(variable == "Open"), aes(x = variable, y = value, label = percentage, vjust = -1)) +
-              scale_y_continuous(sec.axis = dup_axis(name = "")) +
-              labs(x = "", y = "Counts", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              geom_col(data = swft.data.out, aes(x = `Valve Status`, y = Percentage, fill = `Valve Status`)) +
+              geom_text(data = swft.data.out, aes(x = `Valve Status`, y = Percentage, label = paste0(Percentage, "%"), vjust = -1), color = "white", size = 6) +
+              scale_y_continuous(breaks = seq(from = 0, to = 100, by = 10), limits = c(0,115)) +
+              scale_fill_manual(values = c("blue", "#ff69b4")) +
+              labs(x = "", y = "Counts", fill = "Valve\nStatus", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type),
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
-              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
-              facet_wrap(~strm_name)
+              theme(text = element_text(color = "white", face = "bold", size = 20)) +
+              facet_wrap(~`Stream Name`)
           }
         }
         
@@ -620,17 +641,15 @@ shiny::observeEvent(input$menu, {
           if(input$swft_EddyCo_sub_data_type_Li840 == "Sample Valves"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li840, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
-            # swft.data.out = swft.data.out %>%
-            #   dplyr::mutate(strm_name = variable)
-            
             swft.plot = ggplot() +
-              geom_col(data = swft.data.out, aes(x = variable, y = value, fill = variable)) +
-              geom_text(data = swft.data.out %>% dplyr::filter(variable == "Open"), aes(x = variable, y = value, label = percentage, vjust = -1)) +
-              scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
-              labs(x = "", y = "Counts", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              geom_col(data = swft.data.out, aes(x = `Valve Status`, y = Percentage, fill = `Valve Status`)) +
+              geom_text(data = swft.data.out, aes(x = `Valve Status`, y = Percentage, label = paste0(Percentage, "%"), vjust = -1), color = "white", size = 6) +
+              scale_y_continuous(breaks = seq(from = 0, to = 100, by = 10), limits = c(0,115)) +
+              scale_fill_manual(values = c("blue", "#ff69b4")) +
+              labs(x = "", y = "Counts", fill = "Valve\nStatus", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type),
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
-              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20))+
-              facet_wrap(~strm_name)
+              theme(text = element_text(color = "white", face = "bold", size = 20)) +
+              facet_wrap(~`Stream Name`)
           }
           if(input$swft_EddyCo_sub_data_type_Li840 == "Flow Rate"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li840, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
@@ -684,17 +703,15 @@ shiny::observeEvent(input$menu, {
           if(input$swft_EddyCo_sub_data_type_L2130 == "Sample Valves"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_L2130, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
-            # swft.data.out = swft.data.out %>%
-            #   dplyr::mutate(strm_name = variable)
-            
             swft.plot = ggplot() +
-              geom_col(data = swft.data.out, aes(x = variable, y = value, fill = variable)) +
-              geom_text(data = swft.data.out %>% dplyr::filter(variable == "Open"), aes(x = variable, y = value, label = percentage, vjust = -1)) +
-              scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
-              theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "Counts", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              geom_col(data = swft.data.out, aes(x = `Valve Status`, y = Percentage, fill = `Valve Status`)) +
+              geom_text(data = swft.data.out, aes(x = `Valve Status`, y = Percentage, label = paste0(Percentage, "%"), vjust = -1), color = "white", size = 6) +
+              scale_y_continuous(breaks = seq(from = 0, to = 100, by = 10), limits = c(0,115)) +
+              scale_fill_manual(values = c("blue", "#ff69b4")) +
+              labs(x = "", y = "Counts", fill = "Valve\nStatus", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type),
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
-              facet_wrap(~strm_name)
+              theme(text = element_text(color = "white", face = "bold", size = 20)) +
+              facet_wrap(~`Stream Name`)
           }
         }
         
@@ -767,7 +784,7 @@ shiny::observeEvent(input$menu, {
               dplyr::mutate(strm_name = "Cell Tempurature Difference")
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = temp_diff)) +
-              geom_point(alpha = .6, color = "black") +
+              geom_point(alpha = .6, color = "cyan") +
               annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 8,    ymax = Inf, alpha = 0.2, fill = "red")+
               annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 6,    ymax =   8, alpha = 0.2, fill = "#ff8c00")+
               annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 2,    ymax =   6, alpha = 0.2, fill = "#00cc00")+
@@ -987,8 +1004,7 @@ shiny::observeEvent(input$menu, {
         # If there are not rows in swft.data.out generate blank plot
         swft.plot = ggplot()+
           geom_text(label = "text")+
-          annotate("text", label = paste0("No data found: ", input$swft_EddyCo_site, "\n(Site communications may be down or data transitions have failed)."), x = 0, y = 0, color = "black")+
-          theme_minimal()
+          annotate("text", label = paste0("No data found: ", input$swft_EddyCo_site, "\nData not available..."), x = 0, y = 0, color = "white", size = 12)
       }
       
       swft_ec_fast_collect_data_time_finish = Sys.time()

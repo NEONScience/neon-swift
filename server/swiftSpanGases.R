@@ -76,14 +76,12 @@ shiny::observeEvent(input$menu, {
         } else {
           ggplot2::ggplot()+
             ggplot2::geom_text(label = "text")+
-            ggplot2::annotate("text", label = paste0("NO DATA: \n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "black")+
-            ggplot2::theme_minimal()
+            ggplot2::annotate("text", label = paste0("NO DATA: \n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "white", size = 12)
         } 
       } else {
         ggplot2::ggplot()+
           ggplot2::geom_text(label = "text")+
-          ggplot2::annotate("text", label = paste0("NO DATA: \n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "black")+
-          ggplot2::theme_minimal()
+          ggplot2::annotate("text", label = paste0("NO DATA: \n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "white", size = 12)
       }
     })
     
@@ -119,14 +117,12 @@ shiny::observeEvent(input$menu, {
         } else {
           ggplot2::ggplot()+
             ggplot2::geom_text(label = "text")+
-            ggplot2::annotate("text", label = paste0("NO DATA: \n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "black")+
-            ggplot2::theme_minimal()
+            ggplot2::annotate("text", label = paste0("NO DATA: \n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "white", size = 12)
         }
       } else {
         ggplot2::ggplot()+
           ggplot2::geom_text(label = "text")+
-          ggplot2::annotate("text", label = paste0("NO DATA: \n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "black")+
-          ggplot2::theme_minimal()
+          ggplot2::annotate("text", label = paste0("NO DATA: \n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "white", size = 12)
       }
     })
     
@@ -160,14 +156,12 @@ shiny::observeEvent(input$menu, {
         } else {
           ggplot2::ggplot()+
             ggplot2::geom_text(label = "text")+
-            ggplot2::annotate("text", label = "NO DATA\n(Input plot terms above)", x = 0, y = 0, color = "black")+
-            ggplot2::theme_minimal()
+            ggplot2::annotate("text", label = "NO DATA\n(Input plot terms above)", x = 0, y = 0, color = "white", size = 12)
         }
       } else {
         ggplot2::ggplot()+
           ggplot2::geom_text(label = "text")+
-          ggplot2::annotate("text", label = paste0("NO DATA: \n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "black")+
-          ggplot2::theme_minimal()
+          ggplot2::annotate("text", label = paste0("NO DATA: \n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "white", size = 12)
       }
     }) 
     

@@ -44,8 +44,7 @@ shiny::observeEvent(input$menu, {
         } else {
           ggplot2::ggplot()+
             ggplot2::geom_text(label = "text")+
-            ggplot2::annotate("text", label = paste0("NO CnC DATA: ",input$swft_lcservices_site ,"\n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "black")+
-            ggplot2::theme_minimal()
+            ggplot2::annotate("text", label = paste0("NO CnC DATA: ",input$swft_lcservices_site ,"\n(No Data Within Date Range Specified)"), color = "white", size = 12)
           }
       })
 
@@ -70,8 +69,7 @@ shiny::observeEvent(input$menu, {
       } else {
         ggplot2::ggplot()+
           ggplot2::geom_text(label = "text")+
-          ggplot2::annotate("text", label = paste0("NO RTU DATA: ",input$swft_lcservices_site ,"\n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "black")+
-          ggplot2::theme_minimal()
+          ggplot2::annotate("text", label = paste0("NO RTU DATA: ",input$swft_lcservices_site ,"\n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "white", size = 12)
       }
     })
     output$RTUPlot <- plotly::renderPlotly({
@@ -95,17 +93,14 @@ shiny::observeEvent(input$menu, {
       } else {
         ggplot2::ggplot()+
           ggplot2::geom_text(label = "text")+
-          ggplot2::annotate("text", label = paste0("NO HornetQ DATA: ",input$swft_lcservices_site ,"\n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "black")+
-          ggplot2::theme_minimal()
+          ggplot2::annotate("text", label = paste0("NO HornetQ DATA: ",input$swft_lcservices_site ,"\n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "white", size = 12)
       }
     })
     output$HornetQPlot <- plotly::renderPlotly({
       HornetQPlot()
     })
 
-
     ## Summary Panel Plots
-
     # Plot TIS CnC Summary
     CnCUptimePlot <- aws.s3::s3readRDS(object = "CnC/plots/swft.tis.cnc.plot.RDS", bucket = "research-eddy-inquiry")
 

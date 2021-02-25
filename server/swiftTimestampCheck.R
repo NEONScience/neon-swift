@@ -14,7 +14,7 @@ shiny::observeEvent(input$menu, {
                "AWS_DEFAULT_REGION"    = "s3.data")
     
     # Read in Timestamp data
-    swft_timestamp_date_list = seq.Date(from = Sys.Date()-7, to = Sys.Date(), by = 1)
+    swft_timestamp_date_list = seq.Date(from = Sys.Date()-14, to = Sys.Date(), by = 1)
     
     timestampData = data.table::data.table()
     for(days in swft_timestamp_date_list){
@@ -102,8 +102,7 @@ shiny::observeEvent(input$menu, {
     } else {
       analysisPlot <- ggplot2::ggplot()+
         ggplot2::geom_text(label = "text")+
-        ggplot2::annotate("text", label = paste0("NO DATA: \n(No Timestamp Issues Identified)"), x = 0, y = 0, color = "black")+
-        ggplot2::theme_minimal()
+        ggplot2::annotate("text", label = paste0("NO DATA: \n(No Timestamp Issues Identified)"), x = 0, y = 0, color = "white")
     }
     
     # Shiny Output of plot
@@ -116,7 +115,7 @@ shiny::observeEvent(input$menu, {
       
       timestampData.table = timestampData %>%
         dplyr::group_by(PullDate, siteID) %>%
-        dplyr::filter(`Sensor's Deviation from the Site's Median Timestamp` > 2) %>%
+        dplyr::filter(`Sensor's Deviation from the Site's Median Timestamp` > 10) %>%
         dplyr::filter(`Sensor's Deviation from the Site's Median Timestamp` == max(`Sensor's Deviation from the Site's Median Timestamp`)) %>%
         dplyr::arrange(desc(`Sensor's Deviation from the Site's Median Timestamp`)) %>%
         dplyr::select(siteID, PullDate, MacAddress, StartTime, EndTime, diffTime, `Site's Median Timestamp Difference`, `Sensor's Deviation from the Site's Median Timestamp`)
