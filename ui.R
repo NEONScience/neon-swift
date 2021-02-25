@@ -1,32 +1,3 @@
-# r.library = ("C:/1_GitHub/neon-swift/R/win10/4.0/")
-r.library = ("/R/x86_64-redhat-linux-gnu-library/3.6/")
-# r.library = ("/R/x86_64-redhat-linux-gnu-library/4.0/")
-#r.library="/home/NEON/rlee/GitHub/neon-swift/R/x86_64-redhat-linux-gnu-library/3.6/)"
-
-# library(shiny,           lib.loc = r.library)
-# library(plyr,            lib.loc = r.library)
-# library(vctrs,           lib.loc = r.library)
-# library(glue,            lib.loc = r.library)
-# library(tidyselect,      lib.loc = r.library)
-# library(dplyr,           lib.loc = r.library)
-# library(htmlwidgets,     lib.loc = r.library)
-# library(plotly,          lib.loc = r.library)
-# library(ggplot2,         lib.loc = r.library)
-# library(DT,              lib.loc = r.library)
-# library(tidyr,           lib.loc = r.library)
-# library(data.table,      lib.loc = r.library)
-# library(shinycssloaders, lib.loc = r.library)
-# library(shinydashboard,  lib.loc = r.library)
-# library(viridis,         lib.loc = r.library)
-# library(stringr,         lib.loc = r.library)
-# library(scales,          lib.loc = r.library)
-# library(aws.signature,   lib.loc = r.library)
-# library(xml2,            lib.loc = r.library)
-# library(aws.s3,          lib.loc = r.library)
-# library(lubridate,       lib.loc = r.library)
-# library(dashboardthemes, lib.loc = r.library)
-# library(ggdark,          lib.loc = r.library)
-
 library(shiny)
 library(plyr)
 library(vctrs)
@@ -50,10 +21,7 @@ library(aws.s3)
 library(lubridate)
 library(dashboardthemes)
 library(ggdark)
-# install.packages("ggdark", lib = r.library)
-# install.packages("dashboardthemes", lib = r.library)
 
-# swft.server.folder.path = "C:/1_GitHub/neon-swift/"
 swft.server.folder.path = "./"
 
 # Essential Site Lookup Tables
@@ -75,7 +43,7 @@ shiny::shinyUI(
       shinydashboard::sidebarMenu(id = "menu",
         shinydashboard::menuItem("Home Page",        tabName = "swft_home_tab"                                                                  ),
         shinydashboard::menuItem("LC Services",      tabName = "swft_lcservices_tab", icon = shiny::icon("signal",         lib = "font-awesome")),
-        shinydashboard::menuItem("LC Time Check",  tabName = "swft_timestamp_tab",  icon = shiny::icon("hourglass-half", lib = "font-awesome")),
+        shinydashboard::menuItem("LC Time Check",    tabName = "swft_timestamp_tab",  icon = shiny::icon("hourglass-half", lib = "font-awesome")),
         shinydashboard::menuItem("Gas Cylinders",    tabName = "swft_spangas_tab",    icon = shiny::icon("adjust",         lib = "font-awesome")),
         shinydashboard::menuItem("CVAL Plotting",    tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
         shinydashboard::menuItem("Eddy-Co Plotting", tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
@@ -127,70 +95,70 @@ shiny::shinyUI(
 
         shinydashboard::tabItem(tabName = "swft_lcservices_tab",
           shinydashboard::box(width = 12,
-              shiny::column(width = 3,
-                  shiny::selectInput(inputId = 'swft_lcservices_site',label = 'Select SiteID',
-                    choices = as.vector(swft.full.site.lookup$SiteID),
-                    selected = "HARV",
-                    width='100%'
-                  ),
-                  shiny::dateRangeInput(inputId = "swft_lcservices_date_range", label = "Select Date Range for Plot [dev]",
-                        start = Sys.Date()-14, end = Sys.Date()+2, max = Sys.Date()+2
-                  ),
-                  shiny::selectInput(inputId = "swft_lcservices_lc_number", label = "Select LC Number",
-                                     choices = c(1,2)
-                  ),
-                  shiny::radioButtons("swft_lcservices_radio_lcnumber","Select LC Service",
-                                     choices = list("CnC" = "cnc", "RTU" = "rtu", "HornetQ" = "hornetq"), inline = TRUE
-                  ),
-                  shiny::p("LC Services Data is collected hourly and displays CnC, RTU, and HornetQ data.")
-              ), # End Column
-              shiny::column(width = 9,
-                            shiny::fluidRow(
-                            shiny::radioButtons("swft_lcservices_radio_overall", "Select IS System",
-                                              choices = list("TIS" = 1, "AIS" = 2),selected = 1, inline = TRUE),
-                            shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'cnc'",
-                                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",
-                                  plotly::plotlyOutput("CnCUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
-                                ),
-                                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
-                                  plotly::plotlyOutput("CnCUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
-                                )
-                              ),
-                              shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'rtu'",
-                                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",
-                                  plotly::plotlyOutput("RTUUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
-                                ),
-                                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
-                                  plotly::plotlyOutput("RTUUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
-                                )
-                              ),
-                              shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'hornetq'",
-                                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",
-                                  plotly::plotlyOutput("HornetQUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
-                                ),
-                                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
-                                  plotly::plotlyOutput("HornetQUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
-                                )
-                              )
-                            )
-                            ),
-              shinydashboard::tabBox(width = 12,
-                shiny::tabPanel("Site Plot",width=12,
-                  shiny::fluidRow(width = "100%",
-                    shiny::fluidRow(
-                      shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'cnc'",
-                        plotly::plotlyOutput("CnCPlot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
-                      ), # End Conditional Panel
-                      shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'rtu'",
-                        plotly::plotlyOutput("RTUPlot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
-                      ), # End Conditional Panel
-                      shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'hornetq'",
-                        plotly::plotlyOutput("HornetQPlot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
-                      ) # End Conditional Panel
+            shiny::column(width = 3,
+                shiny::selectInput(inputId = 'swft_lcservices_site',label = 'Select SiteID',
+                  choices = as.vector(swft.full.site.lookup$SiteID),
+                  selected = "HARV",
+                  width='100%'
+                ),
+                shiny::dateRangeInput(inputId = "swft_lcservices_date_range", label = "Select Date Range for Plot [dev]",
+                      start = Sys.Date()-14, end = Sys.Date()+2, max = Sys.Date()+2
+                ),
+                shiny::selectInput(inputId = "swft_lcservices_lc_number", label = "Select LC Number",
+                                   choices = c(1,2)
+                ),
+                shiny::radioButtons("swft_lcservices_radio_lcnumber","Select LC Service",
+                                   choices = list("CnC" = "cnc", "RTU" = "rtu", "HornetQ" = "hornetq"), inline = TRUE
+                ),
+                shiny::p("LC Services Data is collected hourly and displays CnC, RTU, and HornetQ data.")
+            ), # End Column
+            shiny::column(width = 9,
+              shiny::fluidRow(
+                shiny::radioButtons("swft_lcservices_radio_overall", "Select IS System",
+                                  choices = list("TIS" = 1, "AIS" = 2),selected = 1, inline = TRUE),
+                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'cnc'",
+                    shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",
+                      plotly::plotlyOutput("CnCUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
+                    ),
+                    shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
+                      plotly::plotlyOutput("CnCUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
                     )
+                ),
+                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'rtu'",
+                  shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",
+                    plotly::plotlyOutput("RTUUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
+                  ),
+                  shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
+                    plotly::plotlyOutput("RTUUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                   )
-                ) # End tabBox
+                ),
+                shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'hornetq'",
+                  shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",
+                    plotly::plotlyOutput("HornetQUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
+                  ),
+                  shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
+                    plotly::plotlyOutput("HornetQUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
+                  )
+                )
+              )
+            ),
+            shinydashboard::tabBox(width = 12,
+              shiny::tabPanel("Site Plot",width=12,
+                shiny::fluidRow(width = "100%",
+                  shiny::fluidRow(
+                    shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'cnc'",
+                      plotly::plotlyOutput("CnCPlot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
+                    ), # End Conditional Panel
+                    shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'rtu'",
+                      plotly::plotlyOutput("RTUPlot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
+                    ), # End Conditional Panel
+                    shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'hornetq'",
+                      plotly::plotlyOutput("HornetQPlot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
+                    ) # End Conditional Panel
+                  )
+                )
               ) # End tabPanel
+            ) # End tabBox
           ) # End Cval Fst box
         ), # End Cval Fst
 
@@ -203,7 +171,7 @@ shiny::shinyUI(
                 shiny::h1("Timestamp Checker"),
                 shiny::br(),
                 shiny::p("This tool checks the timestamp difference between 'Actual Time' and the LC's Timestamp for a sensor."),
-                shiny::p("Difference between actual UTC and the sensor's timestamp must be smaller than 10 seconds to appear in this reports.")
+                shiny::p("Difference between actual UTC and the sensor's timestamp must be greater than 10 seconds to appear in this reports.")
               )
             ), # End Column 7
             shiny::column(width = 4),
@@ -234,13 +202,11 @@ shiny::shinyUI(
                 shiny::selectInput(inputId = 'swft_spangas_site',label = 'Select SiteID',
                                    choices = swft.tis.site.lookup$SiteID,
                                    selected = sample(swft.tis.site.lookup$SiteID, 1),
-                                   width='100%'
-                )
+                                   width='100%')
               ),
               shiny::column(width = 3,
                   shiny::dateRangeInput(inputId = "swft_spangas_date_range", label = "Select Date Range for Plot",
-                                        start = Sys.Date() - 28, end = Sys.Date() + 1, max = Sys.Date() + 1
-                  )
+                                        start = Sys.Date() - 28, end = Sys.Date() + 1, max = Sys.Date() + 1)
               )
             ),
             # ), # End Column 7
@@ -257,7 +223,7 @@ shiny::shinyUI(
                 ) # End fluidRow
               ), # End tabPanel
               shiny::tabPanel("Avg Pressure Loss",width=12,
-                shiny::p("Ideal pressure loss in a fully functional Cval system is ~ 4 PSI."),
+                shiny::p("Ideal pressure loss in a fully functional Cval system is ~ 4-6 PSI."),
                 shiny::fluidRow(width = "100%",
                   plotly::plotlyOutput("swft_spangas_loss_plot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                 ) # End fluidRow
@@ -270,56 +236,47 @@ shiny::shinyUI(
 
         shinydashboard::tabItem(tabName = "swft_cvalfast_tab",
           shinydashboard::box(width = 12,
-              shiny::column(width = 12,
-
-                shiny::fluidRow(
-                  shiny::column(width = 4,
+            shiny::column(width = 12,
+              shiny::fluidRow(
+                shiny::column(width = 4,
                   shiny::h1("Calibrations and Validations Plotting"),
                   shiny::br(),
                   shiny::p("Use the data here to verify Cvals are occuring as expected. Check that span gases are being delivered properly. Zero*, Low, Int, High"),
                   shiny::column(width = 5,
-                  shiny::fluidRow(
-                    shiny::selectizeInput(inputId = "swft_cval_site", multiple = FALSE,
-                                          label = "Select Site",
-                                          choices = swft.tis.site.lookup$SiteID,
-                                          selected = sample(swft.tis.site.lookup$SiteID, 1)),
-                    shiny::selectInput(inputId = "swft_cval_sensor",
-                                       label = "Select Cal/Val to Render",
-                                       choices = c("G2131 Validations" = "G2131i","Li840 CVALs" = "Li840A", "Li7200 Validations" = "Li7200", "L2130-i Validations" = "L2130i"))
+                    shiny::fluidRow(
+                      shiny::selectizeInput(inputId = "swft_cval_site", multiple = FALSE,
+                                            label = "Select Site",
+                                            choices = swft.tis.site.lookup$SiteID,
+                                            selected = sample(swft.tis.site.lookup$SiteID, 1)),
+                      shiny::selectInput(inputId = "swft_cval_sensor",
+                                         label = "Select Cal/Val to Render",
+                                         choices = c("G2131 Validations" = "G2131i","Li840 CVALs" = "Li840A", "Li7200 Validations" = "Li7200", "L2130-i Validations" = "L2130i"))
                     )
                   ),
                   shiny::column(width = 7,
                     shiny::uiOutput('swft_cval_react_unique_cvals'),
                     shiny::conditionalPanel(condition = "input.swft_cval_sensor == 'L2130i'",
-                                            shiny::radioButtons(inputId = "swft_cval_l2130_options", label = "Choose Stream", inline = TRUE, choices = c("H2O" = "L2130_H2O", "18O" = "L2130_18O_isotope", "2H" = "L2130_2H_isotope"))
+                      shiny::radioButtons(inputId = "swft_cval_l2130_options", label = "Choose Stream", inline = TRUE, choices = c("H2O" = "L2130_H2O", "18O" = "L2130_18O_isotope", "2H" = "L2130_2H_isotope"))
                     )
                   )
+                ),
+                shiny::column(width = 8,
+                  shiny::h2("Observatory CVAL Records"),
+                  shiny::fluidRow(
+                    shinydashboard::valueBoxOutput("swft_cval_g2131_records",  width = 3),
+                    shinydashboard::valueBoxOutput("swft_cval_li840_records",  width = 3),
+                    shinydashboard::valueBoxOutput("swft_cval_li7200_records", width = 3),
+                    shinydashboard::valueBoxOutput("swft_cval_l2130_records",  width = 3),
                   ),
-                    shiny::column(width = 8,
-                      # shiny::h4("QC'ing CVALs Tips"),
-                      # shiny::fluidRow(
-                      #   shiny::tags$ol(
-                      #     shiny::tags$li("Check that span gases are being delivered properly. Zero*, Low, Int, High"),
-                      #     shiny::tags$li("Verify Cval's are occuring regularly. Daily for validations and weekly for Li840 calibrations."),
-                      #     shiny::tags$li("Verify span gases are installed in the correct maximo location. Low, Int, High are all occuring in the correct order and have the correct span concentrations.")
-                      #   ) # End Ordered List
-                      # ),
-                      shiny::h2("Observatory CVAL Records"),
-                      shiny::fluidRow(
-                        shinydashboard::valueBoxOutput("swft_cval_g2131_records",  width = 3),
-                        shinydashboard::valueBoxOutput("swft_cval_li840_records",  width = 3),
-                        shinydashboard::valueBoxOutput("swft_cval_li7200_records", width = 3),
-                        shinydashboard::valueBoxOutput("swft_cval_l2130_records",  width = 3),
-                      ),
-                      shiny::fluidRow(
-                        shinydashboard::valueBoxOutput("swft_cval_site_records", width = 3),
-                        shinydashboard::valueBoxOutput("swft_cval_site_sensor_records", width = 3),
-                        shinydashboard::valueBoxOutput("swft_cval_total_records",  width = 3)
+                  shiny::fluidRow(
+                    shinydashboard::valueBoxOutput("swft_cval_site_records", width = 3),
+                    shinydashboard::valueBoxOutput("swft_cval_site_sensor_records", width = 3),
+                    shinydashboard::valueBoxOutput("swft_cval_total_records",  width = 3)
 
-                      )
-                    )
-                  ) # End fluidRow
-              ) # End Top Master column
+                  )
+                )
+              ) # End fluidRow
+            ) # End Top Master column
           ), # End tabBox
           shinydashboard::box(width = 12,
             shiny::column(width = 12,
@@ -344,6 +301,8 @@ shiny::shinyUI(
                     ),
                     # EC First Plot for all systems
                     shiny::fluidRow(
+                      shiny::h2("Cval Plot"),
+                      shiny::br(),
                       plotly::plotlyOutput("plot_co2_ecse", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
                       # ECTE Post-Validation Leak Check
                       shiny::conditionalPanel(condition = 'input.swft_cval_sensor == "Li7200"',
@@ -355,9 +314,16 @@ shiny::shinyUI(
                             plotly::plotlyOutput("plotly_co2_ecte_leak_check", height = "400px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                           )
                         )
+                      )
+                    ),
+                    shiny::fluidRow(
+                      shiny::br(),
+                      shiny::h2("Cval Table"),
+                      shiny::column(width = 2),
+                      shiny::column(width = 8,
+                        DT::dataTableOutput("table_co2_ecse", width = "100%") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                       ),
-                      DT::dataTableOutput("table_co2_ecse") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
-
+                      shiny::column(width = 2)
                     )
                   ) # End column
                 ) # End Cval Fast shiny::column for Conditional Panels
@@ -406,8 +372,7 @@ shiny::shinyUI(
                                             min = "2017-01-01",
                                             max = Sys.Date(),
                                             start = Sys.Date()-7,
-                                            end = Sys.Date()
-                      )
+                                            end = Sys.Date())
                     )
                   ),
                   shiny::column(width = 2,
@@ -415,8 +380,7 @@ shiny::shinyUI(
                       shiny::selectizeInput(inputId = "swft_EddyCo_site", multiple = FALSE,
                                         label = "Select Site",
                                         choices = swft.tis.site.lookup$SiteID,
-                                        selected = sample(swft.tis.site.lookup$SiteID, 1)
-                      )
+                                        selected = sample(swft.tis.site.lookup$SiteID, 1))
                     )
                   ),
                   shiny::column(width = 3,
@@ -436,8 +400,7 @@ shiny::shinyUI(
                                                     "ECSE Pump Voltages - NEON Pump"         = "ecse.voltage",
                                                     "EC Temperatures - Comet/Others"         = "ec.temps"
                                                     ),
-                                         selected = sample(x = c("G2131", "L2130", "Li840", "Li7200", "CO2", "H2O", "CSAT3", "amrs", "HMP155", "ecse.mfm", "ecse.voltage", "ec.temps"),size = 1)
-                      )
+                                         selected = sample(x = c("G2131", "L2130", "Li840", "Li7200", "CO2", "H2O", "CSAT3", "amrs", "HMP155", "ecse.mfm", "ecse.voltage", "ec.temps"),size = 1))
                     )
                   ),
                   shiny::column(width = 2,
@@ -518,22 +481,18 @@ shiny::shinyUI(
                 ),
                 shiny::br(),
                 shiny::conditionalPanel(condition = "output.qfqm_data_loaded == 'True'",
-                                 shiny::selectInput(inputId = "swft_qfqm_dp",
-                                                    label = "Select Data Product",
-                                                    choices = c("CO2 Storage" = "co2Stor", "CO2 Turbulent" = "co2Turb", "Flux Heat Soil" = "fluxHeatSoil", "H2O Soil Vol" = "h2oSoilVol",
-                                                                "H2O Storage" = "h2oStor", "H2O Turbulent" = "h2oTurb", "Isotopic CO2" = "isoCo2", "Isotopic H2O" = "isoH2o",
-                                                                "Net Radiation" = "radiNet", "Sonic Wind" = "soni", "Air Temperature Level" =  "tempAirLvl", "Air Temperature Top Level" = "tempAirTop",
-                                                                "Soil Temperature" = "tempSoil")),
-                                 shiny::dateInput(inputId = "swft_qfqm_date", label = "Select Date", value = "2021-01-31", max = Sys.Date() - 8, min = "2021-01-01"),
-                                 shiny::selectInput(inputId = "swft_qfqm_focus_in", label = "Focus in on a specific variables?", choices = c("Yes","No"), selected = "No"),
-                                 shiny::conditionalPanel(condition = "input.swft_qfqm_focus_in == 'Yes'",
-                                                         shiny::uiOutput('swft_qfqm_vars')
-                                                         )
-
-
-
-
-                                 )
+                  shiny::selectInput(inputId = "swft_qfqm_dp",
+                                    label = "Select Data Product",
+                                    choices = c("CO2 Storage" = "co2Stor", "CO2 Turbulent" = "co2Turb", "Flux Heat Soil" = "fluxHeatSoil", "H2O Soil Vol" = "h2oSoilVol",
+                                                "H2O Storage" = "h2oStor", "H2O Turbulent" = "h2oTurb", "Isotopic CO2" = "isoCo2", "Isotopic H2O" = "isoH2o",
+                                                "Net Radiation" = "radiNet", "Sonic Wind" = "soni", "Air Temperature Level" =  "tempAirLvl", "Air Temperature Top Level" = "tempAirTop",
+                                                "Soil Temperature" = "tempSoil")),
+                  shiny::dateInput(inputId = "swft_qfqm_date", label = "Select Date", value = "2021-01-31", max = Sys.Date() - 8, min = "2021-01-01"),
+                  shiny::selectInput(inputId = "swft_qfqm_focus_in", label = "Focus in on a specific variables?", choices = c("Yes","No"), selected = "No"),
+                  shiny::conditionalPanel(condition = "input.swft_qfqm_focus_in == 'Yes'",
+                   shiny::uiOutput('swft_qfqm_vars')
+                  )
+                )
               )
             ), # End Column 7
             shiny::column(width = 1),
@@ -548,7 +507,11 @@ shiny::shinyUI(
             ) # End fluidRow
           ) # End box
         ) # End QFQM Fst box
+        
       ) # End Tab Items
+      
     ) # End Dashboard Body
+    
   ) # End of Page
+  
 ) # End of UI
