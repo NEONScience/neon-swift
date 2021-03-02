@@ -460,10 +460,16 @@ shiny::shinyUI(
                 shiny::fluidRow(
                   shiny::column(width =12,
                     # EC fast plot
-                    shiny::plotOutput("swft_ec_fast_plot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
-                    DT::dataTableOutput("swft_ec_fast_table") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
+                    shiny::plotOutput("swft_ec_fast_plot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                   ) # End EC Fast shiny::column for Conditional Panels
-                ) # End EC Fst shiny::fluidRow for Condtional panels
+                ), # End EC Fst shiny::fluidRow for Condtional panels
+                shiny::fluidRow(
+                  shiny::column(width = 2),
+                  shiny::column(width = 8,
+                    DT::dataTableOutput("swft_ec_fast_table") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
+                  ), 
+                  shiny::column(width = 2)
+                )
               ) # End blank tabPanel
             ) # End EC Fst Tab Panel for Condtional panels
           ) # End EC Fst box
