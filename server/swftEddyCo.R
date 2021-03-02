@@ -33,25 +33,27 @@ shiny::observeEvent(input$menu, {
                                        silent    = TRUE
       ) 
       
-      if(nrow(swft.data.in) > 0) { swft.data.in = swft.data.in %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) }
+      if(nrow(swft.data.in) > 0 & input$swft_EddyCo_data_type != "CSAT3") { 
+        swft.data.in = swft.data.in %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) 
+      }
       message(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " data from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2], paste0(" Swft Data Gathered: ", nrow(swft.data.in)))
       message("Data pull Finished")
       } else if(input$swft_EddyCo_data_type == "CO2") {
         
         li840.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(li840.data) > 0){
-          li840.data <- li840.data %>%
+          li840.data <- li840.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "Li840_CO2_fwMole") 
           
         }
         g2131.data <- read.eddy.inquiry(dataType = "2min", sensor = "G2131", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(g2131.data) > 0){
-          g2131.data <- g2131.data %>%
+          g2131.data <- g2131.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "G2131_fwMoleCo2")
         }
         li7200.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li7200", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(li7200.data) > 0){
-          li7200.data <- li7200.data %>%
+          li7200.data <- li7200.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "Li7200_CO2")
         }
         swft.data.in <- rbindlist(l = list(li840.data, g2131.data, li7200.data))
@@ -64,26 +66,26 @@ shiny::observeEvent(input$menu, {
         li840.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         # li840.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = "UNDE", startDate = Sys.Date()-7, endDate = Sys.Date(), silent = TRUE)
         if(nrow(li840.h2o.data) > 0){
-          li840.h2o.data <- li840.h2o.data %>%
+          li840.h2o.data <- li840.h2o.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "Li840_H2O_fwMole")
         }
         # g2131.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "G2131", siteID = "UNDE", startDate = Sys.Date()-7, endDate = Sys.Date(), silent = TRUE)
         g2131.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "G2131", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(g2131.h2o.data) > 0){
-          g2131.h2o.data <- g2131.h2o.data %>%
+          g2131.h2o.data <- g2131.h2o.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "G2131_percentFwMoleH2O")
         }
         # li7200.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li7200", siteID = "UNDE", startDate = Sys.Date()-7, endDate = Sys.Date(), silent = TRUE)
         li7200.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li7200", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(li7200.h2o.data) > 0){
-          li7200.h2o.data <- li7200.h2o.data %>%
+          li7200.h2o.data <- li7200.h2o.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "Li7200_fdMoleH2O")
         }
         
         # l2130.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "L2130", siteID = "UNDE", startDate = Sys.Date()-7, endDate = Sys.Date(), silent = TRUE)
         l2130.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "L2130", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(l2130.h2o.data) > 0){
-          l2130.h2o.data <- l2130.h2o.data %>%
+          l2130.h2o.data <- l2130.h2o.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "L2130_H2O")
         }
         
@@ -96,7 +98,7 @@ shiny::observeEvent(input$menu, {
       
       # # For Function Testing
       # swft.data.in = read.eddy.inquiry(dataType  = "2min",
-      #                                  sensor    = "L2130",
+      #                                  sensor    = "CSAT3",
       #                                  siteID    = "WREF",
       #                                  startDate = Sys.Date()-7,
       #                                  endDate   = Sys.Date(),
@@ -410,7 +412,7 @@ shiny::observeEvent(input$menu, {
           
         } else if(input$swft_EddyCo_data_type == "CSAT3"){
           
-          swft.data.out = swft.data.in
+          swft.data.out = swft.data.in 
           
           
         } else if(input$swft_EddyCo_data_type == "amrs"){
@@ -655,8 +657,8 @@ shiny::observeEvent(input$menu, {
             plot.max <- max(swft.data.out$readout_time, na.rm = TRUE)
             
             swft.plot <- ggplot(swft.data.out, aes(x=readout_time, y= readout_val_double))+
-              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = .8, ymax = 1.2, alpha = 0.62, fill = "#00cc00")+
-              geom_point(shape = 1, alpha = .6, color = "#c51b7d") +
+              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = .8, ymax = 1.2, alpha = 0.4, fill = "#00cc00")+
+              geom_point(shape = 1, alpha = .6, color = "cyan") +
               geom_hline(yintercept = 1.0, linetype = "dashed") +
               scale_color_manual(values = c("#e41a1c","#377eb8","#4daf4a")) +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
@@ -711,7 +713,7 @@ shiny::observeEvent(input$menu, {
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li7200, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = readout_val_double)) +
-              geom_point(alpha = .6, color = "#4d9221") +
+              geom_point(alpha = .8, color = "red") +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
@@ -723,7 +725,7 @@ shiny::observeEvent(input$menu, {
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li7200, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = readout_val_double)) +
-              geom_point(alpha = .6, color = "#386cb0") +
+              geom_point(alpha = .8, color = "blue") +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
@@ -738,8 +740,8 @@ shiny::observeEvent(input$menu, {
             plot.max <- max(swft.data.out$readout_time, na.rm = TRUE)
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = readout_val_double)) +
-              geom_point(alpha = .6, color = "#c51b7d") +
-              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 11.5, ymax = 12.5, alpha = 0.2, fill = "#00cc00")+
+              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 11.5, ymax = 12.5, alpha = 0.4, fill = "#00cc00")+
+              geom_point(alpha = .8, color = "cyan") +
               geom_hline(yintercept = 12, linetype = "dashed") +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
@@ -755,9 +757,9 @@ shiny::observeEvent(input$menu, {
             plot.max <- max(swft.data.out$readout_time, na.rm = TRUE)
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = readout_val_double, color = `Stream Name`)) +
-              geom_point(alpha = .6) +
+              geom_point(alpha = .8) +
               annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 95, ymax = 102, alpha = 0.2, fill = "#00cc00")+
-              scale_color_manual(values = c("#4d9221","#386cb0","grey"))+
+              scale_color_manual(values = c("red","blue","grey"))+
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
@@ -775,7 +777,7 @@ shiny::observeEvent(input$menu, {
               dplyr::mutate(`Stream Name` = "Cell Tempurature Difference")
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = temp_diff)) +
-              geom_point(alpha = .6, color = "cyan") +
+              geom_point(alpha = .8, color = "cyan") +
               annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 8,    ymax = Inf, alpha = 0.2, fill = "red")+
               annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 6,    ymax =   8, alpha = 0.2, fill = "#ff8c00")+
               annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 2,    ymax =   6, alpha = 0.2, fill = "#00cc00")+
@@ -864,7 +866,7 @@ shiny::observeEvent(input$menu, {
           colors <- c("NA" = "grey","0" = "limegreen", "1" = "gold",
                       "2" = "yellow", "3" = "orange","4" = "red")
           
-          swft.data.out = swft.data.out %>%
+          swft.data.out = swft.data.out %>% 
             dplyr::mutate(`Stream Name` = CodeSum)
           
           swft.plot <- ggplot(swft.data.out, aes(x=readout_time,y=CSAT3_WindVector,color = CodeSum))+
@@ -979,10 +981,10 @@ shiny::observeEvent(input$menu, {
           #   dplyr::mutate(`Stream Name`_test = ec.system)
           
           swft.plot <- ggplot(swft.data.out, aes(x = by30, y= mean, color = `Stream Name`))+
+            annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 35, ymax = 50, alpha = 0.4, fill = "red")+
+            annotate("rect", xmin = plot.min, xmax = plot.max, ymin =  6, ymax = 0, alpha = 0.4, fill = "cyan")+
             geom_point(alpha = .63) +
             geom_line(alpha = .63) +
-            annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 35, ymax = 50, alpha = 0.2, fill = "red")+
-            annotate("rect", xmin = plot.min, xmax = plot.max, ymin =  6, ymax = 0, alpha = 0.2, fill = "cyan")+
             scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
             scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
             labs(title = paste0(swft.data.out$SiteID[1], ": Hut Temperature 2-minute point data"), subtitle = "Averaged hourly",

@@ -54,6 +54,9 @@ shiny::shinyUI(
     shinydashboard::dashboardBody(
 
       dashboardthemes::shinyDashboardThemes(theme = "grey_dark"),
+      tags$style(type='text/css', ".selectize-input { font-size: 20px; line-height: 20px; font-color: #FFFFFF; font-weight: bold;} 
+                                   .selectize-dropdown { font-size: 20px; line-height: 20px; font-color: #FFFFFF; font-weight: bold;}
+                                   .input-sm { font-size: 20px; line-height: 20px; font-color: #FFFFFF; font-weight: bold; }"),
 
       tags$head(tags$link(rel = "shortcut icon", href = "favicon.ico")),
       shinydashboard::tabItems(
@@ -96,7 +99,7 @@ shiny::shinyUI(
         shinydashboard::tabItem(tabName = "swft_lcservices_tab",
           shinydashboard::box(width = 12,
             shiny::column(width = 3,
-                shiny::selectInput(inputId = 'swft_lcservices_site',label = 'Select SiteID',
+                shiny::selectizeInput(inputId = 'swft_lcservices_site',label = 'Select SiteID', multiple = FALSE,
                   choices = as.vector(swft.full.site.lookup$SiteID),
                   selected = "HARV",
                   width='100%'
@@ -104,7 +107,7 @@ shiny::shinyUI(
                 shiny::dateRangeInput(inputId = "swft_lcservices_date_range", label = "Select Date Range for Plot [dev]",
                       start = Sys.Date()-14, end = Sys.Date()+2, max = Sys.Date()+2
                 ),
-                shiny::selectInput(inputId = "swft_lcservices_lc_number", label = "Select LC Number",
+                shiny::selectizeInput(inputId = "swft_lcservices_lc_number", label = "Select LC Number",  multiple = FALSE,
                                    choices = c(1,2)
                 ),
                 shiny::radioButtons("swft_lcservices_radio_lcnumber","Select LC Service",
@@ -199,7 +202,7 @@ shiny::shinyUI(
           shinydashboard::box(width = 12,
             shiny::fluidRow(
               shiny::column(width = 2,
-                shiny::selectInput(inputId = 'swft_spangas_site',label = 'Select SiteID',
+                shiny::selectizeInput(inputId = 'swft_spangas_site',label = 'Select SiteID', multiple = FALSE,
                                    choices = swft.tis.site.lookup$SiteID,
                                    selected = sample(swft.tis.site.lookup$SiteID, 1),
                                    width='100%')
@@ -248,7 +251,7 @@ shiny::shinyUI(
                                             label = "Select Site",
                                             choices = swft.tis.site.lookup$SiteID,
                                             selected = sample(swft.tis.site.lookup$SiteID, 1)),
-                      shiny::selectInput(inputId = "swft_cval_sensor",
+                      shiny::selectizeInput(inputId = "swft_cval_sensor", multiple = FALSE,
                                          label = "Select Cal/Val to Render",
                                          choices = c("G2131 Validations" = "G2131i","Li840 CVALs" = "Li840A", "Li7200 Validations" = "Li7200", "L2130-i Validations" = "L2130i"))
                     )
@@ -385,7 +388,7 @@ shiny::shinyUI(
                   ),
                   shiny::column(width = 3,
                     shiny::fluidRow(
-                      shiny::selectInput(inputId = "swft_EddyCo_data_type",
+                      shiny::selectizeInput(inputId = "swft_EddyCo_data_type", multiple = FALSE,
                                          label = "Select Data",
                                          choice = c("ECSE Isotopic Analyzer - G2131i"        = "G2131",
                                                     "ECSE Isotopic Analyzer - L2130i"        = "L2130",
@@ -406,19 +409,19 @@ shiny::shinyUI(
                   shiny::column(width = 2,
                     shiny::fluidRow(
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'G2131'",
-                        shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_G2131', label = 'Sub Data Type', choices = c("CO2","H2O", "Isotopes", "Sample Valves"))
+                        shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_G2131', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2","H2O", "Isotopes", "Sample Valves"))
                       ),
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'Li840'",
-                        shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_Li840', label = 'Sub Data Type', choices = c("CO2", "H2O", "Sample Valves", "Flow Rate"))
+                        shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_Li840', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2", "H2O", "Sample Valves", "Flow Rate"))
                       ),
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'L2130'",
-                        shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_L2130', label = 'Sub Data Type', choices = c("Isotope - 2H", "Isotope - 18O", "H2O", "Sample Valves"))
+                        shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_L2130', multiple = FALSE, label = 'Sub Data Type', choices = c("Isotope - 2H", "Isotope - 18O", "H2O", "Sample Valves"))
                       ),
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'Li7200'",
-                        shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_Li7200', label = 'Sub Data Type', choices = c("CO2", "H2O", "Flow", "Signal Strength", "Cell Temp", "Pressure Differential", "Diagnostic" ))
+                        shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_Li7200', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2", "H2O", "Flow", "Signal Strength", "Cell Temp", "Pressure Differential", "Diagnostic" ))
                       ),
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'HMP155'",
-                        shiny::selectInput(inputId = 'swft_EddyCo_sub_data_type_HMP155', label = 'Sub Data Type', choices = c("Relative Humidity", "Temperature", "Dew Point"))
+                        shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_HMP155', multiple = FALSE, label = 'Sub Data Type', choices = c("Relative Humidity", "Temperature", "Dew Point"))
                       )
                     )
                   ),
@@ -431,7 +434,7 @@ shiny::shinyUI(
                     shiny::column(width = 12,
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_radioButton == 'Enabled' ",
                         shiny::column(width = 4,
-                          shiny::selectInput(inputId = "swft_EddyCo_radio_y_custom", label = "Customize Y-axis", choices = c("Yes", "No"), selected = "No")
+                          shiny::selectizeInput(inputId = "swft_EddyCo_radio_y_custom", multiple = FALSE, label = "Customize Y-axis", choices = c("Yes", "No"), selected = "No")
                         ),
                         shiny::conditionalPanel(condition = "input.swft_EddyCo_radio_y_custom == 'Yes'",
                           shiny::column(width = 2,
@@ -442,7 +445,7 @@ shiny::shinyUI(
                           )
                         ),
                         shiny::column(width = 4,
-                          shiny::selectInput(inputId = "swft_EddyCo_facet_wrap", label = "Facet by stream name?", choices = c("Yes", "No"), selected = "No")
+                          shiny::selectizeInput(inputId = "swft_EddyCo_facet_wrap", multiple = FALSE, label = "Facet by stream name?", choices = c("Yes", "No"), selected = "No")
                         )
                       )
                     )
@@ -487,14 +490,14 @@ shiny::shinyUI(
                 ),
                 shiny::br(),
                 shiny::conditionalPanel(condition = "output.qfqm_data_loaded == 'True'",
-                  shiny::selectInput(inputId = "swft_qfqm_dp",
+                  shiny::selectizeInput(inputId = "swft_qfqm_dp", multiple = FALSE,
                                     label = "Select Data Product",
                                     choices = c("CO2 Storage" = "co2Stor", "CO2 Turbulent" = "co2Turb", "Flux Heat Soil" = "fluxHeatSoil", "H2O Soil Vol" = "h2oSoilVol",
                                                 "H2O Storage" = "h2oStor", "H2O Turbulent" = "h2oTurb", "Isotopic CO2" = "isoCo2", "Isotopic H2O" = "isoH2o",
                                                 "Net Radiation" = "radiNet", "Sonic Wind" = "soni", "Air Temperature Level" =  "tempAirLvl", "Air Temperature Top Level" = "tempAirTop",
                                                 "Soil Temperature" = "tempSoil")),
                   shiny::dateInput(inputId = "swft_qfqm_date", label = "Select Date", value = "2021-01-31", max = Sys.Date() - 8, min = "2021-01-01"),
-                  shiny::selectInput(inputId = "swft_qfqm_focus_in", label = "Focus in on a specific variables?", choices = c("Yes","No"), selected = "No"),
+                  shiny::selectizeInput(inputId = "swft_qfqm_focus_in", multiple = FALSE, label = "Focus in on a specific variables?", choices = c("Yes","No"), selected = "No"),
                   shiny::conditionalPanel(condition = "input.swft_qfqm_focus_in == 'Yes'",
                    shiny::uiOutput('swft_qfqm_vars')
                   )
