@@ -15,12 +15,12 @@ library(shinydashboard)
 library(viridis)
 library(stringr)
 library(scales)
-library(aws.signature, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+library(aws.signature)
 library(xml2)
-library(aws.s3, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+library(aws.s3)
 library(lubridate)
-library(dashboardthemes, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
-library(ggdark, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+library(dashboardthemes)
+library(ggdark)
 
 swft.server.folder.path = "./"
 
@@ -47,14 +47,15 @@ shiny::shinyUI(
         shinydashboard::menuItem("Gas Cylinders",    tabName = "swft_spangas_tab",    icon = shiny::icon("adjust",         lib = "font-awesome")),
         shinydashboard::menuItem("CVAL Plotting",    tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
         shinydashboard::menuItem("Eddy-Co Plotting", tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
-        shinydashboard::menuItem("QFQM Plotting",    tabName = "swft_qfqm_tab",       icon = shiny::icon("flask",          lib = "font-awesome"))
+        shinydashboard::menuItem("QFQM Plotting",    tabName = "swft_qfqm_tab",       icon = shiny::icon("flask",          lib = "font-awesome")),
+        shinydashboard::menuItem("", tabName = "hidden")
       )
     ),
     # Body
     shinydashboard::dashboardBody(
 
       dashboardthemes::shinyDashboardThemes(theme = "grey_dark"),
-      tags$style(type='text/css', ".selectize-input { font-size: 20px; line-height: 20px; font-color: #FFFFFF; font-weight: bold;} 
+      tags$style(type='text/css', ".selectize-input { font-size: 20px; line-height: 20px; font-color: #FFFFFF; font-weight: bold;}
                                    .selectize-dropdown { font-size: 20px; line-height: 20px; font-color: #FFFFFF; font-weight: bold;}
                                    .input-sm { font-size: 20px; line-height: 20px; font-color: #FFFFFF; font-weight: bold; }"),
 
@@ -65,9 +66,9 @@ shiny::shinyUI(
           shinydashboard::box(width = 12,
               shiny::column(width = 7,
               shiny::h1("An Eddy-Covariance State of Health Dashboard"),
-              # shiny::tags$h3(
-              #   shiny::helpText(a("How to use this application!",href="http://den-devshiny-1.ci.neoninternal.org/TheAviary/pages/SwiftHowTo.html",target="_blank"))
-              # ),
+              shiny::tags$h2(
+                shiny::helpText(a("Swift Update Log",href="./Swift Update Log.pdf",target="_blank"))
+              ),
               shiny::h4("Users can use this application to plot data from all TIS sites to identify Eddy-Co issues, view trends, and verify calibrations/validations."),
               shiny::icon("signal", lib = "font-awesome"),
               shiny::tags$b("LC Sevices"),
@@ -515,7 +516,23 @@ shiny::shinyUI(
               ) # End fluidRow
             ) # End fluidRow
           ) # End box
-        ) # End QFQM Fst box
+        ), # End QFQM Fst box
+        shinydashboard::tabItem(tabName = "hidden",
+          shinydashboard::box(width = 12,
+            shiny::column(width = 12,
+              shiny::fluidRow(
+                shiny::h1("QFQM Plotting"),
+                shiny::h2("Please give the code a few moments to load in the QFQM data..."),
+                shiny::selectizeInput(inputId = "swft_qfqm_dev_site", multiple = FALSE,
+                                      label = "Select Site",
+                                      choices = swft.tis.site.lookup$SiteID,
+                                      selected = sample(swft.tis.site.lookup$SiteID, 1)
+                )
+              )
+            )
+          )
+        )
+        
       ) # End Tab Items
       
     ) # End Dashboard Body
