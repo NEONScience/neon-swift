@@ -44,18 +44,24 @@ shiny::observeEvent(input$menu, {
         if(nrow(li840.data) > 0){
           li840.data <- li840.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "Li840_CO2_fwMole") 
-          
+        } else {
+          li840.data = data.table::data.table()
         }
         g2131.data <- read.eddy.inquiry(dataType = "2min", sensor = "G2131", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(g2131.data) > 0){
           g2131.data <- g2131.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "G2131_fwMoleCo2")
+        } else {
+          g2131.data = data.table::data.table()
         }
         li7200.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li7200", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(li7200.data) > 0){
           li7200.data <- li7200.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "Li7200_CO2")
+        } else {
+          li7200.data = data.table::data.table()
         }
+        
         swft.data.in <- rbindlist(l = list(li840.data, g2131.data, li7200.data))
         rm(li840.data, g2131.data, li7200.data)
         
@@ -64,29 +70,37 @@ shiny::observeEvent(input$menu, {
         message("\t\t   Is anybody out ther! ?1")
         
         li840.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
-        # li840.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = "UNDE", startDate = Sys.Date()-7, endDate = Sys.Date(), silent = TRUE)
+        # li840.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)
         if(nrow(li840.h2o.data) > 0){
           li840.h2o.data <- li840.h2o.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "Li840_H2O_fwMole")
+        } else {
+          li840.h2o.data = data.table::data.table()
         }
-        # g2131.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "G2131", siteID = "UNDE", startDate = Sys.Date()-7, endDate = Sys.Date(), silent = TRUE)
+        # g2131.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "G2131", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)
         g2131.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "G2131", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(g2131.h2o.data) > 0){
           g2131.h2o.data <- g2131.h2o.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "G2131_percentFwMoleH2O")
+        } else {
+          g2131.h2o.data = data.table::data.table()
         }
-        # li7200.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li7200", siteID = "UNDE", startDate = Sys.Date()-7, endDate = Sys.Date(), silent = TRUE)
+        # li7200.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li7200", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)
         li7200.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li7200", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(li7200.h2o.data) > 0){
           li7200.h2o.data <- li7200.h2o.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "Li7200_fdMoleH2O")
+        } else {
+          li7200.h2o.data = data.table::data.table()
         }
         
-        # l2130.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "L2130", siteID = "UNDE", startDate = Sys.Date()-7, endDate = Sys.Date(), silent = TRUE)
+        # l2130.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "L2130", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)
         l2130.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "L2130", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(l2130.h2o.data) > 0){
           l2130.h2o.data <- l2130.h2o.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "L2130_H2O")
+        } else {
+          l2130.h2o.data = data.table::data.table()
         }
         
         swft.data.in <- data.table::rbindlist(l = list(li840.h2o.data, g2131.h2o.data, li7200.h2o.data, l2130.h2o.data)) %>%
@@ -757,15 +771,15 @@ shiny::observeEvent(input$menu, {
             plot.max <- max(swft.data.out$readout_time, na.rm = TRUE)
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = readout_val_double, color = `Stream Name`)) +
+              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 95, ymax = 102, alpha = 0.25, fill = "#00cc00")+
               geom_point(alpha = .8) +
-              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 95, ymax = 102, alpha = 0.2, fill = "#00cc00")+
               scale_color_manual(values = c("red","blue","grey"))+
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
               labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+
-              facet_wrap(~`Stream Name`)
+              facet_wrap(~`Stream Name`)+ guides(colour = guide_legend(override.aes = list(size=4, alpha = 1)))
           }
           if(input$swft_EddyCo_sub_data_type_Li7200 == "Cell Temp"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_Li7200, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
@@ -777,12 +791,12 @@ shiny::observeEvent(input$menu, {
               dplyr::mutate(`Stream Name` = "Cell Tempurature Difference")
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = temp_diff)) +
+              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 8,    ymax = Inf, alpha = 0.4, fill = "red")+
+              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 6,    ymax =   8, alpha = 0.4, fill = "#ff8c00")+
+              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 2,    ymax =   6, alpha = 0.4, fill = "#00cc00")+
+              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = .2,   ymax =   2, alpha = 0.4, fill = "#ff8c00")+
+              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = -Inf, ymax =  .2, alpha = 0.4, fill = "red")+
               geom_point(alpha = .8, color = "cyan") +
-              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 8,    ymax = Inf, alpha = 0.2, fill = "red")+
-              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 6,    ymax =   8, alpha = 0.2, fill = "#ff8c00")+
-              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 2,    ymax =   6, alpha = 0.2, fill = "#00cc00")+
-              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = .2,   ymax =   2, alpha = 0.2, fill = "#ff8c00")+
-              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = -Inf, ymax =  .2, alpha = 0.2, fill = "red")+
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
@@ -797,10 +811,10 @@ shiny::observeEvent(input$menu, {
             plot.max <- max(swft.data.out$readout_time, na.rm = TRUE)
             
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = readout_val_double)) +
+              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = -3, ymax = -.7, alpha = 0.4, fill = "#00cc00")+
+              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = -5, ymax = -3, alpha = 0.4, fill = "#ff8c00")+
+              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = -10, ymax = -5, alpha = 0.4, fill = "red")+
               geom_point(alpha = .6, color = "cyan") +
-              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = -3, ymax = -.7, alpha = 0.2, fill = "#00cc00")+
-              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = -5, ymax = -3, alpha = 0.2, fill = "#ff8c00")+
-              annotate("rect", xmin = plot.min, xmax = plot.max, ymin = -10, ymax = -5, alpha = 0.2, fill = "red")+
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
@@ -838,7 +852,7 @@ shiny::observeEvent(input$menu, {
             labs(title = paste0(swft.data.out$SiteID[1], ": CO2 2-minute point data"),
                  x = "", y = "CO2 (ppm)",
                  color = "Sensor") +
-            theme(axis.text.x = element_text(angle = 270), legend.text=element_text(size=14), legend.title = element_text(size = 18))+ guides(colour = guide_legend(override.aes = list(size=4, alpha = 1)))  # Option to angle the facet grid y panel text
+            theme(axis.text.x = element_text(angle = 270), legend.text=element_text(size=14), legend.title = element_text(size = 18))+ guides(colour = guide_legend(override.aes = list(size=5, alpha = 1)))  # Option to angle the facet grid y panel text
         }
         if(input$swft_EddyCo_data_type == "H2O"){
           message("\t\t   3")
@@ -857,7 +871,7 @@ shiny::observeEvent(input$menu, {
             labs(title = paste0(swft.data.out$SiteID[1], ": H2O 2-minute point data"),
                  x = "", y = "undetermined",
                  color = "Sensor") +
-            theme(axis.text.x = element_text(angle = 270), legend.text=element_text(size=14), legend.title = element_text(size = 18))+ guides(colour = guide_legend(override.aes = list(size=4, alpha = 1)))  # Option to angle the facet grid y panel text
+            theme(axis.text.x = element_text(angle = 270), legend.text=element_text(size=14), legend.title = element_text(size = 18))+ guides(colour = guide_legend(override.aes = list(size=5, alpha = 1)))  # Option to angle the facet grid y panel text
           
         }
         if(input$swft_EddyCo_data_type == "CSAT3"){
@@ -943,11 +957,11 @@ shiny::observeEvent(input$menu, {
           plot.max <- max(swft.data.out$aggTime, na.rm = TRUE)
           
           swft.plot <- ggplot(swft.data.out, aes(x=aggTime, y= mean, color = `Stream Name`))+
-            geom_hline(yintercept = swft.data.out$FlowRateE[1], linetype = "dashed", color = "#006d2c")+
-            geom_hline(yintercept = swft.data.out$FlowRateE70[1], linetype = "dashed", color = "#b30000")+
             annotate("rect", xmin = plot.min, xmax = plot.max, ymin = swft.data.out$FlowRateE70[1],     ymax = swft.data.out$FlowRateE[1],   alpha = 0.4, fill = "#00cc00")+
             annotate("rect", xmin = plot.min, xmax = plot.max, ymin = swft.data.out$FlowRateE70[1] - 2.5, ymax = swft.data.out$FlowRateE70[1], alpha = 0.4, fill = "#ff8c00")+
             annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 0, ymax = swft.data.out$FlowRateE70[1]- 2.5, alpha = 0.4, fill = "red")+
+            geom_hline(yintercept = swft.data.out$FlowRateE[1], linetype = "dashed", color = "#006d2c")+
+            geom_hline(yintercept = swft.data.out$FlowRateE70[1], linetype = "dashed", color = "#b30000")+
             geom_point() +
             geom_line() + 
             scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "",breaks = c(round(swft.data.out$FlowRateE[1],2), round(swft.data.out$FlowRateE70[1],2)))) +
