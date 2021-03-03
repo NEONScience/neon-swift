@@ -15,7 +15,7 @@ library(shinydashboard)
 library(viridis)
 library(stringr)
 library(scales)
-library(aws.signature)
+library(aws.signature, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
 library(xml2)
 library(aws.s3)
 library(lubridate)
@@ -516,7 +516,6 @@ shiny::shinyUI(
             ) # End fluidRow
           ) # End box
         ) # End QFQM Fst box
-        
       ) # End Tab Items
       
     ) # End Dashboard Body
