@@ -17,10 +17,10 @@ library(stringr)
 library(scales)
 library(aws.signature, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
 library(xml2)
-library(aws.s3)
+library(aws.s3, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
 library(lubridate)
-library(dashboardthemes)
-library(ggdark)
+library(dashboardthemes, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+library(ggdark, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
 
 swft.server.folder.path = "./"
 
