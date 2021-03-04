@@ -113,7 +113,7 @@ shiny::observeEvent(input$menu, {
       # # For Function Testing
       # swft.data.in = read.eddy.inquiry(dataType  = "2min",
       #                                  sensor    = "Li840",
-      #                                  siteID    = "YELL",
+      #                                  siteID    = "STER",
       #                                  startDate = Sys.Date()-7,
       #                                  endDate   = Sys.Date(),
       #                                  silent    = TRUE
@@ -209,9 +209,9 @@ shiny::observeEvent(input$menu, {
                                                   endDate   = input$swft_EddyCo_date_range[2],
                                                   silent    = TRUE
             )
-            # swft.li840.valves = read.eddy.inquiry(dataType  = "2min", 
-            #                                       sensor    = "Li840.valves", 
-            #                                       siteID    = "YELL",
+            # swft.li840.valves = read.eddy.inquiry(dataType  = "2min",
+            #                                       sensor    = "Li840.valves",
+            #                                       siteID    = "STER",
             #                                       startDate = Sys.Date()-7,
             #                                       endDate   = Sys.Date(),
             #                                       silent    = TRUE
@@ -230,34 +230,36 @@ shiny::observeEvent(input$menu, {
                 dplyr::filter(readout_val_double == 1) %>%
                 dplyr::select(readout_time, SampleLevel)
               
-              
-              if(input$swft_EddyCo_sub_data_type_Li840 == "CO2"){
-              
-                message("dont it hurt here?")
-                swft.data.out = swft.data.in %>%
-                  dplyr::left_join(y = swft.li840.valves.clean.join, by = "readout_time") %>%
-                  dplyr::mutate(SampleLevel = ifelse(test = is.na(SampleLevel) == TRUE, yes = "Unknown", no = SampleLevel)) %>%
-                  dplyr::filter(`Stream Name` == "Li840_CO2_fwMole")
-                
-                swft.li840.summary = swft.data.out %>%
-                  dplyr::group_by(`Stream Name`) %>%
-                  dplyr::summarise(
-                    median = stats::median(readout_val_double, na.rm = TRUE)
-                  )
-                
-                swft.li840.co2.med = swft.li840.summary %>% dplyr::filter(`Stream Name` == "Li840_CO2_fwMole")
-                swft.li840.co2.med = swft.li840.co2.med$median[1]
-                
-              }
-              
-              if(input$swft_EddyCo_sub_data_type_Li840 == "H2O"){
-                
-                swft.data.out = swft.data.in %>%
-                  dplyr::left_join(y = swft.li840.valves.clean.join, by = "readout_time") %>%
-                  dplyr::mutate(SampleLevel = ifelse(test = is.na(SampleLevel) == TRUE, yes = "Unknown", no = SampleLevel)) %>%
-                  dplyr::filter(`Stream Name` == "Li840_H2O_fwMole")
-              }
+            } else {
+              swft.li840.valves.clean.join = data.table::data.table("readout_time" = NA, "SampleLevel" = NA)
             }
+            if(input$swft_EddyCo_sub_data_type_Li840 == "CO2"){
+            
+              message("dont it hurt here?")
+              swft.data.out = swft.data.in %>%
+                dplyr::left_join(y = swft.li840.valves.clean.join, by = "readout_time") %>% 
+                dplyr::mutate(SampleLevel = ifelse(test = is.na(SampleLevel) == TRUE, yes = "Unknown", no = SampleLevel)) %>% 
+                dplyr::filter(`Stream Name` == "Li840_CO2_fwMole")
+              
+              swft.li840.summary = swft.data.out %>%
+                dplyr::group_by(`Stream Name`) %>%
+                dplyr::summarise(
+                  median = stats::median(readout_val_double, na.rm = TRUE)
+                )
+              
+              swft.li840.co2.med = swft.li840.summary %>% dplyr::filter(`Stream Name` == "Li840_CO2_fwMole")
+              swft.li840.co2.med = swft.li840.co2.med$median[1]
+              
+            }
+            
+            if(input$swft_EddyCo_sub_data_type_Li840 == "H2O"){
+              
+              swft.data.out = swft.data.in %>%
+                dplyr::left_join(y = swft.li840.valves.clean.join, by = "readout_time") %>%
+                dplyr::mutate(SampleLevel = ifelse(test = is.na(SampleLevel) == TRUE, yes = "Unknown", no = SampleLevel)) %>%
+                dplyr::filter(`Stream Name` == "Li840_H2O_fwMole")
+            }
+            
           } else if(input$swft_EddyCo_sub_data_type_Li840 == "Sample Valves"){
             
             # WARNING There is some redundancy here, as we pull the Li840 Data too... Could make an excpetion...
