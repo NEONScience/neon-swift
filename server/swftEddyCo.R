@@ -21,7 +21,7 @@ shiny::observeEvent(input$menu, {
       
       shinydashboard::valueBox(
         value = paste0(swft.ml.missing$sites.with.all.levels[1], "%"),
-        subtitle = paste0("of sites have all ECSE ML flows (", ml.missing.stat$date[1],")"),
+        subtitle = paste0("of sites have all ECSE ML flows (", swft.ml.missing$date[1],")"),
         width = 12,
         color = "red"
       )
