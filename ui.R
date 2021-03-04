@@ -15,12 +15,12 @@ library(shinydashboard)
 library(viridis)
 library(stringr)
 library(scales)
-library(aws.signature)
+library(aws.signature, lib.loc = "./R/x86_64-redhat-linux-gnu-library/")
 library(xml2)
-library(aws.s3)
+library(aws.s3, lib.loc = "./R/x86_64-redhat-linux-gnu-library/")
 library(lubridate)
-library(dashboardthemes)
-library(ggdark)
+library(dashboardthemes, lib.loc = "./R/x86_64-redhat-linux-gnu-library/")
+library(ggdark, lib.loc = "./R/x86_64-redhat-linux-gnu-library/")
 
 swft.server.folder.path = "./"
 
@@ -351,13 +351,11 @@ shiny::shinyUI(
                   ),
                   shiny::fluidRow(
                     shiny::column(width = 4,
-                      shiny::p("Data is collected from an automated Presto pulled designed by IS Science and CI. Data is updated in the early morning (10:00:00 UTC)."),
-                      shiny::a("Open the Eddy-Co Architecture Map",target="_blank",href="EC_ArchMap.pdf"),
                       shiny::br(),
                       shiny::br()
                     ),
                     shiny::column(width = 4,
-                      shiny::p("Daily sensor files are then stored at an S3 bucket, and retrieved by a IS Science designed function. All data are 2-minute point data, meaning that what ever the values was at the 2 minute interval, is the value that is stored."),
+                      
                       shiny::br(),
                       shiny::br()
                     ),
@@ -470,7 +468,9 @@ shiny::shinyUI(
                 shiny::fluidRow(
                   shiny::column(width = 2),
                   shiny::column(width = 8,
-                    DT::dataTableOutput("swft_ec_fast_table") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
+                    DT::dataTableOutput("swft_ec_fast_table") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
+                    shiny::p("Data is collected from an automated Presto pulled designed by IS Science and CI. Data is updated in the early morning (10:00:00 UTC)."),
+                    shiny::p("Daily sensor files are then stored at an S3 bucket, and retrieved by a IS Science designed function. All data are 2-minute point data, meaning that what ever the values was at the 2 minute interval, is the value that is stored.")
                   ), 
                   shiny::column(width = 2)
                 )
