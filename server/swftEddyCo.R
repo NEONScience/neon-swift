@@ -12,6 +12,73 @@ shiny::observeEvent(input$menu, {
     
     base::source(paste0(swft.server.folder.path, "R/read.eddy.inquiry.swift.R"))
     
+    
+    # Value Boxes Load First
+    
+    output$swft_ec_fast_ml_missing <- shinydashboard::renderValueBox({
+      
+      swft.ml.missing = aws.s3::s3readRDS(object = "swft_daily_stats/ml.missing.RDS", bucket = "research-eddy-inquiry")
+      
+      shinydashboard::valueBox(
+        value = paste0(swft.ml.missing$sites.with.all.levels[1], "%"),
+        subtitle = paste0("of sites have all ECSE ML flows (", ml.missing.stat$date[1],")"),
+        width = 12,
+        color = "red"
+      )
+    })
+    
+    output$swft_ec_fast_li840_working <- shinydashboard::renderValueBox({
+      
+      swft.li840.working = aws.s3::s3readRDS(object = "swft_daily_stats/li840_working.RDS", bucket = "research-eddy-inquiry")
+      
+      shinydashboard::valueBox(
+        value = paste0(swft.li840.working$percent.li840.valid[1], "%"),
+        subtitle = paste0("of sites have valid ECSE IRGA data (", swft.li840.working$date[1],")"),
+        width = 12,
+        color = "red"
+      )
+    })
+    
+    
+    output$swft_ec_fast_g2131_working <- shinydashboard::renderValueBox({
+      
+      swft.g2131.working = aws.s3::s3readRDS(object = "swft_daily_stats/g2131_working.RDS", bucket = "research-eddy-inquiry")
+      
+      shinydashboard::valueBox(
+        value = paste0(swft.g2131.working$percent.valid[1], "%"),
+        subtitle = paste0("of sites have valid Isotopic CO2 data (", swft.g2131.working$date[1],")"),
+        width = 12,
+        color = "blue"
+      )
+    })
+    
+    
+    
+    output$swft_ec_fast_l2130_working <- shinydashboard::renderValueBox({
+      
+      swft.l2130.working = aws.s3::s3readRDS(object = "swft_daily_stats/l2130_working.RDS", bucket = "research-eddy-inquiry")
+      
+      shinydashboard::valueBox(
+        value = paste0(swft.l2130.working$percent.valid[1], "%"),
+        subtitle = paste0("of sites have valid Isotopic H2O data (", swft.l2130.working$date[1],")"),
+        width = 12,
+        color = "blue"
+      )
+    })
+    
+    output$swft_ec_fast_li7200_working <- shinydashboard::renderValueBox({
+      
+      swft.li7200.working = aws.s3::s3readRDS(object = "swft_daily_stats/li7200_working.RDS", bucket = "research-eddy-inquiry")
+      
+      shinydashboard::valueBox(
+        value = paste0(swft.li7200.working$percent.valid[1], "%"),
+        subtitle = paste0("of sites have valid ECTE IRGA data (", swft.li7200.working$date[1],")"),
+        width = 12,
+        color = "orange"
+      )
+    })
+    
+    
     swft.tis.site.meta <- data.table::fread(paste0(swft.server.folder.path, "data/lookup/tis.site.meta.csv"))
 
     # Plot Data
@@ -66,8 +133,6 @@ shiny::observeEvent(input$menu, {
         rm(li840.data, g2131.data, li7200.data)
         
       } else if(input$swft_EddyCo_data_type == "H2O") {
-        
-        message("\t\t   Is anybody out ther! ?1")
         
         li840.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         # li840.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)

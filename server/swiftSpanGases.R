@@ -92,6 +92,7 @@ shiny::observeEvent(input$menu, {
     })
     
     swft_spangas_delivery_plot <- shiny::reactive({
+      shiny::req(input$swft_spangas_site)
       
       if(is.null(input$swft_spangas_site) == FALSE){
       
@@ -133,6 +134,8 @@ shiny::observeEvent(input$menu, {
     })
     
     swft_spangas_loss_plot <- shiny::reactive({
+      
+      shiny::req(input$swft_spangas_site)
       
       if(is.null(input$swft_spangas_site) == FALSE){
         swft.spangas.loss.out = swft.spangas.differential.in %>%

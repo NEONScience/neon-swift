@@ -346,29 +346,26 @@ shiny::shinyUI(
               shiny::tabPanel("", width = 12,
                 shiny::fluidRow(
                   shiny::fluidRow(
-                    shiny::column(width = 4,
+                    shiny::column(width = 12,
                       shiny::h1("Eddy Covariance Plots"),
-                      shiny::br()
-                    )
-                  ),
-                  shiny::fluidRow(
-                    shiny::column(width = 4,
-                      shiny::br(),
-                      shiny::br()
-                    ),
-                    shiny::column(width = 6,
-                      
-                      shiny::br(),
-                      shiny::br()
-                    ),
-                    shiny::column(width = 2,
-                      shinydashboard::valueBoxOutput("swft_ec_fast_collect_data_time", width = 8),
-                      shiny::br(),
-                      shiny::br(),
-                      shiny::br(),
-                      shiny::br(),
-                      shiny::br(),
-                      shiny::br(),
+                      shiny::tags$a(
+                        shinydashboard::valueBoxOutput("swft_ec_fast_ml_missing", width = 2), title = "An algorithm calculated for each site if each ML flow was above 2.0 SLPM, if this was the case, it was considered valid."
+                      ),
+                      shiny::tags$a(
+                        shinydashboard::valueBoxOutput("swft_ec_fast_li840_working", width = 2), title = "An algorithm calculated for each site if the sample MFC flow was within 0.8 and 1.2 SLPM and the CO2 values were between 200 and 1000."
+                      ),
+                      shiny::tags$a(
+                        shinydashboard::valueBoxOutput("swft_ec_fast_g2131_working", width = 2), title = "An algorithm calculated for each site if the CO2 values were between 200 and 1,000."
+                      ),
+                      shiny::tags$a(
+                        shinydashboard::valueBoxOutput("swft_ec_fast_l2130_working", width = 2), title = "An algorithm calculated for each site if the H2O values were between 0 and 50,000."
+                      ),
+                      shiny::tags$a(
+                        shinydashboard::valueBoxOutput("swft_ec_fast_li7200_working", width = 2), title = "An algorithm calculated for each site if the CO2 values were between 0 and 1,000, the diagnostic was between 8188 and 8191, the MFC flow was between 10.0 and 14.0 SLPM, and the differential cell temperature was between 2.0C and 6.0C."
+                      ),
+                      shiny::tags$a(
+                        shinydashboard::valueBoxOutput("swft_ec_fast_collect_data_time", width = 2), title = "Calculates how long it took to pull all the files and produce the plot."
+                      ),
                       shiny::br()
                     )
                   ),
