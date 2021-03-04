@@ -1030,8 +1030,8 @@ shiny::observeEvent(input$menu, {
       # Check how log the whole process took
       output$swft_ec_fast_collect_data_time <- shinydashboard::renderValueBox({
         shinydashboard::valueBox(
-          value = paste0("Data collected in: ", round(difftime(swft_ec_fast_collect_data_time_finish, swft_ec_fast_collect_data_time_start, units = "secs"), 2)," s"),
-          subtitle = "",
+          value = paste0(round(difftime(swft_ec_fast_collect_data_time_finish, swft_ec_fast_collect_data_time_start, units = "secs"), 2)," s"),
+          subtitle = "Data collected in",
           width = 12,
           color = "black"
         )

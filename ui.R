@@ -63,6 +63,8 @@ shiny::shinyUI(
       shinydashboard::tabItems(
         # ----------- Swift Tab ---------
         shinydashboard::tabItem(tabName = "swft_home_tab",
+                                
+          shiny::modalDialog(title = paste0("Swift was updated recently!"),size = "l", shiny::helpText(a("Check out the updates here!", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
           shinydashboard::box(width = 12,
               shiny::column(width = 7,
               shiny::h1("An Eddy-Covariance State of Health Dashboard"),
@@ -354,13 +356,15 @@ shiny::shinyUI(
                       shiny::br(),
                       shiny::br()
                     ),
-                    shiny::column(width = 4,
+                    shiny::column(width = 6,
                       
                       shiny::br(),
                       shiny::br()
                     ),
-                    shiny::column(width = 4,
-                      shinydashboard::valueBoxOutput("swft_ec_fast_collect_data_time", width = 12),
+                    shiny::column(width = 2,
+                      shinydashboard::valueBoxOutput("swft_ec_fast_collect_data_time", width = 8),
+                      shiny::br(),
+                      shiny::br(),
                       shiny::br(),
                       shiny::br(),
                       shiny::br(),
@@ -377,7 +381,7 @@ shiny::shinyUI(
                                             end = Sys.Date())
                     )
                   ),
-                  shiny::column(width = 2,
+                  shiny::column(width = 1,
                     shiny::fluidRow(
                       shiny::selectizeInput(inputId = "swft_EddyCo_site", multiple = FALSE,
                                         label = "Select Site",
@@ -385,7 +389,7 @@ shiny::shinyUI(
                                         selected = sample(swft.tis.site.lookup$SiteID, 1))
                     )
                   ),
-                  shiny::column(width = 3,
+                  shiny::column(width = 4,
                     shiny::fluidRow(
                       shiny::selectizeInput(inputId = "swft_EddyCo_data_type", multiple = FALSE,
                                          label = "Select Data",
