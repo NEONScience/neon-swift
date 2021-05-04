@@ -45,8 +45,6 @@ shiny::observeEvent(input$menu, {
     swft.spangas.overall.in <- aws.s3::s3read_using(FUN = fst::read.fst, bucket = "research-eddy-inquiry", object = "spanGas/master/swft.span.gas.master.fst")
     swft.spangas.differential.in <- aws.s3::s3read_using(FUN = fst::read.fst, bucket = "research-eddy-inquiry", object = "spanGas/master/swft.span.gas.differntial.master.fst")
     
-    
-    
     swft_spangas_overall_plot <- shiny::reactive({
       shiny::req(input$swft_spangas_site)
       
@@ -140,13 +138,18 @@ shiny::observeEvent(input$menu, {
       if(is.null(input$swft_spangas_site) == FALSE){
         swft.spangas.loss.out = swft.spangas.differential.in %>%
           dplyr::filter(SiteID %in% input$swft_spangas_site) %>%
-          dplyr::group_by(SiteID,Cylinder) %>%
-          dplyr::mutate(Average_Pressure_Loss = sum(meanDifferential,na.rm = TRUE)/(as.numeric(difftime(max(date,na.rm = TRUE),min(date, na.rm = TRUE))))) %>% 
-          dplyr::filter(date == max(date))
+          # dplyr::filter(SiteID %in% "UNDE")  %>%
+          dplyr::filter(date >= input$swft_spangas_date_range[1]
+                        & date <= input$swft_spangas_date_range[2]) %>%
+          dplyr::group_by(SiteID, Cylinder, assetTag) %>%
+          dplyr::filter(stringr::str_detect(string = Cylinder, pattern = "Archive") == FALSE) %>% 
+          dplyr::summarise(.groups="drop",
+                           `Average Loss` = round(mean(meanDifferential, na.rm = TRUE),2)
+          )
   
         if(nrow(swft.spangas.loss.out) > 0){
           swft.spangas.loss.plot = ggplot2::ggplot(data = swft.spangas.loss.out, 
-            ggplot2::aes(x = Cylinder, y = Average_Pressure_Loss, text = paste0(Cylinder, " is losing: ", round(-Average_Pressure_Loss, 2), " PSI Per Day"))) +
+            ggplot2::aes(x = Cylinder, y = `Average Loss`, text = paste0(Cylinder, " is losing: ", round(-`Average Loss`, 2), " PSI Per Day"))) +
             ggplot2::geom_bar(aes(color = Cylinder, fill = Cylinder), stat = "identity") +                                                # Make bars
             ggplot2::scale_fill_manual(values= swft.spangas.linefills, aesthetics = "color") +                                            # Make color same as cylinder color
             ggplot2::scale_fill_manual(values= swft.spangas.linefills, aesthetics = "fill") +                                             # Make fill same as cylinder color

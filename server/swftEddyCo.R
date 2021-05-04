@@ -918,15 +918,17 @@ shiny::observeEvent(input$menu, {
         if(input$swft_EddyCo_data_type == "CO2"){
           message(paste0("Plot: ", input$swft_EddyCo_data_type, "-All for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
           
-          swft.co2.colors <- c("Li7200_CO2" = "#005824",
-                               "Li840_CO2_fwMole" = "#e31a1c", 
-                               "G2131_fwMoleCo2" = "#0c2c84")
+          swft.co2.colors <- c("Li7200_CO2" = "green",
+                               "Li840_CO2_fwMole" = "red", 
+                               "G2131_fwMoleCo2" = "magenta")
           
           swft.plot <- ggplot(swft.data.out, aes(x=readout_time, y= readout_val_double, color = `Stream Name`))+
             geom_jitter(alpha = .6) +
             scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
             scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
-            scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +            scale_color_manual(values = swft.co2.colors)+
+            scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +    
+            # scale_color_manual(values = swft.co2.colors)+
+            # viridis::scale_color_viridis(discrete = TRUE)+
             labs(title = paste0(swft.data.out$SiteID[1], ": CO2 2-minute point data"),
                  x = "", y = "CO2 (ppm)",
                  color = "Sensor") +
@@ -936,16 +938,16 @@ shiny::observeEvent(input$menu, {
           message("\t\t   3")
           message(paste0("Plot: ", input$swft_EddyCo_data_type, "-All for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
           
-          swft.co2.colors <- c("Li7200_fdMoleH2O" = "#005824",
-                               "Li840_H2O_fwMole" = "#e31a1c", 
-                               "G2131_percentFwMoleH2O" = "#0c2c84",
+          swft.co2.colors <- c("Li7200_fdMoleH2O" = "green",
+                               "Li840_H2O_fwMole" = "red", 
+                               "G2131_percentFwMoleH2O" = "cyan",
                                "L2130_H2O"        = "#1c9099")
           
           swft.plot <- ggplot(swft.data.out, aes(x=readout_time, y= readout_val_double, color = `Stream Name`))+
             geom_jitter(alpha = .6) +
             scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
             scale_y_continuous(breaks = scales::pretty_breaks(n = 10), sec.axis = dup_axis(name = "")) +            
-            scale_color_manual(values = swft.co2.colors)+
+            # scale_color_manual(values = swft.co2.colors)+
             labs(title = paste0(swft.data.out$SiteID[1], ": H2O 2-minute point data"),
                  x = "", y = "undetermined",
                  color = "Sensor") +

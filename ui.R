@@ -10,16 +10,22 @@ library(ggplot2)
 library(DT)
 library(tidyr)
 library(data.table)
+# library(shinycssloaders)
 library(shinycssloaders, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
 library(shinydashboard)
+# library(viridis)
 library(viridis, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
 library(stringr)
 library(scales)
+# library(aws.signature)
 library(aws.signature, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
 library(xml2)
+# library(aws.s3)
 library(aws.s3, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
 library(lubridate)
+# library(dashboardthemes)
 library(dashboardthemes, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+# library(ggdark)
 library(ggdark, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
 
 swft.server.folder.path = "./"
@@ -29,6 +35,8 @@ swft.full.site.lookup <- data.table::fread(paste0(swft.server.folder.path, "data
 swft.ais.site.lookup <-  data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.ais.site.lookup.csv"))
 swft.tis.site.lookup <-  data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.tis.site.lookup.csv"))
 
+
+When_was_the_update_log_update = base::file.info(paste0(swft.server.folder.path,"www/Swift_Update_Log.pdf"))$mtime
 
 # Define UI for application that draws a histogram
 shiny::shinyUI(
@@ -63,8 +71,10 @@ shiny::shinyUI(
       shinydashboard::tabItems(
         # ----------- Swift Tab ---------
         shinydashboard::tabItem(tabName = "swft_home_tab",
-                                
-          shiny::modalDialog(title = paste0("Swift was updated recently!"),size = "l", shiny::helpText(a("Check out the updates here!", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
+          
+          # TODO: make this only appear if the update log was recently updated. Until then... uncomment :D                                
+          # shiny::modalDialog(title = paste0("Swift was updated recently!"),size = "l", shiny::helpText(a("Check out the updates here!", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
+
           shinydashboard::box(width = 12,
               shiny::column(width = 7,
               shiny::h1("An Eddy-Covariance State of Health Dashboard"),
@@ -229,7 +239,7 @@ shiny::shinyUI(
                 ) # End fluidRow
               ), # End tabPanel
               shiny::tabPanel("Avg Pressure Loss",width=12,
-                shiny::p("Ideal pressure loss in a fully functional Cval system is ~ 4-6 PSI."),
+                shiny::p("Theoretical pressure loss in a fully functional Cval system is ~ 3-6 PSI. However, due to pressure fluctuations you likely will not see this pressure loss unless you increase the sample period for more than 45 days AND all sensors are validating."),
                 shiny::fluidRow(width = "100%",
                   plotly::plotlyOutput("swft_spangas_loss_plot", height = "600px") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                 ) # End fluidRow
