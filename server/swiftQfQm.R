@@ -5,7 +5,6 @@ shiny::observeEvent(input$menu, {
                "AWS_S3_ENDPOINT"       = "neonscience.org",
                "AWS_DEFAULT_REGION"    = "s3.data")
     
-    
     data.in = aws.s3::s3read_using(FUN = fst::read.fst, object = "qfqm_report_data/qfqm.report.fst", bucket = "research-eddy-inquiry")
     
     if(nrow(data.in) > 0) {
