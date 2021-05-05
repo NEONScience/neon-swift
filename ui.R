@@ -56,6 +56,7 @@ shiny::shinyUI(
         shinydashboard::menuItem("CVAL Plotting",    tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
         shinydashboard::menuItem("Eddy-Co Plotting", tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
         shinydashboard::menuItem("QFQM Plotting",    tabName = "swft_qfqm_tab",       icon = shiny::icon("flask",          lib = "font-awesome")),
+        shinydashboard::menuItem("TIS Maintenance",  tabName = "swft_maintenance_tab",icon = shiny::icon("wrench",         lib = "font-awesome")),
         shinydashboard::menuItem("", tabName = "hidden")
       )
     ),
@@ -99,6 +100,8 @@ shiny::shinyUI(
               shiny::h4("A tab that uses `fst` data files to render Eddy-Co data; from Co2 measurements, CSAT3 wind data, and measurement level flows."),
               shiny::tags$b("QFQM Plotting"),
               shiny::h4("This tab is for investigateing the Quality Flag and Quality Metric data from Eddy4R."),
+              shiny::tags$b("TIS Maintenance"),
+              shiny::h4("Long promised, finally delivered, a reactive look at TIS maintenance data!")
 
             ),
             shiny::column(width = 4, offset = 1,
@@ -134,10 +137,10 @@ shiny::shinyUI(
                                   choices = list("TIS" = 1, "AIS" = 2),selected = 1, inline = TRUE),
                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'cnc'",
                     shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",
-                      plotly::plotlyOutput("CnCUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
+                      plotly::plotlyOutput("CnCUptimePlot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                     ),
                     shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
-                      plotly::plotlyOutput("CnCUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white"),
+                      plotly::plotlyOutput("CnCUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
                     )
                 ),
                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'rtu'",
@@ -282,7 +285,7 @@ shiny::shinyUI(
                     shinydashboard::valueBoxOutput("swft_cval_g2131_records",  width = 3),
                     shinydashboard::valueBoxOutput("swft_cval_li840_records",  width = 3),
                     shinydashboard::valueBoxOutput("swft_cval_li7200_records", width = 3),
-                    shinydashboard::valueBoxOutput("swft_cval_l2130_records",  width = 3),
+                    shinydashboard::valueBoxOutput("swft_cval_l2130_records",  width = 3)
                   ),
                   shiny::fluidRow(
                     shinydashboard::valueBoxOutput("swft_cval_site_records", width = 3),
@@ -437,7 +440,7 @@ shiny::shinyUI(
                   ),
                   shiny::column(width = 2,
                     shiny::radioButtons(inputId = "swft_EddyCo_radioButton", label = "Advanced Options",choices = c("Enabled", "Disabled"), selected = "Disabled")
-                  ),
+                  )
                 ),
                 shiny::fluidRow(
                   shiny::column(width = 5,
@@ -489,6 +492,217 @@ shiny::shinyUI(
             ) # End EC Fst Tab Panel for Condtional panels
           ) # End EC Fst box
         ), # End EC Fst
+        shinydashboard::tabItem(tabName = "swft_maintenance_tab",
+          shinydashboard::box(width = 12,
+            shiny::column(width = 2,
+              shiny::selectInput(inputId = "swft_mntc_site_select", label = "SiteID", choices = swft.tis.site.lookup$SiteID, selected = sample(swft.tis.site.lookup$SiteID, 1)), 
+              shiny::dateInput(inputId = "swft_mntc_date_select", label = "Filter to Dates after ", min = "2020-05-01", max = Sys.Date() + 1, value = Sys.Date() - 40), 
+              shiny::selectInput(inputId = "swft_mntc_data_select", label = "Maintenance Group", choices = c("Tower", "Soil", "Eddy", "DFIR", "Comments"), selected = "Tower")
+            ),
+            shiny::column(width = 4,
+                          
+              shinydashboard::valueBoxOutput(outputId = "swft_mtnc_bout_freq_recent", width = 12),
+              shinydashboard::valueBoxOutput(outputId = "swft_mtnc_bout_freq_all_time", width = 12)
+                          
+              
+              
+            ),
+            shiny::column(width = 2,        
+              
+              shinydashboard::valueBoxOutput(outputId = "swft_mtnc_first_bout", width = 12),
+              shinydashboard::valueBoxOutput(outputId = "swft_mtnc_last_bout", width = 12)
+                          
+            ), 
+            shiny::column(width = 3,
+              shinydashboard::valueBoxOutput(outputId = "swft_mtnc_total_bouts", width = 6)
+            )
+            
+          ),
+          shinydashboard::box(width = 12,
+            shiny::column(width = 12,
+                          
+              # Tower Maintenance
+                          
+              shiny::conditionalPanel(condition = "input.swft_mntc_data_select == 'Tower'",
+                shiny::h1("Tower Maintenance"),
+                shiny::fluidRow(
+                  shiny::column(width = 4,
+                    shiny::h3("Pheno:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_tower_pheno")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 8,
+                    shiny::h3("AAT:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_tower_aat")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 8,
+                    shiny::h3("Wind:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_tower_wind")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 8,
+                    shiny::h3("IR Biotemp:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_tower_ir")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 8,
+                    shiny::h3("PAR:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_tower_par")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 10,
+                    shiny::h3("Tower Top Sensors:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_tt_sensors")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 8,
+                    shiny::h3("Tower Comments:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_tower_comments")
+                  )
+                )
+              ),
+              
+              # Soil Maintenance
+              
+              shiny::conditionalPanel(condition = "input.swft_mntc_data_select == 'Soil'",
+                shiny::h1("Soil Plot Maintenace"),
+                shiny::fluidRow(
+                  shiny::column(width = 8,
+                    shiny::h3("Co2:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_sp_co2")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 8,
+                    shiny::h3("Heat Flux:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_sp_soil_heat_flux")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 8,
+                    shiny::h3("Q-Line PAR:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_sp_soil_qline")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 8,
+                    shiny::h3("Temperature:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_sp_soil_temperature")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 12,
+                    shiny::h3("Throughfall:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_sp_soil_thrufall")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 8,
+                    shiny::h3("Water Content:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_sp_soil_water_content")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 8,
+                    shiny::h3("SP3 Sensors:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_sp3_sensors")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 8,
+                    shiny::h3("Soil Comments:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_sp_comments")
+                  )
+                )
+              ),
+              
+              # Eddy Maintenance
+              
+              shiny::conditionalPanel(condition = "input.swft_mntc_data_select == 'Eddy'",
+                shiny::h1("Eddy Maintenance"),
+                shiny::fluidRow(
+                  shiny::column(width = 12,
+                    shiny::h3("Gas Analyzers:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_eddy_gas_analyzer")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 12,
+                    shiny::h3("Tower-Top Sensors:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_eddy_tt")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 12,
+                    shiny::h3("EC Inlets:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_eddy_inlet")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 12,
+                    shiny::h3("EC Pumps:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_eddy_pump")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 12,
+                    shiny::h3("Span Gas Cylinders:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_eddy_gas_cylinder")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 12,
+                    shiny::h3("ECSE Pressure Transducers:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_eddy_pducer")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 12,
+                    shiny::h3("ECSE Fep Tubing:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_eddy_fep_tube")
+                  )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 12,
+                    shiny::h3("Eddy Comments:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_eddy_comments")
+                  )
+                )
+              ),
+              
+              # DFIR Maintenance
+              
+              shiny::conditionalPanel(condition = "input.swft_mntc_data_select == 'DFIR'",
+                shiny::h1("DFIR Maintenance"),
+                shiny::fluidRow(
+                  shiny::column(width = 12,
+                    shiny::h3("DFIR:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_dfir")
+                  )
+                )
+              ),
+              
+              # All Comments
+              
+              shiny::conditionalPanel(condition = "input.swft_mntc_data_select == 'Comments'",
+                shiny::h1("All Comments"),
+                shiny::fluidRow(
+                  shiny::column(width = 12,
+                    shiny::h3("Comments:"),
+                    DT::dataTableOutput(outputId = "swft_mtnc_comments")
+                  )
+                )
+              )
+            )
+          )
+        ),
         shinydashboard::tabItem(tabName = "swft_qfqm_tab",
           shinydashboard::box(width = 12,
             shiny::column(width = 12,
@@ -517,7 +731,7 @@ shiny::shinyUI(
               )
             ), # End Column 7
             shiny::column(width = 1),
-            shiny::column(width = 7,
+            shiny::column(width = 7
               )
           ),
           shinydashboard::box(width = 12,
