@@ -37,6 +37,28 @@ shiny::observeEvent(input$menu, {
                                  "ECTE Archive Delivery"  = "solid")
 
     ###### Initializing data selected by user ######
+    
+    swft_span_in = shiny::reactive({
+      
+      # Sensor Name from DPID look up table
+      swft_span_lookup = aws.s3::s3readRDS(object = "lookup/SensorNames.RDS", bucket = "research-eddy-inquiry")
+      
+      swft_span_raw = aws.s3::s3readRDS(object = paste0("spanGas/master/", input$swft_spangas_site, ".RDS"), bucket = "research-eddy-inquiry") %>% 
+        dplyr::filter(StartTime >= input$swft_spangas_date_range[1]
+                      & StartTime <= input$swft_spangas_date_range[2])%>% 
+          dplyr::mutate(DPID = base::substr(meas_strm_name, 15, 100)) %>%
+          dplyr::left_join(y = swft_span_lookup, by = "DPID") %>%
+          dplyr::mutate(SiteID = base::substr(meas_strm_name, 10, 13)) %>%
+          dplyr::mutate(Cylinder = strm_name) %>%
+          dplyr::mutate(date = StartTime) %>%
+          dplyr::mutate(cylType = ifelse(test = stringr::str_detect(string = Cylinder, pattern = "Delivery") == TRUE, yes = "Delivery Pressure", no = "Overall Pressure")) %>%
+          dplyr::mutate(ecType = ifelse(test = stringr::str_detect(string = Cylinder, pattern = "ECTE") == TRUE, yes = "Turb", no = "Stor")) %>%
+          dplyr::select(SiteID, date, Cylinder, cylType, ecType, meanVal) %>%
+          dplyr::mutate(meanVal = meanVal/6.895)
+      
+    })
+    
+    
 
     # Read in all Gas Cylinder Data
     # swft.spangas.overall.in <- fst::read.fst(paste0(swft.server.folder.path, "data/spanGas/swft.span.gas.master.fst"))
@@ -51,11 +73,8 @@ shiny::observeEvent(input$menu, {
       message(paste0("Span Gas - ", input$swft_spangas_site, " from ", input$swft_spangas_date_range[1], " to ", input$swft_spangas_date_range[2], "\n"))
 
       if(is.null(input$swft_spangas_site) == FALSE){
-      
-        swft.spangas.overall.out = swft.spangas.overall.in %>%
-          dplyr::filter(SiteID %in% input$swft_spangas_site) %>%
-          dplyr::filter(date >= input$swft_spangas_date_range[1]
-                      & date <= input$swft_spangas_date_range[2]) %>%
+        message("Yaaa we made it!")
+        swft.spangas.overall.out = swft_span_in() %>%
           dplyr::filter(cylType == "Overall Pressure")
          
         if(nrow(swft.spangas.overall.out) > 0){
@@ -63,7 +82,7 @@ shiny::observeEvent(input$menu, {
             ggplot2::geom_line( size = 1, ggplot2::aes(x = date, y = meanVal)) +                                          # Make Lines
             ggplot2::geom_point(size = 1, ggplot2::aes(x = date, y = meanVal)) +
             ggplot2::scale_y_continuous(breaks = c(0,250,400,800,1000,1250,1500,1750,2000,2100), sec.axis = dup_axis(name = "")) +
-            ggplot2::scale_x_date(breaks = scales::pretty_breaks(n = 20), date_labels = "%Y\n%m-%d") +
+            ggplot2::scale_x_date(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y\n%m-%d") +
             ggplot2::labs(x= "", y= "Cylinder Pressure (PSI)", color = "Cylinder Type", linetype="")+                                    # Labels to make plot legible
             ggplot2::geom_hline(aes(yintercept = 800),linetype = 3, size = 1.1, color = "red") +                 # Upper limit for Cylinder Pressure
             ggplot2::geom_hline(aes(yintercept = 400), linetype = 3, size = 1.1, color = "green") +              # Lower Limit for Cylinder Pressure
@@ -94,10 +113,7 @@ shiny::observeEvent(input$menu, {
       
       if(is.null(input$swft_spangas_site) == FALSE){
       
-        swft.spangas.overall.out = swft.spangas.overall.in %>%
-          dplyr::filter(SiteID %in% input$swft_spangas_site) %>%
-          dplyr::filter(date >= input$swft_spangas_date_range[1]
-                        & date <= input$swft_spangas_date_range[2]) %>%
+        swft.spangas.overall.out = swft_span_in() %>%
           dplyr::filter(cylType == "Delivery Pressure")
         
         if(nrow(swft.spangas.overall.out) > 0){
@@ -105,7 +121,7 @@ shiny::observeEvent(input$menu, {
             ggplot2::geom_line( size = 1,  ggplot2::aes(x = date, y = meanVal)) +                                            # Make Lines
             ggplot2::geom_point(size = 1,  ggplot2::aes(x = date, y = meanVal)) +
             ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(n = 12), sec.axis = dup_axis(name = "")) +
-            ggplot2::scale_x_date(breaks = scales::pretty_breaks(n = 20), date_labels = "%Y\n%m-%d") +
+            ggplot2::scale_x_date(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y\n%m-%d") +
             ggplot2::labs(x= "", y="Cylinder Pressure Loss (PSI)", color = "Cylinder Type", linetype="") +                                     # Labels to make plot legible
             ggplot2::geom_hline(aes(yintercept = 13),linetype = 3, size = 1.1, color = "firebrick") +              # Upper limit for Cylinder Pressure
             ggplot2::geom_hline(aes(yintercept = 9), linetype = 3, size = 1.1, color = "firebrick") +              # Lower Limit for Cylinder Pressure
