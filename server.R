@@ -18,16 +18,12 @@ server <- function(input, output, session) {
   session$onSessionEnded(function() {
     server_end_time = Sys.time()
     users_data_in = data.table::data.table("Start" = server_start_time, "End" = server_end_time, "Total Time" = difftime(server_end_time, server_start_time, units = "secs"))
-
-    message("Saving using master")
     # Read in master file
     all_users_data = base::readRDS(file = "./data/user_log/user_log.RDS")
     # Combine the new data to the master
     users_data_out = data.table::rbindlist(l = list(all_users_data, users_data_in))
     # Save out the new file
     base::saveRDS(object = users_data_out, file = "./data/user_log/user_log.RDS")
-
-
   })
   
   base::source(file='./server/swiftCvalFst.R',        local = TRUE)
@@ -36,6 +32,7 @@ server <- function(input, output, session) {
   base::source(file='./server/swiftLcServices.R',     local = TRUE)
   base::source(file='./server/swiftTimestampCheck.R', local = TRUE)
   base::source(file='./server/swiftSpanGases.R',      local = TRUE)
-  base::source(file='./server/swiftQfQm.R',           local = TRUE)
-  base::source(file="./server/swiftQfQm_dev.R",       local = TRUE)
+  base::source(file="./server/swiftMaintenance.R",    local = TRUE)
+  # base::source(file='./server/swiftQfQm.R',           local = TRUE)
+  # base::source(file="./server/swiftQfQm_dev.R",       local = TRUE)
 }
