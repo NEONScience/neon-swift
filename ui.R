@@ -55,9 +55,9 @@ shiny::shinyUI(
         shinydashboard::menuItem("Gas Cylinders",    tabName = "swft_spangas_tab",    icon = shiny::icon("adjust",         lib = "font-awesome")),
         shinydashboard::menuItem("CVAL Plotting",    tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
         shinydashboard::menuItem("Eddy-Co Plotting", tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
-        shinydashboard::menuItem("QFQM Plotting",    tabName = "swft_qfqm_tab",       icon = shiny::icon("flask",          lib = "font-awesome")),
-        shinydashboard::menuItem("TIS Maintenance",  tabName = "swft_maintenance_tab",icon = shiny::icon("wrench",         lib = "font-awesome")),
-        shinydashboard::menuItem("", tabName = "hidden")
+        # shinydashboard::menuItem("QFQM Plotting",    tabName = "swft_qfqm_tab",       icon = shiny::icon("flask",          lib = "font-awesome")),
+        shinydashboard::menuItem("TIS Maintenance",  tabName = "swft_maintenance_tab",icon = shiny::icon("wrench",         lib = "font-awesome")) #,
+        # shinydashboard::menuItem("", tabName = "hidden")
       )
     ),
     # Body
@@ -74,7 +74,7 @@ shiny::shinyUI(
         shinydashboard::tabItem(tabName = "swft_home_tab",
           
           # TODO: make this only appear if the update log was recently updated. Until then... uncomment :D                                
-          # shiny::modalDialog(title = paste0("Swift was updated recently!"),size = "l", shiny::helpText(a("Check out the updates here!", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
+          shiny::modalDialog(title = paste0("Swift was updated! 2021-05-05"),size = "l", shiny::helpText(a("Check out the updates here!", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
 
           shinydashboard::box(width = 12,
               shiny::column(width = 7,
@@ -702,61 +702,61 @@ shiny::shinyUI(
               )
             )
           )
-        ),
-        shinydashboard::tabItem(tabName = "swft_qfqm_tab",
-          shinydashboard::box(width = 12,
-            shiny::column(width = 12,
-              shiny::fluidRow(
-                shiny::h1("QFQM Plotting"),
-                shiny::h2("Please give the code a few moments to load in the QFQM data..."),
-                shiny::selectizeInput(inputId = "swft_qfqm_site", multiple = FALSE,
-                                      label = "Select Site",
-                                      choices = swft.tis.site.lookup$SiteID,
-                                      selected = sample(swft.tis.site.lookup$SiteID, 1)
-                ),
-                shiny::br(),
-                shiny::conditionalPanel(condition = "output.qfqm_data_loaded == 'True'",
-                  shiny::selectizeInput(inputId = "swft_qfqm_dp", multiple = FALSE,
-                                    label = "Select Data Product",
-                                    choices = c("CO2 Storage" = "co2Stor", "CO2 Turbulent" = "co2Turb", "Flux Heat Soil" = "fluxHeatSoil", "H2O Soil Vol" = "h2oSoilVol",
-                                                "H2O Storage" = "h2oStor", "H2O Turbulent" = "h2oTurb", "Isotopic CO2" = "isoCo2", "Isotopic H2O" = "isoH2o",
-                                                "Net Radiation" = "radiNet", "Sonic Wind" = "soni", "Air Temperature Level" =  "tempAirLvl", "Air Temperature Top Level" = "tempAirTop",
-                                                "Soil Temperature" = "tempSoil")),
-                  shiny::dateInput(inputId = "swft_qfqm_date", label = "Select Date", value = "2021-01-31", max = Sys.Date() - 8, min = "2021-01-01"),
-                  shiny::selectizeInput(inputId = "swft_qfqm_focus_in", multiple = FALSE, label = "Focus in on a specific variables?", choices = c("Yes","No"), selected = "No"),
-                  shiny::conditionalPanel(condition = "input.swft_qfqm_focus_in == 'Yes'",
-                   shiny::uiOutput('swft_qfqm_vars')
-                  )
-                )
-              )
-            ), # End Column 7
-            shiny::column(width = 1),
-            shiny::column(width = 7
-              )
-          ),
-          shinydashboard::box(width = 12,
-            shiny::fluidRow(width = "100%",
-              shiny::fluidRow(
-                plotly::plotlyOutput("swft_qfqm_plot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
-              ) # End fluidRow
-            ) # End fluidRow
-          ) # End box
-        ), # End QFQM Fst box
-        shinydashboard::tabItem(tabName = "hidden",
-          shinydashboard::box(width = 12,
-            shiny::column(width = 12,
-              shiny::fluidRow(
-                shiny::h1("QFQM Plotting"),
-                shiny::h2("Please give the code a few moments to load in the QFQM data..."),
-                shiny::selectizeInput(inputId = "swft_qfqm_dev_site", multiple = FALSE,
-                                      label = "Select Site",
-                                      choices = swft.tis.site.lookup$SiteID,
-                                      selected = sample(swft.tis.site.lookup$SiteID, 1)
-                )
-              )
-            )
-          )
-        )
+        ) #,
+        # shinydashboard::tabItem(tabName = "swft_qfqm_tab",
+        #   shinydashboard::box(width = 12,
+        #     shiny::column(width = 12,
+        #       shiny::fluidRow(
+        #         shiny::h1("QFQM Plotting"),
+        #         shiny::h2("Please give the code a few moments to load in the QFQM data..."),
+        #         shiny::selectizeInput(inputId = "swft_qfqm_site", multiple = FALSE,
+        #                               label = "Select Site",
+        #                               choices = swft.tis.site.lookup$SiteID,
+        #                               selected = sample(swft.tis.site.lookup$SiteID, 1)
+        #         ),
+        #         shiny::br(),
+        #         shiny::conditionalPanel(condition = "output.qfqm_data_loaded == 'True'",
+        #           shiny::selectizeInput(inputId = "swft_qfqm_dp", multiple = FALSE,
+        #                             label = "Select Data Product",
+        #                             choices = c("CO2 Storage" = "co2Stor", "CO2 Turbulent" = "co2Turb", "Flux Heat Soil" = "fluxHeatSoil", "H2O Soil Vol" = "h2oSoilVol",
+        #                                         "H2O Storage" = "h2oStor", "H2O Turbulent" = "h2oTurb", "Isotopic CO2" = "isoCo2", "Isotopic H2O" = "isoH2o",
+        #                                         "Net Radiation" = "radiNet", "Sonic Wind" = "soni", "Air Temperature Level" =  "tempAirLvl", "Air Temperature Top Level" = "tempAirTop",
+        #                                         "Soil Temperature" = "tempSoil")),
+        #           shiny::dateInput(inputId = "swft_qfqm_date", label = "Select Date", value = "2021-01-31", max = Sys.Date() - 8, min = "2021-01-01"),
+        #           shiny::selectizeInput(inputId = "swft_qfqm_focus_in", multiple = FALSE, label = "Focus in on a specific variables?", choices = c("Yes","No"), selected = "No"),
+        #           shiny::conditionalPanel(condition = "input.swft_qfqm_focus_in == 'Yes'",
+        #            shiny::uiOutput('swft_qfqm_vars')
+        #           )
+        #         )
+        #       )
+        #     ), # End Column 7
+        #     shiny::column(width = 1),
+        #     shiny::column(width = 7
+        #       )
+        #   ),
+        #   shinydashboard::box(width = 12,
+        #     shiny::fluidRow(width = "100%",
+        #       shiny::fluidRow(
+        #         plotly::plotlyOutput("swft_qfqm_plot") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")
+        #       ) # End fluidRow
+        #     ) # End fluidRow
+        #   ) # End box
+        # )#, # End QFQM Fst box
+        # shinydashboard::tabItem(tabName = "hidden",
+        #   shinydashboard::box(width = 12,
+        #     shiny::column(width = 12,
+        #       shiny::fluidRow(
+        #         shiny::h1("QFQM Plotting"),
+        #         shiny::h2("Please give the code a few moments to load in the QFQM data..."),
+        #         shiny::selectizeInput(inputId = "swft_qfqm_dev_site", multiple = FALSE,
+        #                               label = "Select Site",
+        #                               choices = swft.tis.site.lookup$SiteID,
+        #                               selected = sample(swft.tis.site.lookup$SiteID, 1)
+        #         )
+        #       )
+        #     )
+        #   )
+        # )
         
       ) # End Tab Items
       
