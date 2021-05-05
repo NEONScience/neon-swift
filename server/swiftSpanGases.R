@@ -73,7 +73,6 @@ shiny::observeEvent(input$menu, {
       message(paste0("Span Gas - ", input$swft_spangas_site, " from ", input$swft_spangas_date_range[1], " to ", input$swft_spangas_date_range[2], "\n"))
 
       if(is.null(input$swft_spangas_site) == FALSE){
-        message("Yaaa we made it!")
         swft.spangas.overall.out = swft_span_in() %>%
           dplyr::filter(cylType == "Overall Pressure")
          
