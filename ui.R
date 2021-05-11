@@ -56,8 +56,9 @@ shiny::shinyUI(
         shinydashboard::menuItem("CVAL Plotting",    tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
         shinydashboard::menuItem("Eddy-Co Plotting", tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
         shinydashboard::menuItem("Eddy QFQM ",       tabName = "swft_qfqm_tab",       icon = shiny::icon("flask",          lib = "font-awesome")),
-        shinydashboard::menuItem("TIS Maintenance",  tabName = "swft_maintenance_tab",icon = shiny::icon("wrench",         lib = "font-awesome")) #,
-        # shinydashboard::menuItem("", tabName = "hidden")
+        shinydashboard::menuItem("TIS Maintenance",  tabName = "swft_maintenance_tab",icon = shiny::icon("wrench",         lib = "font-awesome")),
+        shinydashboard::menuItem("", tabName = "no"),
+        shinydashboard::menuItem("", tabName = "swft_hidden_tab")
       )
     ),
     # Body
@@ -494,6 +495,9 @@ shiny::shinyUI(
             ) # End EC Fst Tab Panel for Condtional panels
           ) # End EC Fst box
         ), # End EC Fst
+        
+        ############################################                            TIS Maintenance                           ############################################
+        
         shinydashboard::tabItem(tabName = "swft_maintenance_tab",
           shinydashboard::box(width = 12,
             shiny::column(width = 2,
@@ -706,6 +710,8 @@ shiny::shinyUI(
           )
         ),
         
+        ############################################                            Eddy QFQM                          ############################################
+        
         shinydashboard::tabItem(tabName = "swft_qfqm_tab",
           shinydashboard::box(width = 12,
             shiny::fluidRow(
@@ -738,6 +744,17 @@ shiny::shinyUI(
                 DT::dataTableOutput(outputId = "swft_qfqm_table") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")  
               )
             )
+          )
+        ),
+        
+        shinydashboard::tabItem(tabName = "swft_hidden_tab",
+          shinydashboard::box(width = 12, 
+            shiny::column(width = 12,
+                          
+              plotly::plotlyOutput(outputId = "swft_hidden_plot")
+              
+              
+            ) 
           )
         )
         # shinydashboard::tabItem(tabName = "swft_qfqm_tab",
