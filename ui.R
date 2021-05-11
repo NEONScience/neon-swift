@@ -734,7 +734,7 @@ shiny::shinyUI(
               )
             ),
             shiny::fluidRow(
-              shiny::column(width = 12,
+              shiny::column(width = 6,
                 DT::dataTableOutput(outputId = "swft_qfqm_table") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")  
               )
             )

@@ -46,7 +46,7 @@ shiny::observeEvent(input$menu, {
             
             output$swft_qfqm_plot = plotly::renderPlotly({
               
-              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var)) +
                 geom_point()+
                 geom_line()+
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
@@ -60,7 +60,7 @@ shiny::observeEvent(input$menu, {
           } else if(input$swft_qfqm_eddy4R_terms == "co2Stor"){
             
             output$swft_qfqm_plot = plotly::renderPlotly({
-              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = levlTowr, group = levlTowr)) +
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = levlTowr)) +
                 geom_point()+
                 geom_line()+
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
@@ -74,7 +74,7 @@ shiny::observeEvent(input$menu, {
           } else if(input$swft_qfqm_eddy4R_terms == "co2Turb"){
             
             output$swft_qfqm_plot = plotly::renderPlotly({
-              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var)) +
                 geom_point()+
                 geom_line()+
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
@@ -89,7 +89,7 @@ shiny::observeEvent(input$menu, {
             
             output$swft_qfqm_plot = plotly::renderPlotly({
               
-              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var)) +
                 geom_point()+
                 geom_line()+
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
@@ -104,7 +104,7 @@ shiny::observeEvent(input$menu, {
             
             output$swft_qfqm_plot = plotly::renderPlotly({
               
-              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var)) +
                 geom_point()+
                 geom_line()+
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
@@ -134,7 +134,7 @@ shiny::observeEvent(input$menu, {
             
             output$swft_qfqm_plot = plotly::renderPlotly({
               
-              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var)) +
                 geom_point()+
                 geom_line()+
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
@@ -179,7 +179,7 @@ shiny::observeEvent(input$menu, {
             
             output$swft_qfqm_plot = plotly::renderPlotly({
               
-              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var)) +
                 geom_point()+
                 geom_line()+
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
@@ -195,7 +195,7 @@ shiny::observeEvent(input$menu, {
             
             output$swft_qfqm_plot = plotly::renderPlotly({
               
-              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var)) +
                 geom_point()+
                 geom_line()+
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
@@ -210,7 +210,7 @@ shiny::observeEvent(input$menu, {
             
             output$swft_qfqm_plot = plotly::renderPlotly({
               
-              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var)) +
                 geom_point()+
                 geom_line()+
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
@@ -225,7 +225,7 @@ shiny::observeEvent(input$menu, {
             
             output$swft_qfqm_plot = plotly::renderPlotly({
               
-              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var)) +
                 geom_point()+
                 geom_line()+
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
@@ -240,7 +240,7 @@ shiny::observeEvent(input$menu, {
             
             output$swft_qfqm_plot = plotly::renderPlotly({
               
-              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var)) +
                 geom_point()+
                 geom_line()+
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
