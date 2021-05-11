@@ -55,7 +55,7 @@ shiny::shinyUI(
         shinydashboard::menuItem("Gas Cylinders",    tabName = "swft_spangas_tab",    icon = shiny::icon("adjust",         lib = "font-awesome")),
         shinydashboard::menuItem("CVAL Plotting",    tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
         shinydashboard::menuItem("Eddy-Co Plotting", tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
-        # shinydashboard::menuItem("QFQM Plotting",    tabName = "swft_qfqm_tab",       icon = shiny::icon("flask",          lib = "font-awesome")),
+        shinydashboard::menuItem("Eddy QFQM ",       tabName = "swft_qfqm_tab",       icon = shiny::icon("flask",          lib = "font-awesome")),
         shinydashboard::menuItem("TIS Maintenance",  tabName = "swft_maintenance_tab",icon = shiny::icon("wrench",         lib = "font-awesome")) #,
         # shinydashboard::menuItem("", tabName = "hidden")
       )
@@ -98,10 +98,12 @@ shiny::shinyUI(
               shiny::icon("sun", lib = "font-awesome"),
               shiny::tags$b("Eddy-Co Plotting"),
               shiny::h4("A tab that uses `fst` data files to render Eddy-Co data; from Co2 measurements, CSAT3 wind data, and measurement level flows."),
-              shiny::tags$b("QFQM Plotting"),
-              shiny::h4("This tab is for investigateing the Quality Flag and Quality Metric data from Eddy4R."),
+              shiny::icon("flask", lib = "font-awesome"),
+              shiny::tags$b("Eddy QFQM"),
+              shiny::h4("This tab is for investigating the Quality Flag and Quality Metric data from eddy4R."),
+              shiny::icon("wrench", lib = "font-awesome"),
               shiny::tags$b("TIS Maintenance"),
-              shiny::h4("Long promised, finally delivered, a reactive look at TIS maintenance data!")
+              shiny::h4("\tLong promised, finally delivered, a reactive look at TIS maintenance data!")
 
             ),
             shiny::column(width = 4, offset = 1,
@@ -702,7 +704,42 @@ shiny::shinyUI(
               )
             )
           )
-        ) #,
+        ),
+        
+        shinydashboard::tabItem(tabName = "swft_qfqm_tab",
+          shinydashboard::box(width = 12,
+            shiny::fluidRow(
+              shiny::column(width = 2,
+                shiny::selectInput(   inputId = "swft_qfqm_site_select", label = "SiteID", choices = swft.tis.site.lookup$SiteID, selected = sample(swft.tis.site.lookup$SiteID, 1))
+              ),
+              shiny::column(width = 2,
+                shiny::dateRangeInput(inputId = "swft_qfqm_date_select", label = "Filter to Dates after ", min = "2020-08-08", max = Sys.Date() + 1, start = Sys.Date()-21, end = Sys.Date())
+              ),
+              shiny::column(width = 2,
+                shiny::uiOutput("swft_qfqm_eddy4R_terms"),
+              )
+            ),
+            shiny::fluidRow(
+              shiny::column(width = 5,
+                shiny::actionButton(inputId = "swft_qfqm_actionButton", label = "Gather QFQM data")
+              ),
+              shiny::column(width = 2),
+              shiny::column(width = 5)
+            )
+          ),
+          shinydashboard::box(width = 12,
+            shiny::fluidRow(
+              shiny::column(width = 12,
+                plotly::plotlyOutput(outputId = "swft_qfqm_plot", height = "600px")
+              )
+            ),
+            shiny::fluidRow(
+              shiny::column(width = 12,
+                DT::dataTableOutput(outputId = "swft_qfqm_table") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")  
+              )
+            )
+          )
+        )
         # shinydashboard::tabItem(tabName = "swft_qfqm_tab",
         #   shinydashboard::box(width = 12,
         #     shiny::column(width = 12,

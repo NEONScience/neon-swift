@@ -1,83 +1,303 @@
+# swiftQFQM
 shiny::observeEvent(input$menu, {
   if(input$menu == "swft_qfqm_tab"){
     
-    Sys.setenv("AWS_ACCESS_KEY_ID"     = "research-eddy-inquiry",
-               "AWS_S3_ENDPOINT"       = "neonscience.org",
-               "AWS_DEFAULT_REGION"    = "s3.data")
-    
-    data.in = aws.s3::s3read_using(FUN = fst::read.fst, object = "qfqm_report_data/qfqm.report.fst", bucket = "research-eddy-inquiry")
-    
-    if(nrow(data.in) > 0) {
-      message("Data Read in Succesfully")
-      output$qfqm_data_loaded = shiny::renderText("True")
-    } else {
-      message("Data read in poorly!")
-    }
-    outputOptions(output, "qfqm_data_loaded", suspendWhenHidden = FALSE)
-    
-    
-    
-    swft_qfqm_plot = shiny::reactive({
+    # Upon hitting "Gather QFQM data" pull the data from S3
+    swft_qfqm_input_data = shiny::eventReactive(input$swft_qfqm_actionButton, {
+      base::source("./R/qfqm_reporting.R")
       
-      # Sys.sleep(.5)
-      
-      data.in %>%
-        dplyr::filter(site == input$swft_qfqm_site) %>%
-        dplyr::filter(date == input$swft_qfqm_date) %>%
-        dplyr::filter(dp == input$swft_qfqm_dp) %>%
-        dplyr::filter(metric %in% c("qmAlph","qmBeta")) %>%
-        dplyr::group_by(site, dp, var, metric, date, levlTowr) %>%
-        dplyr::summarise(
-          qfFinlTotl = sum(qfFinlTotl)
-        ) %>% 
-        dplyr::mutate(date=as.Date(date, origin = "1970-01-01", format = "%Y-%m-%d")) %>%
-        dplyr::filter(stringr::str_detect(string = levlTowr, pattern = "co2") == FALSE) %>%
-        dplyr::filter(stringr::str_detect(string = levlTowr, pattern = "h2o") == FALSE) %>%
-        dplyr::mutate(levlTowr = stringr::str_remove(string = levlTowr, pattern = "000_")) %>%
-        dplyr::mutate(levlTowr = base::gsub(pattern = "0",replacement = "", x = levlTowr))  %>%
-        dplyr::mutate(levlTowr = paste0("ML-", levlTowr)) 
-      
+      qfqm_reporting(site = input$swft_qfqm_site_select, start_date = input$swft_qfqm_date_select[1], end_date = input$swft_qfqm_date_select[2])
+      # test = qfqm_reporting(site = "WREF", start_date = Sys.Date()-30, end_date = Sys.Date())
+    })
+    
+    # Dynamically render the terms the user can select based upon what was found
+    output$swft_qfqm_eddy4R_terms = shiny::renderUI({
+      if(length(swft_qfqm_input_data()) != 0){
+        shiny::selectInput(inputId = "swft_qfqm_eddy4R_terms", label = "eddy4R Terms", choices = names(swft_qfqm_input_data()), selected = "co2Stor")
+      } else {
+        shiny::selectInput(inputId = "swft_qfqm_eddy4R_terms", label = "eddy4R Terms", choices = "No data")
+      }
       
     })
     
-    output$swft_qfqm_vars = shiny::renderUI({
-      shiny::selectInput('swft_qfqm_vars', 'Available Variables', base::sort(unique(swft_qfqm_plot()$var),decreasing = TRUE))
+    output$swft_qfqm_table = DT::renderDataTable({
+      if(length(swft_qfqm_input_data()) != 0){
+        if(nrow(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]) > 0){
+          swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]] %>% dplyr::select(-uid)
+        } else{
+          swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]
+        }
+      } else{
+        data.table::data.table()
+      }
     })
     
-    
-    output$swft_qfqm_plot <- plotly::renderPlotly({
-      Sys.sleep(1)
-      if(nrow(swft_qfqm_plot()) > 0 ){
-        if(input$swft_qfqm_focus_in == "Yes" ){
+    # Observe the input the user selects
+    shiny::observeEvent(input$swft_qfqm_eddy4R_terms, {
+      
+      # Tower Maintenance
+      if(length(swft_qfqm_input_data()) != 0){
+      
+        if(nrow(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]) > 0){
           
-          ggplot() +
-            geom_histogram(data = swft_qfqm_plot() %>% dplyr::filter(var == input$swft_qfqm_vars), aes(x = qfFinlTotl, fill = var), bins = 30) +
-            facet_grid(levlTowr~metric) +
-            scale_x_continuous(limits = c(0, 50))+
-            labs(title = paste0(swft_qfqm_plot()$site[1], "'s ", swft_qfqm_plot()$dp[1], " QFQM Alpha and Beta Report"))+
-            theme(legend.position = "none")
+          message(input$swft_qfqm_eddy4R_terms)
+        
+          if(input$swft_qfqm_eddy4R_terms == "amrs"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "co2Stor"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = levlTowr, group = levlTowr)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_wrap(~var) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1], "\n"), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "co2Turb"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_wrap(~var) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "fluxHeatSoil"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_grid(sp~location) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "h2oSoilVol"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_grid(sp~location) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "h2oStor"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = levlTowr, group = levlTowr)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_wrap(~var) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "h2oTurb"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_wrap(~var) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "isoCo2"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = levlTowr, group = levlTowr)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_wrap(~var) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "isoH2o"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = levlTowr, group = levlTowr)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_wrap(~var) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "radiNet"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_wrap(~levlTowr) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "soni"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_wrap(~levlTowr) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "tempAirLvl"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_wrap(~levlTowr) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "tempAirTop"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_wrap(~levlTowr) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+          } else if(input$swft_qfqm_eddy4R_terms == "tempSoil"){
+            
+            output$swft_qfqm_plot = plotly::renderPlotly({
+              
+              ggplot(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]], aes(x = date, y = qfFinlTotl, color = var, group = var)) +
+                geom_point()+
+                geom_line()+
+                scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
+                scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
+                facet_grid(sp~location) +
+                labs(title = paste0(swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$site[1],"'s Summary QFQM Report for ", swft_qfqm_input_data()[[input$swft_qfqm_eddy4R_terms]]$dp[1]), x = "", color = "Variable")+
+                ggdark::dark_theme_bw()
+              
+            })
+            
+          } else {
+            
+          output$swft_qfqm_plot = plotly::renderPlotly({
+            ggplot()+
+              geom_text(label = "text")+
+              annotate("text", label = paste0("No data found: ", input$swft_qfqm_eddy4R_terms, "\nTry a different eddy Term"), x = 0, y = 0, color = "white", size = 12) +
+              ggdark::dark_theme_bw()
+            
+          })
+            
+             
+          }
           
         } else {
         
-          ggplot() +
-            geom_histogram(data = swft_qfqm_plot(), aes(x = qfFinlTotl, fill = var), bins = 30) +
-            facet_grid(levlTowr~metric) +
-            scale_x_continuous(limits = c(0, 50))+
-            labs(title = paste0(swft_qfqm_plot()$site[1], "'s ", swft_qfqm_plot()$dp[1], " QFQM Alpha and Beta Report"))+
-            theme(legend.position = "none")
-          
+          output$swft_qfqm_plot = plotly::renderPlotly({
+            ggplot()+
+              geom_text(label = "text")+
+              annotate("text", label = paste0("No data found: ", input$swft_qfqm_eddy4R_terms, "\nTry increasing the date range"), x = 0, y = 0, color = "white", size = 12) +
+              ggdark::dark_theme_bw()
+            
+          })
         }
+        
       } else {
-        ggplot()+
-          geom_text(label = "text")+
-          annotate("text", label = paste0("No data found: ", input$swft_qfqm_site, "\n(Site communications may be down or data transitions have failed)."), x = 0, y = 0, color = "black")+
-          theme_minimal()
+        
+          output$swft_qfqm_plot = plotly::renderPlotly({
+            ggplot()+
+              geom_text(label = "text")+
+              annotate("text", label = paste0("No data found: ", input$swft_qfqm_eddy4R_terms, "\nTry increasing the date range"), x = 0, y = 0, color = "white", size = 12) +
+              ggdark::dark_theme_bw()
+            
+          })
       }
-
+      
       
     })
     
     
-     
+    
+    
+    
+    
+    
+    
   }
+
+
+# End of the line buster
 })
