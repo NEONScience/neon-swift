@@ -738,23 +738,23 @@ shiny::shinyUI(
               shiny::column(width = 12,
                 plotly::plotlyOutput(outputId = "swft_qfqm_plot", height = "600px")
               )
-            ),
-            shiny::fluidRow(
-              shiny::column(width = 6,
-                DT::dataTableOutput(outputId = "swft_qfqm_table") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")  
-              )
             )
+            # shiny::fluidRow(
+            #   shiny::column(width = 6,
+            #     DT::dataTableOutput(outputId = "swft_qfqm_table") %>% shinycssloaders::withSpinner(color="white",type="8",color.background = "white")  
+            #   )
+            # )
           )
         ),
         
         shinydashboard::tabItem(tabName = "swft_hidden_tab",
           shinydashboard::box(width = 12, 
-            shiny::column(width = 12,
-                          
-              plotly::plotlyOutput(outputId = "swft_hidden_plot")
-              
-              
-            ) 
+            shiny::column(width =6,
+              plotly::plotlyOutput(outputId = "swft_hidden_plot_connections")
+            ),
+            shiny::column(width = 6,
+              plotly::plotlyOutput(outputId = "swft_hidden_plot_durations")
+            )
           )
         )
         # shinydashboard::tabItem(tabName = "swft_qfqm_tab",
