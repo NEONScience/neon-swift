@@ -34,4 +34,5 @@ server <- function(input, output, session) {
   base::source(file='./server/swiftSpanGases.R',      local = TRUE)
   base::source(file="./server/swiftMaintenance.R",    local = TRUE)
   base::source(file='./server/swiftQfQm.R',           local = TRUE)
+  base::source(file='./server/swiftHidden.R',           local = TRUE)
 }
