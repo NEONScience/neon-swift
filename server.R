@@ -14,9 +14,14 @@ if(file.exists("./data/user_log/user_log.RDS") == FALSE){
 
 # Defined server logic that loads each seperate tab from it's own server file. 
 server <- function(input, output, session) {
+  
+  # Grab start time of session
   server_start_time = Sys.time()
-  session$onSessionEnded(function() {
+  # When session is closed, collect data and save it 
+  session$onSessionEnded(function(){
+    # Grab end time fo session
     server_end_time = Sys.time()
+    # Create new data.table
     users_data_in = data.table::data.table("Start" = server_start_time, "End" = server_end_time, "Total Time" = difftime(server_end_time, server_start_time, units = "secs"))
     # Read in master file
     all_users_data = base::readRDS(file = "./data/user_log/user_log.RDS")
@@ -27,12 +32,11 @@ server <- function(input, output, session) {
   })
   
   base::source(file='./server/swiftCvalFst.R',        local = TRUE)
-  base::source(file='./server/swiftAqua.R',           local = TRUE)
   base::source(file='./server/swftEddyCo.R',          local = TRUE)
   base::source(file='./server/swiftLcServices.R',     local = TRUE)
   base::source(file='./server/swiftTimestampCheck.R', local = TRUE)
   base::source(file='./server/swiftSpanGases.R',      local = TRUE)
   base::source(file="./server/swiftMaintenance.R",    local = TRUE)
   base::source(file='./server/swiftQfQm.R',           local = TRUE)
-  base::source(file='./server/swiftHidden.R',           local = TRUE)
+  base::source(file='./server/swiftHidden.R',         local = TRUE)
 }
