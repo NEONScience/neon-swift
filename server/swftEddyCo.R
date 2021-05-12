@@ -1,7 +1,6 @@
 # swftEddyCo
-
-shiny::observeEvent(input$menu, {
-  if(input$menu == "swft_ecfast_tab"){
+# shiny::observeEvent(input$menu, {
+#   if(input$menu == "swft_ecfast_tab"){
     
     ## Guiding Principles
     # We will plot 2-min data. 
@@ -1152,5 +1151,5 @@ shiny::observeEvent(input$menu, {
       data.table::data.table(swft_ec_fast_plot()$swft_data)
     })
     
-  }
-})
+#   }
+# })
