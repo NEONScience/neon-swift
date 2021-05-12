@@ -46,7 +46,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_wrap(~var) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "co2Stor"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = levlTowr)) +
@@ -55,7 +55,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_wrap(~var) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms, "\n"), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms, "\n"), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "co2Turb"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = var)) +
@@ -64,7 +64,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_wrap(~var) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "fluxHeatSoil"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = var)) +
@@ -73,7 +73,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_grid(sp~location) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "h2oSoilVol"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = var)) +
@@ -82,7 +82,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_grid(sp~location) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "h2oStor"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = levlTowr, group = levlTowr)) +
@@ -91,7 +91,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_wrap(~var) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "h2oTurb"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = var)) +
@@ -100,7 +100,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_wrap(~var) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "isoCo2"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = levlTowr, group = levlTowr)) +
@@ -109,7 +109,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_wrap(~var) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "isoH2o"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = levlTowr, group = levlTowr)) +
@@ -118,7 +118,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_wrap(~var) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "radiNet"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = var)) +
@@ -127,7 +127,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_wrap(~var) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "soni"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = var)) +
@@ -136,7 +136,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_wrap(~var) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "tempAirLvl"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = var)) +
@@ -145,7 +145,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_wrap(~levlTowr) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "tempAirTop"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = var)) +
@@ -154,7 +154,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_wrap(~levlTowr) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else if(input$swft_qfqm_eddy4R_terms == "tempSoil"){
               ggplot(swft_qfqm_data(), aes(x = date, y = qfFinlTotl, color = var)) +
@@ -163,7 +163,7 @@ shiny::observeEvent(input$menu, {
                 scale_y_continuous(limits = c(-8,48), breaks = c(0,10,20,30,40,48)) +
                 scale_x_date(date_labels = "%m\n%d", breaks = scales::pretty_breaks(n = 8)) +
                 facet_grid(sp~location) +
-                labs(title = paste0(input$swft_qfqm_site_select,"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
+                labs(title = paste0(swft_qfqm_data()$site[1],"'s Summary QFQM Report for ", input$swft_qfqm_eddy4R_terms), x = "", color = "Variable")+
                 ggdark::dark_theme_bw()
           } else {
             ggplot()+
