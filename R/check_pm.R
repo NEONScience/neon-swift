@@ -13,7 +13,7 @@ check_pm = function(site){
              "AWS_DEFAULT_REGION"    = "s3.data")
   
   # fulcrum_data_raw = aws.s3::s3readRDS(object = "maintainance_app/all_data.RDS", bucket = "research-eddy-inquiry") %>% 
-  fulcrum_data_raw = aws.s3::s3read_using(FUN = fst::read.fst,object = "maintainance_app/all_data.fst", bucket = "research-eddy-inquiry") %>% 
+  fulcrum_data_raw = aws.s3::s3read_using(FUN = fst::read.fst,object = "maintenance_app/all_data.fst", bucket = "research-eddy-inquiry") %>% 
     # Remove all useless columns
     dplyr::select(-technician_1, -technician_1_link, -technician_2, -technician_2_link,
                   -guy_tower_at_site, -cleaned_measurement_level_pars, -cleaned_measurement_level_irbiotemps, -cleaned_tower_top_rad_sensors)
