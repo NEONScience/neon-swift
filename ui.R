@@ -725,11 +725,13 @@ shiny::shinyUI(
               ),
               shiny::column(width = 2,
                 shiny::selectInput(inputId = "swft_qfqm_eddy4R_terms", label = "Terms", 
-                           choices = c("amrs","co2Stor","co2Turb","fluxHeatSoil","h2oSoilVol","h2oStor","h2oTurb","isoCo2","isoH2o","radiNet","soni","tempAirLvl","tempAirTop","tempSoil"))
-                # shiny::uiOutput("swft_qfqm_eddy4R_terms")
+                           choices = c("amrs","co2Stor","co2Turb","fluxHeatSoil","h2oSoilVol","h2oStor","h2oTurb","isoCo2","isoH2o","radiNet","soni","tempAirLvl","tempAirTop","tempSoil")) 
               ),
               shiny::column(width = 2,
                 shiny::uiOutput("swft_qfqm_eddy4R_vars")
+              ),
+              shiny::column(width = 2,
+                shiny::radioButtons(inputId = "swft_qfqm_facet", label = "Facet?", choices = c("Yes", "No"), selected = "Yes")              
               )
             ),
             shiny::fluidRow(
@@ -749,6 +751,8 @@ shiny::shinyUI(
             )
           )
         ),
+        
+        ############################################                            Hidden Metrics                          ############################################
         
         shinydashboard::tabItem(tabName = "swft_hidden_tab",
           shinydashboard::box(width = 12, 
