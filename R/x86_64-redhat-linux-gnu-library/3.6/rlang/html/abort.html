@@ -40,7 +40,7 @@ abort(
   ...,
   trace = NULL,
   parent = NULL,
-  .subclass
+  .subclass = deprecated()
 )
 
 warn(
@@ -49,7 +49,7 @@ warn(
   ...,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
-  .subclass
+  .subclass = deprecated()
 )
 
 inform(
@@ -59,10 +59,10 @@ inform(
   .file = NULL,
   .frequency = c("always", "regularly", "once"),
   .frequency_id = NULL,
-  .subclass
+  .subclass = deprecated()
 )
 
-signal(message, class, ..., .subclass)
+signal(message, class, ..., .subclass = deprecated())
 
 interrupt()
 </pre>
@@ -73,12 +73,18 @@ interrupt()
 <table summary="R argblock">
 <tr valign="top"><td><code>message</code></td>
 <td>
-<p>The message to display.
+<p>The message to display. Character vectors are
+formatted with <code><a href="format_error_bullets.html">format_error_bullets()</a></code>. The first element
+defines a message header and the rest of the vector defines
+bullets. Bullets named <code>i</code> and <code>x</code> define info and error bullets
+respectively, with special Unicode and colour formatting applied
+if possible.
 </p>
-<p>If not supplied, it is expected that the message is generated
-lazily through <a href="cnd_message.html">conditionMessage()</a>. In that case,
-<code>class</code> must be supplied. Only <code>inform()</code> allows empty messages
-as it is occasionally useful to build user output incrementally.</p>
+<p>If a message is not supplied, it is expected that the message is
+generated lazily through <a href="cnd_message.html">conditionMessage()</a>. In
+that case, <code>class</code> must be supplied. Only <code>inform()</code> allows empty
+messages as it is occasionally useful to build user output
+incrementally.</p>
 </td></tr>
 <tr valign="top"><td><code>class</code></td>
 <td>
@@ -126,7 +132,10 @@ connection or character string which will be passed to <code><a href="../../base
 <p>By default, <code>inform()</code> prints to standard output in interactive
 sessions and standard error otherwise. This way IDEs can treat
 messages distinctly from warnings and errors, and R scripts can
-still filter out the messages easily by redirecting <code>stderr</code>.</p>
+still filter out the messages easily by redirecting <code>stderr</code>. If
+a sink is active, either on output or on messages, messages are
+printed to <code>stderr</code>. This ensures consistency of behaviour in
+interactive and non-interactive sessions.</p>
 </td></tr>
 </table>
 
@@ -244,5 +253,5 @@ summary(last_error())
 }
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.11 <a href="00Index.html">Index</a>]</div>
 </body></html>

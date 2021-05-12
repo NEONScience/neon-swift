@@ -9,6 +9,7 @@
 
 <h3>Description</h3>
 
+<a href='https://www.tidyverse.org/lifecycle/#superseded'><img src='figures/lifecycle-superseded.svg' alt='Superseded lifecycle'></a>
 <p>Defines the server-side logic of the Shiny application. This generally
 involves creating functions that map user inputs to various kinds of output.
 In older versions of Shiny, it was necessary to call <code>shinyServer()</code> in
@@ -16,6 +17,19 @@ the <code>server.R</code> file, but this is no longer required as of Shiny 0.10.
 Now the <code>server.R</code> file may simply return the appropriate server
 function (as the last expression in the code), without calling
 <code>shinyServer()</code>.
+</p>
+<p>Call <code>shinyServer</code> from your application's <code>server.R</code>
+file, passing in a &quot;server function&quot; that provides the server-side logic of
+your application.
+</p>
+<p>The server function will be called when each client (web browser) first loads
+the Shiny application's page. It must take an <code>input</code> and an
+<code>output</code> parameter. Any return value will be ignored. It also takes an
+optional <code>session</code> parameter, which is used when greater control is
+needed.
+</p>
+<p>See the <a href="https://rstudio.github.io/shiny/tutorial/">tutorial</a> for more
+on how to write a server function.
 </p>
 
 
@@ -35,23 +49,6 @@ shinyServer(func)
 for more information.</p>
 </td></tr>
 </table>
-
-
-<h3>Details</h3>
-
-<p>Call <code>shinyServer</code> from your application's <code>server.R</code>
-file, passing in a &quot;server function&quot; that provides the server-side logic of
-your application.
-</p>
-<p>The server function will be called when each client (web browser) first loads
-the Shiny application's page. It must take an <code>input</code> and an
-<code>output</code> parameter. Any return value will be ignored. It also takes an
-optional <code>session</code> parameter, which is used when greater control is
-needed.
-</p>
-<p>See the <a href="http://rstudio.github.com/shiny/tutorial/">tutorial</a> for more
-on how to write a server function.
-</p>
 
 
 <h3>Examples</h3>
@@ -79,5 +76,5 @@ function(input, output, session) {
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

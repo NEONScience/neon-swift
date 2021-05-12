@@ -17,7 +17,7 @@
 
 <pre>
 updateSliderInput(
-  session,
+  session = getDefaultReactiveDomain(),
   inputId,
   label = NULL,
   value = NULL,
@@ -36,7 +36,7 @@ updateSliderInput(
 <tr valign="top"><td><code>session</code></td>
 <td>
 <p>The <code>session</code> object passed to function given to
-<code>shinyServer</code>.</p>
+<code>shinyServer</code>. Default is <code>getDefaultReactiveDomain()</code>.</p>
 </td></tr>
 <tr valign="top"><td><code>inputId</code></td>
 <td>
@@ -48,27 +48,43 @@ updateSliderInput(
 </td></tr>
 <tr valign="top"><td><code>value</code></td>
 <td>
-<p>The value to set for the input object.</p>
+<p>The initial value of the slider. A numeric vector of length one
+will create a regular slider; a numeric vector of length two will create a
+double-ended range slider. A warning will be issued if the value doesn't
+fit between <code>min</code> and <code>max</code>.</p>
 </td></tr>
 <tr valign="top"><td><code>min</code></td>
 <td>
-<p>Minimum value.</p>
+<p>The minimum value (inclusive) that can be selected.</p>
 </td></tr>
 <tr valign="top"><td><code>max</code></td>
 <td>
-<p>Maximum value.</p>
+<p>The maximum value (inclusive) that can be selected.</p>
 </td></tr>
 <tr valign="top"><td><code>step</code></td>
 <td>
-<p>Step size.</p>
+<p>Specifies the interval between each selectable value on the
+slider (if <code>NULL</code>, a heuristic is used to determine the step size). If
+the values are dates, <code>step</code> is in days; if the values are times
+(POSIXt), <code>step</code> is in seconds.</p>
 </td></tr>
 <tr valign="top"><td><code>timeFormat</code></td>
 <td>
-<p>Date and POSIXt formatting.</p>
+<p>Only used if the values are Date or POSIXt objects. A time
+format string, to be passed to the Javascript strftime library. See
+<a href="https://github.com/samsonjs/strftime">https://github.com/samsonjs/strftime</a> for more details. The allowed
+format specifications are very similar, but not identical, to those for R's
+<code><a href="../../base/html/strptime.html">base::strftime()</a></code> function. For Dates, the default is <code>"%F"</code>
+(like <code>"2015-07-01"</code>), and for POSIXt, the default is <code>"%F %T"</code>
+(like <code>"2015-07-01 15:32:10"</code>).</p>
 </td></tr>
 <tr valign="top"><td><code>timezone</code></td>
 <td>
-<p>The timezone offset for POSIXt objects.</p>
+<p>Only used if the values are POSIXt objects. A string
+specifying the time zone offset for the displayed times, in the format
+<code>"+HHMM"</code> or <code>"-HHMM"</code>. If <code>NULL</code> (the default), times will
+be displayed in the browser's time zone. The value <code>"+0000"</code> will
+result in UTC time.</p>
 </td></tr>
 </table>
 
@@ -130,5 +146,5 @@ if (interactive()) {
 }
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

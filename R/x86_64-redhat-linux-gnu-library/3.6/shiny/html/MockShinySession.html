@@ -49,9 +49,9 @@ of <code><a href="testServer.html">testServer()</a></code>.
 </dd>
 <dt><code>token</code></dt><dd><p>On a real <code>ShinySession</code>, used to identify this instance in URLs.</p>
 </dd>
-<dt><code>cache</code></dt><dd><p>The session cache MemoryCache.</p>
+<dt><code>cache</code></dt><dd><p>The session cache object.</p>
 </dd>
-<dt><code>appcache</code></dt><dd><p>The app cache MemoryCache.</p>
+<dt><code>appcache</code></dt><dd><p>The app cache object.</p>
 </dd>
 <dt><code>restoreContext</code></dt><dd><p>Part of bookmarking support in a real
 <code>ShinySession</code> but always <code>NULL</code> for a <code>MockShinySession</code>.</p>
@@ -61,6 +61,8 @@ user. Always <code>NULL</code> for a <code>MockShinySesion</code>.</p>
 </dd>
 <dt><code>user</code></dt><dd><p>The username of an authenticated user. Always <code>NULL</code> for a
 <code>MockShinySession</code>.</p>
+</dd>
+<dt><code>options</code></dt><dd><p>A list containing session-level shinyOptions.</p>
 </dd>
 </dl>
 
@@ -1043,5 +1045,5 @@ session$setInputs(x=1, y=2)
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

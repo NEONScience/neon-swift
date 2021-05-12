@@ -45,11 +45,15 @@ same <code>id</code> to disappear.</p>
 </td></tr>
 <tr valign="top"><td><code>fill</code></td>
 <td>
-<p>Fill color of the brush.</p>
+<p>Fill color of the brush. If <code>'auto'</code>, it derives from the link
+color of the plot's HTML container (if <strong>thematic</strong> is enabled, and <code>accent</code>
+is a non-<code>'auto'</code> value, that color is used instead).</p>
 </td></tr>
 <tr valign="top"><td><code>stroke</code></td>
 <td>
-<p>Outline color of the brush.</p>
+<p>Outline color of the brush. If <code>'auto'</code>, it derives from the
+foreground color of the plot's HTML container (if <strong>thematic</strong> is enabled,
+and <code>fg</code> is a non-<code>'auto'</code> value, that color is used instead).</p>
 </td></tr>
 <tr valign="top"><td><code>opacity</code></td>
 <td>
@@ -90,5 +94,11 @@ the plot is updated.</p>
 </td></tr>
 </table>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+
+<h3>See Also</h3>
+
+<p><code><a href="clickOpts.html">clickOpts()</a></code> for clicking events.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

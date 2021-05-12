@@ -16,11 +16,23 @@
 <h3>Usage</h3>
 
 <pre>
-updateTabsetPanel(session, inputId, selected = NULL)
+updateTabsetPanel(
+  session = getDefaultReactiveDomain(),
+  inputId,
+  selected = NULL
+)
 
-updateNavbarPage(session, inputId, selected = NULL)
+updateNavbarPage(
+  session = getDefaultReactiveDomain(),
+  inputId,
+  selected = NULL
+)
 
-updateNavlistPanel(session, inputId, selected = NULL)
+updateNavlistPanel(
+  session = getDefaultReactiveDomain(),
+  inputId,
+  selected = NULL
+)
 </pre>
 
 
@@ -30,7 +42,7 @@ updateNavlistPanel(session, inputId, selected = NULL)
 <tr valign="top"><td><code>session</code></td>
 <td>
 <p>The <code>session</code> object passed to function given to
-<code>shinyServer</code>.</p>
+<code>shinyServer</code>. Default is <code>getDefaultReactiveDomain()</code>.</p>
 </td></tr>
 <tr valign="top"><td><code>inputId</code></td>
 <td>
@@ -39,7 +51,9 @@ or <code>navbarPage</code> object.</p>
 </td></tr>
 <tr valign="top"><td><code>selected</code></td>
 <td>
-<p>The name of the tab to make active.</p>
+<p>The <code>value</code> (or, if none was supplied, the <code>title</code>)
+of the tab that should be selected by default. If <code>NULL</code>, the first
+tab will be selected.</p>
 </td></tr>
 </table>
 
@@ -82,5 +96,5 @@ shinyApp(ui, server)
 }
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

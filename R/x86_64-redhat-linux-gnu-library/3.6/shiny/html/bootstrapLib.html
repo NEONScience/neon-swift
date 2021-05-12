@@ -9,7 +9,7 @@
 
 <h3>Description</h3>
 
-<p>This function returns a set of web dependencies necessary for using Bootstrap
+<p>This function defines a set of web dependencies necessary for using Bootstrap
 components in a web page.
 </p>
 
@@ -26,20 +26,31 @@ bootstrapLib(theme = NULL)
 <table summary="R argblock">
 <tr valign="top"><td><code>theme</code></td>
 <td>
-<p>Alternative Bootstrap stylesheet (normally a css file within the
-www directory, e.g. <code>www/bootstrap.css</code>)</p>
+<p>One of the following:
+</p>
+
+<ul>
+<li> <p><code>NULL</code> (the default), which implies a &quot;stock&quot; build of Bootstrap 3.
+</p>
+</li>
+<li><p> A <code><a href="../../bslib/html/bs_theme.html">bslib::bs_theme()</a></code> object. This can be used to replace a stock
+build of Bootstrap 3 with a customized version of Bootstrap 3 or higher.
+</p>
+</li>
+<li><p> A character string pointing to an alternative Bootstrap stylesheet
+(normally a css file within the www directory, e.g. <code>www/bootstrap.css</code>).
+</p>
+</li></ul>
 </td></tr>
 </table>
 
 
 <h3>Details</h3>
 
-<p>It isn't necessary to call this function if you use
-<code><a href="bootstrapPage.html">bootstrapPage()</a></code> or others which use <code>bootstrapPage</code>, such
-<code><a href="bootstrapPage.html">basicPage()</a></code>, <code><a href="fluidPage.html">fluidPage()</a></code>, <code><a href="fillPage.html">fillPage()</a></code>,
-<code><a href="pageWithSidebar.html">pageWithSidebar()</a></code>, and <code><a href="navbarPage.html">navbarPage()</a></code>, because they
-already include the Bootstrap web dependencies.
+<p>It isn't necessary to call this function if you use <code><a href="bootstrapPage.html">bootstrapPage()</a></code> or
+others which use <code>bootstrapPage</code>, such <code><a href="fluidPage.html">fluidPage()</a></code>, <code><a href="navbarPage.html">navbarPage()</a></code>,
+<code><a href="fillPage.html">fillPage()</a></code>, etc, because they already include the Bootstrap web dependencies.
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

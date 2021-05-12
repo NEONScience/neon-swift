@@ -29,8 +29,9 @@ along the way to function parameters.
 <li><p> You can <strong>splice</strong> arguments saved in a list with the <a href="nse-force.html">big bang</a> operator <code style="white-space: pre;">!!!</code>.
 </p>
 </li>
-<li><p> You can <strong>unquote</strong> names by using the <a href="nse-force.html">bang bang</a>
-operator <code style="white-space: pre;">!!</code> on the left-hand side of <code style="white-space: pre;">:=</code>.
+<li><p> You can <strong>unquote</strong> names by using the <a href="../../glue/html/glue.html">glue</a> syntax
+or the <a href="nse-force.html">bang bang</a> operator <code style="white-space: pre;">!!</code> on the
+left-hand side of <code style="white-space: pre;">:=</code>.
 </p>
 </li>
 <li><p> Trailing commas are ignored, making it easier to copy and paste
@@ -49,6 +50,9 @@ as easy as collecting the dots with <code><a href="list2.html">list2()</a></code
 configurable than <code><a href="list2.html">list2()</a></code>, <code>vars()</code> which doesn't force its
 arguments, and <code><a href="call2.html">call2()</a></code> for creating calls.
 </p>
+<p>Document dynamic docs using this standard tag:</p>
+<pre> @param ... &lt;[`dynamic-dots`][rlang::dyn-dots]&gt; What these dots do.
+</pre>
 
 
 <h3>Examples</h3>
@@ -73,5 +77,5 @@ f("prefix_{nm}" := "value")
 f(this = "that", )
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.11 <a href="00Index.html">Index</a>]</div>
 </body></html>

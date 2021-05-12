@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get and set the cache object registered for a specific...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sass_cache_get_dir {sass}"><tr><td>sass_cache_get_dir {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get and set the cache object registered for a specific directory</h2>
+
+<h3>Description</h3>
+
+<p>Get and set the cache object registered for a specific directory
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sass_cache_get_dir(dir, create = FALSE)
+
+sass_cache_set_dir(dir, cache)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dir</code></td>
+<td>
+<p>A directory. An error will be thrown if the directory does not
+exist.</p>
+</td></tr>
+<tr valign="top"><td><code>create</code></td>
+<td>
+<p>If <code>TRUE</code>, then if the cache directory doesn't exist, or if
+there is not a registered cache object for the directory, create them as
+needed.</p>
+</td></tr>
+<tr valign="top"><td><code>cache</code></td>
+<td>
+<p>A <code><a href="sass_file_cache.html">sass_file_cache()</a></code> object, or <code>NULL</code> if you don't want to
+unset the cache for a directory.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>sass_cache_get_dir()</code> is called for a given directory, before
+<code>sass_cache_set_dir()</code> has been called for that directory, then it will
+return <code>NULL</code>.
+</p>
+<p>After <code>sass_cache_set_dir()</code> is called for a directory, any future calls to
+<code>sass_cache_get_dir()</code> with that directory will return that specific cache
+object. This can be useful if you customize parameters for the cache object,
+like maximum size or age.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sass_cache_get.html">sass_cache_get()</a></code>, <code><a href="sass_file_cache.html">sass_file_cache()</a></code>, <code><a href="sass.html">sass()</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.3.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

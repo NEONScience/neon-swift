@@ -9,7 +9,8 @@
 
 <h3>Description</h3>
 
-<p>Renders a reactive plot, with plot images cached to disk.
+<p>Renders a reactive plot, with plot images cached to disk. As of Shiny 1.6.0,
+this is a shortcut for using <code><a href="bindCache.html">bindCache()</a></code> with <code><a href="renderPlot.html">renderPlot()</a></code>.
 </p>
 
 
@@ -23,7 +24,10 @@ renderCachedPlot(
   res = 72,
   cache = "app",
   ...,
-  outputArgs = list()
+  alt = "Plot object",
+  outputArgs = list(),
+  width = NULL,
+  height = NULL
 )
 </pre>
 
@@ -56,21 +60,34 @@ information on the default sizing policy.</p>
 </td></tr>
 <tr valign="top"><td><code>cache</code></td>
 <td>
-<p>The scope of the cache, or a cache object. This can be
-<code>"app"</code> (the default), <code>"session"</code>, or a cache object like
-a <code><a href="diskCache.html">diskCache()</a></code>. See the Cache Scoping section for more
-information.</p>
+<p>The scope of the cache, or a cache object. This can be <code>"app"</code>
+(the default), <code>"session"</code>, or a cache object like a
+<code><a href="../../cachem/html/cache_disk.html">cachem::cache_disk()</a></code>. See the Cache Scoping section for more information.</p>
 </td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
 <p>Arguments to be passed through to <code><a href="../../grDevices/html/png.html">grDevices::png()</a></code>.
 These can be used to set the width, height, background color, etc.</p>
 </td></tr>
+<tr valign="top"><td><code>alt</code></td>
+<td>
+<p>Alternate text for the HTML <code style="white-space: pre;">&lt;img&gt;</code> tag
+if it cannot be displayed or viewed (i.e., the user uses a screen reader).
+In addition to a character string, the value may be a reactive expression
+(or a function referencing reactive values) that returns a character string.
+NULL or &quot;&quot; is not recommended because those should be limited to decorative images
+(the default is &quot;Plot object&quot;).</p>
+</td></tr>
 <tr valign="top"><td><code>outputArgs</code></td>
 <td>
 <p>A list of arguments to be passed through to the implicit
 call to <code><a href="plotOutput.html">plotOutput()</a></code> when <code>renderPlot</code> is used in an
 interactive R Markdown document.</p>
+</td></tr>
+<tr valign="top"><td><code>width, height</code></td>
+<td>
+<p>not used. They are specified via the argument
+<code>sizePolicy</code>.</p>
 </td></tr>
 </table>
 
@@ -117,100 +134,6 @@ will not have cache key collisions.
 </p>
 
 
-<h3>Cache scoping</h3>
-
-<p>There are a number of different ways you may want to scope the cache. For
-example, you may want each user session to have their own plot cache, or
-you may want each run of the application to have a cache (shared among
-possibly multiple simultaneous user sessions), or you may want to have a
-cache that persists even after the application is shut down and started
-again.
-</p>
-<p>To control the scope of the cache, use the <code>cache</code> parameter. There
-are two ways of having Shiny automatically create and clean up the disk
-cache.
-</p>
-
-<dl>
-<dt>1</dt><dd><p>To scope the cache to one run of a Shiny application (shared
-among possibly multiple user sessions), use <code>cache="app"</code>. This
-is the default. The cache will be shared across multiple sessions, so
-there is potentially a large performance benefit if there are many users
-of the application. When the application stops running, the cache will
-be deleted. If plots cannot be safely shared across users, this should
-not be used.</p>
-</dd>
-<dt>2</dt><dd><p>To scope the cache to one session, use <code>cache="session"</code>.
-When a new user session starts &mdash; in other words, when a web browser
-visits the Shiny application &mdash; a new cache will be created on disk
-for that session. When the session ends, the cache will be deleted.
-The cache will not be shared across multiple sessions.</p>
-</dd>
-</dl>
-
-<p>If either <code>"app"</code> or <code>"session"</code> is used, the cache will be 10 MB
-in size, and will be stored stored in memory, using a
-<code><a href="memoryCache.html">memoryCache()</a></code> object. Note that the cache space will be shared
-among all cached plots within a single application or session.
-</p>
-<p>In some cases, you may want more control over the caching behavior. For
-example, you may want to use a larger or smaller cache, share a cache
-among multiple R processes, or you may want the cache to persist across
-multiple runs of an application, or even across multiple R processes.
-</p>
-<p>To use different settings for an application-scoped cache, you can call
-<code><a href="shinyOptions.html">shinyOptions()</a></code> at the top of your app.R, server.R, or
-global.R. For example, this will create a cache with 20 MB of space
-instead of the default 10 MB:
-</p>
-<pre>
-  shinyOptions(cache = memoryCache(size = 20e6))
-  </pre>
-<p>To use different settings for a session-scoped cache, you can call
-<code><a href="shinyOptions.html">shinyOptions()</a></code> at the top of your server function. To use
-the session-scoped cache, you must also call <code>renderCachedPlot</code> with
-<code>cache="session"</code>. This will create a 20 MB cache for the session:
-</p>
-<pre>
-  function(input, output, session) {
-    shinyOptions(cache = memoryCache(size = 20e6))
-
-    output$plot &lt;- renderCachedPlot(
-      ...,
-      cache = "session"
-    )
-  }
-  </pre>
-<p>If you want to create a cache that is shared across multiple concurrent
-R processes, you can use a <code><a href="diskCache.html">diskCache()</a></code>. You can create an
-application-level shared cache by putting this at the top of your app.R,
-server.R, or global.R:
-</p>
-<pre>
-  shinyOptions(cache = diskCache(file.path(dirname(tempdir()), "myapp-cache"))
-  </pre>
-<p>This will create a subdirectory in your system temp directory named
-<code>myapp-cache</code> (replace <code>myapp-cache</code> with a unique name of
-your choosing). On most platforms, this directory will be removed when
-your system reboots. This cache will persist across multiple starts and
-stops of the R process, as long as you do not reboot.
-</p>
-<p>To have the cache persist even across multiple reboots, you can create the
-cache in a location outside of the temp directory. For example, it could
-be a subdirectory of the application:
-</p>
-<pre>
-  shinyOptions(cache = diskCache("./myapp-cache"))
-  </pre>
-<p>In this case, resetting the cache will have to be done manually, by deleting
-the directory.
-</p>
-<p>You can also scope a cache to just one plot, or selected plots. To do that,
-create a <code><a href="memoryCache.html">memoryCache()</a></code> or <code><a href="diskCache.html">diskCache()</a></code>, and pass it
-as the <code>cache</code> argument of <code>renderCachedPlot</code>.
-</p>
-
-
 <h3>Interactive plots</h3>
 
 <p><code>renderCachedPlot</code> can be used to create interactive plots. See
@@ -220,9 +143,10 @@ as the <code>cache</code> argument of <code>renderCachedPlot</code>.
 
 <h3>See Also</h3>
 
-<p>See <code><a href="renderPlot.html">renderPlot()</a></code> for the regular, non-cached version of
-this function. For more about configuring caches, see
-<code><a href="memoryCache.html">memoryCache()</a></code> and <code><a href="diskCache.html">diskCache()</a></code>.
+<p>See <code><a href="renderPlot.html">renderPlot()</a></code> for the regular, non-cached version of this
+function. It can be used with <code><a href="bindCache.html">bindCache()</a></code> to get the same effect as
+<code>renderCachedPlot()</code>. For more about configuring caches, see
+<code><a href="../../cachem/html/cache_mem.html">cachem::cache_mem()</a></code> and <code><a href="../../cachem/html/cache_disk.html">cachem::cache_disk()</a></code>.
 </p>
 
 
@@ -316,7 +240,7 @@ shinyApp(
              xlim = range(mtcars$wt), ylim = range(mtcars$mpg))
       },
       cacheKeyExpr = { list(input$n) },
-      cache = memoryCache()
+      cache = cachem::cache_mem()
     )
     output$plot2 &lt;- renderCachedPlot({
         Sys.sleep(2)  # Add an artificial delay
@@ -325,7 +249,7 @@ shinyApp(
              xlim = range(mtcars$wt), ylim = range(mtcars$mpg))
       },
       cacheKeyExpr = { list(input$n) },
-      cache = memoryCache()
+      cache = cachem::cache_mem()
     )
   }
 )
@@ -336,22 +260,22 @@ shinyApp(
 # At the top of app.R, this set the application-scoped cache to be a memory
 # cache that is 20 MB in size, and where cached objects expire after one
 # hour.
-shinyOptions(cache = memoryCache(max_size = 20e6, max_age = 3600))
+shinyOptions(cache = cachem::cache_mem(max_size = 20e6, max_age = 3600))
 
 # At the top of app.R, this set the application-scoped cache to be a disk
 # cache that can be shared among multiple concurrent R processes, and is
 # deleted when the system reboots.
-shinyOptions(cache = diskCache(file.path(dirname(tempdir()), "myapp-cache"))
+shinyOptions(cache = cachem::cache_disk(file.path(dirname(tempdir()), "myapp-cache"))
 
 # At the top of app.R, this set the application-scoped cache to be a disk
 # cache that can be shared among multiple concurrent R processes, and
 # persists on disk across reboots.
-shinyOptions(cache = diskCache("./myapp-cache"))
+shinyOptions(cache = cachem::cache_disk("./myapp-cache"))
 
 # At the top of the server function, this set the session-scoped cache to be
 # a memory cache that is 5 MB in size.
 server &lt;- function(input, output, session) {
-  shinyOptions(cache = memoryCache(max_size = 5e6))
+  shinyOptions(cache = cachem::cache_mem(max_size = 5e6))
 
   output$plot &lt;- renderCachedPlot(
     ...,
@@ -363,5 +287,5 @@ server &lt;- function(input, output, session) {
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

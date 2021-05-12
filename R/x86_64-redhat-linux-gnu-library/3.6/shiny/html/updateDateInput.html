@@ -17,7 +17,7 @@
 
 <pre>
 updateDateInput(
-  session,
+  session = getDefaultReactiveDomain(),
   inputId,
   label = NULL,
   value = NULL,
@@ -33,7 +33,7 @@ updateDateInput(
 <tr valign="top"><td><code>session</code></td>
 <td>
 <p>The <code>session</code> object passed to function given to
-<code>shinyServer</code>.</p>
+<code>shinyServer</code>. Default is <code>getDefaultReactiveDomain()</code>.</p>
 </td></tr>
 <tr valign="top"><td><code>inputId</code></td>
 <td>
@@ -45,8 +45,9 @@ updateDateInput(
 </td></tr>
 <tr valign="top"><td><code>value</code></td>
 <td>
-<p>The desired date value. Either a Date object, or a string in
-<code>yyyy-mm-dd</code> format. Supply <code>NA</code> to clear the date.</p>
+<p>The starting date. Either a Date object, or a string in
+<code>yyyy-mm-dd</code> format. If NULL (the default), will use the current date
+in the client's time zone.</p>
 </td></tr>
 <tr valign="top"><td><code>min</code></td>
 <td>
@@ -114,5 +115,5 @@ shinyApp(ui, server)
 }
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

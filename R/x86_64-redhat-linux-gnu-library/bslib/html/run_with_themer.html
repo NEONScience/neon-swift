@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Theme customization UI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for run_with_themer {bslib}"><tr><td>run_with_themer {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Theme customization UI</h2>
+
+<h3>Description</h3>
+
+<p>A 'real-time' theme customization UI that you can use to easily make common
+tweaks to Bootstrap variables and immediately see how they would affect your
+app's appearance. There are two ways you can launch the theming UI. For most
+Shiny apps, just use <code>run_with_themer()</code> in place of <code><a href="../../shiny/html/runApp.html">shiny::runApp()</a></code>; they
+should take the same arguments and work the same way. Alternatively, you can
+call the <code>bs_themer()</code> function from inside your server function (or in an R
+Markdown app that is using <code>runtime: shiny</code>, you can call this from any code
+chunk). Note that this function is only intended to be used for development!
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+run_with_themer(appDir = getwd(), ..., gfonts = TRUE, gfonts_update = FALSE)
+
+bs_themer(gfonts = TRUE, gfonts_update = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>appDir</code></td>
+<td>
+<p>The application to run. This can be a file or directory path,
+or a <code><a href="../../shiny/html/shinyApp.html">shiny::shinyApp()</a></code> object. See <code><a href="../../shiny/html/runApp.html">shiny::runApp()</a></code> for details.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional parameters to pass through to <code><a href="../../shiny/html/runApp.html">shiny::runApp()</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>gfonts</code></td>
+<td>
+<p>whether or not to detect Google Fonts and wrap them in
+<code><a href="font_face.html">font_google()</a></code> (so that their font files are automatically imported).</p>
+</td></tr>
+<tr valign="top"><td><code>gfonts_update</code></td>
+<td>
+<p>whether or not to update the internal database of
+Google Fonts.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>To help you utilize the changes you see in the preview, this utility prints
+<code><a href="bs_theme.html">bs_theme()</a></code> code to the R console.
+</p>
+
+
+<h3>Value</h3>
+
+<p>nothing. These functions are called for their side-effects.
+</p>
+
+
+<h3>Limitations</h3>
+
+<p>Currently, this utility only works with Bootstrap 4. We hope to add
+Bootstrap 3 compatibility in the future. Also, the color picker currently
+doesn't render correctly on IE11.
+</p>
+<p>It also only works with Shiny apps and R Markdown apps that use the Shiny
+runtime. It's not possible to perform real-time preview for static R
+Markdown documents.
+</p>
+<p>Note that only CSS generated with <code><a href="bs_dependency.html">bs_dependency_defer()</a></code> will be
+instantly reflected in theme preview.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(shiny)
+
+# Initialize Bootstrap 4 with Bootstrap 3 compatibility shim
+theme &lt;- bs_theme(version = 4, bg = "black", fg = "white")
+
+ui &lt;- fluidPage(
+  theme = theme,
+  h1("Heading 1"),
+  h2("Heading 2"),
+  p(
+    "Paragraph text;",
+    tags$a(href = "https://www.rstudio.com", "a link")
+  ),
+  p(
+    actionButton("cancel", "Cancel"),
+    actionButton("continue", "Continue", class = "btn-primary")
+  ),
+  tabsetPanel(
+    tabPanel("First tab",
+      "The contents of the first tab"
+    ),
+    tabPanel("Second tab",
+      "The contents of the second tab"
+    )
+  )
+)
+
+if (interactive()) {
+  run_with_themer(shinyApp(ui, function(input, output) {}))
+}
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.2.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

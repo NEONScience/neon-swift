@@ -9,7 +9,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 (function () {
   var $ = jQuery;
   var exports = window.Shiny = window.Shiny || {};
-  exports.version = "1.5.0"; // Version number inserted by Grunt
+  exports.version = "1.6.0"; // Version number inserted by Grunt
 
   var origPushState = window.history.pushState;
 
@@ -162,7 +162,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   function pixelRatio() {
     if (window.devicePixelRatio) {
-      return window.devicePixelRatio;
+      return Math.round(window.devicePixelRatio * 100) / 100;
     } else {
       return 1;
     }
@@ -346,6 +346,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       labelNode.text(labelTxt);
       labelNode.removeClass("shiny-label-null");
     }
+  } // Compute the color property of an a tag, scoped within the element
+
+
+  function getComputedLinkColor(el) {
+    var a = document.createElement("a");
+    a.href = "/";
+    var div = document.createElement("div");
+    div.style.setProperty("position", "absolute", "important");
+    div.style.setProperty("top", "-1000px", "important");
+    div.style.setProperty("left", "0", "important");
+    div.style.setProperty("width", "30px", "important");
+    div.style.setProperty("height", "10px", "important");
+    div.appendChild(a);
+    el.appendChild(div);
+    var linkColor = window.getComputedStyle(a).getPropertyValue("color");
+    el.removeChild(div);
+    return linkColor;
   } //---------------------------------------------------------------------
   // Source file: ../srcjs/browser.js
 
@@ -361,21 +378,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     if (/\bQt\/5/.test(window.navigator.userAgent) && /Linux/.test(window.navigator.userAgent)) {
       $(document.documentElement).addClass('qt5');
-    } // Detect IE information
+    } // Detect IE and older (pre-Chromium) Edge
 
 
-    var isIE = navigator.appName === 'Microsoft Internet Explorer';
+    var ua = window.navigator.userAgent;
+    var isIE = /MSIE|Trident|Edge/.test(ua);
 
     function getIEVersion() {
-      var rv = -1;
+      var msie = ua.indexOf('MSIE ');
 
-      if (isIE) {
-        var ua = navigator.userAgent;
-        var re = new RegExp("MSIE ([0-9]{1,}[\\.0-9]{0,})");
-        if (re.exec(ua) !== null) rv = parseFloat(RegExp.$1);
+      if (isIE && msie > 0) {
+        // IE 10 or older => return version number
+        return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
       }
 
-      return rv;
+      var trident = ua.indexOf('Trident/');
+
+      if (trident > 0) {
+        // IE 11 => return version number
+        var rv = ua.indexOf('rv:');
+        return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+      }
+
+      return -1;
     }
 
     return {
@@ -660,6 +685,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       this.lastSentValues = cacheValues;
+    };
+
+    this.forget = function (name) {
+      delete this.lastSentValues[name];
     };
   }).call(InputNoResendDecorator.prototype);
 
@@ -1333,6 +1362,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var inputBinding = $obj.data('shiny-input-binding'); // Dispatch the message to the appropriate input object
 
         if ($obj.length > 0) {
+          if (!$obj.attr("aria-live")) $obj.attr("aria-live", "polite");
           var el = $obj[0];
           var evt = jQuery.Event('shiny:updateinput');
           evt.message = message[i].message;
@@ -1444,6 +1474,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         return message.multiple;
       });
+    });
+    addMessageHandler('frozen', function (message) {
+      for (var i = 0; i < message.ids.length; i++) {
+        exports.forgetLastInputValue(message.ids[i]);
+      }
     });
 
     function getTabset(id) {
@@ -2424,7 +2459,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         brushDirection: OR($el.data('brush-direction'), 'xy'),
         brushResetOnNew: OR(strToBool($el.data('brush-reset-on-new')), false),
         coordmap: data.coordmap
-      }; // Copy items from data to img. Don't set the coordmap as an attribute.
+      };
+
+      if (opts.brushFill === "auto") {
+        opts.brushFill = getComputedLinkColor($el[0]);
+      }
+
+      if (opts.brushStroke === "auto") {
+        opts.brushStroke = getStyle($el[0], "color");
+      } // Copy items from data to img. Don't set the coordmap as an attribute.
+
 
       $.each(data, function (key, value) {
         if (value === null || key === 'coordmap') {
@@ -3907,16 +3951,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   function registerDependency(name, version) {
     htmlDependencies[name] = version;
+  } // Re-render stylesheet(s) if the dependency has specificially requested it
+  // and it matches an existing dependency (name and version)
+
+
+  function needsRestyle(dep) {
+    if (!dep.restyle) {
+      return false;
+    }
+
+    var names = Object.keys(htmlDependencies);
+    var idx = names.indexOf(dep.name);
+
+    if (idx === -1) {
+      return false;
+    }
+
+    return htmlDependencies[names[idx]] === dep.version;
   } // Client-side dependency resolution and rendering
 
 
   function renderDependency(dep) {
-    if (htmlDependencies.hasOwnProperty(dep.name)) return false;
+    var restyle = needsRestyle(dep);
+    if (htmlDependencies.hasOwnProperty(dep.name) && !restyle) return false;
     registerDependency(dep.name, dep.version);
     var href = dep.src.href;
     var $head = $("head").first();
 
-    if (dep.meta) {
+    if (dep.meta && !restyle) {
       var metas = $.map(asArray(dep.meta), function (obj, idx) {
         // only one named pair is expected in obj as it's already been decomposed
         var name = Object.keys(obj)[0];
@@ -3926,20 +3988,96 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
 
     if (dep.stylesheet) {
-      var stylesheets = $.map(asArray(dep.stylesheet), function (stylesheet) {
+      var links = $.map(asArray(dep.stylesheet), function (stylesheet) {
         return $("<link rel='stylesheet' type='text/css'>").attr("href", href + "/" + encodeURI(stylesheet));
       });
-      $head.append(stylesheets);
+
+      if (!restyle) {
+        $head.append(links);
+      } else {
+        // This inline <style> based approach works for IE11
+        var refreshStyle = function refreshStyle(href, oldSheet) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', href);
+
+          xhr.onload = function () {
+            var id = "shiny_restyle_" + href.split("?restyle")[0].replace(/\W/g, '_');
+            var oldStyle = $head.find("style#" + id);
+            var newStyle = $("<style>").attr("id", id).html(xhr.responseText);
+            $head.append(newStyle);
+            setTimeout(function () {
+              return oldStyle.remove();
+            }, 500);
+            setTimeout(function () {
+              return removeSheet(oldSheet);
+            }, 500);
+          };
+
+          xhr.send();
+        };
+
+        var findSheet = function findSheet(href) {
+          for (var i = 0; i < document.styleSheets.length; i++) {
+            var sheet = document.styleSheets[i]; // The sheet's href is a full URL
+
+            if (typeof sheet.href === "string" && sheet.href.indexOf(href) > -1) {
+              return sheet;
+            }
+          }
+
+          return null;
+        };
+
+        var removeSheet = function removeSheet(sheet) {
+          if (!sheet) return;
+          sheet.disabled = true;
+          if (browser.isIE) sheet.cssText = "";
+          $(sheet.ownerNode).remove();
+        };
+
+        $.map(links, function (link) {
+          // Find any document.styleSheets that match this link's href
+          // so we can remove it after bringing in the new stylesheet
+          var oldSheet = findSheet(link.attr("href")); // Add a timestamp to the href to prevent caching
+
+          var href = link.attr("href") + "?restyle=" + new Date().getTime(); // Use inline <style> approach for IE, otherwise use the more elegant
+          // <link> -based approach
+
+          if (browser.isIE) {
+            refreshStyle(href, oldSheet);
+          } else {
+            link.attr("href", href); // Once the new <link> is loaded, schedule the old <link> to be removed
+            // on the next tick which is needed to avoid FOUC
+
+            link.attr("onload", function () {
+              setTimeout(function () {
+                return removeSheet(oldSheet);
+              }, 500);
+            });
+            $head.append(link);
+          }
+        }); // Once the new styles are applied, CSS values that are accessible server-side
+        // (e.g., getCurrentOutputInfo(), output visibility, etc) may become outdated.
+        // At the time of writing, that means we need to do sendImageSize() &
+        // sendOutputHiddenState() again, which can be done by re-binding.
+
+        /* global Shiny */
+
+        var bindDebouncer = new Debouncer(null, Shiny.bindAll, 100);
+        setTimeout(function () {
+          return bindDebouncer.normalCall();
+        }, 100);
+      }
     }
 
-    if (dep.script) {
+    if (dep.script && !restyle) {
       var scripts = $.map(asArray(dep.script), function (scriptName) {
         return $("<script>").attr("src", href + "/" + encodeURI(scriptName));
       });
       $head.append(scripts);
     }
 
-    if (dep.attachment) {
+    if (dep.attachment && !restyle) {
       // dep.attachment might be a single string, an array, or an object.
       var attachments = dep.attachment;
       if (typeof attachments === "string") attachments = [attachments];
@@ -3960,7 +4098,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       $head.append(attach);
     }
 
-    if (dep.head) {
+    if (dep.head && !restyle) {
       var $newHead = $("<head></head>");
       $newHead.html(dep.head);
       $head.append($newHead.children());
@@ -4768,12 +4906,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       };
     },
     initialize: function initialize(el) {
-      var $input = $(el).find('input');
+      var $input = $(el).find('input'); // The challenge with dates is that we want them to be at 00:00 in UTC so
+      // that we can do comparisons with them. However, the Date object itself
+      // does not carry timezone information, so we should call _floorDateTime()
+      // on Dates as soon as possible so that we know we're always working with
+      // consistent objects.
+
       var date = $input.data('initial-date'); // If initial_date is null, set to current date
 
       if (date === undefined || date === null) {
-        // Get local date, but as UTC
-        date = this._dateAsUTC(new Date());
+        // Get local date, but normalized to beginning of day in UTC.
+        date = this._floorDateTime(this._dateAsUTC(new Date()));
       }
 
       this.setValue(el, date); // Set the start and end dates, from min-date and max-date. These always
@@ -4818,26 +4961,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       date = this._newDate(date); // If date parsing fails, do nothing
 
       if (date === null) return;
-      date = this._UTCDateAsLocal(date);
-      if (isNaN(date)) return; // Workaround for https://github.com/eternicode/bootstrap-datepicker/issues/2010
-      // If the start date when there's a two-digit year format, it will set
-      // the date value to null. So we'll save the value, set the start
-      // date, and the restore the value.
+      if (isNaN(date)) return; // Workarounds for
+      // https://github.com/rstudio/shiny/issues/2335
 
-      var curValue = $(el).bsDatepicker('getUTCDate');
-      $(el).bsDatepicker('setStartDate', date);
-      $(el).bsDatepicker('setUTCDate', curValue); // Workaround for https://github.com/rstudio/shiny/issues/2335
-      // We only set the start date *after* the value in this special
-      // case so we don't effect the intended behavior of having a blank
-      // value when it falls outside the start date
+      var curValue = $(el).bsDatepicker('getUTCDate'); // Note that there's no `setUTCStartDate`, so we need to convert this Date.
+      // It starts at 00:00 UTC, and we convert it to 00:00 in local time, which
+      // is what's needed for `setStartDate`.
 
-      if (typeof date.toDateString !== 'function') return;
-      if (typeof curValue.toDateString !== 'function') return;
+      $(el).bsDatepicker('setStartDate', this._UTCDateAsLocal(date)); // If the new min is greater than the current date, unset the current date.
 
-      if (date.toDateString() === curValue.toDateString()) {
-        $(el).bsDatepicker('setStartDate', null);
+      if (date && curValue && date.getTime() > curValue.getTime()) {
+        $(el).bsDatepicker('clearDates');
+      } else {
+        // Setting the date needs to be done AFTER `setStartDate`, because the
+        // datepicker has a bug where calling `setStartDate` will clear the date
+        // internally (even though it will still be visible in the UI) when a
+        // 2-digit year format is used.
+        // https://github.com/eternicode/bootstrap-datepicker/issues/2010
         $(el).bsDatepicker('setUTCDate', curValue);
-        $(el).bsDatepicker('setStartDate', date);
       }
     },
     // Given an unambiguous date string or a Date object, set the max (end) date
@@ -4853,20 +4994,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       date = this._newDate(date); // If date parsing fails, do nothing
 
       if (date === null) return;
-      date = this._UTCDateAsLocal(date);
       if (isNaN(date)) return; // Workaround for same issue as in _setMin.
 
       var curValue = $(el).bsDatepicker('getUTCDate');
-      $(el).bsDatepicker('setEndDate', date);
-      $(el).bsDatepicker('setUTCDate', curValue); // Workaround for same issue as in _setMin.
+      $(el).bsDatepicker('setEndDate', this._UTCDateAsLocal(date)); // If the new min is greater than the current date, unset the current date.
 
-      if (typeof date.toDateString !== 'function') return;
-      if (typeof curValue.toDateString !== 'function') return;
-
-      if (date.toDateString() === curValue.toDateString()) {
-        $(el).bsDatepicker('setEndDate', null);
+      if (date && curValue && date.getTime() < curValue.getTime()) {
+        $(el).bsDatepicker('clearDates');
+      } else {
         $(el).bsDatepicker('setUTCDate', curValue);
-        $(el).bsDatepicker('setEndDate', date);
       }
     },
     // Given a date string of format yyyy-mm-dd, return a Date object with
@@ -4880,7 +5016,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var d = parseDate(date); // If invalid date, return null
 
       if (isNaN(d)) return null;
-      return new Date(d.getTime());
+      return d;
+    },
+    // A Date can have any time during a day; this will return a new Date object
+    // set to 00:00 in UTC.
+    _floorDateTime: function _floorDateTime(date) {
+      date = new Date(date.getTime());
+      date.setUTCHours(0, 0, 0, 0);
+      return date;
     },
     // Given a Date object, return a Date object which has the same "clock time"
     // in UTC. For example, if input date is 2013-02-01 23:00:00 GMT-0600 (CST),
@@ -5267,10 +5410,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     getValue: function getValue(el) {
       // Select the radio objects that have name equal to the grouping div's id
-      return $('input:radio[name="' + $escape(el.id) + '"]:checked').val();
+      var checked_items = $('input:radio[name="' + $escape(el.id) + '"]:checked');
+
+      if (checked_items.length === 0) {
+        // If none are checked, the input will return null (it's the default on load,
+        // but it wasn't emptied when calling updateRadioButtons with character(0)
+        return null;
+      }
+
+      return checked_items.val();
     },
     setValue: function setValue(el, value) {
-      $('input:radio[name="' + $escape(el.id) + '"][value="' + $escape(value) + '"]').prop('checked', true);
+      if ($.isArray(value) && value.length === 0) {
+        // Removing all checked item if the sent data is empty
+        $('input:radio[name="' + $escape(el.id) + '"]').prop('checked', false);
+      } else {
+        $('input:radio[name="' + $escape(el.id) + '"][value="' + $escape(value) + '"]').prop('checked', true);
+      }
     },
     getState: function getState(el) {
       var $objs = $('input:radio[name="' + $escape(el.id) + '"]'); // Store options in an array of objects, each with with value and label
@@ -5546,6 +5702,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     receiveMessage: function receiveMessage(el, data) {
       if (data.hasOwnProperty('value')) this.setValue(el, data.value);
+      $(el).trigger("change");
     },
     subscribe: function subscribe(el, callback) {
       $(el).on('change shown.bootstrapTabInputBinding shown.bs.tab.bootstrapTabInputBinding', function (event) {
@@ -5561,51 +5718,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   });
   inputBindings.register(bootstrapTabInputBinding, 'shiny.bootstrapTabInput'); //---------------------------------------------------------------------
   // Source file: ../srcjs/input_binding_fileinput.js
-
-  var IE8FileUploader = function IE8FileUploader(shinyapp, id, fileEl) {
-    this.shinyapp = shinyapp;
-    this.id = id;
-    this.fileEl = fileEl;
-    this.beginUpload();
-  };
-
-  (function () {
-    this.beginUpload = function () {
-      var self = this; // Create invisible frame
-
-      var iframeId = 'shinyupload_iframe_' + this.id;
-      this.iframe = document.createElement('iframe');
-      this.iframe.id = iframeId;
-      this.iframe.name = iframeId;
-      this.iframe.setAttribute('style', 'position: fixed; top: 0; left: 0; width: 0; height: 0; border: none');
-      $(document.body).append(this.iframe);
-
-      var iframeDestroy = function iframeDestroy() {
-        // Forces Shiny to flushReact, flush outputs, etc. Without this we get
-        // invalidated reactives, but observers don't actually execute.
-        self.shinyapp.makeRequest('uploadieFinish', [], function () {}, function () {});
-        $(self.iframe).remove(); // Reset the file input's value to "". This allows the same file to be
-        // uploaded again. https://stackoverflow.com/a/22521275
-
-        $(self.fileEl).val("");
-      };
-
-      if (this.iframe.attachEvent) {
-        this.iframe.attachEvent('onload', iframeDestroy);
-      } else {
-        this.iframe.onload = iframeDestroy;
-      }
-
-      this.form = document.createElement('form');
-      this.form.method = 'POST';
-      this.form.setAttribute('enctype', 'multipart/form-data');
-      this.form.action = "session/" + encodeURI(this.shinyapp.config.sessionId) + "/uploadie/" + encodeURI(this.id);
-      this.form.id = 'shinyupload_form_' + this.id;
-      this.form.target = iframeId;
-      $(this.form).insertAfter(this.fileEl).append(this.fileEl);
-      this.form.submit();
-    };
-  }).call(IE8FileUploader.prototype);
 
   var FileUploader = function FileUploader(shinyapp, id, files, el) {
     this.shinyapp = shinyapp;
@@ -5787,29 +5899,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   function uploadFiles(evt) {
     var $el = $(evt.target);
     abortCurrentUpload($el);
-    var files = evt.target.files; // IE8 here does not necessarily mean literally IE8; it indicates if the web
-    // browser supports the FileList object (IE8/9 do not support it)
-
-    var IE8 = typeof files === 'undefined';
+    var files = evt.target.files;
     var id = fileInputBinding.getId(evt.target);
-    if (!IE8 && files.length === 0) return; // Set the label in the text box
+    if (files.length === 0) return; // Set the label in the text box
 
-    var $fileText = $el.closest('div.input-group').find('input[type=text]');
+    setFileText($el, files); // Start the new upload and put the uploader in 'currentUploader'.
 
-    if (IE8) {
-      // If we're using IE8/9, just use this placeholder
-      $fileText.val("[Uploaded file]");
-    } else {
-      setFileText($el, files);
-    } // Start the new upload and put the uploader in 'currentUploader'.
-
-
-    if (IE8) {
-      /*jshint nonew:false */
-      new IE8FileUploader(exports.shinyapp, id, evt.target);
-    } else {
-      $el.data('currentUploader', new FileUploader(exports.shinyapp, id, files, evt.target));
-    }
+    $el.data('currentUploader', new FileUploader(exports.shinyapp, id, files, evt.target));
   } // Here we maintain a list of all the current file inputs. This is necessary
   // because we need to trigger events on them in order to respond to file drag
   // events. For example, they should all light up when a file is dragged on to
@@ -5972,46 +6068,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         $el.trigger("change");
       }
     },
-    _isIE9: function _isIE9() {
-      try {
-        return window.navigator.userAgent.match(/MSIE 9\./) && true || false;
-      } catch (e) {
-        return false;
-      }
-    },
     subscribe: function subscribe(el, callback) {
       var _this3 = this;
 
-      $(el).on("change.fileInputBinding", uploadFiles); // Here we try to set up the necessary events for Drag and Drop ("DnD") on
-      // every browser except IE9. We specifically exclude IE9 because it's one
-      // browser that supports just enough of the functionality we need to be
-      // confusing. In particular, it supports drag events, so drop zones will
-      // highlight when a file is dragged into the browser window. It doesn't
-      // support the FileList object though, so the user's expectation that DnD is
-      // supported based on this highlighting would be incorrect.
+      $(el).on("change.fileInputBinding", uploadFiles); // Here we try to set up the necessary events for Drag and Drop ("DnD").
 
-      if (!this._isIE9()) {
-        if ($fileInputs.length === 0) this._enableDocumentEvents();
-        $fileInputs = $fileInputs.add(el);
+      if ($fileInputs.length === 0) this._enableDocumentEvents();
+      $fileInputs = $fileInputs.add(el);
 
-        var $zone = this._zoneOf(el),
-            OVER = this._ZoneClass.OVER;
+      var $zone = this._zoneOf(el),
+          OVER = this._ZoneClass.OVER;
 
-        this._enableDraghover($zone).on({
-          "draghover:enter.draghover": function draghoverEnterDraghover(e) {
-            $zone.addClass(OVER);
-          },
-          "draghover:leave.draghover": function draghoverLeaveDraghover(e) {
-            $zone.removeClass(OVER); // Prevent this event from bubbling to the document handler,
-            // which would deactivate all zones.
+      this._enableDraghover($zone).on({
+        "draghover:enter.draghover": function draghoverEnterDraghover(e) {
+          $zone.addClass(OVER);
+        },
+        "draghover:leave.draghover": function draghoverLeaveDraghover(e) {
+          $zone.removeClass(OVER); // Prevent this event from bubbling to the document handler,
+          // which would deactivate all zones.
 
-            e.stopPropagation();
-          },
-          "draghover:drop.draghover": function draghoverDropDraghover(e, dropEvent) {
-            _this3._handleDrop(dropEvent, el);
-          }
-        });
-      }
+          e.stopPropagation();
+        },
+        "draghover:drop.draghover": function draghoverDropDraghover(e, dropEvent) {
+          _this3._handleDrop(dropEvent, el);
+        }
+      });
     },
     unsubscribe: function unsubscribe(el) {
       var $el = $(el),
@@ -6058,12 +6139,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             // Already bound; can happen with nested uiOutput (bindAll
             // gets called on two ancestors)
             continue;
-          }
+          } // If this element reports its CSS styles to getCurrentOutputInfo()
+          // then it should have a MutationObserver() to resend CSS if its
+          // style/class attributes change. This observer should already exist
+          // for _static_ UI, but not yet for _dynamic_ UI
 
+
+          maybeAddThemeObserver(el);
           var bindingAdapter = new OutputBindingAdapter(el, binding);
           shinyapp.bindOutput(id, bindingAdapter);
           $el.data('shiny-output-binding', bindingAdapter);
           $el.addClass('shiny-bound-output');
+          if (!$el.attr("aria-live")) $el.attr("aria-live", "polite");
           $el.trigger({
             type: 'shiny:bound',
             binding: binding,
@@ -6132,6 +6219,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     exports.setInputValue = exports.onInputChange = function (name, value, opts) {
       opts = addDefaultInputOpts(opts);
       inputs.setInput(name, value, opts);
+    }; // By default, Shiny deduplicates input value changes; that is, if
+    // `setInputValue` is called with the same value as the input already
+    // has, the call is ignored (unless opts.priority = "event"). Calling
+    // `forgetLastInputValue` tells Shiny that the very next call to
+    // `setInputValue` for this input id shouldn't be ignored, even if it
+    // is a dupe of the existing value.
+
+
+    exports.forgetLastInputValue = function (name) {
+      inputsNoResend.forget(name);
     };
 
     var boundInputs = {};
@@ -6335,23 +6432,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       return bgColor;
-    } // Compute the color property of an a tag, scoped within the element
-
-
-    function getComputedLinkColor(el) {
-      var a = document.createElement("a");
-      a.href = "/";
-      var div = document.createElement("div");
-      div.style.setProperty("position", "absolute", "important");
-      div.style.setProperty("top", "-1000px", "important");
-      div.style.setProperty("left", "0", "important");
-      div.style.setProperty("width", "30px", "important");
-      div.style.setProperty("height", "10px", "important");
-      div.appendChild(a);
-      el.appendChild(div);
-      var linkColor = getStyle(a, "color");
-      el.removeChild(div);
-      return linkColor;
     }
 
     function getComputedFont(el) {
@@ -6364,12 +6444,65 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
 
     $('.shiny-image-output, .shiny-plot-output, .shiny-report-theme').each(function () {
-      var id = getIdFromEl(this);
-      initialValues['.clientdata_output_' + id + '_bg'] = getComputedBgColor(this);
-      initialValues['.clientdata_output_' + id + '_fg'] = getStyle(this, "color");
-      initialValues['.clientdata_output_' + id + '_accent'] = getComputedLinkColor(this);
-      initialValues['.clientdata_output_' + id + '_font'] = getComputedFont(this);
-    });
+      var el = this,
+          id = getIdFromEl(el);
+      initialValues['.clientdata_output_' + id + '_bg'] = getComputedBgColor(el);
+      initialValues['.clientdata_output_' + id + '_fg'] = getStyle(el, "color");
+      initialValues['.clientdata_output_' + id + '_accent'] = getComputedLinkColor(el);
+      initialValues['.clientdata_output_' + id + '_font'] = getComputedFont(el);
+      maybeAddThemeObserver(el);
+    }); // Resend computed styles if *an output element's* class or style attribute changes.
+    // This gives us some level of confidence that getCurrentOutputInfo() will be
+    // properly invalidated if output container is mutated; but unfortunately,
+    // we don't have a reasonable way to detect change in *inherited* styles
+    // (other than session$setCurrentTheme())
+    // https://github.com/rstudio/shiny/issues/3196
+    // https://github.com/rstudio/shiny/issues/2998
+
+    function maybeAddThemeObserver(el) {
+      if (!window.MutationObserver) {
+        return; // IE10 and lower
+      }
+
+      var cl = el.classList;
+      var reportTheme = cl.contains('shiny-image-output') || cl.contains('shiny-plot-output') || cl.contains('shiny-report-theme');
+
+      if (!reportTheme) {
+        return;
+      }
+
+      var $el = $(el);
+
+      if ($el.data("shiny-theme-observer")) {
+        return; // i.e., observer is already observing
+      }
+
+      var observerCallback = new Debouncer(null, function () {
+        return doSendTheme(el);
+      }, 100);
+      var observer = new MutationObserver(function () {
+        return observerCallback.normalCall();
+      });
+      var config = {
+        attributes: true,
+        attributeFilter: ['style', 'class']
+      };
+      observer.observe(el, config);
+      $el.data("shiny-theme-observer", observer);
+    }
+
+    function doSendTheme(el) {
+      // Sending theme info on error isn't necessary (it'd add an unnecessary additional round-trip)
+      if (el.classList.contains("shiny-output-error")) {
+        return;
+      }
+
+      var id = getIdFromEl(el);
+      inputs.setInput('.clientdata_output_' + id + '_bg', getComputedBgColor(el));
+      inputs.setInput('.clientdata_output_' + id + '_fg', getStyle(el, "color"));
+      inputs.setInput('.clientdata_output_' + id + '_accent', getComputedLinkColor(el));
+      inputs.setInput('.clientdata_output_' + id + '_font', getComputedFont(el));
+    }
 
     function doSendImageSize() {
       $('.shiny-image-output, .shiny-plot-output, .shiny-report-size').each(function () {
@@ -6381,11 +6514,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       });
       $('.shiny-image-output, .shiny-plot-output, .shiny-report-theme').each(function () {
-        var id = getIdFromEl(this);
-        inputs.setInput('.clientdata_output_' + id + '_bg', getComputedBgColor(this));
-        inputs.setInput('.clientdata_output_' + id + '_fg', getStyle(this, "color"));
-        inputs.setInput('.clientdata_output_' + id + '_accent', getComputedLinkColor(this));
-        inputs.setInput('.clientdata_output_' + id + '_font', getComputedFont(this));
+        doSendTheme(this);
       });
       $('.shiny-bound-output').each(function () {
         var $this = $(this),
@@ -6554,9 +6683,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (match) {
         registerDependency(match[1], match[2]);
       }
-    }); // IE8 and IE9 have some limitations with data URIs
-
-    initialValues['.clientdata_allowDataUriScheme'] = typeof WebSocket !== 'undefined'; // We've collected all the initial values--start the server process!
+    }); // We've collected all the initial values--start the server process!
 
     inputsNoResend.reset(initialValues);
     shinyapp.connect(initialValues);

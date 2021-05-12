@@ -23,6 +23,7 @@ renderPlot(
   height = "auto",
   res = 72,
   ...,
+  alt = "Plot object",
   env = parent.frame(),
   quoted = FALSE,
   execOnResize = FALSE,
@@ -71,6 +72,15 @@ rendering in R; it won't change the actual ppi of the browser.</p>
 <td>
 <p>Arguments to be passed through to <code><a href="../../grDevices/html/png.html">grDevices::png()</a></code>.
 These can be used to set the width, height, background color, etc.</p>
+</td></tr>
+<tr valign="top"><td><code>alt</code></td>
+<td>
+<p>Alternate text for the HTML <code style="white-space: pre;">&lt;img&gt;</code> tag
+if it cannot be displayed or viewed (i.e., the user uses a screen reader).
+In addition to a character string, the value may be a reactive expression
+(or a function referencing reactive values) that returns a character string.
+NULL or &quot;&quot; is not recommended because those should be limited to decorative images
+(the default is &quot;Plot object&quot;).</p>
 </td></tr>
 <tr valign="top"><td><code>env</code></td>
 <td>
@@ -126,5 +136,5 @@ generated, and how to control the output, see <code><a href="plotPNG.html">plotP
 expedite the rendering of identical plots.
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

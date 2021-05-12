@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compile rules against a Sass Bundle or Sass Layer object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sass_partial {sass}"><tr><td>sass_partial {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compile rules against a Sass Bundle or Sass Layer object</h2>
+
+<h3>Description</h3>
+
+<p>Replaces the rules for a <code><a href="sass_layer.html">sass_layer()</a></code> object with new rules, and compile it.
+This is useful when (for example) you want to compile a set of rules using
+variables derived from a theme, but you do not want the resulting CSS for the
+entire theme &ndash; just the CSS for the specific rules passed in.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sass_partial(
+  rules,
+  bundle,
+  options = sass_options(),
+  output = NULL,
+  write_attachments = NA,
+  cache = sass_cache_get(),
+  cache_key_extra = NULL
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>rules</code></td>
+<td>
+<p>A set of sass rules, which will be used instead of the rules
+from <code>layer</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>bundle</code></td>
+<td>
+<p>A <code><a href="sass_layer.html">sass_bundle()</a></code> or <code><a href="sass_layer.html">sass_layer()</a></code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>options</code></td>
+<td>
+<p>Compiler options for Sass. Please specify options using
+<code><a href="sass_options.html">sass_options()</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>output</code></td>
+<td>
+<p>Specifies path to output file for compiled CSS. May be a
+character string or <code><a href="output_template.html">output_template()</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>write_attachments</code></td>
+<td>
+<p>If the input contains <code><a href="sass_layer.html">sass_layer()</a></code> objects that
+have file attachments, and <code>output</code> is not <code>NULL</code>, then copy the file
+attachments to the directory of <code>output</code>. (Defaults to <code>NA</code>, which merely
+emits a warning if file attachments are present, but does not write them to
+disk; the side-effect of writing extra files is subtle and potentially
+destructive, as files may be overwritten.)</p>
+</td></tr>
+<tr valign="top"><td><code>cache</code></td>
+<td>
+<p>This can be a directory to use for the cache, a <a href="FileCache.html">FileCache</a>
+object created by <code><a href="sass_file_cache.html">sass_file_cache()</a></code>, or <code>FALSE</code> or <code>NULL</code> for no caching.</p>
+</td></tr>
+<tr valign="top"><td><code>cache_key_extra</code></td>
+<td>
+<p>additional information to considering when computing
+the cache key. This should include any information that could possibly
+influence the resulting CSS that isn't already captured by <code>input</code>. For
+example, if <code>input</code> contains something like <code>"@import sass_file.scss"</code> you
+may want to include the <code><a href="../../base/html/file.info.html">file.mtime()</a></code> of <code>sass_file.scss</code> (or, perhaps, a
+<code><a href="../../utils/html/packageDescription.html">packageVersion()</a></code> if <code>sass_file.scss</code> is bundled with an R package).</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+theme &lt;- sass_layer(
+  defaults = sass_file(system.file("examples/variables.scss", package = "sass")),
+  rules = sass_file(system.file("examples/rules.scss", package = "sass"))
+)
+
+# Compile the theme
+sass(theme)
+
+# Sometimes we want to use the variables from the theme to compile other sass
+my_rules &lt;- ".someclass { background-color: $bg; color: $fg; }"
+sass_partial(my_rules, theme)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.3.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

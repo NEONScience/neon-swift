@@ -18,7 +18,7 @@ of a button, or as an icon for a <code><a href="tabPanel.html">tabPanel()</a></c
 <h3>Usage</h3>
 
 <pre>
-icon(name, class = NULL, lib = "font-awesome")
+icon(name, class = NULL, lib = "font-awesome", ...)
 </pre>
 
 
@@ -30,7 +30,7 @@ icon(name, class = NULL, lib = "font-awesome")
 <p>Name of icon. Icons are drawn from the
 <a href="https://fontawesome.com/">Font Awesome Free</a> (currently icons from
 the v5.13.0 set are supported with the v4 naming convention) and
-<a href="http://getbootstrap.com/components/#glyphicons">Glyphicons</a>
+<a href="https://getbootstrap.com/components/#glyphicons">Glyphicons</a>
 libraries. Note that the &quot;fa-&quot; and &quot;glyphicon-&quot; prefixes should not be used
 in icon names (i.e. the &quot;fa-calendar&quot; icon should be referred to as
 &quot;calendar&quot;)</p>
@@ -38,12 +38,16 @@ in icon names (i.e. the &quot;fa-calendar&quot; icon should be referred to as
 <tr valign="top"><td><code>class</code></td>
 <td>
 <p>Additional classes to customize the style of the icon (see the
-<a href="http://fontawesome.io/examples/">usage examples</a> for details on
+<a href="https://fontawesome.com/how-to-use">usage examples</a> for details on
 supported styles).</p>
 </td></tr>
 <tr valign="top"><td><code>lib</code></td>
 <td>
 <p>Icon library to use (&quot;font-awesome&quot; or &quot;glyphicon&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Arguments passed to the <code style="white-space: pre;">&lt;i&gt;</code> tag of <a href="../../htmltools/html/builder.html">htmltools::tags</a></p>
 </td></tr>
 </table>
 
@@ -57,8 +61,8 @@ supported styles).</p>
 <h3>See Also</h3>
 
 <p>For lists of available icons, see
-<a href="http://fontawesome.io/icons/">http://fontawesome.io/icons/</a> and
-<a href="http://getbootstrap.com/components/#glyphicons">http://getbootstrap.com/components/#glyphicons</a>.
+<a href="https://fontawesome.com/icons">https://fontawesome.com/icons</a> and
+<a href="https://getbootstrap.com/components/#glyphicons">https://getbootstrap.com/components/#glyphicons</a>.
 </p>
 
 
@@ -75,5 +79,5 @@ navbarPage("App Title",
 )
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -27,19 +27,21 @@ testServer(app = NULL, expr, args = list(), session = MockShinySession$new())
 <table summary="R argblock">
 <tr valign="top"><td><code>app</code></td>
 <td>
-<p>The path to an application or module to test. In addition to
-paths, applications may be represented by any object suitable for coercion
-to an <code>appObj</code> by <code><a href="shiny.appobj.html">as.shiny.appobj</a></code>. Application server functions must
-include a <code>session</code> argument in order to be tested. If <code>app</code> is <code>NULL</code> or
-not supplied, the nearest enclosing directory that is a Shiny app, starting
-with the current directory, is used.</p>
+<p>A server function (i.e. a function with <code>input</code>, <code>output</code>,
+and <code>session</code>), or a module function (i.e. a function with first
+argument <code>id</code> that calls <code><a href="moduleServer.html">moduleServer()</a></code>.
+</p>
+<p>You can also provide an app, a path an app, or anything that
+<code><a href="shiny.appobj.html">as.shiny.appobj()</a></code> can handle.</p>
 </td></tr>
 <tr valign="top"><td><code>expr</code></td>
 <td>
-<p>Test code containing expectations. The test expression will run
-in the server function environment, meaning that the parameters of the
-server function (e.g. <code>input</code>, <code>output</code>, and <code>session</code>) will be available
-along with any other values created inside of the server function.</p>
+<p>Test code containing expectations. The objects from inside the
+server function environment will be made available in the environment of
+the test expression (this is done using a data mask with
+<code><a href="../../rlang/html/eval_tidy.html">rlang::eval_tidy()</a></code>). This includes the parameters of the server function
+(e.g. <code>input</code>, <code>output</code>, and <code>session</code>), along with any other values
+created inside of the server function.</p>
 </td></tr>
 <tr valign="top"><td><code>args</code></td>
 <td>
@@ -59,7 +61,19 @@ of <code>expr</code>.</p>
 <h3>Examples</h3>
 
 <pre>
-server &lt;- function(id, multiplier = 2, prefix = "I am ") {
+# Testing a server function  ----------------------------------------------
+server &lt;- function(input, output, session) {
+  x &lt;- reactive(input$a * input$b)
+}
+
+testServer(server, {
+  session$setInputs(a = 2, b = 3)
+  stopifnot(x() == 6)
+})
+
+
+# Testing a module --------------------------------------------------------
+myModuleServer &lt;- function(id, multiplier = 2, prefix = "I am ") {
   moduleServer(id, function(input, output, session) {
     myreactive &lt;- reactive({
       input$x * multiplier
@@ -70,7 +84,7 @@ server &lt;- function(id, multiplier = 2, prefix = "I am ") {
   })
 }
 
-testServer(server, args = list(multiplier = 2), {
+testServer(myModuleServer, args = list(multiplier = 2), {
   session$setInputs(x = 1)
   # You're also free to use third-party
   # testing packages like testthat:
@@ -85,5 +99,5 @@ testServer(server, args = list(multiplier = 2), {
 })
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

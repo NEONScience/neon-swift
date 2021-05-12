@@ -19,7 +19,13 @@ function.
 <h3>Usage</h3>
 
 <pre>
-downloadButton(outputId, label = "Download", class = NULL, ...)
+downloadButton(
+  outputId,
+  label = "Download",
+  class = NULL,
+  ...,
+  icon = shiny::icon("download")
+)
 
 downloadLink(outputId, label = "Download", class = NULL, ...)
 </pre>
@@ -44,6 +50,10 @@ is assigned to.</p>
 <tr valign="top"><td><code>...</code></td>
 <td>
 <p>Other arguments to pass to the container tag function.</p>
+</td></tr>
+<tr valign="top"><td><code>icon</code></td>
+<td>
+<p>An <code><a href="icon.html">icon()</a></code> to appear on the button. Default is <code>icon("download")</code>.</p>
 </td></tr>
 </table>
 
@@ -82,5 +92,5 @@ shinyApp(ui, server)
 
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

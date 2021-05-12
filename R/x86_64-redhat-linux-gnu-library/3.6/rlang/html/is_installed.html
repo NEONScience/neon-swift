@@ -9,15 +9,34 @@
 
 <h3>Description</h3>
 
-<p>This checks that packages are installed with minimal side effects.
-If installed, the packages will be loaded but not attached.
+<p>These functions check that packages are installed with minimal side
+effects. If installed, the packages will be loaded but not
+attached.
 </p>
+
+<ul>
+<li> <p><code>is_installed()</code> doesn't interact with the user. It simply
+returns <code>TRUE</code> or <code>FALSE</code> depending on whether the packages are
+installed.
+</p>
+</li>
+<li><p> In interactive sessions, <code>check_installed()</code> asks the user
+whether to install missing packages. If the user accepts, the
+packages are installed with <code>pak::pkg_install()</code> if available, or
+<code><a href="../../utils/html/install.packages.html">utils::install.packages()</a></code> otherwise. If the session is non
+interactive or if the user chooses not to install the packages,
+the current evaluation is aborted.
+</p>
+</li></ul>
+
 
 
 <h3>Usage</h3>
 
 <pre>
 is_installed(pkg)
+
+check_installed(pkg, reason = NULL)
 </pre>
 
 
@@ -28,13 +47,21 @@ is_installed(pkg)
 <td>
 <p>The package names.</p>
 </td></tr>
+<tr valign="top"><td><code>reason</code></td>
+<td>
+<p>Optional string indicating why is <code>pkg</code> needed.
+Appears in error messages (if non-interactive) and user prompts
+(if interactive).</p>
+</td></tr>
 </table>
 
 
 <h3>Value</h3>
 
-<p><code>TRUE</code> if <em>all</em> package names provided in <code>pkg</code> are installed,
-<code>FALSE</code> otherwise.
+<p><code>is_installed()</code> returns <code>TRUE</code> if <em>all</em> package names
+provided in <code>pkg</code> are installed, <code>FALSE</code>
+otherwise. <code>check_installed()</code> either doesn't return or returns
+<code>NULL</code>.
 </p>
 
 
@@ -45,5 +72,5 @@ is_installed("utils")
 is_installed(c("base", "ggplot5"))
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.11 <a href="00Index.html">Index</a>]</div>
 </body></html>

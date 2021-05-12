@@ -4,6 +4,9 @@ Progress                Reporting progress (object-oriented API)
 absolutePanel           Panel with absolute positioning
 actionButton            Action button/link
 addResourcePath         Resource Publishing
+bindCache               Add caching with reactivity to an object
+bindEvent               Make an object respond only to specified
+                        reactive events
 bookmarkButton          Create a button for bookmarking/sharing
 bootstrapLib            Bootstrap libraries
 bootstrapPage           Create a Bootstrap page
@@ -13,18 +16,14 @@ brushedPoints           Find rows of data selected on an interactive
 callModule              Invoke a Shiny module
 checkboxGroupInput      Checkbox Group Input Control
 checkboxInput           Checkbox Input Control
-clickOpts               Create an object representing click options
 column                  Create a column within a UI definition
 conditionalPanel        Conditional Panel
 createRenderFunction    Implement render functions
 createWebDependency     Create a web dependency
 dateInput               Create date input
 dateRangeInput          Create date range input
-dblclickOpts            Create an object representing double-click
-                        options
 debounce                Slow down a reactive expression with
                         debounce/throttle
-diskCache               Create a disk cache object
 domains                 Reactive domains
 downloadButton          Create a download button or link
 downloadHandler         File Downloads
@@ -43,7 +42,6 @@ getQueryString          Get the query string / hash component from the
                         URL
 getShinyOption          Get or set Shiny options
 helpText                Create a help text element
-hoverOpts               Create an object representing hover options
 htmlOutput              Create an HTML output element
 icon                    Create an icon
 inputPanel              Input panel
@@ -57,13 +55,10 @@ isRunning               Check whether a Shiny application is running
 isolate                 Create a non-reactive scope for an expression
 knitr_methods           Knitr S3 methods
 loadSupport             Load an app's supporting R files
-makeReactiveBinding     Make a reactive variable
 markRenderFunction      Mark a function as a render function
 markdown                Insert inline Markdown
 maskReactiveContext     Evaluate an expression without a reactive
                         context
-memoryCache             Create a memory cache object
-modalButton             Create a button for a modal dialog
 modalDialog             Create a modal dialog UI
 moduleServer            Shiny modules
 navbarPage              Create a page with a top level navigation bar
@@ -81,6 +76,8 @@ passwordInput           Create a password input control
 plotOutput              Create an plot or image output element
 plotPNG                 Run a plotting function and save the output as
                         a PNG
+quoToFunction           Convert a quosure to a function for a Shiny
+                        render function
 radioButtons            Create radio buttons
 reactive                Create a reactive expression
 reactiveFileReader      Reactive file reader
@@ -97,9 +94,8 @@ renderDataTable         Table output with the JavaScript library
                         DataTables
 renderImage             Image file output
 renderPlot              Plot Output
-renderPrint             Printable Output
+renderPrint             Text Output
 renderTable             Table Output
-renderText              Text Output
 renderUI                UI Output
 repeatable              Make a random number generator repeatable
 req                     Check for required values

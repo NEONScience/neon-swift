@@ -14,7 +14,7 @@ immediately resumed. <code>cnd_entrace()</code> adds a backtrace to a
 condition object, without any other effect. Both functions should
 be called directly from an error handler.
 </p>
-<p>Set the <code>error</code> global option to <code>quote(rlang::entrace())</code> to
+<p>Set the <code>error</code> global option to <code>rlang::entrace</code> to
 transform base errors to rlang errors. These enriched errors
 include a backtrace. The RProfile is a good place to set the
 handler. See <code><a href="rlang_backtrace_on_error.html">rlang_backtrace_on_error</a></code> for details.
@@ -91,5 +91,5 @@ if (requireNamespace("rlang", quietly = TRUE)) {
 }
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.11 <a href="00Index.html">Index</a>]</div>
 </body></html>

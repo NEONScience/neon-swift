@@ -28,12 +28,11 @@ makeReactiveBinding(symbol, env = parent.frame())
 <table summary="R argblock">
 <tr valign="top"><td><code>symbol</code></td>
 <td>
-<p>A character string indicating the name of the variable that
-should be made reactive</p>
+<p>Name of variable to make reactive, as a string.</p>
 </td></tr>
 <tr valign="top"><td><code>env</code></td>
 <td>
-<p>The environment that will contain the reactive variable</p>
+<p>Environment in which to create binding. Expert use only.</p>
 </td></tr>
 </table>
 
@@ -47,15 +46,19 @@ should be made reactive</p>
 <h3>Examples</h3>
 
 <pre>
-## Not run: 
+reactiveConsole(TRUE)
+
 a &lt;- 10
 makeReactiveBinding("a")
+
 b &lt;- reactive(a * -1)
 observe(print(b()))
-a &lt;- 20
 
-## End(Not run)
+a &lt;- 20
+a &lt;- 30
+
+reactiveConsole(FALSE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

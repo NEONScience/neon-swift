@@ -1,0 +1,428 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Autonumeric Input Widget</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for autonumericInput {shinyWidgets}"><tr><td>autonumericInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Autonumeric Input Widget</h2>
+
+<h3>Description</h3>
+
+<p>An <code>R</code> wrapper over the javascript <code>AutoNumeric</code> library, for
+formatting numeric inputs in shiny applications.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+autonumericInput(
+  inputId,
+  label,
+  value,
+  width = NULL,
+  align = "center",
+  currencySymbol = NULL,
+  currencySymbolPlacement = NULL,
+  decimalCharacter = NULL,
+  digitGroupSeparator = NULL,
+  allowDecimalPadding = NULL,
+  decimalPlaces = NULL,
+  divisorWhenUnfocused = NULL,
+  rawValueDivisor = NULL,
+  formatOnPageLoad = NULL,
+  maximumValue = NULL,
+  minimumValue = NULL,
+  modifyValueOnWheel = NULL,
+  ...
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or NULL for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Initial value (unformatted).</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input box, eg. <code>"200px"</code> or
+<code>"100%"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>align</code></td>
+<td>
+<p>The alignment of the text inside the input box, one of
+&quot;center&quot; (default), &quot;left&quot;, &quot;right&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>currencySymbol</code></td>
+<td>
+<p>Defines the currency symbol string. It can be a string
+of more than one character (allowing for instance to use a space on either
+side of it, example: '$ ' or ' $'). Defaults to &quot;&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>currencySymbolPlacement</code></td>
+<td>
+<p>Defines where the currency symbol should be
+placed, &quot;p&quot; for prefix or &quot;s&quot; for suffix (default).</p>
+</td></tr>
+<tr valign="top"><td><code>decimalCharacter</code></td>
+<td>
+<p>Defines what decimal separator character is used.
+Defaults to &quot;,&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>digitGroupSeparator</code></td>
+<td>
+<p>Defines what decimal separator character is used.
+Defaults to &quot;.&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>allowDecimalPadding</code></td>
+<td>
+<p>Defines if decimal places should be padded with
+zeros.  Defaults to TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>decimalPlaces</code></td>
+<td>
+<p>Defines the default number of decimal places to show
+on the formatted value, and keep for the precision. Must be 0 or a
+positive integer. Defaults to 2.</p>
+</td></tr>
+<tr valign="top"><td><code>divisorWhenUnfocused</code></td>
+<td>
+<p>The number that divides the element value on
+blur.  On focus, the number is multiplied back in. Defaults to NULL.</p>
+</td></tr>
+<tr valign="top"><td><code>rawValueDivisor</code></td>
+<td>
+<p>Divides the formatted value shown in the AutoNumeric
+element and store the divided result in <code>rawValue</code>. Defaults to 1.</p>
+</td></tr>
+<tr valign="top"><td><code>formatOnPageLoad</code></td>
+<td>
+<p>Determine if the default value will be formatted on
+initialization. Defaults to TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>maximumValue</code></td>
+<td>
+<p>Defines the maximum possible value a user can enter.</p>
+</td></tr>
+<tr valign="top"><td><code>minimumValue</code></td>
+<td>
+<p>Defines the minimum possible value a user can enter.</p>
+</td></tr>
+<tr valign="top"><td><code>modifyValueOnWheel</code></td>
+<td>
+<p>Allows the user to increment or decrement the
+element value with the mouse wheel. The wheel behavior can be modified
+by the <code>wheelStep</code> option. Defaults to TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional parameters that can be passed to AutoNumeric.  See
+details for more information.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This function wraps the AutoNumeric.js library.  The parameter documentation
+provided here should be sufficient for most users, but for those wishing to
+use advanced configurations it is advised to look at the documentation on
+the <a href="https://github.com/autoNumeric/autoNumeric">AutoNumeric GitHub repository</a>.  Alexandre
+Bonneau has done a wonderful job of documenting all parameters and full
+explanations of all parameters and their associated values can be found
+there.
+</p>
+<p>The <code>...</code> parameter can take any of the arguments listed on the
+<a href="https://github.com/autoNumeric/autoNumeric">AutoNumeric GitHub repository</a>. A quick reference
+follows:
+</p>
+
+<ul>
+<li><p> decimalPlacesRawValue - Defines How many decimal places should be kept
+for the raw value. If set to NULL (default) then <code>decimalPlaces</code> is
+used.
+</p>
+</li>
+<li><p> decimalPlacesShownOnBlur - Defines how many decimal places should be
+visible when the element is unfocused. If NULL (default) then
+<code>decimalPlaces</code> is used.
+</p>
+</li>
+<li><p> decimalPlacesShownOnFocus - Defines how many decimal places should be
+visible when the element has the focus. If NULL (default) then
+<code>decimalPlaces</code> is used.
+</p>
+</li>
+<li><p> digitalGroupSpacing - Defines how many numbers should be grouped
+together for the thousands separator groupings.  Must be one of
+c(&quot;2&quot;, &quot;2s&quot;, &quot;3&quot;, &quot;4&quot;). Defaults to 3.
+</p>
+</li>
+<li><p> alwaysAllowDecimalCharacter - Defines if the decimal character or
+decimal character alternative should be accepted when there is already
+a decimal character shown in the element. If set to TRUE, any decimal
+character input will be accepted and will subsequently modify the decimal
+character position, as well as the rawValue. If set to FALSE, the decimal
+character and its alternative key will be dropped. This is the default
+setting.
+</p>
+</li>
+<li><p> createLocalList - Defines if a local list of AutoNumeric objects should
+be kept when initializing this object. Defaults to TRUE.
+</p>
+</li>
+<li><p> decimalCharacterAlternative - Allow to declare an alternative decimal
+separator which is automatically replaced by <code>decimalCharacter</code> when
+typed. This is useful for countries that use a comma ',' as the decimal
+character and have keyboards with numeric pads providing a period '.' as
+the decimal character (in France or Spain for instance). Must be NULL
+(default), &quot;,&quot;, or &quot;.&quot;.
+</p>
+</li>
+<li><p> emptyInputBehavior - Defines what should be displayed in the element if
+the raw value is missing. One of c(NULL, &quot;focus&quot;, &quot;press&quot;, &quot;always&quot;, &quot;min&quot;,
+&quot;max&quot;, &quot;zero&quot;) or a custom value. Defaults to NULL.  See
+<a href="https://github.com/autoNumeric/autoNumeric">AutoNumeric GitHub repository</a> for full
+details.
+</p>
+</li>
+<li><p> selectNumberOnly - Determine if the select all keyboard command will
+select the complete input text, or only the input numeric value.
+Defaults to TRUE.
+</p>
+</li>
+<li><p> selectOnFocus - Defines if the element value should be selected on
+focus. Note: The selection is done using the <code>selectNumberOnly</code> option.
+Defaults to TRUE.
+</p>
+</li>
+<li><p> eventBubbles - Defines if the custom and native events triggered by
+AutoNumeric should bubble up or not. Defaults to TRUE.
+</p>
+</li>
+<li><p> eventIsCancelable - Defines if the custom and native events triggered
+by AutoNumeric should be cancelable. Defaults to TRUE.
+</p>
+</li>
+<li><p> formulaMode - Defines if the formula mode can be activated by the user.
+If set to true, then the user can enter the formula mode by entering the '='
+character. The user will then be allowed to enter any simple math formula
+using numeric characters as well as the following operators: +, -, *, /, (
+and ). The formula mode is exited when the user either validate their math
+expression using the Enter key, or when the element is blurred. Defaults to
+FALSE.
+</p>
+</li>
+<li><p> historySize - Set the undo/redo history table size. Defaults to 20.
+</p>
+</li>
+<li><p> isCancellable - Allow the user to cancel and undo the changes he made
+to the given autonumeric-managed element, by pressing the <code>Escape</code>
+key. Defaults to TRUE.
+</p>
+</li>
+<li><p> leadingZero - This options describes if entering 0 on the far left of
+the numbers is allowed, and if the superfluous zeroes should be kept when
+the input is blurred. One of c(&quot;allow&quot;, &quot;deny&quot;, and &quot;keep&quot;). Defaults to
+&quot;deny&quot;. See <a href="https://github.com/autoNumeric/autoNumeric">AutoNumeric GitHub repository</a>
+for full details.
+</p>
+</li>
+<li><p> wheelOn - Defines when the wheel event will increment or decrement
+the element value. One of c(&quot;focus&quot;, &quot;hover&quot;). Defaults to &quot;focus&quot;.
+</p>
+</li>
+<li><p> wheelStep - Defines by how much the element value should be
+incremented/decremented on the wheel event. Can be a set value or the
+string &quot;progressive&quot; which determines the step from the size of the input.
+Defaults to &quot;progressive&quot;.
+</p>
+</li>
+<li><p> negativeBracketsTypeOnBlur - Adds brackets-like characters on negative
+values when unfocused. Those brackets are visible only when the field does
+not have the focus. The left and right symbols should be enclosed in
+quotes and separated by a comma. Defaults to NULL.
+</p>
+</li>
+<li><p> negativePositiveSignPlacement - Placement of the negative/positive sign
+relative to the <code>currencySymbol</code> option. One of c(&quot;p&quot;, &quot;s&quot;, &quot;l&quot;,
+&quot;r&quot;, NULL), defaults to NULL. See
+<a href="https://github.com/autoNumeric/autoNumeric">AutoNumeric GitHub repository</a> for further
+documentation.
+</p>
+</li>
+<li><p> negativeSignCharacter - Defines the negative sign symbol to use. Must
+be a single character and be non-numeric. Defaults to &quot;-&quot;.
+</p>
+</li>
+<li><p> positiveSignCharacter - Defines the positive sign symbol to use. Must
+be a single character and be non-numeric. Defaults to &quot;+&quot;.
+</p>
+</li>
+<li><p> showPositiveSign - Allow the positive sign symbol
+<code>positiveSignCharacter</code> to be displayed for positive numbers.
+Defaults to FALSE.
+</p>
+</li>
+<li><p> onInvalidPaste - Manage how autoNumeric react when the user tries to
+paste an invalid number. One of c(&quot;error&quot;, &quot;ignore&quot;, &quot;clamp&quot;,
+&quot;truncate&quot;, &quot;replace&quot;). Defaults to &quot;error&quot;.
+</p>
+</li>
+<li><p> overrideMinMaxLimits - Override the minimum and maximum limits. Must
+be one of c(&quot;ceiling&quot;, &quot;floor&quot;, &quot;ignore&quot;, NULL). Defaults to &quot;ceiling&quot;.
+</p>
+</li>
+<li><p> readOnly - Defines if the element (&lt;input&gt; or another allowed html tag)
+should be set as read only on initialization. Defaults to FALSE.
+</p>
+</li>
+<li><p> roundingMethod - Defines the rounding method to use. One of c(&quot;S&quot;, &quot;A&quot;,
+&quot;s&quot;, &quot;a&quot;, &quot;B&quot;, &quot;U&quot;, &quot;D&quot;, &quot;C&quot;, &quot;F&quot;, &quot;N05&quot;, &quot;CHF&quot;, &quot;U05&quot;, &quot;D05&quot;). Defaults
+to &quot;S&quot;.  See <a href="https://github.com/autoNumeric/autoNumeric">AutoNumeric GitHub repository</a>
+for further documentation.
+</p>
+</li>
+<li><p> saveValueToSessionStorage - Set to TRUE to allow the
+<code>decimalPlacesShownOnFocus</code> value to be saved with sessionStorage.
+Defaults to FALSE.
+</p>
+</li>
+<li><p> serializeSpaces - Defines how the serialize functions should treat the
+spaces.  Either &quot;+&quot; (default) or &quot;%20&quot; (the older behavior).
+</p>
+</li>
+<li><p> showOnlyNumbersOnFocus - Defines if the element value should be
+converted to the raw value on focus or mouseenter, (and back to the
+formatted on blur or mouseleave). Defaults to FALSE.
+</p>
+</li>
+<li><p> showWarnings - Defines if warnings should be shown in the console.
+Defaults to TRUE.
+</p>
+</li>
+<li><p> styleRules - Defines the rules that calculate the CSS class(es) to
+apply on the element, based on the raw unformatted value. Defaults to
+NULL.
+</p>
+</li>
+<li><p> suffixText - Add a text on the right hand side of the element value.
+This suffix text can have any characters in its string, except numeric
+characters and the negative or positive sign. Defaults to NULL.
+</p>
+</li>
+<li><p> symbolWhenUnfocused - Defines the symbol placed as a suffix when not
+in focus or hovered. Defaults to NULL.
+</p>
+</li>
+<li><p> unformatOnHover - Defines if the element value should be unformatted
+when the user hover his mouse over it while holding the Alt key. Defaults
+to TRUE.
+</p>
+</li>
+<li><p> valuesToStrings - Provides a way for automatically replacing the
+formatted value with a pre-defined string, when the raw value is equal
+to a specific value. Defaults to NULL.
+</p>
+</li>
+<li><p> watchExternalChanges - Defines if the AutoNumeric element should watch
+external changes made without using <code>.set()</code>. Defaults to FALSE.
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>An autonumericInput object to be used in the UI function of a Shiny
+App.
+</p>
+
+
+<h3>References</h3>
+
+<p>Bonneau, Alexandre. 2018. &quot;AutoNumeric.js javascript Package&quot;.
+<a href="http://autonumeric.org">http://autonumeric.org</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other autonumeric: 
+<code><a href="formatNumericInput.html">currencyInput</a>()</code>,
+<code><a href="updateAutonumericInput.html">updateAutonumericInput</a>()</code>,
+<code><a href="formaNumericInputUpdate.html">updateCurrencyInput</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+  library(shinyWidgets)
+
+  ui &lt;- fluidPage(
+    h1("Autonumeric Inputs"),
+    br(),
+    autonumericInput(
+      inputId = "id1",
+      label = "Default Input",
+      value = 1234.56
+    ),
+    verbatimTextOutput("res1"),
+
+    autonumericInput(
+      inputId = "id2",
+      label = "Custom Thousands of Dollars Input",
+      value = 1234.56,
+      align = "right",
+      currencySymbol = "$",
+      currencySymbolPlacement = "p",
+      decimalCharacter = ".",
+      digitGroupSeparator = ",",
+      divisorWhenUnfocused = 1000,
+      symbolWhenUnfocused = "K"
+    ),
+    verbatimTextOutput("res2"),
+
+    autonumericInput(
+      inputId = "id3",
+      label = "Custom Millions of Euros Input with Positive Sign",
+      value = 12345678910,
+      align = "right",
+      currencySymbol = "\u20ac",
+      currencySymbolPlacement = "s",
+      decimalCharacter = ",",
+      digitGroupSeparator = ".",
+      divisorWhenUnfocused = 1000000,
+      symbolWhenUnfocused = " (millions)",
+      showPositiveSign = TRUE
+    ),
+    verbatimTextOutput("res3")
+  )
+
+  server &lt;- function(input, output, session) {
+    output$res1 &lt;- renderPrint(input$id1)
+    output$res2 &lt;- renderPrint(input$id2)
+    output$res3 &lt;- renderPrint(input$id3)
+  }
+
+  shinyApp(ui, server)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.5.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

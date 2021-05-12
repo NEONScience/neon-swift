@@ -9,9 +9,13 @@
 
 <h3>Description</h3>
 
-<p>This creates the UI for a modal dialog, using Bootstrap's modal class. Modals
-are typically used for showing important messages, or for presenting UI that
-requires input from the user, such as a username and password input.
+<p><code>modalDialog()</code> creates the UI for a modal dialog, using Bootstrap's modal
+class. Modals are typically used for showing important messages, or for
+presenting UI that requires input from the user, such as a user name and
+password input.
+</p>
+<p><code>modalButton()</code> creates a button that will dismiss the dialog when clicked,
+typically used when customising the <code>footer</code>.
 </p>
 
 
@@ -26,6 +30,8 @@ modalDialog(
   easyClose = FALSE,
   fade = TRUE
 )
+
+modalButton(label, icon = NULL)
 </pre>
 
 
@@ -54,13 +60,22 @@ or <code>"l"</code> for large.</p>
 <p>If <code>TRUE</code>, the modal dialog can be dismissed by
 clicking outside the dialog box, or be pressing the Escape key. If
 <code>FALSE</code> (the default), the modal dialog can't be dismissed in those
-ways; instead it must be dismissed by clicking on the dismiss button, or
+ways; instead it must be dismissed by clicking on a <code>modalButton()</code>, or
 from a call to <code><a href="showModal.html">removeModal()</a></code> on the server.</p>
 </td></tr>
 <tr valign="top"><td><code>fade</code></td>
 <td>
 <p>If <code>FALSE</code>, the modal dialog will have no fade-in animation
 (it will simply appear rather than fade in to view).</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>The contents of the button or link&ndash;usually a text label, but
+you could also use any other HTML, like an image.</p>
+</td></tr>
+<tr valign="top"><td><code>icon</code></td>
+<td>
+<p>An optional <code><a href="icon.html">icon()</a></code> to appear on the button.</p>
 </td></tr>
 </table>
 
@@ -166,5 +181,5 @@ shinyApp(
 }
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

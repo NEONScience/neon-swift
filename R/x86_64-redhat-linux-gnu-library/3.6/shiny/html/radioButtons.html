@@ -44,14 +44,15 @@ radioButtons(
 <td>
 <p>List of values to select from (if elements of the list are
 named then that name rather than the value is displayed to the user). If
-this argument is provided, then <code>choiceNames</code> and <code>choiceValues</code>
-must not be provided, and vice-versa. The values should be strings; other
-types (such as logicals and numbers) will be coerced to strings.</p>
+this argument is provided, then <code>choiceNames</code> and <code>choiceValues</code> must not
+be provided, and vice-versa. The values should be strings; other types
+(such as logicals and numbers) will be coerced to strings.</p>
 </td></tr>
 <tr valign="top"><td><code>selected</code></td>
 <td>
-<p>The initially selected value (if not specified then defaults
-to the first value)</p>
+<p>The initially selected value. If not specified, then it
+defaults to the first item in <code>choices</code>. To start with no items selected,
+use <code>character(0)</code>.</p>
 </td></tr>
 <tr valign="top"><td><code>inline</code></td>
 <td>
@@ -66,13 +67,12 @@ see <code><a href="reexports.html">validateCssUnit()</a></code>.</p>
 <td>
 <p>List of names and values, respectively, that
 are displayed to the user in the app and correspond to the each choice (for
-this reason, <code>choiceNames</code> and <code>choiceValues</code> must have the same
-length). If either of these arguments is provided, then the other
-<em>must</em> be provided and <code>choices</code> <em>must not</em> be provided. The
-advantage of using both of these over a named list for <code>choices</code> is
-that <code>choiceNames</code> allows any type of UI object to be passed through
-(tag objects, icons, HTML code, ...), instead of just simple text. See
-Examples.</p>
+this reason, <code>choiceNames</code> and <code>choiceValues</code> must have the same length).
+If either of these arguments is provided, then the other <em>must</em> be provided
+and <code>choices</code> <em>must not</em> be provided. The advantage of using both of these
+over a named list for <code>choices</code> is that <code>choiceNames</code> allows any type of UI
+object to be passed through (tag objects, icons, HTML code, ...), instead
+of just simple text. See Examples.</p>
 </td></tr>
 </table>
 
@@ -174,5 +174,5 @@ shinyApp(ui, server)
 
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

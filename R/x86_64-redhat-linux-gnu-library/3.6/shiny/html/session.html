@@ -43,11 +43,6 @@ on a local connection (without Shiny Server or Connect).
 </p>
 
 <ul>
-<li><p><code>allowDataUriScheme</code> is a logical value that indicates whether
-the browser is able to handle URIs that use the <code style="white-space: pre;">data:</code> scheme.
-
-</p>
-</li>
 <li><p><code>pixelratio</code> reports the &quot;device pixel ratio&quot; from the web browser,
 or 1 if none is reported. The value is 2 for Apple Retina displays.
 
@@ -179,6 +174,20 @@ This is the request that was used to initiate the websocket connection
 session-specific data they want.
 </p>
 </td></tr>
+<tr valign="top"><td><code>user</code></td>
+<td>
+
+<p>User's log-in information. Useful for identifying users on hosted platforms
+such as RStudio Connect and Shiny Server.
+</p>
+</td></tr>
+<tr valign="top"><td><code>groups</code></td>
+<td>
+
+<p>The <code>user</code>'s relevant group information. Useful for determining what
+privileges the user should or shouldn't have.
+</p>
+</td></tr>
 <tr valign="top"><td><code>resetBrush(brushId)</code></td>
 <td>
 
@@ -285,7 +294,25 @@ character vector, as in <code>input=c("x", "y")</code>. The format can be
 &quot;rds&quot; or &quot;json&quot;.
 </p>
 </td></tr>
+<tr valign="top"><td><code>setCurrentTheme(theme)</code></td>
+<td>
+
+<p>Sets the current <code><a href="bootstrapLib.html">bootstrapLib()</a></code> theme, which updates the value of
+<code><a href="getCurrentTheme.html">getCurrentTheme()</a></code>, invalidates <code>session$getCurrentTheme()</code>, and calls
+function(s) registered with <code><a href="registerThemeDependency.html">registerThemeDependency()</a></code> with provided
+<code>theme</code>. If those function calls return <code><a href="../../htmltools/html/htmlDependency.html">htmltools::htmlDependency()</a></code>s with
+<code>stylesheet</code>s, then those stylesheets are &quot;refreshed&quot; (i.e., the new
+stylesheets are inserted on the page and the old ones are disabled and
+removed).
+</p>
+</td></tr>
+<tr valign="top"><td><code>getCurrentTheme()</code></td>
+<td>
+
+<p>A reactive read of the current <code><a href="bootstrapLib.html">bootstrapLib()</a></code> theme.
+</p>
+</td></tr>
 </table>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

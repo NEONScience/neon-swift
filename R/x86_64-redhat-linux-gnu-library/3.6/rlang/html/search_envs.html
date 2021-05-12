@@ -35,6 +35,11 @@ and throws an error otherwise. It is a shortcut for
 <code>search_env(pkg_env_name("pkgname"))</code>.
 </p>
 </li>
+<li> <p><code>global_env()</code> and <code>base_env()</code> (simple aliases for <code><a href="../../base/html/environment.html">globalenv()</a></code>
+and <code><a href="../../base/html/environment.html">baseenv()</a></code>). These are respectively the first and last
+environments of the search path.
+</p>
+</li>
 <li> <p><code>is_attached()</code> returns <code>TRUE</code> when its argument (a search name
 or a package environment) is attached to the search path.
 </p>
@@ -90,8 +95,8 @@ the global workspace. It contains the following elements:
 
 <ul>
 <li><p> The chain always starts with <code>global_env()</code> and finishes with
-<code>base_env()</code> (technically, it finishes with the <code>empty_env()</code>
-which the base package environment inherits from).
+<code>base_env()</code> which inherits from the terminal environment
+<code>empty_env()</code>.
 </p>
 </li>
 <li><p> Each <code><a href="../../base/html/library.html">base::library()</a></code> call attaches a new package environment to
@@ -134,5 +139,5 @@ search_env(pkg_env_name("rlang"))
 pkg_env("utils")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.11 <a href="00Index.html">Index</a>]</div>
 </body></html>

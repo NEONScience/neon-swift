@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get default sass cache object for the current context</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sass_cache_get {sass}"><tr><td>sass_cache_get {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get default sass cache object for the current context</h2>
+
+<h3>Description</h3>
+
+<p>Get the default sass cache object, for the current context. The context
+depends on factors described below.
+</p>
+<p><code>sass_cache_get()</code> first checks the <code>sass.cache</code> option. If it is set to
+<code>NULL</code> or <code>FALSE</code>, then this function returns <code>NULL</code>. If it has been set to a string,
+it is treated as a directory name, and this function returns a
+<code>sass_file_cache()</code> object using that directory. If the option has been set
+to a <code>sass_file_cache()</code> object, then it will return that object.
+</p>
+<p>In most cases, this function uses the user's cache directory, by calling
+<code>tools::R_user_dir("sass", which = "cache")</code> (for R 4.0 and above) or
+<code>rappdirs::user_cache_dir("R-sass")</code> (for older versions of R).
+</p>
+<p>If this function is called from a Shiny application, it will also look for a
+subdirectory named <code style="white-space: pre;">app_cache/</code>. If it exists, it will use a directory named
+<code style="white-space: pre;">app_cache/sass/</code> to store the cache.
+</p>
+<p>When running a Shiny application in a typical R session, it will not create
+the <code style="white-space: pre;">app_cache/</code> subdirectory, but it will use it if present. This scopes the
+cache to the application.
+</p>
+<p>With Shiny applications hosted on Shiny Server and Connect, it <em>will</em> create
+a <code style="white-space: pre;">app_cache/sass/</code> subdirectory, so that the cache is scoped to the
+application and will not interfere with another application's cache.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sass_cache_get()
+</pre>
+
+
+<h3>Shiny Developer Mode</h3>
+
+<p>If Shiny Developer Mode is enabled (by setting <code>options(shiny.devmode = TRUE)</code> or calling <code>shiny::devmode(TRUE)</code>,
+the default global option value for <code>sass.cache</code> is updated to <code>FALSE</code> instead
+of <code>TRUE</code>, similar to <code>getOption("sass.cache", FALSE)</code>.  This setting allows
+developers to make sure what is being returned from <code><a href="sass.html">sass()</a></code> is not an incorrect
+cache result.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="sass_cache_get_dir.html">sass_cache_get_dir()</a></code>, <code><a href="sass.html">sass()</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.3.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

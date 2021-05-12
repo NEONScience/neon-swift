@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Change the value of a numeric input icon on the client</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for updateNumericInputIcon {shinyWidgets}"><tr><td>updateNumericInputIcon {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Change the value of a numeric input icon on the client</h2>
+
+<h3>Description</h3>
+
+<p>Change the value of a numeric input icon on the client
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+updateNumericInputIcon(
+  session,
+  inputId,
+  label = NULL,
+  value = NULL,
+  min = NULL,
+  max = NULL,
+  step = NULL,
+  icon = NULL
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>The <code>session</code> object passed to function given to
+<code>shinyServer</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The id of the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>The label to set for the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>The value to set for the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>min</code></td>
+<td>
+<p>Minimum value.</p>
+</td></tr>
+<tr valign="top"><td><code>max</code></td>
+<td>
+<p>Maximum value.</p>
+</td></tr>
+<tr valign="top"><td><code>step</code></td>
+<td>
+<p>Step size.</p>
+</td></tr>
+<tr valign="top"><td><code>icon</code></td>
+<td>
+<p>Icon to update, note that you can update icon only
+if initialized in <code><a href="numericInputIcon.html">numericInputIcon</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>No value.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(shiny)
+library(shinyWidgets)
+
+ui &lt;- fluidPage(
+  numericInputIcon(
+    inputId = "id",
+    label = "With an icon",
+    value = 10,
+    icon = icon("percent")
+  ),
+  actionButton("updateValue", "Update value"),
+  actionButton("updateIcon", "Update icon"),
+  verbatimTextOutput("value")
+)
+
+server &lt;- function(input, output, session) {
+
+  output$value &lt;- renderPrint(input$id)
+
+  observeEvent(input$updateValue, {
+    updateNumericInputIcon(
+      session = session,
+      inputId = "id",
+      value = sample.int(100, 1)
+    )
+  })
+
+  observeEvent(input$updateIcon, {
+    i &lt;- sample(c("home", "gears", "dollar", "globe", "sliders"), 1)
+    updateNumericInputIcon(
+      session = session,
+      inputId = "id",
+      icon = icon(i)
+    )
+  })
+
+}
+
+if (interactive())
+  shinyApp(ui, server)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.5.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

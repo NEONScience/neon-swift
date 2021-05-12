@@ -23,6 +23,7 @@ observeEvent(
   event.quoted = FALSE,
   handler.env = parent.frame(),
   handler.quoted = FALSE,
+  ...,
   label = NULL,
   suspended = FALSE,
   priority = 0,
@@ -40,6 +41,7 @@ eventReactive(
   event.quoted = FALSE,
   value.env = parent.frame(),
   value.quoted = FALSE,
+  ...,
   label = NULL,
   domain = getDefaultReactiveDomain(),
   ignoreNULL = TRUE,
@@ -88,6 +90,10 @@ this is the calling environment.</p>
 default, this is <code>FALSE</code>. This is useful when you want to use an
 expression that is stored in a variable; to do so, it must be quoted with
 <code>quote()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Currently not used.</p>
 </td></tr>
 <tr valign="top"><td><code>label</code></td>
 <td>
@@ -332,5 +338,5 @@ if (interactive()) {
 }
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

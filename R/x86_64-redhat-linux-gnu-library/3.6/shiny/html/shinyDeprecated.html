@@ -16,35 +16,30 @@
 <h3>Usage</h3>
 
 <pre>
-shinyDeprecated(
-  new = NULL,
-  msg = NULL,
-  old = as.character(sys.call(sys.parent()))[1L],
-  version = NULL
-)
+shinyDeprecated(version, what, with = NULL, details = NULL)
 </pre>
 
 
 <h3>Arguments</h3>
 
 <table summary="R argblock">
-<tr valign="top"><td><code>new</code></td>
-<td>
-<p>Name of replacement function.</p>
-</td></tr>
-<tr valign="top"><td><code>msg</code></td>
-<td>
-<p>Message to print. If used, this will override the default message.</p>
-</td></tr>
-<tr valign="top"><td><code>old</code></td>
-<td>
-<p>Name of deprecated function.</p>
-</td></tr>
 <tr valign="top"><td><code>version</code></td>
 <td>
-<p>The last version of Shiny before the item was deprecated.</p>
+<p>Shiny version when the function was deprecated</p>
+</td></tr>
+<tr valign="top"><td><code>what</code></td>
+<td>
+<p>Function with possible arguments</p>
+</td></tr>
+<tr valign="top"><td><code>with</code></td>
+<td>
+<p>Possible function with arguments that should be used instead</p>
+</td></tr>
+<tr valign="top"><td><code>details</code></td>
+<td>
+<p>Additional information to be added after a new line to the displayed message</p>
 </td></tr>
 </table>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

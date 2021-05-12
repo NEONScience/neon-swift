@@ -1,0 +1,333 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Shiny Developer Mode</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for devmode {shiny}"><tr><td>devmode {shiny}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Shiny Developer Mode</h2>
+
+<h3>Description</h3>
+
+<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>
+<p>Developer Mode enables a number of <code><a href="../../base/html/options.html">options()</a></code> to make a developer's life
+easier, like enabling non-minified JS and printing messages about
+deprecated functions and options.
+</p>
+<p>Please see the function descriptions for more details.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+devmode(
+  devmode = getOption("shiny.devmode", TRUE),
+  verbose = getOption("shiny.devmode.verbose", TRUE)
+)
+
+in_devmode()
+
+with_devmode(devmode, code, verbose = getOption("shiny.devmode.verbose", TRUE))
+
+devmode_inform(
+  message,
+  .frequency = "regularly",
+  .frequency_id = message,
+  .file = stderr(),
+  ...
+)
+
+register_devmode_option(name, devmode_message = NULL, devmode_default = NULL)
+
+get_devmode_option(
+  name,
+  default = NULL,
+  devmode_default = missing_arg(),
+  devmode_message = missing_arg()
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>devmode</code></td>
+<td>
+<p>Logical value which should be set to <code>TRUE</code> to enable Shiny
+Developer Mode</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>Logical value which should be set to <code>TRUE</code> display Shiny
+Developer messages</p>
+</td></tr>
+<tr valign="top"><td><code>code</code></td>
+<td>
+<p>Code to execute with the temporary Dev Mode options set</p>
+</td></tr>
+<tr valign="top"><td><code>message</code></td>
+<td>
+<p>Developer Mode message to be sent to <code><a href="../../rlang/html/abort.html">rlang::inform()</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>.frequency</code></td>
+<td>
+<p>Frequency of the Developer Mode message used with
+<code><a href="../../rlang/html/abort.html">rlang::inform()</a></code>. Defaults to once every 8 hours.</p>
+</td></tr>
+<tr valign="top"><td><code>.frequency_id</code></td>
+<td>
+<p><code><a href="../../rlang/html/abort.html">rlang::inform()</a></code> message identifier. Defaults to
+<code>message</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.file</code></td>
+<td>
+<p>Output connection for <code><a href="../../rlang/html/abort.html">rlang::inform()</a></code>. Defaults to <code><a href="../../base/html/showConnections.html">stderr()</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Parameters passed to <code><a href="../../rlang/html/abort.html">rlang::inform()</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>Name of option to look for in <code>options()</code></p>
+</td></tr>
+<tr valign="top"><td><code>devmode_message</code></td>
+<td>
+<p>Message to display once every 8 hours when utilizing
+the <code>devmode_default</code> value.  If <code>devmode_message</code> is missing, the
+registered <code>devmode_message</code> value be used.</p>
+</td></tr>
+<tr valign="top"><td><code>devmode_default</code></td>
+<td>
+<p>Default value to return if <code>in_devmode()</code> returns
+<code>TRUE</code>. For <code>get_devmode_option()</code>, if <code>devmode_default</code> is missing, the
+registered <code>devmode_default</code> value will be used.</p>
+</td></tr>
+</table>
+
+
+<h3>Functions</h3>
+
+
+<ul>
+<li> <p><code>devmode</code>: Function to set two options to enable/disable Shiny
+Developer Mode and Developer messages
+</p>
+</li>
+<li> <p><code>in_devmode</code>: Determines if Shiny is in Developer Mode. If the
+<code>getOption("shiny.devmode")</code> is set to <code>TRUE</code> and not in testing inside
+<code>testthat</code>, then Shiny Developer Mode is enabled.
+</p>
+</li>
+<li> <p><code>with_devmode</code>: Temporarily set Shiny Developer Mode and Developer
+message verbosity
+</p>
+</li>
+<li> <p><code>devmode_inform</code>: If Shiny Developer Mode and verbosity are enabled,
+displays a message once every 8 hrs (by default)
+</p>
+</li>
+<li> <p><code>register_devmode_option</code>: Registers a Shiny Developer Mode option with an updated
+value and Developer message. This registration method allows package
+authors to write one message in a single location.
+</p>
+<p>For example, the following Shiny Developer Mode options are registered:<div class="r"></p>
+<pre># Reload the Shiny app when a sourced R file changes
+register_devmode_option(
+  "shiny.autoreload",
+  "Turning on shiny autoreload. To disable, call `options(shiny.autoreload = FALSE)`",
+  devmode_default = TRUE
+)
+
+# Use the unminified Shiny JavaScript file, `shiny.js`
+register_devmode_option(
+  "shiny.minified",
+  "Using full shiny javascript file. To use the minified version, call `options(shiny.minified = TRUE)`",
+  devmode_default = FALSE
+)
+
+# Display the full stack trace when errors occur during Shiny app execution
+register_devmode_option(
+  "shiny.fullstacktrace",
+  "Turning on full stack trace. To disable, call `options(shiny.fullstacktrace = FALSE)`",
+  devmode_default = TRUE
+)
+</pre></div>
+<p>Other known, non-Shiny Developer Mode options:
+</p>
+
+<ul>
+<li><p> Sass:
+</p>
+</li></ul>
+<div class="r"><pre># Display the full stack trace when errors occur during Shiny app execution
+register_devmode_option(
+  "sass.cache",
+  "Turning off sass cache. To use default caching, call `options(sass.cache = TRUE)`",
+  devmode_default = FALSE
+)
+</pre></div>
+</li>
+<li> <p><code>get_devmode_option</code>: Provides a consistent way to change the expected
+<code><a href="../../base/html/options.html">getOption()</a></code> behavior when Developer Mode is enabled. This method is very
+similar to <code><a href="../../base/html/options.html">getOption()</a></code> where the globally set option takes precedence.
+See section &quot;Avoiding direct dependency on shiny&quot; for
+<code>get_devmode_option()</code> implementation details.
+</p>
+<p><strong>Package developers:</strong> Register your Dev Mode option using
+<code>register_devmode_option()</code> to avoid supplying the same <code>devmode_default</code>
+and <code>devmode_message</code> values throughout your package. (This requires a
+<span class="pkg">shiny</span> dependency.)
+</p>
+</li></ul>
+
+
+<h3>Avoiding direct dependency on shiny</h3>
+
+<p>The methods explained in this help file act independently from the rest of
+Shiny but are included to provide blue prints for your own packages. If
+your package already has (or is willing to take) a dependency on Shiny, we
+recommend using the exported Shiny methods for consistent behavior. Note
+that if you use exported Shiny methods, it will cause the Shiny package to
+load. This may be undesirable if your code will be used in (for example) R
+Markdown documents that do not have a Shiny runtime (<code>runtime: shiny</code>).
+</p>
+<p>If your package can <strong>not</strong> take a dependency on Shiny, we recommending
+re-implementing these two functions:
+</p>
+
+<ol>
+<li> <p><code>in_devmode()</code>:
+</p>
+<p>This function should return <code>TRUE</code> if <code>getOption("shiny.devmode")</code> is set.
+In addition, we strongly recommend that it also checks to make sure
+<code>testthat</code> is not testing.<div class="r"></p>
+<pre>in_devmode &lt;- function() {
+  isTRUE(getOption("shiny.devmode", FALSE)) &amp;&amp;
+    !identical(Sys.getenv("TESTTHAT"), "true")
+}
+</pre></div>
+</li>
+<li> <p><code>get_devmode_option(name, default, devmode_default, devmode_message)</code>:
+</p>
+<p>This function is similar to <code>getOption(name, default)</code>, but when the option
+is not set, the default value changes depending on the Dev Mode.
+<code>get_devmode_option()</code> should be implemented as follows:
+</p>
+
+<ul>
+<li><p> If not in Dev Mode:
+</p>
+
+<ul>
+<li><p> Return <code>getOption(name, default)</code>.
+</p>
+</li></ul>
+
+</li>
+<li><p> If in Dev Mode:
+</p>
+
+<ul>
+<li><p> Get the global option <code>getOption(name)</code> value.
+</p>
+</li>
+<li><p> If the global option value is set:
+</p>
+
+<ul>
+<li><p> Return the value.
+</p>
+</li></ul>
+
+</li>
+<li><p> If the global option value is not set:
+</p>
+
+<ul>
+<li><p> Notify the developer that the Dev Mode default value will be used.
+</p>
+</li>
+<li><p> Return the Dev Mode default value.
+</p>
+</li></ul>
+
+</li></ul>
+
+</li></ul>
+
+<p>When notifying the developer that the default value has changed, we strongly
+recommend displaying a message (<code>devmode_message</code>) to <code>stderr()</code> once every 8
+hours using <code><a href="../../rlang/html/abort.html">rlang::inform()</a></code>. This will keep the author up to date as to
+which Dev Mode options are being altered. To allow developers a chance to
+disable Dev Mode messages, the message should be skipped if
+<code>getOption("shiny.devmode.verbose", TRUE)</code> is not <code>TRUE</code>.<div class="r"></p>
+<pre>get_devmode_option &lt;- function(name, default = NULL, devmode_default, devmode_message) {
+  if (!in_devmode()) {
+    # Dev Mode disabled, act like `getOption()`
+    return(getOption(name, default = default))
+  }
+
+  # Dev Mode enabled, update the default value for `getOption()`
+  getOption(name, default = {
+    # Notify developer
+    if (
+      !missing(devmode_message) &amp;&amp;
+      !is.null(devmode_message) &amp;&amp;
+      getOption("shiny.devmode.verbose", TRUE)
+    ) {
+      rlang::inform(
+        message = devmode_message,
+        .frequency = "regularly",
+        .frequency_id = devmode_message,
+        .file = stderr()
+      )
+    }
+
+    # Return Dev Mode default value `devmode_default`
+    devmode_default
+  })
+}
+</pre></div>
+</li></ol>
+
+<p>The remaining functions in this file are used for author convenience and are
+not recommended for all reimplementation situations.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Enable Shiny Developer mode
+devmode()
+
+in_devmode() # TRUE/FALSE?
+
+# Execute code in a temporary shiny dev mode
+with_devmode(TRUE, in_devmode()) # TRUE
+
+# Ex: Within shiny, we register the option "shiny.minified"
+#   to default to `FALSE` when in Dev Mode
+## Not run: register_devmode_option(
+  "shiny.minified",
+  devmode_message = paste0(
+    "Using full shiny javascript file. ",
+    "To use the minified version, call `options(shiny.minified = TRUE)`"
+  ),
+  devmode_default = FALSE
+)
+## End(Not run)
+
+# Used within `shiny::runApp(launch.browser)`
+get_devmode_option("shiny.minified", TRUE) # TRUE if Dev mode is off
+is_minified &lt;- with_devmode(TRUE, {
+  get_devmode_option("shiny.minified", TRUE)
+})
+is_minified # FALSE
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

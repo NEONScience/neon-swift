@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Global theming</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bs_global_theme {bslib}"><tr><td>bs_global_theme {bslib}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Global theming</h2>
+
+<h3>Description</h3>
+
+<p><code>bs_global_theme()</code> creates a new (global) Bootstrap Sass theme which
+<code><a href="bs_theme_dependencies.html">bs_theme_dependencies()</a></code> (or <code><a href="../../sass/html/sass_partial.html">sass_partial()</a></code>) can consume (their <code>theme</code>
+argument defaults to <code>bs_global_get()</code>, which get the current global theme).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bs_global_theme(
+  version = version_default(),
+  bootswatch = NULL,
+  bg = NULL,
+  fg = NULL,
+  primary = NULL,
+  secondary = NULL,
+  success = NULL,
+  info = NULL,
+  warning = NULL,
+  danger = NULL,
+  base_font = NULL,
+  code_font = NULL,
+  heading_font = NULL,
+  ...
+)
+
+bs_global_set(theme = bs_theme())
+
+bs_global_get()
+
+bs_global_clear()
+
+bs_global_add_variables(
+  ...,
+  .where = "defaults",
+  .default_flag = identical(.where, "defaults")
+)
+
+bs_global_add_rules(...)
+
+bs_global_bundle(...)
+
+bs_global_theme_update(
+  ...,
+  bootswatch = NULL,
+  bg = NULL,
+  fg = NULL,
+  primary = NULL,
+  secondary = NULL,
+  success = NULL,
+  info = NULL,
+  warning = NULL,
+  danger = NULL,
+  base_font = NULL,
+  code_font = NULL,
+  heading_font = NULL
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>version</code></td>
+<td>
+<p>The major version of Bootstrap to use (see <code><a href="versions.html">versions()</a></code>
+for possible values).</p>
+</td></tr>
+<tr valign="top"><td><code>bootswatch</code></td>
+<td>
+<p>The name of a bootswatch theme (see <code><a href="bootswatch_themes.html">bootswatch_themes()</a></code>
+for possible values). When provided to <code>bs_theme_update()</code>, any previous
+Bootswatch theme is first removed before the new one is applied (use
+<code>bootswatch = "default"</code> to effectively remove the Bootswatch theme).</p>
+</td></tr>
+<tr valign="top"><td><code>bg</code></td>
+<td>
+<p>A color string for the background.</p>
+</td></tr>
+<tr valign="top"><td><code>fg</code></td>
+<td>
+<p>A color string for the foreground.</p>
+</td></tr>
+<tr valign="top"><td><code>primary</code></td>
+<td>
+<p>A color to be used for hyperlinks, to indicate primary/default
+actions, and to show active selection state in some Bootstrap components.
+Generally a bold, saturated color that contrasts with the theme's base
+colors.</p>
+</td></tr>
+<tr valign="top"><td><code>secondary</code></td>
+<td>
+<p>A color for components and messages that don't need to stand
+out. (Not supported in Bootstrap 3.)</p>
+</td></tr>
+<tr valign="top"><td><code>success</code></td>
+<td>
+<p>A color for messages that indicate an operation has succeeded.
+Typically green.</p>
+</td></tr>
+<tr valign="top"><td><code>info</code></td>
+<td>
+<p>A color for messages that are informative but not critical.
+Typically a shade of blue-green.</p>
+</td></tr>
+<tr valign="top"><td><code>warning</code></td>
+<td>
+<p>A color for warning messages. Typically yellow.</p>
+</td></tr>
+<tr valign="top"><td><code>danger</code></td>
+<td>
+<p>A color for errors. Typically red.</p>
+</td></tr>
+<tr valign="top"><td><code>base_font</code></td>
+<td>
+<p>The default typeface.</p>
+</td></tr>
+<tr valign="top"><td><code>code_font</code></td>
+<td>
+<p>The typeface to be used for code. Be sure this is monospace!</p>
+</td></tr>
+<tr valign="top"><td><code>heading_font</code></td>
+<td>
+<p>The typeface to be used for heading elements.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>arguments passed along to <code><a href="bs_bundle.html">bs_add_variables()</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>theme</code></td>
+<td>
+<p>a <code><a href="bs_theme.html">bs_theme()</a></code> object.</p>
+</td></tr>
+<tr valign="top"><td><code>.where</code></td>
+<td>
+<p>Whether to place the variable definitions before other Sass
+<code>"defaults"</code>, after other Sass <code>"declarations"</code>, or after other Sass
+<code>"rules"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.default_flag</code></td>
+<td>
+<p>Whether or not to add a <code>!default</code> flag (if missing) to
+variable expressions. It's recommended to keep this as <code>TRUE</code> when <code>.where = "defaults"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>functions that modify the global theme (e.g., <code>bs_global_set()</code>)
+invisibly return the previously set theme. <code>bs_global_get()</code> returns the
+current global theme.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="bs_theme.html">bs_theme()</a></code>, <code><a href="bs_theme_preview.html">bs_theme_preview()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+# Remember the global state now (so we can restore later)
+theme &lt;- bs_global_get()
+# Use Bootstrap 3 (globally) with some theme customization
+bs_global_theme(3, bg = "#444", fg = "#e4e4e4", primary = "#e39777")
+if (interactive()) bs_theme_preview(with_themer = FALSE)
+# If no global theme is active, bs_global_get() returns NULL
+bs_global_clear()
+bs_global_get()
+# Restore the original state
+bs_global_set(theme)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>bslib</em> version 0.2.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

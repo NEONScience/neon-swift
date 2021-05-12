@@ -15,6 +15,8 @@ as.shiny.appobj.list	shiny.appobj
 as.shiny.appobj.shiny.appobj	shiny.appobj
 as.tags.shiny.appobj	shiny.appobj
 basicPage	bootstrapPage
+bindCache	bindCache
+bindEvent	bindEvent
 bookmarkButton	bookmarkButton
 bootstrapLib	bootstrapLib
 bootstrapPage	bootstrapPage
@@ -37,9 +39,11 @@ createWebDependency	createWebDependency
 dataTableOutput	tableOutput
 dateInput	dateInput
 dateRangeInput	dateRangeInput
-dblclickOpts	dblclickOpts
+dblclickOpts	clickOpts
 debounce	debounce
 deprecatedReactives	deprecatedReactives
+devmode	devmode
+devmode_inform	devmode
 dialogViewer	viewer
 diskCache	diskCache
 div	reexports
@@ -67,10 +71,12 @@ formatStackTrace	stacktrace
 freezeReactiveVal	freezeReactiveValue
 freezeReactiveValue	freezeReactiveValue
 getCurrentOutputInfo	getCurrentOutputInfo
+getCurrentTheme	getCurrentTheme
 getDefaultReactiveDomain	domains
 getQueryString	getQueryString
 getShinyOption	shinyOptions
 getUrlHash	getQueryString
+get_devmode_option	devmode
 h1	reexports
 h2	reexports
 h3	reexports
@@ -80,11 +86,12 @@ h6	reexports
 headerPanel	headerPanel
 helpText	helpText
 hideTab	showTab
-hoverOpts	hoverOpts
+hoverOpts	clickOpts
 hr	reexports
 HTML	reexports
 htmlOutput	htmlOutput
 htmlTemplate	reexports
+httpResponse	httpResponse
 icon	icon
 imageOutput	plotOutput
 img	reexports
@@ -99,6 +106,7 @@ insertTab	insertTab
 insertUI	insertUI
 installExprFunction	installExprFunction
 invalidateLater	invalidateLater
+in_devmode	devmode
 is.key_missing	reexports
 is.reactive	reactive
 is.reactivevalues	is.reactivevalues
@@ -121,7 +129,7 @@ markRenderFunction	markRenderFunction
 maskReactiveContext	maskReactiveContext
 memoryCache	memoryCache
 MockShinySession	MockShinySession
-modalButton	modalButton
+modalButton	modalDialog
 modalDialog	modalDialog
 moduleServer	moduleServer
 navbarMenu	navbarPage
@@ -157,8 +165,10 @@ print.shiny.appobj	shiny.appobj
 printError	stacktrace
 printStackTrace	stacktrace
 Progress	Progress
+quoToFunction	quoToFunction
 radioButtons	radioButtons
 reactive	reactive
+reactiveConsole	reactiveConsole
 reactiveFileReader	reactiveFileReader
 reactivePlot	deprecatedReactives
 reactivePoll	reactivePoll
@@ -175,6 +185,8 @@ reactlogReset	reactlog
 reactlogShow	reactlog
 reexports	reexports
 registerInputHandler	registerInputHandler
+registerThemeDependency	registerThemeDependency
+register_devmode_option	devmode
 removeInputHandler	removeInputHandler
 removeModal	showModal
 removeNotification	showNotification
@@ -187,7 +199,7 @@ renderImage	renderImage
 renderPlot	renderPlot
 renderPrint	renderPrint
 renderTable	renderTable
-renderText	renderText
+renderText	renderPrint
 renderUI	renderUI
 repeatable	repeatable
 req	req
@@ -292,3 +304,4 @@ withMathJax	withMathJax
 withProgress	withProgress
 withReactiveDomain	domains
 withTags	reexports
+with_devmode	devmode

@@ -17,7 +17,7 @@
 
 <pre>
 updateSelectInput(
-  session,
+  session = getDefaultReactiveDomain(),
   inputId,
   label = NULL,
   choices = NULL,
@@ -25,7 +25,7 @@ updateSelectInput(
 )
 
 updateSelectizeInput(
-  session,
+  session = getDefaultReactiveDomain(),
   inputId,
   label = NULL,
   choices = NULL,
@@ -35,7 +35,7 @@ updateSelectizeInput(
 )
 
 updateVarSelectInput(
-  session,
+  session = getDefaultReactiveDomain(),
   inputId,
   label = NULL,
   data = NULL,
@@ -43,7 +43,7 @@ updateVarSelectInput(
 )
 
 updateVarSelectizeInput(
-  session,
+  session = getDefaultReactiveDomain(),
   inputId,
   label = NULL,
   data = NULL,
@@ -60,7 +60,7 @@ updateVarSelectizeInput(
 <tr valign="top"><td><code>session</code></td>
 <td>
 <p>The <code>session</code> object passed to function given to
-<code>shinyServer</code>.</p>
+<code>shinyServer</code>. Default is <code>getDefaultReactiveDomain()</code>.</p>
 </td></tr>
 <tr valign="top"><td><code>inputId</code></td>
 <td>
@@ -167,5 +167,5 @@ shinyApp(ui, server)
 }
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

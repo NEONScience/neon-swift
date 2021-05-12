@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Format Numeric Inputs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for currencyInput {shinyWidgets}"><tr><td>currencyInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Format Numeric Inputs</h2>
+
+<h3>Description</h3>
+
+<p>Shiny widgets for as-you-type formatting of currency and numeric values. For
+a more modifiable version see <code><a href="autonumericInput.html">autonumericInput</a></code>. These two
+functions do the exact same thing but are named differently for more
+intuitive use (currency for money, formatNumeric for percentage or other).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+currencyInput(
+  inputId,
+  label,
+  value,
+  format = "euro",
+  width = NULL,
+  align = "center"
+)
+
+formatNumericInput(
+  inputId,
+  label,
+  value,
+  format = "commaDecimalCharDotSeparator",
+  width = NULL,
+  align = "center"
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The <code>input</code> slot that will be used to access the value.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>Display label for the control, or NULL for no label.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>Initial value (unformatted).</p>
+</td></tr>
+<tr valign="top"><td><code>format</code></td>
+<td>
+<p>A character string specifying the currency format of the
+input.  See &quot;Details&quot; for possible values.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>The width of the input box, eg. <code>"200px"</code> or
+<code>"100%"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>align</code></td>
+<td>
+<p>The alignment of the text inside the input box, one of
+&quot;center&quot;, &quot;left&quot;, &quot;right&quot;. Defaults to &quot;center&quot;.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>In regards to <code>format</code>, there are currently 41 sets of predefined
+options that can be used, most of which are variations of one another.
+The most common are:
+</p>
+
+<ul>
+<li> <p><code>"French"</code>
+</p>
+</li>
+<li> <p><code>"Spanish"</code>
+</p>
+</li>
+<li> <p><code>"NorthAmerican"</code>
+</p>
+</li>
+<li> <p><code>"British"</code>
+</p>
+</li>
+<li> <p><code>"Swiss"</code>
+</p>
+</li>
+<li> <p><code>"Japanese"</code>
+</p>
+</li>
+<li> <p><code>"Chinese"</code>
+</p>
+</li>
+<li> <p><code>"Brazilian"</code>
+</p>
+</li>
+<li> <p><code>"Turkish"</code>
+</p>
+</li>
+<li> <p><code>"euro"</code> (same as <code>"French"</code>)
+</p>
+</li>
+<li> <p><code>"dollar"</code> (same as <code>"NorthAmerican"</code>)
+</p>
+</li>
+<li> <p><code>"percentageEU2dec"</code>
+</p>
+</li>
+<li> <p><code>"percentageUS2dec"</code>
+</p>
+</li>
+<li> <p><code>"dotDecimalCharCommaSeparator"</code>
+</p>
+</li>
+<li> <p><code>"commaDecimalCharDotSeparator"</code>
+</p>
+</li></ul>
+
+<p>To see the full list please visit
+<a href="https://github.com/autoNumeric/autoNumeric/#predefined-common-options">this section</a>
+of the AutoNumeric Github Page.
+</p>
+
+
+<h3>Value</h3>
+
+<p>a currency input widget that can be added to the UI of a shiny app.
+</p>
+
+
+<h3>References</h3>
+
+<p>Bonneau, Alexandre. 2018. &quot;AutoNumeric.js javascript Package&quot;.
+<a href="http://autonumeric.org">http://autonumeric.org</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other autonumeric: 
+<code><a href="autonumericInput.html">autonumericInput</a>()</code>,
+<code><a href="updateAutonumericInput.html">updateAutonumericInput</a>()</code>,
+<code><a href="formaNumericInputUpdate.html">updateCurrencyInput</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+  library(shinyWidgets)
+
+  ui &lt;- fluidPage(
+    tags$h2("Currency Input"),
+
+    currencyInput("id1", "Euro:", value = 1234, format = "euro", width = 200, align = "right"),
+    verbatimTextOutput("res1"),
+
+    currencyInput("id2", "Dollar:", value = 1234, format = "dollar", width = 200, align = "right"),
+    verbatimTextOutput("res2"),
+
+    currencyInput("id3", "Yen:", value = 1234, format = "Japanese", width = 200, align = "right"),
+    verbatimTextOutput("res3"),
+
+    br(),
+    tags$h2("Formatted Numeric Input"),
+
+    formatNumericInput("id4", "Numeric:", value = 1234, width = 200),
+    verbatimTextOutput("res4"),
+
+    formatNumericInput("id5", "Percent:", value = 1234, width = 200, format = "percentageEU2dec"),
+    verbatimTextOutput("res5")
+  )
+
+  server &lt;- function(input, output, session) {
+    output$res1 &lt;- renderPrint(input$id1)
+    output$res2 &lt;- renderPrint(input$id2)
+    output$res3 &lt;- renderPrint(input$id3)
+    output$res4 &lt;- renderPrint(input$id4)
+    output$res5 &lt;- renderPrint(input$id5)
+  }
+
+  shinyApp(ui, server)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.5.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

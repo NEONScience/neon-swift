@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Sass Import</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sass_import {sass}"><tr><td>sass_import {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Sass Import</h2>
+
+<h3>Description</h3>
+
+<p>Create an import statement to be used within your Sass file. See
+<a href="https://sass-lang.com/documentation/file.SASS_REFERENCE.html#import">https://sass-lang.com/documentation/file.SASS_REFERENCE.html#import</a> for
+more details.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sass_import(input, quote = TRUE)
+
+sass_file(input)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>input</code></td>
+<td>
+<p>Character string to be placed in an import statement.</p>
+</td></tr>
+<tr valign="top"><td><code>quote</code></td>
+<td>
+<p>Logical that determines if a double quote is added to the import
+value. Defaults to <code>TRUE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>sass_file</code> adds extra checks to make sure an appropriate file path
+exists given the input value.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Fully defined Sass import string.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+sass_import("foo")
+sass_import("$foo", FALSE)
+
+tmp_scss_file &lt;- tempfile(fileext = ".scss")
+writeLines("$color: red; body{ color: $color; }", tmp_scss_file)
+sass_file(tmp_scss_file)
+sass(sass_file(tmp_scss_file))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.3.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -30,6 +30,12 @@ indicated as such.
 </p>
 </li></ul>
 
+<p>Note that printing a package namespace (see <code><a href="ns_env.html">ns_env()</a></code>) with
+<code>env_print()</code> will typically tag function bindings as <code style="white-space: pre;">&lt;lazy&gt;</code>
+until they are evaluated the first time. This is because package
+functions are lazily-loaded from disk to improve performance when
+loading a package.
+</p>
 
 
 <h3>Usage</h3>
@@ -49,5 +55,5 @@ environment by <code><a href="get_env.html">get_env()</a></code>.</p>
 </td></tr>
 </table>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.11 <a href="00Index.html">Index</a>]</div>
 </body></html>

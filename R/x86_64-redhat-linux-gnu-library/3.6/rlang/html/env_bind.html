@@ -45,6 +45,10 @@ corresponding expression is evaluated in turn and its value is
 bound to the symbol (the expressions are thus evaluated only
 once, if at all).
 </p>
+</li>
+<li> <p><code style="white-space: pre;">%&lt;~%</code> is a shortcut for <code>env_bind_lazy()</code>. It works like <code style="white-space: pre;">&lt;-</code>
+but the RHS is evaluated lazily.
+</p>
 </li></ul>
 
 
@@ -57,6 +61,8 @@ env_bind(.env, ...)
 env_bind_lazy(.env, ..., .eval_env = caller_env())
 
 env_bind_active(.env, ...)
+
+lhs %&lt;~% rhs
 </pre>
 
 
@@ -77,6 +83,14 @@ Use <code><a href="zap.html">zap()</a></code> to remove bindings.</p>
 <td>
 <p>The environment where the expressions will be
 evaluated when the symbols are forced.</p>
+</td></tr>
+<tr valign="top"><td><code>lhs</code></td>
+<td>
+<p>The variable name to which <code>rhs</code> will be lazily assigned.</p>
+</td></tr>
+<tr valign="top"><td><code>rhs</code></td>
+<td>
+<p>An expression lazily evaluated and assigned to <code>lhs</code>.</p>
 </td></tr>
 </table>
 
@@ -224,5 +238,5 @@ env$foo
 env$foo
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.8 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.4.11 <a href="00Index.html">Index</a>]</div>
 </body></html>

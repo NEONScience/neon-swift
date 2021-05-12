@@ -103,6 +103,14 @@ element, use <code>selectInput()</code> with <code>selectize=FALSE</code>.
 name will be treated as a placeholder prompt. For example:
 <code>selectInput("letter", "Letter", c("Choose one" = "", LETTERS))</code>
 </p>
+<p><strong>Performance note:</strong> <code>selectInput()</code> and <code>selectizeInput()</code> can slow down
+significantly when thousands of choices are used; with legacy browsers like
+Internet Explorer, the user interface may hang for many seconds. For large
+numbers of choices, Shiny offers a &quot;server-side selectize&quot; option that
+massively improves performance and efficiency; see
+<a href="https://shiny.rstudio.com/articles/selectize.html">this selectize article</a>
+on the Shiny Dev Center for details.
+</p>
 
 
 <h3>Value</h3>
@@ -196,5 +204,5 @@ shinyApp(
 
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>shiny</em> version 1.6.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

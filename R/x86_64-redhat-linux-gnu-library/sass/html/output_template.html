@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: An intelligent (temporary) output file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for output_template {sass}"><tr><td>output_template {sass}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>An intelligent (temporary) output file</h2>
+
+<h3>Description</h3>
+
+<p>Intended for use with <code><a href="sass.html">sass()</a></code>'s <code>output</code> argument for temporary file
+generation that is <code>cache</code> and <code>options</code> aware. In particular, this ensures
+that new redundant file(s) aren't generated on a <code><a href="sass.html">sass()</a></code> cache hit, and that
+the file's extension is suitable for the <code><a href="sass_options.html">sass_options()</a></code>'s <code>output_style</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+output_template(basename = "sass", dirname = basename, fileext = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>basename</code></td>
+<td>
+<p>a non-empty character vector giving the outfile name (without
+the extension).</p>
+</td></tr>
+<tr valign="top"><td><code>dirname</code></td>
+<td>
+<p>a non-empty character vector giving the initial part of the
+directory name.</p>
+</td></tr>
+<tr valign="top"><td><code>fileext</code></td>
+<td>
+<p>the output file extension. The default is <code>".min.css"</code> for
+compressed and compact output styles; otherwise, its <code>".css"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A function with two arguments: <code>options</code> and <code>suffix</code>. When called inside
+<code><a href="sass.html">sass()</a></code> with caching enabled, the caching key is supplied to <code>suffix</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+sass("body {color: red}", output = output_template())
+
+func &lt;- output_template(basename = "foo", dirname = "bar-")
+func(suffix = "baz")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>sass</em> version 0.3.1 <a href="00Index.html">Index</a>]</div>
+</body></html>
