@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Custom shadows</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for setShadow {shinyWidgets}"><tr><td>setShadow {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Custom shadows</h2>
+
+<h3>Description</h3>
+
+<p>Allow to apply a shadow on a given element.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+setShadow(id = NULL, class = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>Use this argument if you want to target an individual element.</p>
+</td></tr>
+<tr valign="top"><td><code>class</code></td>
+<td>
+<p>The element to which the shadow should be applied.
+For example, class is set to box.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+ if (interactive()) {
+
+  library(shiny)
+  library(shinydashboard)
+  library(shinydashboardPlus)
+  library(shinyWidgets)
+
+  boxTag &lt;- box(
+   title = "Closable box, with label",
+   closable = TRUE,
+   label = boxLabel(
+    text = 1,
+    status = "danger"
+   ),
+   status = "warning",
+   solidHeader = FALSE,
+   collapsible = TRUE,
+   p("Box Content")
+  )
+
+  shinyApp(
+   ui = dashboardPage(
+     header = dashboardHeader(),
+     sidebar = dashboardSidebar(),
+     body = dashboardBody(
+
+      setShadow(class = "box"),
+      setShadow(id = "my-progress"),
+
+      tags$h2("Add shadow to the box class"),
+      fluidRow(boxTag, boxTag),
+      tags$h2("Add shadow only to the first element using id"),
+      tagAppendAttributes(
+       shinydashboardPlus::progressBar(
+        value = 10,
+        striped = TRUE,
+        animated = TRUE
+       ),
+       id = "my-progress"
+      ),
+      shinydashboardPlus::progressBar(
+        value = 50,
+        status = "warning"
+      ),
+      shinydashboardPlus::progressBar(
+        value = 20,
+        status = "danger"
+      )
+     ),
+     controlbar = dashboardControlbar(),
+     title = "DashboardPage"
+   ),
+   server = function(input, output) { }
+  )
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.6.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

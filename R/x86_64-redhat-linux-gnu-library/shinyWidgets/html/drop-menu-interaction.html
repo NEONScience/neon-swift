@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Interact with Drop Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for drop-menu-interaction {shinyWidgets}"><tr><td>drop-menu-interaction {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Interact with Drop Menu</h2>
+
+<h3>Description</h3>
+
+<p>Interact with Drop Menu
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+enableDropMenu(id, session = shiny::getDefaultReactiveDomain())
+
+disableDropMenu(id, session = shiny::getDefaultReactiveDomain())
+
+showDropMenu(id, session = shiny::getDefaultReactiveDomain())
+
+hideDropMenu(id, session = shiny::getDefaultReactiveDomain())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>Drop menu ID, the <code>tag</code>'s ID followed by <code>"_dropmenu"</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>Shiny session.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+  library(shinyWidgets)
+
+  ui &lt;- fluidPage(
+    tags$h2("Drop Menu interactions"),
+    dropMenu(
+      actionButton("myid", "See what's inside"),
+      "Drop menu content",
+      actionButton("hide", "Close menu"),
+      position = "right middle"
+    ),
+    tags$br(),
+    tags$p("Is drop menu opened?"),
+    verbatimTextOutput("isOpen"),
+    actionButton("show", "show menu"),
+    tags$br(),
+    tags$br(),
+    dropMenu(
+      actionButton("dontclose", "Only closeable from server"),
+      "Drop menu content",
+      actionButton("close", "Close menu"),
+      position = "right middle",
+      hideOnClick = FALSE
+    )
+  )
+
+  server &lt;- function(input, output, session) {
+
+    output$isOpen &lt;- renderPrint({
+      input$myid_dropmenu
+    })
+
+    observeEvent(input$show, {
+      showDropMenu("myid_dropmenu")
+    })
+
+    observeEvent(input$hide, {
+      hideDropMenu("myid_dropmenu")
+    })
+
+    observeEvent(input$close, {
+      hideDropMenu("dontclose_dropmenu")
+    })
+
+  }
+
+  shinyApp(ui, server)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.6.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Update a Formatted Numeric Input Widget</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for updateCurrencyInput {shinyWidgets}"><tr><td>updateCurrencyInput {shinyWidgets}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Update a Formatted Numeric Input Widget</h2>
+
+<h3>Description</h3>
+
+<p>Update a Formatted Numeric Input Widget
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+updateCurrencyInput(
+  session,
+  inputId,
+  label = NULL,
+  value = NULL,
+  format = NULL
+)
+
+updateFormatNumericInput(
+  session,
+  inputId,
+  label = NULL,
+  value = NULL,
+  format = NULL
+)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>Standard shiny <code>session</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>inputId</code></td>
+<td>
+<p>The id of the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>The label to set for the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>The value to set for the input object.</p>
+</td></tr>
+<tr valign="top"><td><code>format</code></td>
+<td>
+<p>The format to change the input object to.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p>Other autonumeric: 
+<code><a href="autonumericInput.html">autonumericInput</a>()</code>,
+<code><a href="formatNumericInput.html">currencyInput</a>()</code>,
+<code><a href="updateAutonumericInput.html">updateAutonumericInput</a>()</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (interactive()) {
+  library(shiny)
+  library(shinyWidgets)
+
+  ui &lt;- fluidPage(
+    tags$h2("Currency Input"),
+
+    currencyInput("id1", "Euro:", value = 1234, format = "euro", width = 200, align = "right"),
+    verbatimTextOutput("res1"),
+    actionButton("bttn0", "Change Input to Euros"),
+    actionButton("bttn1", "Change Input to Dollars"),
+    actionButton("bttn2", "Change Input to Yen")
+  )
+
+  server &lt;- function(input, output, session) {
+
+    output$res1 &lt;- renderPrint(input$id1)
+
+    observeEvent(input$bttn0, {
+      updateCurrencyInput(
+        session = session,
+        inputId = "id1",
+        label = "Euro:",
+        format = "euro"
+      )
+    })
+    observeEvent(input$bttn1, {
+      updateCurrencyInput(
+        session = session,
+        inputId = "id1",
+        label = "Dollar:",
+        format = "dollar"
+      )
+    })
+    observeEvent(input$bttn2, {
+      updateCurrencyInput(
+        session = session,
+        inputId = "id1",
+        label = "Yen:",
+        format = "Japanese"
+      )
+    })
+
+
+  }
+
+  shinyApp(ui, server)
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>shinyWidgets</em> version 0.6.0 <a href="00Index.html">Index</a>]</div>
+</body></html>
