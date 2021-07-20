@@ -763,7 +763,8 @@ shiny::shinyUI(
                 shiny::selectInput(inputId = "swft_qfqm_macro_system_select", label = "EC System", choices = "ECTE")
               ),
               shiny::column(width = 2,
-                shiny::uiOutput("swft_qfqm_macro_terms") 
+                shiny::selectInput(inputId = "swft_qfqm_macro_terms", label = "Terms", choices = c("rtioMoleDryCo2", "rtioMoleDryH2o", "tempAir", "veloZaxsErth"))
+                # shiny::uiOutput("swft_qfqm_macro_terms") 
               )
             )
           ),
