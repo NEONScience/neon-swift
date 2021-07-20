@@ -754,7 +754,7 @@ shiny::shinyUI(
           shinydashboard::box(width = 12,
             shiny::fluidRow(
               shiny::column(width = 2,
-                shiny::selectInput(inputId = "swft_qfqm_macro_site_select", label = "SiteID", choices = swft.tis.site.lookup$SiteID, selected= "ABBY") #selected = sample(swft.tis.site.lookup$SiteID, 1))
+                shiny::selectInput(inputId = "swft_qfqm_macro_site_select", label = "SiteID", choices = swft.tis.site.lookup$SiteID, selected = sample(swft.tis.site.lookup$SiteID, 1))
               ),
               shiny::column(width = 2,
                 shiny::uiOutput('swft_qfqm_macro_year_select')
