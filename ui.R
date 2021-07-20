@@ -47,11 +47,11 @@ shiny::shinyUI(
         shinydashboard::menuItem("CVAL Plotting",    tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
         shinydashboard::menuItem("Eddy-Co Plotting", tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
         shinydashboard::menuItem("Eddy QFQM ",       tabName = "",       icon = shiny::icon("flask",          lib = "font-awesome"),
-          startExpanded = TRUE,
+          startExpanded = FALSE,
           collapsible = 
             shinydashboard::menuSubItem(text = "", tabName = ""), # I have no idea why, but this first one never appears on the ui?
-            shinydashboard::menuSubItem(text = "Micro View",    tabName = "swft_qfqm_tab_micro", icon = icon('users')),
-            shinydashboard::menuSubItem(text = "Macro View",    tabName = "swft_qfqm_tab_macro", icon = icon('line-chart'))
+            shinydashboard::menuSubItem(text = "Micro View",    tabName = "swft_qfqm_tab_micro", icon = icon('microscope')),
+            shinydashboard::menuSubItem(text = "Macro View",    tabName = "swft_qfqm_tab_macro", icon = icon('superpowers'))
         ),
         shinydashboard::menuItem("TIS Maintenance",  tabName = "swft_maintenance_tab",icon = shiny::icon("wrench",         lib = "font-awesome")),
         shinydashboard::menuItem("", tabName = "no"),
