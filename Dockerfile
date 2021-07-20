@@ -31,6 +31,8 @@ RUN Rscript /tmp/requirements.R
 ## The $USER defaults to `rstudio` but you can change this at runtime
 COPY . / /srv/shiny-server/swift/
 
+RUN chmod 777 /srv/shiny-server/swift/data/user_log/user_log.RDS
+
 # COPY ./data /home/$USER/Data
 
 CMD ["/usr/bin/shiny-server"]
