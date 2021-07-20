@@ -34,15 +34,15 @@ output$swft_qfqm_macro_year_select = shiny::renderUI({
   }
 })
 
-
-output$swft_qfqm_macro_terms = shiny::renderUI({
-  shiny::req(qfqm_macro_avail_data())
-  if(nrow(qfqm_macro_avail_data()) > 1){
-    shiny::selectInput('swft_qfqm_macro_terms', 'Terms', choices = base::sort(unique(qfqm_macro_avail_data()$stream),decreasing = TRUE))
-  } else {
-    shiny::textInput('swft_qfqm_macro_terms', 'Terms', placeholder = "No data found in the database...")
-  }
-})
+# Commented out because we really don't need this to be reactive, static choices implemented in UI, additionally when you'd select a new site it would render the previous selection then buffer and load the top selection
+# output$swft_qfqm_macro_terms = shiny::renderUI({
+#   shiny::req(qfqm_macro_avail_data())
+#   if(nrow(qfqm_macro_avail_data()) > 1){
+#     shiny::selectInput('swft_qfqm_macro_terms', 'Terms', choices = base::sort(unique(qfqm_macro_avail_data()$stream),decreasing = TRUE))
+#   } else {
+#     shiny::textInput('swft_qfqm_macro_terms', 'Terms', placeholder = "No data found in the database...")
+#   }
+# })
 
 swft_qfqm_macro_plot = shiny::reactive({
   
