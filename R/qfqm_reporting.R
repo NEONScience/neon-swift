@@ -61,6 +61,10 @@ qfqm_reporting = function(site = NULL, start_date = NULL, end_date = NULL){
     }
   }
   
+  # test = qfqm_out %>%  dplyr::filter(date == "2021-04-30") %>%  dplyr::filter(metric %in% c("qmBeta", "qmAlph")) %>% dplyr::filter()
+  # 
+  # browser()  
+  
   if(nrow(qfqm_out) > 0){
     
     # Data for gap filling

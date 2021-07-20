@@ -1,8 +1,4 @@
-library(shiny, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/" )
-library(plyr)
-library(vctrs)
-library(glue)
-library(tidyselect)
+library(shiny)
 library(dplyr)
 library(htmlwidgets)
 library(plotly)
@@ -10,26 +6,19 @@ library(ggplot2)
 library(DT)
 library(tidyr)
 library(data.table)
-library(fst, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
-# library(shinycssloaders)
-library(shinycssloaders, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+library(fst)
+library(shinycssloaders)
 library(shinydashboard)
-# library(viridis)
-library(viridis, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+library(viridis)
 library(stringr)
 library(scales)
-# library(aws.signature)
-library(aws.signature, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
-library(xml2)
-# library(aws.s3)
-library(aws.s3, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+library(aws.signature)
+library(aws.s3)
 library(lubridate)
-# library(dashboardthemes)
-library(dashboardthemes, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
-# library(ggdark)
-library(ggdark, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
-# library(shinyWidgets)
-library(shinyWidgets, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+library(dashboardthemes)
+library(ggdark)
+library(shinyWidgets)
+
 swft.server.folder.path = "./"
 
 # Essential Site Lookup Tables
@@ -57,7 +46,13 @@ shiny::shinyUI(
         shinydashboard::menuItem("Gas Cylinders",    tabName = "swft_spangas_tab",    icon = shiny::icon("adjust",         lib = "font-awesome")),
         shinydashboard::menuItem("CVAL Plotting",    tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
         shinydashboard::menuItem("Eddy-Co Plotting", tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
-        shinydashboard::menuItem("Eddy QFQM ",       tabName = "swft_qfqm_tab",       icon = shiny::icon("flask",          lib = "font-awesome")),
+        shinydashboard::menuItem("Eddy QFQM ",       tabName = "",       icon = shiny::icon("flask",          lib = "font-awesome"),
+          startExpanded = TRUE,
+          collapsible = 
+            shinydashboard::menuSubItem(text = "", tabName = ""), # I have no idea why, but this first one never appears on the ui?
+            shinydashboard::menuSubItem(text = "Micro View",    tabName = "swft_qfqm_tab_micro", icon = icon('users')),
+            shinydashboard::menuSubItem(text = "Macro View",    tabName = "swft_qfqm_tab_macro", icon = icon('line-chart'))
+        ),
         shinydashboard::menuItem("TIS Maintenance",  tabName = "swft_maintenance_tab",icon = shiny::icon("wrench",         lib = "font-awesome")),
         shinydashboard::menuItem("", tabName = "no"),
         shinydashboard::menuItem("", tabName = "swft_hidden_tab")
@@ -715,7 +710,7 @@ shiny::shinyUI(
         
         ############################################                            Eddy QFQM                          ############################################
         
-        shinydashboard::tabItem(tabName = "swft_qfqm_tab",
+        shinydashboard::tabItem(tabName = "swft_qfqm_tab_micro",
           shinydashboard::box(width = 12,
             shiny::fluidRow(
               shiny::column(width = 2,
@@ -752,6 +747,37 @@ shiny::shinyUI(
             )
           )
         ),
+        
+        # swft_qfqm_tab_macro
+        
+        shinydashboard::tabItem(tabName = "swft_qfqm_tab_macro",
+          shinydashboard::box(width = 12,
+            shiny::fluidRow(
+              shiny::column(width = 2,
+                shiny::selectInput(inputId = "swft_qfqm_macro_site_select", label = "SiteID", choices = swft.tis.site.lookup$SiteID, selected= "ABBY") #selected = sample(swft.tis.site.lookup$SiteID, 1))
+              ),
+              shiny::column(width = 2,
+                shiny::uiOutput('swft_qfqm_macro_year_select')
+              ),
+              shiny::column(width = 2,
+                shiny::selectInput(inputId = "swft_qfqm_macro_system_select", label = "EC System", choices = "ECTE")
+              ),
+              shiny::column(width = 2,
+                shiny::uiOutput("swft_qfqm_macro_terms") 
+              )
+            )
+          ),
+          shinydashboard::box(width = 12,
+            shiny::fluidRow(
+              shiny::column(width = 12,
+                # shiny::plotOutput(outputId = "swft_qfqm_macro_plot", height = "720px")  %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
+                plotly::plotlyOutput(outputId = "swft_qfqm_macro_plot", height = "840px")  %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
+              )
+            )
+          )
+        ),
+        
+        
         
         ############################################                            Hidden Metrics                          ############################################
         
