@@ -44,63 +44,28 @@ output$swft_qfqm_macro_terms = shiny::renderUI({
   }
 })
 
-swft_qfqm_macro_plot_2020 = shiny::reactive({
+swft_qfqm_macro_plot = shiny::reactive({
   
   shiny::req(input$swft_qfqm_macro_site_select, input$swft_qfqm_macro_year_select, input$swft_qfqm_macro_terms)
   
   aws.s3::s3readRDS(
-    object = paste0("qfqm_flux_shiny/v20210223/", input$swft_qfqm_macro_site_select, "/2020_plot_", input$swft_qfqm_macro_terms, "_dqmp.RDS"),
+    object = paste0("qfqm_flux_shiny/v20210223/", input$swft_qfqm_macro_site_select, "/", input$swft_qfqm_macro_year_select, "_plot_", input$swft_qfqm_macro_terms, "_dqmp.RDS"),
     bucket = swft_ei_bucket
-  ) +
-    ggplot2::theme(
-      text        = ggplot2::element_text(size = 20),
-      # axis.text.y = ggplot2::element_text(size = 16),
-      axis.text.x = ggplot2::element_text(size = 12),
-      plot.title  = ggplot2::element_text(size = 28)
-    )
+  ) #+
+    # ggplot2::theme(
+    #   text        = ggplot2::element_text(size = 20),
+    #   # axis.text.y = ggplot2::element_text(size = 16),
+    #   axis.text.x = ggplot2::element_text(size = 12),
+    #   plot.title  = ggplot2::element_text(size = 28)
+    # ) 
 })
 
-output$swft_qfqm_macro_plot_2020 = shiny::renderPlot({
-  swft_qfqm_macro_plot_2020()
-})
+# output$swft_qfqm_macro_plot = shiny::renderPlot({
+#   swft_qfqm_macro_plot()
+# })
 
-
-swft_qfqm_macro_plot_2019 = shiny::reactive({
-  
-  shiny::req(input$swft_qfqm_macro_site_select, input$swft_qfqm_macro_year_select, input$swft_qfqm_macro_terms)
-  
-  aws.s3::s3readRDS(
-    object = paste0("qfqm_flux_shiny/v20210223/", input$swft_qfqm_macro_site_select, "/2019_plot_", input$swft_qfqm_macro_terms, "_dqmp.RDS"),
-    bucket = swft_ei_bucket
-  ) +
-    ggplot2::theme(
-      text        = ggplot2::element_text(size = 20),
-      # axis.text.y = ggplot2::element_text(size = 16),
-      axis.text.x = ggplot2::element_text(size = 12),
-      plot.title  = ggplot2::element_text(size = 28)
-    )
-})
-
-output$swft_qfqm_macro_plot_2019 = shiny::renderPlot({
-  swft_qfqm_macro_plot_2019()
-})
-
-swft_qfqm_macro_plot_2018 = shiny::reactive({
-  
-  shiny::req(input$swft_qfqm_macro_site_select, input$swft_qfqm_macro_year_select, input$swft_qfqm_macro_terms)
-  
-  aws.s3::s3readRDS(
-    object = paste0("qfqm_flux_shiny/v20210223/", input$swft_qfqm_macro_site_select, "/2018_plot_", input$swft_qfqm_macro_terms, "_dqmp.RDS"),
-    bucket = swft_ei_bucket
-  ) +
-    ggplot2::theme(
-      text        = ggplot2::element_text(size = 20),
-      # axis.text.y = ggplot2::element_text(size = 16),
-      axis.text.x = ggplot2::element_text(size = 12),
-      plot.title  = ggplot2::element_text(size = 28)
-    )
-})
-
-output$swft_qfqm_macro_plot_2018 = shiny::renderPlot({
-  swft_qfqm_macro_plot_2018()
+output$swft_qfqm_macro_plot = plotly::renderPlotly({
+  plotly::ggplotly(
+    swft_qfqm_macro_plot()
+  )
 })
