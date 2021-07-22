@@ -1,8 +1,0 @@
-create_blog	create_website
-create_post	create_post
-create_website	create_website
-distill_article	distill_article
-distill_website	distill_website
-import_post	import_post
-publish_website	publish_website
-update_post	import_post

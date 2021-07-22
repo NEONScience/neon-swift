@@ -1,6 +1,0 @@
-assert_has_terms	has_terms
-assert_is_empty_model	is_empty_model
-assert_is_non_empty_model	is_empty_model
-has_terms	has_terms
-is_empty_model	is_empty_model
-is_non_empty_model	is_empty_model

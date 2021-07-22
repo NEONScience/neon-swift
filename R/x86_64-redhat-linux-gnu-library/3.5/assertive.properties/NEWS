@@ -1,7 +1,0 @@
-0.0-4 Better err msg, examples, tests for is_null.
-      Better documentation and examples is *_attributes fns.
-0.0-3 Added is_monotonic_increasing/is_monotonic_decreasing.
-0.0-2 Added is_nested/is_non_nested.
-      Added has_slot.
-      Reexported assert_all/any_are_same_length.
-0.0-1 Content extracted from assertive 0.3-0, and tidied.
