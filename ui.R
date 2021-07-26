@@ -1,4 +1,5 @@
 library(shiny, lib.loc = "./R/")
+library(rlang, lib.loc = "./R/")
 library(dplyr, lib.loc = "./R/")
 library(htmlwidgets, lib.loc = "./R/")
 library(plotly,  lib.loc = "./R/")
