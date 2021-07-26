@@ -1,3 +1,0 @@
-0.0-2 Added is_file_size_in_range.
-      Can turn off warning about file.access under Windows.
-0.0-1 Content extracted from assertive 0.3-0, and tidied.
