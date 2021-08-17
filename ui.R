@@ -73,7 +73,7 @@ shiny::shinyUI(
         shinydashboard::tabItem(tabName = "swft_home_tab",
           
           # TODO: make this only appear if the update log was recently updated. Until then... uncomment :D                                
-          shiny::modalDialog(title = paste0("Swift was updated!"),size = "l", shiny::helpText(a("2021-07-21", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
+          shiny::modalDialog(title = paste0("Swift was updated!\nUpdated the Timestamp Checker!!"),size = "l", shiny::helpText(a("2021-08-17", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
 
           shinydashboard::box(width = 12,
               shiny::column(width = 7,
@@ -190,8 +190,8 @@ shiny::shinyUI(
               shiny::fluidRow(
                 shiny::h1("Timestamp Checker"),
                 shiny::br(),
-                shiny::p("This tool checks the timestamp difference between 'Actual Time' and the LC's Timestamp for a sensor."),
-                shiny::p("Difference between actual UTC and the sensor's timestamp must be greater than 10 seconds to appear in this reports.")
+                shiny::p("This tool checks for any differences between the LC time and the smart sensor timestamps (G2131, L2130, Li7200). If there are large differences data could be flagged as the time periods will not line up with real time."),
+                shiny::p("If there is a timestamp difference greater than 10 seconds please sumbit a ticket (associate with the problem ticket PRB0040670) and put in an ITASK for ENG to resolve the issue .")
               )
             ), # End Column 7
             shiny::column(width = 4),
