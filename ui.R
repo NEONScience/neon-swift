@@ -1,8 +1,4 @@
-library(shiny, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/" )
-library(plyr)
-library(vctrs)
-library(glue)
-library(tidyselect)
+library(shiny)
 library(dplyr)
 library(htmlwidgets)
 library(plotly)
@@ -10,25 +6,18 @@ library(ggplot2)
 library(DT)
 library(tidyr)
 library(data.table)
-# library(shinycssloaders)
-library(shinycssloaders, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+library(fst)
+library(shinycssloaders)
 library(shinydashboard)
-# library(viridis)
-library(viridis, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+library(viridis)
 library(stringr)
 library(scales)
-# library(aws.signature)
-library(aws.signature, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
-library(xml2)
-# library(aws.s3)
-library(aws.s3, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+library(aws.signature, lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
+library(aws.s3, lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
 library(lubridate)
-# library(dashboardthemes)
-library(dashboardthemes, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
-# library(ggdark)
-library(ggdark, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
-# library(shinyWidgets)
-library(shinyWidgets, lib.loc = "./R/x86_64-redhat-linux-gnu-library/3.6/")
+library(dashboardthemes, lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
+library(ggdark, lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
+library(shinyWidgets)
 swft.server.folder.path = "./"
 
 # Essential Site Lookup Tables
@@ -194,7 +183,8 @@ shiny::shinyUI(
               shiny::fluidRow(
                 shiny::h1("Timestamp Checker"),
                 shiny::br(),
-                shiny::p("This tool checks the timestamp difference between 'Actual Time' and the LC's Timestamp for a sensor."),
+                shiny::p("This tool checks the timestamp difference between the LC's GPS time and smart sensor times."),
+                shiny::p("If your site is on here, but the there are no points close to the 'Current Time' line, the issue has been resolved"),
                 shiny::p("Difference between actual UTC and the sensor's timestamp must be greater than 10 seconds to appear in this reports.")
               )
             ), # End Column 7
@@ -209,6 +199,7 @@ shiny::shinyUI(
             shinydashboard::box(width = 12,
               shiny::fluidRow(width = "100%",
                 shiny::fluidRow(
+                  # plotly::plotlyOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
                   shiny::plotOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
                   DT::dataTableOutput("swft_timestamp_table") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
                 ) # End fluidRow
