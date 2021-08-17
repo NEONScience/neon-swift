@@ -93,7 +93,7 @@ shiny::observeEvent(input$menu, {
       # Format the data table output
       if(nrow(timestamp_data_named)){
         timestampData.table = timestamp_data_named %>%
-          dplyr::arrange(desc(`Calculated Timestamp Drift`)) 
+          dplyr::arrange(desc(SurveyTime)) 
       } else{
         timestampData.table = data.table::data.table()
       }
