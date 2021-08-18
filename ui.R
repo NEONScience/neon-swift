@@ -186,15 +186,17 @@ shiny::shinyUI(
 
         shinydashboard::tabItem(tabName = "swft_timestamp_tab",
           shinydashboard::box(width = 12,
+            shiny::fluidRow(
+              shiny::h1("Timestamp Checker")
+            ),
             shiny::column(width = 4,
               shiny::fluidRow(
-                shiny::h1("Timestamp Checker"),
-                shiny::br(),
-                shiny::p("This tool checks for any differences between the LC time and the smart sensor timestamps (G2131, L2130, Li7200). If there are large differences data could be flagged as the time periods will not line up with real time."),
-                shiny::p("If there is a timestamp difference greater than 10 seconds please sumbit a ticket (associate with the problem ticket PRB0040670) and put in an ITASK for ENG to resolve the issue .")
+                shiny::p("This tool checks for any differences between the LC time and the smart sensor timestamps (G2131, L2130, Li7200). If there are large differences data could be flagged as the time periods will not line up with real time.")
               )
             ), # End Column 7
-            shiny::column(width = 4),
+            shiny::column(width = 4,
+              shiny::p("If there is a timestamp difference greater than 10 seconds please sumbit a ticket (associate with the problem ticket PRB0040670) and put in an ITASK for ENG to resolve the issue .")
+            ),
             shiny::column(width = 4,
               shiny::fluidRow(
                 shinydashboard::valueBoxOutput("swft_timestamp_last_update_box", width = 12),
@@ -206,6 +208,8 @@ shiny::shinyUI(
               shiny::fluidRow(width = "100%",
                 shiny::fluidRow(
                   shiny::plotOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
+                  # plotly::plotlyOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
+                  shiny::br(),
                   DT::dataTableOutput("swft_timestamp_table") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
                 ) # End fluidRow
               ) # End fluidRow
