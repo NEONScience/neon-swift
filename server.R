@@ -32,6 +32,7 @@ server <- function(input, output, session) {
   })
   
   base::source(file='./server/swiftCvalFst.R',        local = TRUE)
+  base::source(file='./server/swiftCvalTable.R',        local = TRUE)
   base::source(file='./server/swftEddyCo.R',          local = TRUE)
   base::source(file='./server/swiftLcServices.R',     local = TRUE)
   base::source(file='./server/swiftTimestampCheck.R', local = TRUE)
