@@ -155,7 +155,8 @@ shiny::observeEvent(input$menu, {
       # Get the closet date for which we have cval span gas values
       swift_cyl_assay = swiftCylAssay %>%
         dplyr::filter(siteID == input$swft_cval_site) %>% 
-        dplyr::mutate(closeness = abs(difftime(base::as.Date(input$swft_cval_react_unique_cvals, orgin = "1970-01-01"), date, units = "days"))) %>% 
+        dplyr::mutate(closeness = difftime(base::as.Date(input$swft_cval_react_unique_cvals, orgin = "1970-01-01"), date, units = "days")) %>% 
+        dplyr::filter(closeness > 0) %>% 
         dplyr::filter(closeness == min(closeness, na.rm = TRUE)) %>% 
         dplyr::select(date, siteID, `ECSE-LOW`, `ECSE-MEDIUM`, `ECSE-HIGH`, `ECSE-Archive`)
       
@@ -217,7 +218,8 @@ shiny::observeEvent(input$menu, {
     swiftCylAssayWideEcte <- shiny::reactive({
       swiftCylAssay %>%
         dplyr::filter(siteID == input$swft_cval_site) %>% 
-        dplyr::mutate(closeness = abs(difftime(base::as.Date(input$swft_cval_react_unique_cvals, orgin = "1970-01-01"), date, units = "days"))) %>% 
+        dplyr::mutate(closeness = difftime(base::as.Date(input$swft_cval_react_unique_cvals, orgin = "1970-01-01"), date, units = "days")) %>% 
+        dplyr::filter(closeness > 0) %>% 
         dplyr::filter(closeness == min(closeness, na.rm = TRUE)) %>% 
         dplyr::select(date, siteID, `ECTE-LOW`, `ECTE-MEDIUM`, `ECTE-HIGH`, `ECTE-Archive`)
     })
