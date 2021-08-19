@@ -44,7 +44,13 @@ shiny::shinyUI(
         shinydashboard::menuItem("LC Services",      tabName = "swft_lcservices_tab", icon = shiny::icon("signal",         lib = "font-awesome")),
         shinydashboard::menuItem("LC Time Check",    tabName = "swft_timestamp_tab",  icon = shiny::icon("hourglass-half", lib = "font-awesome")),
         shinydashboard::menuItem("Gas Cylinders",    tabName = "swft_spangas_tab",    icon = shiny::icon("adjust",         lib = "font-awesome")),
-        shinydashboard::menuItem("CVAL Plotting",    tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
+        shinydashboard::menuItem("CalVals",       tabName = "",       icon = shiny::icon("flask",          lib = "font-awesome"),
+          startExpanded = FALSE,
+          collapsible = 
+            shinydashboard::menuSubItem(text = "", tabName = ""), # I have no idea why, but this first one never appears on the ui?
+            shinydashboard::menuSubItem(text = "CalVal Plots",    tabName = "swft_cvalfast_tab", icon = icon('flask')),
+            shinydashboard::menuSubItem(text = "Span Values",    tabName = "swft_historic_span_table_tab", icon = icon('table'))
+        ),
         shinydashboard::menuItem("Eddy-Co Plotting", tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
         shinydashboard::menuItem("Eddy QFQM ",       tabName = "",       icon = shiny::icon("flask",          lib = "font-awesome"),
           startExpanded = FALSE,
@@ -92,17 +98,19 @@ shiny::shinyUI(
               shiny::tags$b("Gas Cylinders"),
               shiny::h4("Check current cylinder pressures, delivery pressures, and average pressure loss overtime. Also features a table showing expected cylinder depletion rates based upon average pressure loss."),
               shiny::icon("atom", lib = "font-awesome"),
-              shiny::tags$b("CVAL Plotting"),
-              shiny::h4("This tab that uses `fst` files that renders all daily CVALs and visualizes all CVALs phase shifted by month!"),
+              shiny::tags$b("CalVals"),
+              shiny::h4("CalVal Plots - This tab that uses `fst` files that renders all daily CVALs and visualizes all CVALs phase shifted by month!"),
+              shiny::h4("Span Values - This tab provides historic gas cylinder installation information."),
               shiny::icon("sun", lib = "font-awesome"),
               shiny::tags$b("Eddy-Co Plotting"),
               shiny::h4("A tab that uses `fst` data files to render Eddy-Co data; from Co2 measurements, CSAT3 wind data, and measurement level flows."),
               shiny::icon("flask", lib = "font-awesome"),
               shiny::tags$b("Eddy QFQM"),
-              shiny::h4("This tab is for investigating the Quality Flag and Quality Metric data from eddy4R."),
+              shiny::h4("Micro View - This tab is for investigating recent Quality Flag and Quality Metric data from eddy4R."),
+              shiny::h4("Macro View - This tab provides a heat map of EC quality flags, useful for investigating systemic quality issues at any TIS site."),
               shiny::icon("wrench", lib = "font-awesome"),
               shiny::tags$b("TIS Maintenance"),
-              shiny::h4("\tLong promised, finally delivered, a reactive look at TIS maintenance data!")
+              shiny::h4("Long promised, finally delivered, a reactive look at TIS maintenance data!")
 
             ),
             shiny::column(width = 4, offset = 1,
@@ -122,7 +130,7 @@ shiny::shinyUI(
                   width='100%'
                 ),
                 shiny::dateRangeInput(inputId = "swft_lcservices_date_range", label = "Select Date Range for Plot [dev]",
-                      start = Sys.Date()-14, end = Sys.Date()+2, max = Sys.Date()+2
+                      start = Sys.Date()-8, end = Sys.Date()+2, max = Sys.Date()+2
                 ),
                 shiny::selectizeInput(inputId = "swft_lcservices_lc_number", label = "Select LC Number",  multiple = FALSE,
                                    choices = c(1,2)
@@ -134,11 +142,15 @@ shiny::shinyUI(
             ), # End Column
             shiny::column(width = 9,
               shiny::fluidRow(
-                shiny::radioButtons("swft_lcservices_radio_overall", "Select IS System",
-                                  choices = list("TIS" = 1, "AIS" = 2),selected = 1, inline = TRUE),
+                shiny::column(width = 6,
+                  shiny::radioButtons("swft_lcservices_radio_overall", "Select IS System",
+                                    choices = list("TIS" = 1, "AIS" = 2),selected = 1, inline = TRUE)
+                )
+              ),
+              shiny::fluidRow(
                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'cnc'",
                     shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",
-                      plotly::plotlyOutput("CnCUptimePlot") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
+                      plotly::plotlyOutput("CnCUptimePlot", height = "250px") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
                     ),
                     shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
                       plotly::plotlyOutput("CnCUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
@@ -343,11 +355,9 @@ shiny::shinyUI(
                     shiny::fluidRow(
                       shiny::br(),
                       shiny::h2("Cval Table"),
-                      shiny::column(width = 2),
-                      shiny::column(width = 8,
+                      shiny::column(width = 12,
                         DT::dataTableOutput("table_co2_ecse", width = "100%") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
-                      ),
-                      shiny::column(width = 2)
+                      )
                     )
                   ) # End column
                 ) # End Cval Fast shiny::column for Conditional Panels
@@ -355,6 +365,22 @@ shiny::shinyUI(
             ) # End Cval Fst Tab Panel for Condtional panels
           ) # End Cval Fst box
         ), # End Cval Fst
+        
+        ###########################################                         Span Gas Table                        ############################################
+        
+        shinydashboard::tabItem(tabName = "swft_historic_span_table_tab",
+          shinydashboard::box(width = 12,
+            shiny::column(width = 12,
+              shiny::tabPanel("", width = 12,
+                shiny::fluidRow(
+                  shiny::h1("Historic Span Gas Assay Values Table"),
+                  shiny::p("This table can be filtered to look back in time at the historic span gas assay values."),
+                  DT::dataTableOutput(outputId = "swft_historic_span_table") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
+                )
+              )
+            )
+          )
+        ),
 
         ############################################                            EC Fast                           ############################################
 
