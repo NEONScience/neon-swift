@@ -6,6 +6,12 @@ shiny::observeEvent(input$menu, {
       "AWS_S3_ENDPOINT"       = "neonscience.org",
       "AWS_DEFAULT_REGION"    = "s3.data"
     )
+    
+    # Library
+    library(aws.s3)
+    library(aws.signature)
+    library(DT)
+    library(dplyr)
   
     # Source the base data pulling function
     base::source(paste0(swft.server.folder.path, "R/read.eddy.inquiry.swift.R"))
@@ -15,7 +21,7 @@ shiny::observeEvent(input$menu, {
     
     swft_historic_span_summary = swft_historic_span %>% 
       dplyr::group_by(siteID, assetTag, name) %>% 
-      dplyr::summarise(
+      dplyr::summarise( .groups = "keep",
         CertificateNumber = CertificateNumber[1],
         aTag = aTag[1],
         concentration = conc[1],
@@ -42,27 +48,32 @@ shiny::observeEvent(input$menu, {
             scrollCollapse = TRUE,
             scrollX = FALSE,
             paging = TRUE),rownames = FALSE) %>% 
-      DT::formatStyle(table = .,
-        columns = "still_installed", 
-        backgroundColor = DT::styleEqual(c(NA,FALSE,TRUE), c("gray", "#f96161", "#35fc60")), 
-        color = "black"
-      ) %>% 
-      DT::formatStyle(table = .,
-        columns = "end_date", 
-        backgroundColor = DT::styleInterval(c("2019-06-19","2020-06-29", "2020-06-30","2020-06-31", as.character(Sys.Date())), c( "#35fc60","#35fc60", "#f96161","#35fc60", "#35fc60", "#35fc60")), 
-        color = "black"
-      ) %>% 
-      DT::formatStyle(table = .,
-        columns = "start_date", 
-        backgroundColor = DT::styleInterval(c("2019-06-18","2020-09-20","2020-09-21","2020-09-22", as.character(Sys.Date())), c( "#35fc60","#35fc60", "#f96161","#35fc60", "#35fc60", "#35fc60")), 
-        color = "black"
-      ) %>% 
-      DT::formatStyle(table = .,
-        columns = "name", 
-        backgroundColor = DT::styleEqual(c("ECSE-LOW","ECSE-MEDIUM","ECSE-HIGH","ECSE-Archive","ECTE-LOW","ECTE-MEDIUM","ECTE-HIGH","ECTE-Archive"), 
-                                     c("grey",    "#35fc60",     "#9400D3","#8B4513",        "gold","#f96161","#617ff9","#a0522d")), 
-        color = "black"
-      ) 
+        DT::formatStyle(table = .,
+          columns = "still_installed", 
+          backgroundColor = DT::styleEqual(c(NA,FALSE,TRUE), c("gray", "#f96161", "#35fc60")), 
+          color = "black"
+        ) %>% 
+        DT::formatStyle(table = .,
+          columns = "end_date", 
+          backgroundColor = DT::styleInterval(c("2019-06-19","2020-06-29", "2020-06-30","2020-06-31", as.character(Sys.Date())), c( "#35fc60","#35fc60", "#f96161","#35fc60", "#35fc60", "#35fc60")), 
+          color = "black"
+        ) %>% 
+        DT::formatStyle(table = .,
+          columns = "start_date", 
+          backgroundColor = DT::styleInterval(c("2019-06-18","2020-09-20","2020-09-21","2020-09-22", as.character(Sys.Date())), c( "#35fc60","#35fc60", "#f96161","#35fc60", "#35fc60", "#35fc60")), 
+          color = "black"
+        ) %>% 
+        DT::formatStyle(table = .,
+          columns = "name",
+          backgroundColor = DT::styleEqual(c("ECSE-LOW","ECSE-MEDIUM","ECSE-HIGH","ECSE-Archive","ECTE-LOW","ECTE-MEDIUM","ECTE-HIGH","ECTE-Archive"),
+                                       c("grey",    "#35fc60",     "#9400D3","#8B4513",        "gold","#f96161","#617ff9","#a0522d")),
+          color = "black"
+        ) %>% 
+        DT::formatStyle(table = .,
+          columns = c("siteID", "assetTag", "CertificateNumber", "aTag", "concentration", "concDELTA", "concCH4", "install_period", "notes"),
+          backgroundColor = "#a5a5a5",
+          color = "black"
+        )
       
 
       )
