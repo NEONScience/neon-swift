@@ -30,6 +30,7 @@ shiny::observeEvent(input$menu, {
 
       # Filter to last x days
       timestamp_files_lookup_filtered = timestamp_files_lookup %>% 
+        # dplyr::filter(date >= Sys.Date()-4 & date <= Sys.Date())
         dplyr::filter(date >= input$swft_timestamp_date_range[1] & date <= input$swft_timestamp_date_range[2])
       
       timestamp_data = data.table::data.table()
@@ -47,19 +48,25 @@ shiny::observeEvent(input$menu, {
           dplyr::filter(timestamp_drift > 10) 
         
         busted_sensors = timestamp_data %>% 
-          dplyr::filter(MacAddress %in% busted_thresholds$MacAddress)
+          dplyr::filter(MacAddress %in% busted_thresholds$MacAddress) %>% 
+          dplyr::mutate(site_mac = base::paste0(siteID, " ", MacAddress))
         
         # If the last 4 hours are fine, don't alert?
-        check_issue_resolved = busted_sensors%>% 
-          dplyr::mutate(site_mac = base::paste0(siteID, " ", MacAddress)) %>%
+        check_issue_resolved = busted_sensors %>% 
           dplyr::mutate(cut_time = cut(TimeStamp, breaks = "4 hours")) %>% 
           dplyr::group_by(site_mac, cut_time) %>% 
-          dplyr::summarise(.groups = "keep",
+          dplyr::summarise(.groups = "drop",
             busted_threshold = base::ifelse(test = timestamp_drift >= 10, yes = TRUE, no = FALSE)
-          ) 
+          ) %>% 
+          dplyr::group_by(site_mac) %>% 
+          dplyr::summarise(.groups = "drop",
+            percent_busted =  sum (busted_threshold) / length(busted_threshold) 
+          ) %>% 
+          dplyr::filter(percent_busted > .10)
         
-        timestamp_data_named = busted_sensors %>% 
+        timestamp_data_named = busted_sensors %>%
           dplyr::left_join(y = smart_sensor_lookup, by = "MacAddress") %>% 
+          dplyr::filter(site_mac %in% check_issue_resolved$site_mac) %>% 
           dplyr::mutate(SiteID = siteID) %>%
           dplyr::mutate(`Raw Time Difference` = Actual_Time_Difference) %>% dplyr::select(-Actual_Time_Difference) %>% 
           dplyr::mutate(`Median Site Time Difference` = median_site_time_diff) %>% dplyr::select(-median_site_time_diff) %>% 
@@ -75,9 +82,6 @@ shiny::observeEvent(input$menu, {
       timestamp_data_named
     })
     
-    
-    
-    
     # Check how many rows of data were pulled
     output$swft_timestamp_last_update_box <- shinydashboard::renderValueBox({
       shinydashboard::valueBox(
@@ -87,14 +91,6 @@ shiny::observeEvent(input$menu, {
         color = "black"
       )
     })
-      
-    
-    # timestamp_reactive_data = shiny::reactive({
-    #   timestamp_data_named %>% 
-    #     dplyr::filter(SurveyTime >= input$swft_timestamp_date_range[1] & SurveyTime <= input$swft_timestamp_date_range[2])
-    # })
-    
-    # Check if there are any issues, if not, give a blank plot
     
     swft_timestamp_plot = shiny::reactive({
       
@@ -111,11 +107,11 @@ shiny::observeEvent(input$menu, {
         ggplot2::geom_point(size = 4) +
         ggplot2::geom_line(linetype = "dashed")+
         ggplot2::geom_vline(xintercept = base::Sys.time(), show.legend = TRUE, color = "white", linetype = "dashed", size = 1.5) +
-        ggplot2::geom_text(ggplot2::aes(x= base::Sys.time() + 5000, label="Current\nTime", y = 8),  color = "white", angle = 0, size = 5) + 
+        ggplot2::geom_text(ggplot2::aes(x= base::Sys.time() + 9000, label="Current\nTime", y = 20),  color = "white", angle = 0, size = 5) + 
         ggplot2::geom_hline(yintercept = -1, color = "black") +
-        ggplot2::geom_hline(yintercept = 10, color = "white") +
+        # ggplot2::geom_hline(yintercept = 10, color = "white") +
         ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = "", breaks = 10))+
-        ggplot2::scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d\n%H:%M")+ 
+        ggplot2::scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d\n%H:%M", limits = c(min_x, base::Sys.time() + 10000))+ 
         ggplot2::labs(x = "Survey Time\n(UTC)", y = "Timestamp Drift") +
         ggplot2::theme(text = ggplot2::element_text(size = 16, color = "white", face = "bold"))
     } else {

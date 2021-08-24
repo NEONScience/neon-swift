@@ -204,24 +204,24 @@ shiny::shinyUI(
             shiny::fluidRow(
               shiny::column(width = 4,
               shiny::fluidRow(
-                shiny::p("This tool checks for any differences between the LC time and the smart sensor timestamps (G2131, L2130, Li7200). If there are large differences data could be flagged as the time periods will not line up with real time.")
+                shiny::p("This tool checks for any differences between the LC time and the smart sensor timestamps (G2131, L2130, Li7200). If there are large differences data could be flagged as the time periods will not line up with real time."),
+                                shiny::dateRangeInput(inputId = "swft_timestamp_date_range", label = "Select Date Range", start = Sys.Date()-4, end = Sys.Date(), max = Sys.Date()+1, min = "2021-08-01")
               )
               ), # End Column 7
               shiny::column(width = 4,
-                shiny::p("If there is a timestamp difference greater than 10 seconds please sumbit a ticket (associate with the problem ticket PRB0040670) and put in an ITASK for ENG to resolve the issue .")
+                shiny::p("If there is a timestamp difference greater than 10 seconds please sumbit a ticket (associate with the problem ticket PRB0040670) and put in an ITASK for ENG to resolve the issue ."),
+                shiny::h3(shiny::helpText(a("How to fix Picarro Timestamp Issues",href="./Picarro_Timestamp_Drift_Troubleshooting.pdf",target="_blank")))
               ),
               shiny::column(width = 4,
                 shiny::fluidRow(
-                  shinydashboard::valueBoxOutput("swft_timestamp_last_update_box", width = 12),
-                  shiny::br(),
-                  shiny::br()
+                  shinydashboard::valueBoxOutput("swft_timestamp_last_update_box", width = 12)
                 )
               )
             ),
             
             shiny::fluidRow(
               shiny::column(width = 2,
-                shiny::dateRangeInput(inputId = "swft_timestamp_date_range", label = "Select Date Range", start = Sys.Date()-4, end = Sys.Date(), max = Sys.Date()+1, min = "2021-08-01")
+                # shiny::dateRangeInput(inputId = "swft_timestamp_date_range", label = "Select Date Range", start = Sys.Date()-4, end = Sys.Date(), max = Sys.Date()+1, min = "2021-08-01")
               ),
             ),
             shinydashboard::box(width = 12,
