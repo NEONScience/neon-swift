@@ -5,6 +5,20 @@ Front end and back end code for Swift Shiny App
 ## Background  
 The `swift` shiny application's main goal is to provide useful and actionable data to NEON staff members. Data driven desision making is key to ensuring we deliver high quality data to the NEON Data Portal.  
 The data within this app are sourced from multiple locations: L0 (Presto database), the TIS LC's, CVAL (Mike Pursley data), and Maximo (asset management software). These data are sourced, cleaned, and saved to an S3 bucket that is readible to anyone on the network. This allows the app to not store any important credentials in it's directory or elsewhere.  
+
+## Docker
+This app is deployable by Docker. This is the path we are headed down as this not only makes our apps scalable through `shinyproxy`, but also encourages best practices and removes the reliance of a server administrator installing all the libraries and dependencies on the server. Instead you control your own destiny.   
+  
+To build the image, first clone the repo (where doesn't really matter, but somewhere familiar):  
+`git clone git@github.com:NEONScience/neon-swift.git`  
+Change directory to the repo
+`cd neon-swift`  
+Build the image  
+For dev:  `docker build -t neon-swift:dev`  
+For prod: `docker build -t neon-swift:prod`  
+Once the image has finished building run the container (still need to define acceptable port ranges):  
+For dev:  `docker run -it -d -p 4781:3838 --name swift neon-swift:dev`  
+For prod: `docker run -it -d -p 4781:3838 --name swift neon-swift:prod`
   
 ## Style  
 
@@ -26,8 +40,6 @@ There's a lot of data that needs to be sourced and storing it locally in the `/s
 
 So by storing it on S3, you make your app easier to deploy, reduce harddrive requirements, and keep IT happy!  
 This style allows Swift to be deployed by a simple Docker command as well, further increasing the deployability and reproducibility of the application.   
-### Docker
-As perviously mentioned this app is deployable by Docker. This is the path we are headed down as this not only makes our apps scalable through `shinyproxy`, but also encourages best practices and removes the reliance of a server Admin installing all the libraries and dependencies on the server. Instead you control your own destiny.
 
 ## The UI  
 The UI is broken out into several tabs and subtabs by the `shinydashboard` tabs and subtabs. When the app is initially launched you are brought to the home page.
