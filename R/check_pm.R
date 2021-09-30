@@ -8,11 +8,15 @@ check_pm = function(site){
   Sys.unsetenv("AWS_SECRET_ACCESS_KEY")
   Sys.unsetenv("AWS_S3_ENDPOINT")
   Sys.unsetenv("AWS_DEFAULT_REGION")
-  Sys.setenv("AWS_ACCESS_KEY_ID"     = "research-eddy-inquiry",
-             "AWS_S3_ENDPOINT"       = "neonscience.org",
-             "AWS_DEFAULT_REGION"    = "s3.data")
+  Sys.setenv(
+    "AWS_ACCESS_KEY_ID"     = "research-eddy-inquiry",
+    "AWS_S3_ENDPOINT"       = "neonscience.org",
+    "AWS_DEFAULT_REGION"    = "s3.data"
+  )
   
-  # fulcrum_data_raw = aws.s3::s3readRDS(object = "maintainance_app/all_data.RDS", bucket = "research-eddy-inquiry") %>% 
+  
+  
+  
   fulcrum_data_raw = aws.s3::s3read_using(FUN = fst::read.fst,object = "maintenance_app/all_data.fst", bucket = "research-eddy-inquiry") %>% 
     # Remove all useless columns
     dplyr::select(-technician_1, -technician_1_link, -technician_2, -technician_2_link,

@@ -23,19 +23,19 @@ shiny::observeEvent(input$menu, {
       "AWS_DEFAULT_REGION"    = "s3.data"
     )
     # List files in the timestamp docker folder
-    timestamp_files_lookup = aws.s3::get_bucket_df(bucket = timestamp_bucket, prefix = "sensor_timestamp_check_docker/") %>% 
-      dplyr::mutate(date = base::as.Date(base::substr(Key, 31, 40), origin = "1970-01-01"))
+    timestamp_files_lookup = aws.s3::get_bucket_df(bucket = timestamp_bucket, prefix = "sensor_timestamp_check_docker/main/") %>% 
+      dplyr::mutate(date = base::as.Date(base::substr(Key, 36, 45), origin = "1970-01-01"))
 
     reactive_timestamp_data = shiny::reactive({
 
       # Filter to last x days
       timestamp_files_lookup_filtered = timestamp_files_lookup %>% 
-        # dplyr::filter(date >= Sys.Date()-4 & date <= Sys.Date())
+        dplyr::filter(date >= Sys.Date()-4 & date <= Sys.Date())
         dplyr::filter(date >= input$swft_timestamp_date_range[1] & date <= input$swft_timestamp_date_range[2])
       
       timestamp_data = data.table::data.table()
       for(i in base::seq_along(timestamp_files_lookup_filtered$Key)){
-        timestamp_data_in = aws.s3::s3readRDS(object = timestamp_files_lookup_filtered$Key[i], bucket = timestamp_bucket)
+        timestamp_data_in = aws.s3::s3readRDS(object = timestamp_files_lookup_filtered$Key[i], bucket = timestamp_bucket) 
         
         timestamp_data = data.table::rbindlist(l = base::list(timestamp_data, timestamp_data_in), fill = TRUE)
       }
@@ -45,7 +45,8 @@ shiny::observeEvent(input$menu, {
         smart_sensor_lookup = base::readRDS("./data/lookup/smart_sensor_lookup.RDS")
         
         busted_thresholds = timestamp_data %>% 
-          dplyr::filter(timestamp_drift > 10) 
+          dplyr::filter(timestamp_drift > 10) %>% 
+          dplyr::distinct(siteID, MacAddress)
         
         busted_sensors = timestamp_data %>% 
           dplyr::filter(MacAddress %in% busted_thresholds$MacAddress) %>% 
@@ -53,18 +54,41 @@ shiny::observeEvent(input$menu, {
         
         # If the last 4 hours are fine, don't alert?
         check_issue_resolved = busted_sensors %>% 
-          dplyr::mutate(cut_time = cut(TimeStamp, breaks = "4 hours")) %>% 
+          dplyr::mutate(cut_time = lubridate::ymd_hms(cut(TimeStamp, breaks = "4 hours"))) %>% 
           dplyr::group_by(site_mac, cut_time) %>% 
           dplyr::summarise(.groups = "drop",
-            busted_threshold = base::ifelse(test = timestamp_drift >= 10, yes = TRUE, no = FALSE)
-          ) %>% 
-          dplyr::group_by(site_mac) %>% 
-          dplyr::summarise(.groups = "drop",
+            PullDate = PullDate[1],
+            busted_threshold = base::ifelse(test = timestamp_drift >= 10, yes = TRUE, no = FALSE),
             percent_busted =  sum (busted_threshold) / length(busted_threshold) 
           ) %>% 
-          dplyr::filter(percent_busted > .10)
+          dplyr::group_by(PullDate, site_mac) %>% 
+          dplyr::summarise(.groups = "drop",
+            percent_busted =  sum (busted_threshold) / length(busted_threshold) 
+          ) %>%
+          reshape2::dcast(PullDate ~ site_mac, value.var = "percent_busted")
+
         
-        timestamp_data_named = busted_sensors %>%
+        length_of_column = length(names(check_issue_resolved))
+        
+        sensor_to_check = names(check_issue_resolved)[2:length_of_column]
+        i = sensor_to_check[1]
+        return_list = list()
+        for(i in sensor_to_check){
+          
+          ith = check_issue_resolved %>% 
+            dplyr::select(i)
+          
+          addition = lm(check_issue_resolved[,1] ~ ith[,1])$coefficients[2]
+          
+          if(addition > 0 ){
+            return_list[[i]] = addition
+          }
+        }
+
+        
+        # Y = mX + b
+                
+        timestamp_data_named = busted_sensors %>% dplyr::select(-SensorID) %>%
           dplyr::left_join(y = smart_sensor_lookup, by = "MacAddress") %>% 
           dplyr::filter(site_mac %in% check_issue_resolved$site_mac) %>% 
           dplyr::mutate(SiteID = siteID) %>%
@@ -109,7 +133,6 @@ shiny::observeEvent(input$menu, {
         ggplot2::geom_vline(xintercept = base::Sys.time(), show.legend = TRUE, color = "white", linetype = "dashed", size = 1.5) +
         ggplot2::geom_text(ggplot2::aes(x= base::Sys.time() + 9000, label="Current\nTime", y = 20),  color = "white", angle = 0, size = 5) + 
         ggplot2::geom_hline(yintercept = -1, color = "black") +
-        # ggplot2::geom_hline(yintercept = 10, color = "white") +
         ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = "", breaks = 10))+
         ggplot2::scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d\n%H:%M", limits = c(min_x, base::Sys.time() + 10000))+ 
         ggplot2::labs(x = "Survey Time\n(UTC)", y = "Timestamp Drift") +
@@ -117,7 +140,9 @@ shiny::observeEvent(input$menu, {
     } else {
       analysisPlot <- ggplot2::ggplot()+
         ggplot2::geom_text(label = "text")+
-        ggplot2::annotate("text", label = base::paste0("NO DATA: \n(No Timestamp Issues Identified)"), x = 0, y = 0, color = "white")
+        ggplot2::annotate("text", label = base::paste0("NO DATA: \n(No Timestamp Issues Identified)"), x = 0, y = 0, color = "white", size = 17) +
+        ggplot2::labs(x = "", y = "")
+        ggplot2::theme(text = ggplot2::element_text(size = 20))
     }
       analysisPlot
       

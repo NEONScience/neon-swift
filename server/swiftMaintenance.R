@@ -6,12 +6,9 @@ shiny::observeEvent(input$menu, {
       
       check_pm(site = input$swft_mntc_site_select) 
       
-      # test = check_pm(site = "BART")
-      # test$tower_comments %>% dplyr::filter(`PM Date` > Sys.Date()-14 %>% dplyr::arrange(dplyr::desc(`PM Date`))
     })
     
     # Value Boxes
-    
     shiny::observeEvent(input$swft_mntc_site_select, {
     
       output$swft_mtnc_bout_freq_recent = shinydashboard::renderValueBox({
@@ -71,15 +68,7 @@ shiny::observeEvent(input$menu, {
     
     })
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    # Server logic
     shiny::observeEvent(input$swft_mntc_data_select, {
       
       # Tower Maintenance
@@ -190,20 +179,6 @@ shiny::observeEvent(input$menu, {
         
       }
       
-      
-      
-      
-      
     })
-
-
-    
-  
-    
-    
-    
-    
-    
-    
   }
 })

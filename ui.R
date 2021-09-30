@@ -22,9 +22,9 @@ library(shinyWidgets)
 swft.server.folder.path = "./"
 
 # Essential Site Lookup Tables
-swft.full.site.lookup <- data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.full.site.lookup.csv"))
-swft.ais.site.lookup <-  data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.ais.site.lookup.csv"))
-swft.tis.site.lookup <-  data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.tis.site.lookup.csv"))
+swft.full.site.lookup = data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.full.site.lookup.csv"))
+swft.ais.site.lookup  = data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.ais.site.lookup.csv"))
+swft.tis.site.lookup  = data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.tis.site.lookup.csv"))
 
 
 When_was_the_update_log_update = base::file.info(paste0(swft.server.folder.path,"www/Swift_Update_Log.pdf"))$mtime
@@ -38,7 +38,7 @@ shiny::shinyUI(
                                     ),
     # Menu bar
     shinydashboard::dashboardSidebar(
-      width = 150,
+      width = 160,
       shinydashboard::sidebarMenu(id = "menu",
         shinydashboard::menuItem("Home Page",        tabName = "swft_home_tab"                                                                  ),
         shinydashboard::menuItem("LC Services",      tabName = "swft_lcservices_tab", icon = shiny::icon("signal",         lib = "font-awesome")),
@@ -59,7 +59,15 @@ shiny::shinyUI(
             shinydashboard::menuSubItem(text = "Micro View",    tabName = "swft_qfqm_tab_micro", icon = icon('microscope')),
             shinydashboard::menuSubItem(text = "Macro View",    tabName = "swft_qfqm_tab_macro", icon = icon('superpowers'))
         ),
-        shinydashboard::menuItem("TIS Maintenance",  tabName = "swft_maintenance_tab",icon = shiny::icon("wrench",         lib = "font-awesome")),
+        shinydashboard::menuItem("TIS OS Data",       tabName = "",       icon = shiny::icon("circle-notch",          lib = "font-awesome"),
+          startExpanded = FALSE,
+          collapsible = 
+            shinydashboard::menuSubItem(text = "", tabName = ""), # I have no idea why, but this first one never appears on the ui?
+            shinydashboard::menuSubItem(text = "Site Maintenance", tabName = "swft_maintenance_tab",     icon = icon('wrench',   lib = "font-awesome")),
+            shinydashboard::menuSubItem(text = "Obs Maintenance",  tabName = "swft_obs_maintenance_tab", icon = icon("globe",    lib = "font-awesome")),
+            shinydashboard::menuSubItem(text = "Dust Mass (dev)",        tabName = "swft_dust_mass_tab",       icon = icon('braille',  lib = "font-awesome")),
+            shinydashboard::menuSubItem(text = "Wet Dep (dev)",          tabName = "swft_wet_dep_tab",         icon = icon('vial',     lib = "font-awesome"))
+        ),
         shinydashboard::menuItem("", tabName = "no"),
         shinydashboard::menuItem("", tabName = "swft_hidden_tab")
       )
@@ -532,7 +540,7 @@ shiny::shinyUI(
           ) # End EC Fst box
         ), # End EC Fst
         
-        ############################################                            TIS Maintenance                           ############################################
+        ############################################                            Maintenance                           ############################################
         
         shinydashboard::tabItem(tabName = "swft_maintenance_tab",
           shinydashboard::box(width = 12,
@@ -549,7 +557,7 @@ shiny::shinyUI(
               
               
             ),
-            shiny::column(width = 2,        
+            shiny::column(width = 3,        
               
               shinydashboard::valueBoxOutput(outputId = "swft_mtnc_first_bout", width = 12),
               shinydashboard::valueBoxOutput(outputId = "swft_mtnc_last_bout", width = 12)
@@ -741,6 +749,75 @@ shiny::shinyUI(
                     DT::dataTableOutput(outputId = "swft_mtnc_comments")
                   )
                 )
+              )
+            )
+          )
+        ),
+        
+        
+        ###########################################                            Observatory M                           ############################################
+        
+        shinydashboard::tabItem(tabName = "swft_obs_maintenance_tab",
+          shinydashboard::box(width = 12,
+            shiny::column(width = 12,
+              shiny::fluidRow(
+                shiny::h2("Monthly Maintenance Records"),
+                shiny::column(3,
+                  shiny::p("Total fulcrum maintenance records collected for each site during the month you select. If there is not a bar for a site, then no records were collected.")
+                ),
+                shiny::column(width = 3,
+                  shiny::uiOutput("swft_obsMaintenance_month_pick") 
+                ),
+                shiny::column(3),
+                shiny::column(width = 3,
+                  shinydashboard::valueBoxOutput(outputId = "swft_obsMaintenance_last_updated", width = 12),              
+                )
+              ),
+              shiny::fluidRow(
+                plotly::plotlyOutput(outputId = "swftObsMaintenance_plot")
+              )
+            ),
+            shiny::column(width = 12,
+              shiny::fluidRow(
+                shiny::column(width = 6,
+                  shiny::h2("Biweekly Bout Rate"),
+                  shiny::p("Frequency of biweekly maintenance bouts performed. The expected number of records is at least 1 per two weeks, so if the rate is at or greater than one, the expected number of records has been achieved")
+                ),
+                shiny::column(width = 3,
+                  shiny::br(),
+                  shiny::selectInput(inputId = "swft_obsMaintenance_rate_range", label = "How far back?", choices = c("Last month" = 30, "Last 2 months" = 60, "Last 6 months" = 365/2, "Last year" = 365))
+                )
+              ),
+              shiny::fluidRow(
+                plotly::plotlyOutput(outputId = "swft_obsMaintenance_rate_plot")
+              )
+            ) 
+          )
+        ),
+        
+        shinydashboard::tabItem(tabName = "swft_wet_dep_tab",
+          shinydashboard::box(width = 12,
+            shiny::fluidRow(
+              shiny::column(width = 3,
+                shiny::dateRangeInput(inputId = "swft_wet_dep_date_select", label = "Date Range", min = "2020-02-26", max = Sys.Date()+1, start = Sys.Date()-(4*7), end = Sys.Date()+1)
+              ),
+              shiny::column(9)
+            ),
+            shiny::fluidRow(
+              shiny::column(width = 3,
+                plotly::plotlyOutput(outputId = "swft_wet_dep_plot_2")
+              ),
+              shiny::column(width = 9,
+                plotly::plotlyOutput(outputId = "swft_wet_dep_plot_1")
+              )
+            ),
+            shiny::br(),
+            shiny::fluidRow(
+              shiny::column(width = 6,
+                plotly::plotlyOutput(outputId = "swft_wet_dep_plot_3")
+              ),
+              shiny::column(width = 6,
+                plotly::plotlyOutput(outputId = "swft_wet_dep_plot_4")
               )
             )
           )
