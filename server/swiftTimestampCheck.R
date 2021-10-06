@@ -1,6 +1,7 @@
 # Server Code for Timestamp Checker
 shiny::observeEvent(input$menu, {
   if(input$menu == "swft_timestamp_tab"){
+    message("IF 1")
     # Libraries
     library(dplyr)
     library(data.table)
@@ -23,14 +24,17 @@ shiny::observeEvent(input$menu, {
       "AWS_DEFAULT_REGION"    = "s3.data"
     )
     # List files in the timestamp docker folder
-    timestamp_files_lookup = aws.s3::get_bucket_df(bucket = timestamp_bucket, prefix = "sensor_timestamp_check_docker/main/") %>% 
+    timestamp_files_lookup = aws.s3::get_bucket_df(bucket = timestamp_bucket, prefix = "sensor_timestamp_check_docker/main", max = Inf) %>% 
       dplyr::mutate(date = base::as.Date(base::substr(Key, 36, 45), origin = "1970-01-01"))
+    
+    
+    
 
     reactive_timestamp_data = shiny::reactive({
 
       # Filter to last x days
       timestamp_files_lookup_filtered = timestamp_files_lookup %>% 
-        dplyr::filter(date >= Sys.Date()-4 & date <= Sys.Date())
+        # dplyr::filter(date >= Sys.Date()-4)
         dplyr::filter(date >= input$swft_timestamp_date_range[1] & date <= input$swft_timestamp_date_range[2])
       
       timestamp_data = data.table::data.table()
@@ -41,6 +45,8 @@ shiny::observeEvent(input$menu, {
       }
       
       if(base::nrow(timestamp_data) > 0){
+        message("IF 2")
+
         # Read in and join the look up table, give each mac address the name of the sensor
         smart_sensor_lookup = base::readRDS("./data/lookup/smart_sensor_lookup.RDS")
         
@@ -68,29 +74,32 @@ shiny::observeEvent(input$menu, {
           reshape2::dcast(PullDate ~ site_mac, value.var = "percent_busted")
 
         
-        length_of_column = length(names(check_issue_resolved))
-        
-        sensor_to_check = names(check_issue_resolved)[2:length_of_column]
-        i = sensor_to_check[1]
-        return_list = list()
-        for(i in sensor_to_check){
-          
-          ith = check_issue_resolved %>% 
-            dplyr::select(i)
-          
-          addition = lm(check_issue_resolved[,1] ~ ith[,1])$coefficients[2]
-          
-          if(addition > 0 ){
-            return_list[[i]] = addition
-          }
-        }
+        # length_of_column = length(names(check_issue_resolved))
+        # 
+        # sensor_to_check = names(check_issue_resolved)[2:length_of_column]
+        # i = sensor_to_check[1]
+        # return_list = list()
+        # for(i in sensor_to_check){
+        #   
+        #   ith = check_issue_resolved %>% 
+        #     dplyr::select(i)
+        #   
+        #   addition = lm(check_issue_resolved[,1] ~ ith[,1])$coefficients[2]
+        #   # browser()
+        #   if(is.na(addition) == FALSE){
+        #     if(addition > 0){
+        #       message("IF 3")
+        #       return_list[[i]] = addition
+        #     }
+        #   }
+        # }
 
         
         # Y = mX + b
                 
-        timestamp_data_named = busted_sensors %>% dplyr::select(-SensorID) %>%
+        timestamp_data_named = busted_sensors %>%
           dplyr::left_join(y = smart_sensor_lookup, by = "MacAddress") %>% 
-          dplyr::filter(site_mac %in% check_issue_resolved$site_mac) %>% 
+          dplyr::filter(site_mac %in% names(check_issue_resolved)) %>% 
           dplyr::mutate(SiteID = siteID) %>%
           dplyr::mutate(`Raw Time Difference` = Actual_Time_Difference) %>% dplyr::select(-Actual_Time_Difference) %>% 
           dplyr::mutate(`Median Site Time Difference` = median_site_time_diff) %>% dplyr::select(-median_site_time_diff) %>% 
@@ -119,49 +128,54 @@ shiny::observeEvent(input$menu, {
     swft_timestamp_plot = shiny::reactive({
       
       if(nrow(reactive_timestamp_data()) > 0) {
+            message("IF 4")
+
       
-      # Calculate bounds for green/red boxes
-      max_y = max(reactive_timestamp_data()$`Calculated Timestamp Drift`, na.rm = TRUE)
-      min_x = min(reactive_timestamp_data()$SurveyTime, na.rm = TRUE)
-      max_x = Sys.time()
-      
-      analysisPlot = ggplot2::ggplot(reactive_timestamp_data(), ggplot2::aes(x = SurveyTime, y = `Calculated Timestamp Drift`, color = Sensor_UID))+
-        ggplot2::annotate("rect", xmin = min_x, xmax = max_x, ymin = 0, ymax = 10, alpha = 0.2, fill = "#00cc00")+
-        ggplot2::annotate("rect", xmin = min_x, xmax = max_x, ymin = 10, ymax = max_y+1, alpha = 0.2, fill = "red")+
-        ggplot2::geom_point(size = 4) +
-        ggplot2::geom_line(linetype = "dashed")+
-        ggplot2::geom_vline(xintercept = base::Sys.time(), show.legend = TRUE, color = "white", linetype = "dashed", size = 1.5) +
-        ggplot2::geom_text(ggplot2::aes(x= base::Sys.time() + 9000, label="Current\nTime", y = 20),  color = "white", angle = 0, size = 5) + 
-        ggplot2::geom_hline(yintercept = -1, color = "black") +
-        ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = "", breaks = 10))+
-        ggplot2::scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d\n%H:%M", limits = c(min_x, base::Sys.time() + 10000))+ 
-        ggplot2::labs(x = "Survey Time\n(UTC)", y = "Timestamp Drift") +
-        ggplot2::theme(text = ggplot2::element_text(size = 16, color = "white", face = "bold"))
-    } else {
-      analysisPlot <- ggplot2::ggplot()+
-        ggplot2::geom_text(label = "text")+
-        ggplot2::annotate("text", label = base::paste0("NO DATA: \n(No Timestamp Issues Identified)"), x = 0, y = 0, color = "white", size = 17) +
-        ggplot2::labs(x = "", y = "")
-        ggplot2::theme(text = ggplot2::element_text(size = 20))
-    }
+        # Calculate bounds for green/red boxes
+        max_y = max(reactive_timestamp_data()$`Calculated Timestamp Drift`, na.rm = TRUE)
+        min_x = min(reactive_timestamp_data()$SurveyTime, na.rm = TRUE)
+        max_x = Sys.time()
+        
+        analysisPlot = ggplot2::ggplot(reactive_timestamp_data(), ggplot2::aes(x = SurveyTime, y = `Calculated Timestamp Drift`, color = Sensor_UID))+
+          # ggplot2::annotate("rect", xmin = min_x, xmax = max_x, ymin = 0, ymax = 10, alpha = 0.2, fill = "#00cc00")+
+          # ggplot2::annotate("rect", xmin = min_x, xmax = max_x, ymin = 10, ymax = max_y+1, alpha = 0.2, fill = "red")+
+          ggplot2::geom_point(size = 2) +
+          ggplot2::geom_line(linetype = "dashed")+
+          ggplot2::geom_vline(xintercept = base::Sys.time(), show.legend = TRUE, color = "white", linetype = "dashed", size = 1.5) +
+          # ggplot2::geom_text(ggplot2::aes(x= base::Sys.time() + 9000, label="Current\nTime", y = 20),  color = "white", angle = 0, size = 5) + 
+          ggplot2::geom_hline(yintercept = 10, color = "red") +
+          ggplot2::geom_hline(yintercept = -1, color = "black") +
+          ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = "", breaks = 10))+
+          ggplot2::scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%m-%d\n%H:%M", limits = c(min_x, base::Sys.time() + 10000))+ 
+          ggplot2::labs(x = "Survey Time\n(UTC)", y = "Timestamp Drift") +
+          ggplot2::theme(text = ggplot2::element_text(size = 16, color = "white", face = "bold"))
+      } else {
+        analysisPlot <- ggplot2::ggplot()+
+          ggplot2::geom_text(label = "text")+
+          ggplot2::annotate("text", label = base::paste0("NO DATA: \n(No Timestamp Issues Identified)"), x = 0, y = 0, color = "white", size = 17) +
+          ggplot2::labs(x = "", y = "")
+          ggplot2::theme(text = ggplot2::element_text(size = 20))
+      }
       analysisPlot
       
     })
     
     
     # Shiny Output of plot
-    output$swft_timestamp_plot <- shiny::renderPlot({
-        swft_timestamp_plot()
-    })
-    # output$swft_timestamp_plot <- plotly::renderPlotly({
+    # output$swft_timestamp_plot <- shiny::renderPlot({
     #     swft_timestamp_plot()
     # })
+    output$swft_timestamp_plot <- plotly::renderPlotly({
+        swft_timestamp_plot()
+    })
     
     
     
     # Table data from plot
     swft_reactive_timestamp_table = shiny::reactive({
-       if(base::nrow(reactive_timestamp_data())){
+     if(base::nrow(reactive_timestamp_data()) > 0){
+           message("IF 5")
+
         swft_timestamp_table = reactive_timestamp_data() %>%
           dplyr::arrange(dplyr::desc(SurveyTime)) 
       } else{
