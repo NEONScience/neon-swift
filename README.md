@@ -18,7 +18,10 @@ For dev:  `docker build -t neon-swift:dev`
 For prod: `docker build -t neon-swift:prod`  
 Once the image has finished building run the container (still need to define acceptable port ranges):  
 For dev:  `docker run -it -d -p 4781:3838 --name swift neon-swift:dev`  
-For prod: `docker run -it -d -p 4781:3838 --name swift neon-swift:prod`
+For prod: `docker run -it -d -p 4781:3838 --name swift neon-swift:prod`  
+
+You can now test the data, launch the app on the browser and the open up a bash into the container  
+`docker exec -it swift bash`
   
 ## Style  
 
