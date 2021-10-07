@@ -9,12 +9,15 @@ shiny::observeEvent(input$menu, {
     library(aws.s3)
     library(data.table)
     library(fst)
-    library(eddycopipe)
     library(plotly)
     
     ei_bucket = "research-eddy-inquiry"
     
-    eddycopipe::add_s3_creds(bucket = ei_bucket)
+    # S3 connection
+    Sys.setenv(
+      "AWS_ACCESS_KEY_ID"     = ei_bucket,
+      "AWS_S3_ENDPOINT"       = "neonscience.org",
+      "AWS_DEFAULT_REGION"    = "s3.data")
     
     last_updated = lubridate::ymd_hms(max(aws.s3::get_bucket_df(bucket = ei_bucket, prefix = "maintenance_app")$LastModified))
     
