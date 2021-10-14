@@ -461,6 +461,7 @@ shiny::shinyUI(
                                                     "ECTE Roll/Pitch/Azimuth Sensor - AMRS"  = "amrs",
                                                     "ECTE Relative Humidity Sensor - HMP155" = "HMP155",
                                                     "ECSE ML Flow Rate - MFM"                = "ecse.mfm",
+                                                    "ECSE ML/Hut MFM Pressures"              = "ecse.mfm.pressures",
                                                     "ECSE Pump Voltages - NEON Pump"         = "ecse.voltage",
                                                     "EC Temperatures - Comet/Others"         = "ec.temps"
                                                     ),

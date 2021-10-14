@@ -176,7 +176,7 @@
       
       # # For Function Testing
       # swft.data.in = read.eddy.inquiry(dataType  = "2min",
-      #                                  sensor    = "Li840",
+      #                                  sensor    = "ecse.mfm.pressures",
       #                                  siteID    = "STER",
       #                                  startDate = Sys.Date()-7,
       #                                  endDate   = Sys.Date(),
@@ -548,7 +548,7 @@
         } else if(input$swft_EddyCo_data_type == "ecse.mfm"){
           swft.ecse.ml.flow <- swft.data.in %>%
             dplyr::mutate(`Stream Name` = trimws(`Stream Name`)) %>%
-            dplyr::filter(readout_val_double < 12)
+            dplyr::filter(readout_val_double < 20)
           
           # Read in expected flow rate table
           swft.flowRateLookup <- data.table::fread(paste0(swft.server.folder.path, "data/lookup/flowRateLookup.csv"))
@@ -567,6 +567,18 @@
             dplyr::summarise(
               mean = mean(readout_val_double, na.rm = TRUE)
             ) 
+          
+        } else if(input$swft_EddyCo_data_type == "ecse.mfm.pressures"){
+
+          swft.data.out <- swft.data.in %>%
+            dplyr::mutate(`Stream Name` = trimws(`Stream Name`)) %>% 
+            dplyr::mutate(aggTime = cut(readout_time, breaks = "60 mins")) %>%
+            dplyr::mutate(aggTime = lubridate::ymd_hms(aggTime)) %>%
+            dplyr::group_by(SiteID, `Stream Name`, aggTime) %>%
+            dplyr::summarise(.groups = "drop",
+              mean = mean(readout_val_double, na.rm = TRUE)
+            ) %>% 
+            tidyr::separate(col = `Stream Name`, into = c("ML", "Location", "useless"), sep = "_", remove = FALSE) %>% dplyr::select(-useless)
           
         } else if(input$swft_EddyCo_data_type == "HMP155"){
           
@@ -1050,6 +1062,26 @@
                  color = "Sensor", caption = flow.text) +
             theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20))
         }
+        
+        if(input$swft_EddyCo_data_type == "ecse.mfm.pressures"){
+          message(paste0("Plot: ", input$swft_EddyCo_data_type, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
+          
+          plot.min <- min(swft.data.out$aggTime, na.rm = TRUE)
+          plot.max <- max(swft.data.out$aggTime, na.rm = TRUE)
+          
+          swft.plot <- ggplot(swft.data.out, aes(x=aggTime, y= mean, color = ML))+
+            geom_point() +
+            # geom_line() + 
+            scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "",)) +
+            scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
+            facet_grid(~Location) + 
+            labs(title = paste0(swft.data.out$SiteID[1], ": ECSE MFM Pressures 2-minute point data"),
+                 x = "", y = "Pressure (kPa)", subtitle = "Averaged every hour",
+                 color = "Position") +
+            theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20))
+        }
+
+        
         if(input$swft_EddyCo_data_type == "ecse.voltage") {
           message(paste0("Plot: ", input$swft_EddyCo_data_type, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
           
