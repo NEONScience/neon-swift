@@ -4,7 +4,7 @@ swft_ei_bucket = "research-eddy-inquiry"
 
 qfqm_macro_avail_data = shiny::reactive({
   shiny::req(input$swft_qfqm_macro_site_select)
-  data_in = aws.s3::get_bucket_df(bucket = swft_ei_bucket, prefix = paste0("qfqm_flux_shiny/v20210223/", input$swft_qfqm_macro_site_select, "/"))
+  data_in = aws.s3::get_bucket_df(bucket = swft_ei_bucket, prefix = paste0("qfqm_flux_shiny/v20210223/", input$swft_qfqm_macro_site_select, "/"), max = Inf)
   
   if(nrow(data_in) > 1){
     
