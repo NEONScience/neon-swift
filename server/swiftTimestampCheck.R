@@ -1,7 +1,7 @@
 # Server Code for Timestamp Checker
 shiny::observeEvent(input$menu, {
   if(input$menu == "swft_timestamp_tab"){
-    message("IF 1")
+    message(paste0(Sys.time(), ": User selected swft_timestamp_tab"))
     # Libraries
     library(dplyr)
     library(data.table)
@@ -27,9 +27,8 @@ shiny::observeEvent(input$menu, {
     timestamp_files_lookup = aws.s3::get_bucket_df(bucket = timestamp_bucket, prefix = "sensor_timestamp_check_docker/main", max = Inf) %>% 
       dplyr::mutate(date = base::as.Date(base::substr(Key, 36, 45), origin = "1970-01-01"))
     
-    
-    
 
+    # Reactive datatable
     reactive_timestamp_data = shiny::reactive({
 
       # Filter to last x days
@@ -45,7 +44,6 @@ shiny::observeEvent(input$menu, {
       }
       
       if(base::nrow(timestamp_data) > 0){
-        message("IF 2")
 
         # Read in and join the look up table, give each mac address the name of the sensor
         smart_sensor_lookup = base::readRDS("./data/lookup/smart_sensor_lookup.RDS")
@@ -72,30 +70,6 @@ shiny::observeEvent(input$menu, {
             percent_busted =  sum (busted_threshold) / length(busted_threshold) 
           ) %>%
           reshape2::dcast(PullDate ~ site_mac, value.var = "percent_busted")
-
-        
-        # length_of_column = length(names(check_issue_resolved))
-        # 
-        # sensor_to_check = names(check_issue_resolved)[2:length_of_column]
-        # i = sensor_to_check[1]
-        # return_list = list()
-        # for(i in sensor_to_check){
-        #   
-        #   ith = check_issue_resolved %>% 
-        #     dplyr::select(i)
-        #   
-        #   addition = lm(check_issue_resolved[,1] ~ ith[,1])$coefficients[2]
-        #   # browser()
-        #   if(is.na(addition) == FALSE){
-        #     if(addition > 0){
-        #       message("IF 3")
-        #       return_list[[i]] = addition
-        #     }
-        #   }
-        # }
-
-        
-        # Y = mX + b
                 
         timestamp_data_named = busted_sensors %>%
           dplyr::left_join(y = smart_sensor_lookup, by = "MacAddress") %>% 
@@ -128,9 +102,7 @@ shiny::observeEvent(input$menu, {
     swft_timestamp_plot = shiny::reactive({
       
       if(nrow(reactive_timestamp_data()) > 0) {
-            message("IF 4")
-
-      
+        
         # Calculate bounds for green/red boxes
         max_y = max(reactive_timestamp_data()$`Calculated Timestamp Drift`, na.rm = TRUE)
         min_x = min(reactive_timestamp_data()$SurveyTime, na.rm = TRUE)
@@ -174,8 +146,6 @@ shiny::observeEvent(input$menu, {
     # Table data from plot
     swft_reactive_timestamp_table = shiny::reactive({
      if(base::nrow(reactive_timestamp_data()) > 0){
-           message("IF 5")
-
         swft_timestamp_table = reactive_timestamp_data() %>%
           dplyr::arrange(dplyr::desc(SurveyTime)) 
       } else{
