@@ -182,6 +182,7 @@
       #                                  endDate   = Sys.Date(),
       #                                  silent    = TRUE
       # )
+      # swft.data.in = swft.data.in %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) 
       # message(paste0("Ultimate row check: ", nrow(swft.data.in)))
       # First check to see there was any data in the pull.
       if(nrow(swft.data.in) > 0){
@@ -274,12 +275,13 @@
                                                   silent    = TRUE
             )
             # swft.li840.valves = read.eddy.inquiry(dataType  = "2min",
-            #                                       sensor    = "Li840.valves",
+            #                                       sensor    = "amrs",
             #                                       siteID    = "STER",
             #                                       startDate = Sys.Date()-7,
             #                                       endDate   = Sys.Date(),
             #                                       silent    = TRUE
             # )
+            # swft.data.in = swft.data.in %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) 
             
             if(nrow(swft.li840.valves) > 0 ){
               swft.li840.valves.clean = swft.li840.valves %>%
