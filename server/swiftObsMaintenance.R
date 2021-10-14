@@ -2,7 +2,7 @@
 
 shiny::observeEvent(input$menu, {
   if(input$menu == "swft_obs_maintenance_tab"){
-    
+    message("User selected swft_obs_maintenance_tab")
     # Read in Fulcrum TIS Maintenance Data
     library(ggplot2)
     library(dplyr)
@@ -11,6 +11,8 @@ shiny::observeEvent(input$menu, {
     library(fst)
     library(plotly)
     
+    
+    ggplot2::theme_set(theme_bw())
     ei_bucket = "research-eddy-inquiry"
     
     # S3 connection
@@ -24,16 +26,6 @@ shiny::observeEvent(input$menu, {
     output$swft_obsMaintenance_last_updated = shinydashboard::renderValueBox({
       shinydashboard::valueBox(value = last_updated, subtitle = "Last Updated (UTC)", color = "aqua", width = 12)
     })
-    
-    # 
-    # output$swft_cval_total_records <- shinydashboard::renderValueBox({
-    #   shinydashboard::valueBox(
-    #     subtitle = "Total CVALs on record",
-    #     value = paste0(prettyNum(nrow(uniqueDates), big.mark=",",scientific=FALSE)),
-    #     width = 12,
-    #     color = "yellow"
-    #   )
-    # })
     
     data.in = aws.s3::s3read_using(FUN = fst::read.fst, object = "maintenance_app/all_data.fst", bucket = ei_bucket)%>%
       dplyr::mutate(date = as.Date(date, origin = "1970-01-01")) %>% 
@@ -96,6 +88,7 @@ shiny::observeEvent(input$menu, {
         ggplot(data = plot_data, aes(x = siteid, y = count, fill = domainid)) +
           geom_col() +
           labs(title = paste0("Total Maintenance Records during ", input$swft_obsMaintenance_month_pick),tag = "test", x = "", y = "") +
+          ggdark::dark_theme_bw() +
           theme(
             legend.position = "none",
             text = element_text(size = 16),
@@ -115,12 +108,9 @@ shiny::observeEvent(input$menu, {
     first_record = min(data.in$date)
     shiny::observeEvent(input$swft_obsMaintenance_rate_range,{
       swft_obsMaintenance_rate_plot = shiny::reactive({
-        message(input$swft_obsMaintenance_rate_range)
         
         first_rate_date = Sys.Date()-30
         first_rate_date  = Sys.Date() - as.numeric(input$swft_obsMaintenance_rate_range)
-        
-        message(first_rate_date)
 
         maintenance_rate = data.in %>%
           dplyr::filter(date >=first_rate_date) %>% 
@@ -133,12 +123,14 @@ shiny::observeEvent(input$menu, {
             rate   = round(length/diff,0)
           )
     
-        maintenance_rate_complete = dplyr::left_join(x = meta.data, y = maintenance_rate) %>%
+        maintenance_rate_complete = dplyr::left_join(x = meta.data, y = maintenance_rate, by = "siteid") %>%
           dplyr::mutate(siteid = factor(siteid, levels = meta.data$siteid))
     
         ggplot(maintenance_rate_complete, aes(x = siteid, y = rate, fill = domainid))+
           geom_col()+
           geom_hline(yintercept = 1, color = "green", size = 2)+
+          labs(x = "", y = "Rate") +
+          ggdark::dark_theme_bw() +
           theme(
                 legend.position = "none",
                 text = element_text(size = 16),
