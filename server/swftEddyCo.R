@@ -176,13 +176,13 @@
       
       # # For Function Testing
       # swft.data.in = read.eddy.inquiry(dataType  = "2min",
-      #                                  sensor    = "ecse.mfm.pressures",
+      #                                  sensor    = "amrs",
       #                                  siteID    = "STER",
       #                                  startDate = Sys.Date()-7,
       #                                  endDate   = Sys.Date(),
       #                                  silent    = TRUE
       # )
-      # swft.data.in = swft.data.in %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) 
+      # swft.data.in = swft.data.in %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name)
       # message(paste0("Ultimate row check: ", nrow(swft.data.in)))
       # First check to see there was any data in the pull.
       if(nrow(swft.data.in) > 0){
@@ -275,7 +275,7 @@
                                                   silent    = TRUE
             )
             # swft.li840.valves = read.eddy.inquiry(dataType  = "2min",
-            #                                       sensor    = "amrs",
+            #                                       sensor    = "Li840.valves",
             #                                       siteID    = "STER",
             #                                       startDate = Sys.Date()-7,
             #                                       endDate   = Sys.Date(),
@@ -509,14 +509,29 @@
           
         } else if(input$swft_EddyCo_data_type == "amrs"){
           
-          swft.data.out <- swft.data.in %>%
-            dplyr::mutate(day = lubridate::ymd(base::substr(x = readout_time, start = 1, stop = 11))) %>%
-            dplyr::group_by(`Stream Name`, day) %>%
-            dplyr::summarise(
-              SiteID = SiteID[1],
-              mean_daily = mean(readout_val_double)
-            ) %>%
-            reshape2::dcast(SiteID + day ~ `Stream Name`, value.var = "mean_daily", fun.aggregate = mean) 
+          if(input$swft_EddyCo_sub_data_type_amrs == "Level"){
+            swft.data.out <- swft.data.in %>%
+              dplyr::mutate(day = lubridate::ymd(base::substr(x = readout_time, start = 1, stop = 11))) %>%
+              dplyr::group_by(`Stream Name`, day) %>%
+              dplyr::summarise(.groups = "drop",
+                SiteID = SiteID[1],
+                mean_daily = mean(readout_val_double)
+              ) %>%
+              reshape2::dcast(SiteID + day ~ `Stream Name`, value.var = "mean_daily", fun.aggregate = mean) 
+          }
+          if(input$swft_EddyCo_sub_data_type_amrs == "Time-Series"){
+            swft.data.out <- swft.data.in  %>%
+              dplyr::filter(`Stream Name` != "AMRS_diag") %>% 
+              dplyr::mutate(timestamp = cut(readout_time, breaks = "60 mins")) %>%
+              dplyr::group_by(`Stream Name`, timestamp) %>%
+              dplyr::summarise(.groups = "drop",
+                SiteID = SiteID[1],
+                mean = round(mean(readout_val_double),3)
+              ) %>% 
+              dplyr::mutate(timestamp = lubridate::ymd_hms(timestamp)) %>% 
+              dplyr::select(SiteID, `Stream Name`, timestamp, mean)
+                  
+          }
           
           if(swft.data.out$SiteID[1] == "SCBI"){
             yInt = 11
@@ -557,7 +572,6 @@
           
           swft.flowRateLookup.table <- swft.flowRateLookup %>%
             dplyr::filter(SiteID %in% input$swft_EddyCo_site)
-          # dplyr::filter(SiteID == "WREF")
           
           flow.text <- paste0(swft.flowRateLookup.table$SiteID[1],"'s expected flowrate based upon environmental conditions is: ",
                               round(swft.flowRateLookup.table$FlowRateE[1],2)," (SLPM).\n The 70% threshold is: ",
@@ -987,26 +1001,91 @@
         }
         if(input$swft_EddyCo_data_type == "amrs"){
           message(paste0("Plot: ", input$swft_EddyCo_data_type, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
+          if(input$swft_EddyCo_sub_data_type_amrs == "Level"){
+            swft.data.out = swft.data.out %>%
+              dplyr::mutate(`Stream Name` = day)
           
-          swft.data.out = swft.data.out %>%
-            dplyr::mutate(`Stream Name` = day)
+            swft.plot <-  ggplot(swft.data.out, aes(x = AMRS_x, y= AMRS_y, Time = day, color = as.factor(day)))+
+              geom_hline(yintercept = yInt,linetype = "dashed",alpha = 0.75)+
+              geom_vline(xintercept = xInt,linetype = "dashed",alpha = 0.75)+
+              geom_point(size = 5)+ # Make Points, alpha gets lighter the older the date
+              scale_color_viridis_d()+
+              stat_summary(fun=median, geom="line", alpha = .35) + # Draw lines to same sites
+              geom_segment(x=xInt-1,y=yInt+1, xend=xInt+1, yend=yInt+1, color="white", size = .75, aes(color = "1x1 box"), linetype = "dashed")+   # Create 1x1 box TOP
+              geom_segment(x=xInt-1,y=yInt-1, xend=xInt+1, yend=yInt-1, color="white", size = .75, aes(color = "1x1 box"), linetype = "dashed")+   # Create 1x1 box Bottom
+              geom_segment(x=xInt-1,y=yInt-1, xend=xInt-1, yend=yInt+1, color="white", size = .75, aes(color = "1x1 box"), linetype = "dashed")+   # Create 1x1 box Left
+              geom_segment(x=xInt+1,y=yInt+1, xend=xInt+1, yend=yInt-1, color="white", size = .75, aes(color = "1x1 box"), linetype = "dashed")+   # Create 1x1 box Right
+              geom_segment(x=xInt-5,y=yInt+5, xend=xInt+5, yend=yInt+5, color="red",  size = .75, aes(color = "5x5 box"), linetype = "solid")+   # Create 2x2 box TOP
+              geom_segment(x=xInt-5,y=yInt-5, xend=xInt+5, yend=yInt-5, color="red",  size = .75, aes(color = "5x5 box"), linetype = "solid")+   # Create 2x2 box Bottom
+              geom_segment(x=xInt-5,y=yInt-5, xend=xInt-5, yend=yInt+5, color="red",  size = .75, aes(color = "5x5 box"), linetype = "solid")+   # Create 2x2 box Left
+              geom_segment(x=xInt+5,y=yInt+5, xend=xInt+5, yend=yInt-5, color="red",  size = .75, aes(color = "5x5 box"), linetype = "solid")+   # Create 2x2 box Right
+              scale_x_continuous(limits=c(xInt-5, xInt+5), breaks = c(xInt,-5,-3,-1,0,1,3,5)) + # Set limits based upon max potential values
+              scale_y_continuous(limits=c(yInt-5, yInt+5), breaks = c(yInt,-5,-3,-1,0,1,3,5)) + # Set limits based upon max potential values
+              geom_hline(yintercept = 0)+ # Set y-axis
+              geom_vline(xintercept = 0)+ # Set x-axis
+              theme(text = element_text(color = "white", face = "bold", size = 20)) +
+              labs(title = paste0("AMRS Pitch and Roll at ", swft.data.out$SiteID[1]),x="AMRS Roll",y="AMRS Pitch", color = "Date") # Create labels to make plot legible
+          }
+          if(input$swft_EddyCo_sub_data_type_amrs == "Time-Series"){
+            
+            plot.min <- min(swft.data.out$timestamp, na.rm = TRUE)
+            plot.max <- max(swft.data.out$timestamp, na.rm = TRUE)
+            
+            swft_amrs_x_data = swft.data.out %>% dplyr::filter(`Stream Name` == "AMRS_x")
+            swft_amrs_y_data = swft.data.out %>% dplyr::filter(`Stream Name` == "AMRS_y")
+            swft_amrs_z_data = swft.data.out %>% dplyr::filter(`Stream Name` == "AMRS_z")
+            
+            if(nrow(swft_amrs_x_data) > 0){
+              swft_amrs_x_plot = ggplot(swft_amrs_x_data, aes(x = timestamp, y= mean))+
+                annotate("rect", xmin = plot.min, xmax = plot.max, ymin = xInt - 1,     ymax = xInt + 1,   alpha = 0.6, fill = "#00cc00")+
+                annotate("rect", xmin = plot.min, xmax = plot.max, ymin = xInt + 1,     ymax = xInt + 5,   alpha = 0.6, fill = "yellow")+
+                annotate("rect", xmin = plot.min, xmax = plot.max, ymin = xInt - 1,     ymax = xInt - 5,   alpha = 0.6, fill = "yellow")+
+                geom_point(color = "gray") +
+                labs(x = "", y = "")+
+                scale_x_datetime()+
+                facet_wrap(~`Stream Name`, scales = "free_y", ncol = 1) +
+                theme(legend.position = "none")
+            } else {
+              swft_amrs_x_plot = ggplot()+
+                geom_text(label = "text")+
+                annotate("text", label = paste0("No data found\n X axis"), x = 0, y = 0, color = "white", size = 12)
+            }
+            if(nrow(swft_amrs_y_data) > 0){
+              swft_amrs_y_plot = ggplot(swft_amrs_y_data, aes(x = timestamp, y= mean))+
+                annotate("rect", xmin = plot.min, xmax = plot.max, ymin = yInt - 1,     ymax = yInt + 1,   alpha = 0.6, fill = "#00cc00")+
+                annotate("rect", xmin = plot.min, xmax = plot.max, ymin = yInt + 1,     ymax = yInt + 5,   alpha = 0.6, fill = "yellow")+
+                annotate("rect", xmin = plot.min, xmax = plot.max, ymin = yInt - 1,     ymax = yInt - 5,   alpha = 0.6, fill = "yellow")+
+                geom_point(color = "gray") +
+                labs(x = "", y = "")+
+                scale_x_datetime()+
+                facet_wrap(~`Stream Name`, scales = "free_y", ncol = 1) +
+                theme(legend.position = "none")
+            } else {
+              swft_amrs_y_plot = ggplot()+
+                geom_text(label = "text")+
+                annotate("text", label = paste0("No data found\n Y axis"), x = 0, y = 0, color = "white", size = 12)
+            }
+            if(nrow(swft_amrs_z_data) > 0){
+              swft_amrs_z_plot = ggplot(swft_amrs_z_data, aes(x = timestamp, y= mean))+
+                # annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 0 - 1,     ymax = 0 + 1,   alpha = 0.6, fill = "#00cc00")+
+                # annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 0 + 1,     ymax = 0 + 5,   alpha = 0.6, fill = "yellow")+
+                # annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 0 - 1,     ymax = 0 - 5,   alpha = 0.6, fill = "yellow")+
+                geom_point(color = "gray") +
+                labs(x = "", y = "")+
+                scale_x_datetime()+
+                facet_wrap(~`Stream Name`, scales = "free_y", ncol = 1) +
+                theme(legend.position = "none")
+            } else {
+              swft_amrs_z_plot = ggplot()+
+                geom_text(label = "text")+
+                annotate("text", label = paste0("No data found\n Z axis"), x = 0, y = 0, color = "white", size = 12)
+            }
+            
+            swft.plot = gridExtra::grid.arrange(swft_amrs_x_plot, swft_amrs_y_plot,swft_amrs_z_plot,nrow = 1 )
+
+            
+          }
           
-          swft.plot <-  ggplot(swft.data.out, aes(x = AMRS_x, y= AMRS_y, Time = day, color = as.factor(day)))+
-            geom_hline(yintercept = yInt,linetype = "dashed",alpha = 0.75)+
-            geom_vline(xintercept = xInt,linetype = "dashed",alpha = 0.75)+
-            geom_point(size = 3.5)+ # Make Points, alpha gets lighter the older the date
-            scale_color_viridis_d()+
-            stat_summary(fun=median, geom="line", alpha = .35) + # Draw lines to same sites
-            geom_segment(x=xInt-1,y=yInt+1, xend=xInt+1, yend=yInt+1, color="white", aes(color = "1x1 box"))+   # Create 1x1 box TOP
-            geom_segment(x=xInt-1,y=yInt-1, xend=xInt+1, yend=yInt-1, color="white", aes(color = "1x1 box"))+ # Create 1x1 box Bottom
-            geom_segment(x=xInt-1,y=yInt-1, xend=xInt-1, yend=yInt+1, color="white", aes(color = "1x1 box"))+ # Create 1x1 box Left
-            geom_segment(x=xInt+1,y=yInt+1, xend=xInt+1, yend=yInt-1, color="white", aes(color = "1x1 box"))+   # Create 1x1 box Right
-            scale_x_continuous(limits=c(xInt-5, xInt+5), breaks = c(xInt,-5,-3,-1,0,1,3,5)) + # Set limits based upon max potential values
-            scale_y_continuous(limits=c(yInt-5, yInt+5), breaks = c(yInt,-5,-3,-1,0,1,3,5)) + # Set limits based upon max potential values
-            geom_hline(yintercept = 0)+ # Set y-axis
-            geom_vline(xintercept = 0)+ # Set x-axis
-            theme(text = element_text(color = "white", face = "bold", size = 20)) +
-            labs(title = paste0("AMRS Pitch and Roll at ", swft.data.out$SiteID[1]),x="AMRS Roll",y="AMRS Pitch", color = "Date") # Create labels to make plot legible
         }
         if(input$swft_EddyCo_data_type == "HMP155"){
           if(input$swft_EddyCo_sub_data_type_HMP155 == "Relative Humidity"){
