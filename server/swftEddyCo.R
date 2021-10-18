@@ -588,7 +588,7 @@
 
           swft.data.out <- swft.data.in %>%
             dplyr::mutate(`Stream Name` = trimws(`Stream Name`)) %>% 
-            dplyr::mutate(aggTime = cut(readout_time, breaks = "60 mins")) %>%
+            dplyr::mutate(aggTime = cut(readout_time, breaks = "30 mins")) %>%
             dplyr::mutate(aggTime = lubridate::ymd_hms(aggTime)) %>%
             dplyr::group_by(SiteID, `Stream Name`, aggTime) %>%
             dplyr::summarise(.groups = "drop",
@@ -1157,11 +1157,10 @@
             scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
             facet_grid(~Location) + 
             labs(title = paste0(swft.data.out$SiteID[1], ": ECSE MFM Pressures 2-minute point data"),
-                 x = "", y = "Pressure (kPa)", subtitle = "Averaged every hour",
+                 x = "", y = "Pressure (kPa)", subtitle = "Averaged every half hour",
                  color = "Position") +
             theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20))
         }
-
         
         if(input$swft_EddyCo_data_type == "ecse.voltage") {
           message(paste0("Plot: ", input$swft_EddyCo_data_type, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
