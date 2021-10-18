@@ -1082,7 +1082,7 @@
                 annotate("text", label = paste0("No data found\n Z axis"), x = 0, y = 0, color = "white", size = 12)
             }
             
-            swft.plot = gridExtra::grid.arrange(swft_amrs_x_plot, swft_amrs_y_plot,swft_amrs_z_plot,nrow = 1 )
+            swft.plot = gridExtra::grid.arrange(swft_amrs_x_plot, swft_amrs_y_plot,swft_amrs_z_plot, nrow = 1)
 
             
           }
