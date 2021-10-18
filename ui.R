@@ -87,7 +87,7 @@ shiny::shinyUI(
         shinydashboard::tabItem(tabName = "swft_home_tab",
           
           # TODO: make this only appear if the update log was recently updated. Until then... uncomment :D                                
-          shiny::modalDialog(title = paste0("Swift was updated!\nUpdated the Timestamp Checker!!"),size = "l", shiny::helpText(a("2021-08-17", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
+          shiny::modalDialog(title = paste0("Swift was updated!\nUpdated the Timestamp Checker!!"),size = "l", shiny::helpText(a("2021-10-18", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
 
           shinydashboard::box(width = 12,
               shiny::column(width = 7,
