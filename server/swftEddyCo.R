@@ -572,28 +572,30 @@
           swft.flowRateLookup <- data.table::fread(paste0(swft.server.folder.path, "data/lookup/flowRateLookup.csv"))
           
           swft.flowRateLookup.table <- swft.flowRateLookup %>%
-            dplyr::filter(SiteID %in% input$swft_EddyCo_site)
+            dplyr::filter(SiteID %in% input$swft_EddyCo_site) %>% 
+            dplyr::mutate(FlowRateE = round(FlowRateE,2)) %>% 
+            dplyr::mutate(FlowRateE70 = round(FlowRateE70, 2))
           
           flow.text <- paste0(swft.flowRateLookup.table$SiteID[1],"'s expected flowrate based upon environmental conditions is: ",
-                              round(swft.flowRateLookup.table$FlowRateE[1],2)," (SLPM).\n The 70% threshold is: ",
-                              round(swft.flowRateLookup.table$FlowRateE70[1],2)," (SLPM)." )
-          swft.data.out <- dplyr::left_join(x = swft.ecse.ml.flow, y = swft.flowRateLookup, by = "SiteID") %>%
-            dplyr::mutate(aggTime = cut(readout_time, breaks = "1 hours")) %>%
-            dplyr::mutate(aggTime = lubridate::ymd_hms(aggTime)) %>%
-            dplyr::group_by(SiteID, `Stream Name`, aggTime,FlowRateE,FlowRateE70) %>%
-            dplyr::summarise(
-              mean = mean(readout_val_double, na.rm = TRUE)
+                              swft.flowRateLookup.table$FlowRateE[1]," (SLPM).\n The 70% threshold is: ",
+                              swft.flowRateLookup.table$FlowRateE70[1]," (SLPM)." )
+          swft.data.out <- dplyr::left_join(x = swft.ecse.ml.flow, y = swft.flowRateLookup.table, by = "SiteID") %>%
+            dplyr::mutate(timestamp = cut(readout_time, breaks = "1 hours")) %>%
+            dplyr::mutate(timestamp = lubridate::ymd_hms(timestamp)) %>%
+            dplyr::group_by(SiteID, `Stream Name`, timestamp,FlowRateE,FlowRateE70) %>%
+            dplyr::summarise(.groups = "drop",
+              mean = round(mean(readout_val_double, na.rm = TRUE),2)
             ) 
           
         } else if(input$swft_EddyCo_data_type == "ecse.mfm.pressures"){
 
           swft.data.out <- swft.data.in %>%
             dplyr::mutate(`Stream Name` = trimws(`Stream Name`)) %>% 
-            dplyr::mutate(aggTime = cut(readout_time, breaks = "30 mins")) %>%
-            dplyr::mutate(aggTime = lubridate::ymd_hms(aggTime)) %>%
-            dplyr::group_by(SiteID, `Stream Name`, aggTime) %>%
+            dplyr::mutate(timestamp = cut(readout_time, breaks = "30 mins")) %>%
+            dplyr::mutate(timestamp = lubridate::ymd_hms(timestamp)) %>%
+            dplyr::group_by(SiteID, `Stream Name`, timestamp) %>%
             dplyr::summarise(.groups = "drop",
-              mean = mean(readout_val_double, na.rm = TRUE)
+              mean = round(mean(readout_val_double, na.rm = TRUE),2)
             ) %>% 
             tidyr::separate(col = `Stream Name`, into = c("ML", "Location", "useless"), sep = "_", remove = FALSE) %>% dplyr::select(-useless)
           
@@ -1126,10 +1128,10 @@
         if(input$swft_EddyCo_data_type == "ecse.mfm"){
           message(paste0("Plot: ", input$swft_EddyCo_data_type, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
           
-          plot.min <- min(swft.data.out$aggTime, na.rm = TRUE)
-          plot.max <- max(swft.data.out$aggTime, na.rm = TRUE)
+          plot.min <- min(swft.data.out$timestamp, na.rm = TRUE)
+          plot.max <- max(swft.data.out$timestamp, na.rm = TRUE)
           
-          swft.plot <- ggplot(swft.data.out, aes(x=aggTime, y= mean, color = `Stream Name`))+
+          swft.plot <- ggplot(swft.data.out, aes(x=timestamp, y= mean, color = `Stream Name`))+
             annotate("rect", xmin = plot.min, xmax = plot.max, ymin = swft.data.out$FlowRateE70[1],     ymax = swft.data.out$FlowRateE[1],   alpha = 0.4, fill = "#00cc00")+
             annotate("rect", xmin = plot.min, xmax = plot.max, ymin = swft.data.out$FlowRateE70[1] - 2.5, ymax = swft.data.out$FlowRateE70[1], alpha = 0.4, fill = "#ff8c00")+
             annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 0, ymax = swft.data.out$FlowRateE70[1]- 2.5, alpha = 0.4, fill = "red")+
@@ -1148,10 +1150,12 @@
         if(input$swft_EddyCo_data_type == "ecse.mfm.pressures"){
           message(paste0("Plot: ", input$swft_EddyCo_data_type, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
           
-          plot.min <- min(swft.data.out$aggTime, na.rm = TRUE)
-          plot.max <- max(swft.data.out$aggTime, na.rm = TRUE)
+          swft.data.out = swft.data.out %>% dplyr::select(-`Stream Name`)
           
-          swft.plot <- ggplot(swft.data.out, aes(x=aggTime, y= mean, color = ML))+
+          plot.min <- min(swft.data.out$timestamp, na.rm = TRUE)
+          plot.max <- max(swft.data.out$timestamp, na.rm = TRUE)
+          
+          swft.plot <- ggplot(swft.data.out, aes(x=timestamp, y= mean, color = ML))+
             geom_point() +
             # geom_line() + 
             scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "",)) +
@@ -1260,8 +1264,35 @@
     })
     
     # Output Table
-    output$swft_ec_fast_table = DT::renderDataTable({
-      data.table::data.table(swft_ec_fast_plot()$swft_data)
+    output$swft_ec_fast_table = DT::renderDataTable (server=FALSE,{
+      DT::datatable(
+        data = swft_ec_fast_plot()$swft_data,
+          filter = "top",
+          extensions = 'Buttons',
+          options = list(
+            pageLength = 25,
+            deferRender = TRUE,
+            scrollY = 600,
+            scrollCollapse = TRUE,
+            scrollX = FALSE,
+            paging = TRUE,
+            dom = 'Bfrtip',
+            buttons = list(list(extend = 'csv', filename = paste0(
+              input$swft_EddyCo_site[1], "_", 
+              input$swft_EddyCo_data_type[1], 
+              "_", 
+              input$swft_EddyCo_date_range[1], 
+              " to ", 
+              input$swft_EddyCo_date_range[2]
+              )
+              )
+              ),
+            pageLength=5, 
+            lengthMenu=c(3,5,10)
+          ),
+        rownames = FALSE
+        
+        )
     })
     
 #   }
