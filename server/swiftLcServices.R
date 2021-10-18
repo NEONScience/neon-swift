@@ -3,6 +3,12 @@
 # R script to spread out server code into more well defined chunks
 shiny::observeEvent(input$menu, {
   if(input$menu == "swft_lcservices_tab"){
+    
+    library(ggplot2)
+    library(dplyr)
+    library(data.table)
+    library(aws.s3)
+    library(aws.signature)
 
     # Aesthetics
     ggplot2::theme_set(ggdark::dark_theme_gray())
@@ -16,7 +22,7 @@ shiny::observeEvent(input$menu, {
       base::source(paste0(swft.server.folder.path, "R/read.eddy.inquiry.swift.R"))
 
       read.eddy.inquiry(dataType = "CnC", siteID = input$swft_lcservices_site, startDate = input$swft_lcservices_date_range[1], endDate = input$swft_lcservices_date_range[2]) %>%
-        dplyr::filter(LCNumber == input$swft_lcservices_lc_number) %>%
+      dplyr::filter(LCNumber == input$swft_lcservices_lc_number) %>%
         dplyr::mutate(`CnC Status` = as.integer(cnc)) %>%
         dplyr::mutate(`RTU Status` = as.integer(rtu)) %>%
         dplyr::mutate(`HornetQ Status` = as.integer(hornetq)) %>%

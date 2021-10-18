@@ -1,127 +1,165 @@
 # Server Code for Timestamp Checker
 shiny::observeEvent(input$menu, {
   if(input$menu == "swft_timestamp_tab"){
-    library(fst)
-    library(shiny)
+    message(paste0(Sys.time(), ": User selected swft_timestamp_tab"))
+    # Libraries
     library(dplyr)
+    library(data.table)
     library(ggplot2)
+    library(aws.s3)
+    library(aws.signature)
+    library(lubridate)
+    library(plotly)
     
     # Aesthetics
-    ggplot2::theme_set(ggdark::dark_theme_gray()) 
+    ggplot2::theme_set(ggdark::dark_theme_bw()) 
     
-    Sys.setenv("AWS_ACCESS_KEY_ID"     = "research-eddy-inquiry",
-               "AWS_S3_ENDPOINT"       = "neonscience.org",
-               "AWS_DEFAULT_REGION"    = "s3.data")
+    # S3 Bucket
+    timestamp_bucket = "research-eddy-inquiry"
     
-    # Read in Timestamp data
-    swft_timestamp_date_list = seq.Date(from = Sys.Date()-14, to = Sys.Date(), by = 1)
+    # S3 Environment
+    base::Sys.setenv(
+      "AWS_ACCESS_KEY_ID"     = timestamp_bucket,
+      "AWS_S3_ENDPOINT"       = "neonscience.org",
+      "AWS_DEFAULT_REGION"    = "s3.data"
+    )
+    # List files in the timestamp docker folder
+    timestamp_files_lookup = aws.s3::get_bucket_df(bucket = timestamp_bucket, prefix = "sensor_timestamp_check_docker/main", max = Inf) %>% 
+      dplyr::mutate(date = base::as.Date(base::substr(Key, 36, 45), origin = "1970-01-01"))
     
-    timestampData = data.table::data.table()
-    for(days in swft_timestamp_date_list){
-      days = as.Date(days, origin = "1970-01-01")
-      if(aws.s3::object_exists(object = paste0("sensor_timestamp_check/", days, ".RDS"), bucket = "research-eddy-inquiry") == TRUE){
-        swft_timestamp_data.in = aws.s3::s3readRDS(object = paste0("sensor_timestamp_check/", days, ".RDS"), bucket = "research-eddy-inquiry")
-        timestampData = data.table::rbindlist(l = list(timestampData, swft_timestamp_data.in))
 
+    # Reactive datatable
+    reactive_timestamp_data = shiny::reactive({
+
+      # Filter to last x days
+      timestamp_files_lookup_filtered = timestamp_files_lookup %>% 
+        # dplyr::filter(date >= Sys.Date()-4)
+        dplyr::filter(date >= input$swft_timestamp_date_range[1] & date <= input$swft_timestamp_date_range[2])
+      
+      timestamp_data = data.table::data.table()
+      for(i in base::seq_along(timestamp_files_lookup_filtered$Key)){
+        timestamp_data_in = aws.s3::s3readRDS(object = timestamp_files_lookup_filtered$Key[i], bucket = timestamp_bucket) 
+        
+        timestamp_data = data.table::rbindlist(l = base::list(timestamp_data, timestamp_data_in), fill = TRUE)
       }
-    }
-    
-    timestampData = timestampData %>%
-      dplyr::group_by(siteID, PullDate) %>%
-      dplyr::mutate(`Site's Median Timestamp Difference` = median(diffTime)) %>%
-      dplyr::mutate(`Sensor's Deviation from the Site's Median Timestamp` = abs(`Site's Median Timestamp Difference`-`diffTime` )) 
-    
-    swft_timestamp_last_update = max(timestampData$PullDate, na.rm = TRUE)
+      
+      if(base::nrow(timestamp_data) > 0){
+
+        # Read in and join the look up table, give each mac address the name of the sensor
+        smart_sensor_lookup = base::readRDS("./data/lookup/smart_sensor_lookup.RDS")
+        
+        busted_thresholds = timestamp_data %>% 
+          dplyr::filter(timestamp_drift > 10) %>% 
+          dplyr::distinct(siteID, MacAddress)
+        
+        busted_sensors = timestamp_data %>% 
+          dplyr::filter(MacAddress %in% busted_thresholds$MacAddress) %>% 
+          dplyr::mutate(site_mac = base::paste0(siteID, " ", MacAddress))
+        
+        # If the last 4 hours are fine, don't alert?
+        check_issue_resolved = busted_sensors %>% 
+          dplyr::mutate(cut_time = lubridate::ymd_hms(cut(TimeStamp, breaks = "4 hours"))) %>% 
+          dplyr::group_by(site_mac, cut_time) %>% 
+          dplyr::summarise(.groups = "drop",
+            PullDate = PullDate[1],
+            busted_threshold = base::ifelse(test = timestamp_drift >= 10, yes = TRUE, no = FALSE),
+            percent_busted =  sum (busted_threshold) / length(busted_threshold) 
+          ) %>% 
+          dplyr::group_by(PullDate, site_mac) %>% 
+          dplyr::summarise(.groups = "drop",
+            percent_busted =  sum (busted_threshold) / length(busted_threshold) 
+          ) %>%
+          reshape2::dcast(PullDate ~ site_mac, value.var = "percent_busted")
+                
+        timestamp_data_named = busted_sensors %>%
+          dplyr::left_join(y = smart_sensor_lookup, by = "MacAddress") %>% 
+          dplyr::filter(site_mac %in% names(check_issue_resolved)) %>% 
+          dplyr::mutate(SiteID = siteID) %>%
+          dplyr::mutate(`Raw Time Difference` = Actual_Time_Difference) %>% dplyr::select(-Actual_Time_Difference) %>% 
+          dplyr::mutate(`Median Site Time Difference` = median_site_time_diff) %>% dplyr::select(-median_site_time_diff) %>% 
+          dplyr::mutate(`Calculated Timestamp Drift` = timestamp_drift) %>% dplyr::select(-timestamp_drift) %>% 
+          dplyr::mutate(SurveyTime = TimeStamp) %>% dplyr::select(-TimeStamp) %>% 
+          dplyr::mutate(Sensor_UID = base::paste0(SiteID, " ", Sensor)) %>% 
+          dplyr::select(PullDate, SurveyTime, SiteID, Sensor, Sensor_UID, MacAddress, `Raw Time Difference`, `Median Site Time Difference`, `Calculated Timestamp Drift`)
+      
+      } else {
+        timestamp_data_named = data.table::data.table()
+      }
+      
+      timestamp_data_named
+    })
     
     # Check how many rows of data were pulled
     output$swft_timestamp_last_update_box <- shinydashboard::renderValueBox({
       shinydashboard::valueBox(
-        value = paste0("Last Updated: ", swft_timestamp_last_update),
-        subtitle = "",
+        value = lubridate::ymd_hms(base::max(timestamp_files_lookup$LastModified, na.rm = TRUE)),
+        subtitle = "Last Updated (UTC)",
         width = 12,
         color = "black"
       )
     })
     
-    # Give table `readable` names
-    # Filter the data down a little and select only certain columns sensible to users
-    timestampData.plot <- timestampData %>%
-      dplyr::filter(`Sensor's Deviation from the Site's Median Timestamp` > 10 &
-                    `Sensor's Deviation from the Site's Median Timestamp` < 1000  ) %>%
-      dplyr::mutate(`Sensor's Deviation from the Site's Median Timestamp` = as.numeric(`Sensor's Deviation from the Site's Median Timestamp`)) %>%
-      dplyr::mutate(`Site's Median Timestamp Difference` = as.numeric(`Site's Median Timestamp Difference`)) %>%
-      dplyr::select(siteID, MacAddress, Eeprom, PullDate, `Site's Median Timestamp Difference`, `Sensor's Deviation from the Site's Median Timestamp`)
-    
+    swft_timestamp_plot = shiny::reactive({
       
-    # Check if there are any issues, if not, give a blank plot
-    if(nrow(timestampData.plot) > 0) {
+      if(nrow(reactive_timestamp_data()) > 0) {
+        
+        # Calculate bounds for green/red boxes
+        max_y = max(reactive_timestamp_data()$`Calculated Timestamp Drift`, na.rm = TRUE)
+        min_x = min(reactive_timestamp_data()$SurveyTime, na.rm = TRUE)
+        max_x = Sys.time()
+        
+        analysisPlot = ggplot2::ggplot(reactive_timestamp_data(), ggplot2::aes(x = SurveyTime, y = `Calculated Timestamp Drift`, color = Sensor_UID))+
+          # ggplot2::annotate("rect", xmin = min_x, xmax = max_x, ymin = 0, ymax = 10, alpha = 0.2, fill = "#00cc00")+
+          # ggplot2::annotate("rect", xmin = min_x, xmax = max_x, ymin = 10, ymax = max_y+1, alpha = 0.2, fill = "red")+
+          ggplot2::geom_point(size = 2) +
+          ggplot2::geom_line(linetype = "dashed")+
+          ggplot2::geom_vline(xintercept = base::Sys.time(), show.legend = TRUE, color = "white", linetype = "dashed", size = 1.5) +
+          # ggplot2::geom_text(ggplot2::aes(x= base::Sys.time() + 9000, label="Current\nTime", y = 20),  color = "white", angle = 0, size = 5) + 
+          ggplot2::geom_hline(yintercept = 10, color = "red") +
+          ggplot2::geom_hline(yintercept = -1, color = "black") +
+          ggplot2::scale_y_continuous(sec.axis = ggplot2::dup_axis(name = "", breaks = 10))+
+          ggplot2::scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%m-%d\n%H:%M", limits = c(min_x, base::Sys.time() + 10000))+ 
+          ggplot2::labs(x = "Survey Time\n(UTC)", y = "Timestamp Drift") +
+          ggplot2::theme(text = ggplot2::element_text(size = 16, color = "white", face = "bold"))
+      } else {
+        analysisPlot <- ggplot2::ggplot()+
+          ggplot2::geom_text(label = "text")+
+          ggplot2::annotate("text", label = base::paste0("NO DATA: \n(No Timestamp Issues Identified)"), x = 0, y = 0, color = "white", size = 17) +
+          ggplot2::labs(x = "", y = "")
+          ggplot2::theme(text = ggplot2::element_text(size = 20))
+      }
+      analysisPlot
       
-      
-      swft_timestamp_plot = timestampData %>%
-        dplyr::group_by(siteID, PullDate) %>%
-        dplyr::mutate(`Site's Median Timestamp Difference` = median(diffTime)) %>%
-        dplyr::mutate(`Sensor's Deviation from the Site's Median Timestamp` = -as.numeric(`Site's Median Timestamp Difference`-`diffTime` )) %>%
-        dplyr::filter(`Sensor's Deviation from the Site's Median Timestamp` >= 10 | `Sensor's Deviation from the Site's Median Timestamp` <= -10) %>% 
-        dplyr::mutate(`Sensor's Deviation from the Site's Median Timestamp` = round(as.numeric(`Sensor's Deviation from the Site's Median Timestamp`),0)) %>%
-        dplyr::mutate(`Site's Median Timestamp Difference` = as.numeric(`Site's Median Timestamp Difference`)) %>%
-        dplyr::select(siteID, MacAddress, Eeprom, PullDate, `Site's Median Timestamp Difference`, `Sensor's Deviation from the Site's Median Timestamp`)%>%
-        dplyr::arrange(desc(`Sensor's Deviation from the Site's Median Timestamp`)) %>%
-        dplyr::rowwise() %>%
-        dplyr::mutate(SensorID = paste0(siteID, " ", PullDate, "\n", MacAddress)) %>%
-        dplyr::mutate(SensorID_2 = paste0(siteID, "\n", MacAddress))
-      
-      swft_timestamp_plot$SensorID = factor(swft_timestamp_plot$SensorID, levels = swft_timestamp_plot$SensorID)
-      
-      plot.y.max = swft_timestamp_plot$SensorID[1]
-      plot.y.min = swft_timestamp_plot$SensorID[length(unique(swft_timestamp_plot$SensorID))]
-      
-      analysisPlot = ggplot(swft_timestamp_plot, aes(y = `Sensor's Deviation from the Site's Median Timestamp`, x = SensorID_2, fill = SensorID_2)) +
-        geom_col(position = "identity", size = 1) + 
-        geom_text(aes(x=, y=`Sensor's Deviation from the Site's Median Timestamp`, ymax=`Sensor's Deviation from the Site's Median Timestamp`, label=`Sensor's Deviation from the Site's Median Timestamp`, 
-                      hjust=ifelse(sign(`Sensor's Deviation from the Site's Median Timestamp`)>0, 1, 1)), size = 6.5,
-                  position = position_dodge(width=1)) +
-        scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
-        geom_hline(yintercept = 10, size = 1, linetype = "dashed") +
-        geom_hline(yintercept = 0, size = 1, linetype = "solid") +
-        geom_hline(yintercept = -10, size = 1, linetype = "dashed") +
-        # annotate("rect", xmin = -10, xmax = 10, ymin = .8, ymax = 1.2, alpha = 0.62, fill = "#00cc00")+
-        labs(y = "Time Delay from Actual UTC", x = "SiteID and MacAddress")+
-        theme(legend.position = "none", text = element_text(size = 15)) +
-        facet_wrap(~PullDate, scales = "free_y") + 
-        coord_flip()
-      
-      
-      # analysisPlot <- ggplot2::ggplot(data=timestampData.plot,aes(x=`Sensor's Deviation from the Site's Median Timestamp`,SensorMac=MacAddress,fill=siteID, SiteMedianDifferenceTime = `Site's Median Timestamp Difference`))+
-      #   ggplot2::geom_histogram(binwidth = 5, color = "grey")+
-      #   ggplot2::theme(axis.text.x = element_text(angle = 325))+ # Change axis text to Battelle Blue
-      #   ggplot2::labs(x = "Sensor Delay (s)", 
-      #                 y = "Count of Streams in Bin",
-      #                 "Number of Streams", 
-      #                 title = paste0("Time Difference Histogram Analysis"))+
-      #   ggplot2::facet_grid(~PullDate)
-    } else {
-      analysisPlot <- ggplot2::ggplot()+
-        ggplot2::geom_text(label = "text")+
-        ggplot2::annotate("text", label = paste0("NO DATA: \n(No Timestamp Issues Identified)"), x = 0, y = 0, color = "white")
-    }
-    
-    # Shiny Output of plot
-    output$swft_timestamp_plot <- shiny::renderPlot({
-        analysisPlot
     })
     
+    
+    # Shiny Output of plot
+    # output$swft_timestamp_plot <- shiny::renderPlot({
+    #     swft_timestamp_plot()
+    # })
+    output$swft_timestamp_plot <- plotly::renderPlotly({
+        swft_timestamp_plot()
+    })
+    
+    
+    
     # Table data from plot
+    swft_reactive_timestamp_table = shiny::reactive({
+     if(base::nrow(reactive_timestamp_data()) > 0){
+        swft_timestamp_table = reactive_timestamp_data() %>%
+          dplyr::arrange(dplyr::desc(SurveyTime)) 
+      } else{
+        swft_timestamp_table = data.table::data.table()
+      }
+      swft_timestamp_table
+    })
+    
+    
     output$swft_timestamp_table <- DT::renderDT({
-      
-      timestampData.table = timestampData %>%
-        dplyr::group_by(PullDate, siteID) %>%
-        dplyr::filter(`Sensor's Deviation from the Site's Median Timestamp` > 10) %>%
-        dplyr::filter(`Sensor's Deviation from the Site's Median Timestamp` == max(`Sensor's Deviation from the Site's Median Timestamp`)) %>%
-        dplyr::arrange(desc(`Sensor's Deviation from the Site's Median Timestamp`)) %>%
-        dplyr::select(siteID, PullDate, MacAddress, StartTime, EndTime, diffTime, `Site's Median Timestamp Difference`, `Sensor's Deviation from the Site's Median Timestamp`)
-      
-      DT::datatable(timestampData.table
-                    ,  escape = FALSE,filter='top', options = list(pageLength = 10, autoWidth = FALSE))
+     
+      # Return the cleaned up timestamp table
+      DT::datatable(swft_reactive_timestamp_table()
+                    ,  escape = FALSE,filter='top', options = base::list(pageLength = 10, autoWidth = FALSE))
     })
   }
 })

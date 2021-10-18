@@ -14,14 +14,7 @@ RUN apt-get install -y zlib1g-dev
 RUN apt-get install -y pandoc
 RUN apt-get install -y libssl-dev 
 RUN apt-get install -y libxml2-dev 
-#RUN apt-get install -y zlib-dev
 RUN apt-get install -y libicu-dev
-#RUN apt-get install -y
-#RUN apt-get install -y
-#RUN apt-get install -y
-#RUN apt-get install -y
-
-
 
 COPY ./docker_r_lib_install.R /tmp/requirements.R 
 ## install required libs on container

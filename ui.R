@@ -1,30 +1,30 @@
-library(shiny,           lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(dplyr,           lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(htmlwidgets,     lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
+library(shiny)
+library(dplyr)
+library(htmlwidgets)
 library(plotly)
-library(ggplot2,         lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(DT,              lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(tidyr,           lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(data.table,      lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(fst,             lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(shinycssloaders, lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(shinydashboard,  lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(viridis,         lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(stringr,         lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(scales,          lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(aws.signature,   lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(aws.s3,          lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(lubridate,       lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(dashboardthemes, lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(ggdark,          lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
-library(shinyWidgets,    lib.loc = "/home/NEON/kstyers/R/x86_64-pc-linux-gnu-library/3.6/")
+library(ggplot2)
+library(DT)
+library(tidyr)
+library(data.table)
+library(fst)
+library(shinycssloaders)
+library(shinydashboard)
+library(viridis)
+library(stringr)
+library(scales)
+library(aws.signature)
+library(aws.s3)
+library(lubridate)
+library(dashboardthemes)
+library(ggdark)
+library(shinyWidgets)
 
 swft.server.folder.path = "./"
 
 # Essential Site Lookup Tables
-swft.full.site.lookup <- data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.full.site.lookup.csv"))
-swft.ais.site.lookup <-  data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.ais.site.lookup.csv"))
-swft.tis.site.lookup <-  data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.tis.site.lookup.csv"))
+swft.full.site.lookup = data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.full.site.lookup.csv"))
+swft.ais.site.lookup  = data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.ais.site.lookup.csv"))
+swft.tis.site.lookup  = data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.tis.site.lookup.csv"))
 
 
 When_was_the_update_log_update = base::file.info(paste0(swft.server.folder.path,"www/Swift_Update_Log.pdf"))$mtime
@@ -38,13 +38,19 @@ shiny::shinyUI(
                                     ),
     # Menu bar
     shinydashboard::dashboardSidebar(
-      width = 150,
+      width = 160,
       shinydashboard::sidebarMenu(id = "menu",
         shinydashboard::menuItem("Home Page",        tabName = "swft_home_tab"                                                                  ),
         shinydashboard::menuItem("LC Services",      tabName = "swft_lcservices_tab", icon = shiny::icon("signal",         lib = "font-awesome")),
         shinydashboard::menuItem("LC Time Check",    tabName = "swft_timestamp_tab",  icon = shiny::icon("hourglass-half", lib = "font-awesome")),
         shinydashboard::menuItem("Gas Cylinders",    tabName = "swft_spangas_tab",    icon = shiny::icon("adjust",         lib = "font-awesome")),
-        shinydashboard::menuItem("CVAL Plotting",    tabName = "swft_cvalfast_tab",   icon = shiny::icon("atom",           lib = "font-awesome")),
+        shinydashboard::menuItem("CalVals",       tabName = "",       icon = shiny::icon("flask",          lib = "font-awesome"),
+          startExpanded = FALSE,
+          collapsible = 
+            shinydashboard::menuSubItem(text = "", tabName = ""), # I have no idea why, but this first one never appears on the ui?
+            shinydashboard::menuSubItem(text = "CalVal Plots",    tabName = "swft_cvalfast_tab", icon = icon('flask')),
+            shinydashboard::menuSubItem(text = "Span Values",    tabName = "swft_historic_span_table_tab", icon = icon('table'))
+        ),
         shinydashboard::menuItem("Eddy-Co Plotting", tabName = "swft_ecfast_tab",     icon = shiny::icon("sun",            lib = "font-awesome")),
         shinydashboard::menuItem("Eddy QFQM ",       tabName = "",       icon = shiny::icon("flask",          lib = "font-awesome"),
           startExpanded = FALSE,
@@ -53,7 +59,15 @@ shiny::shinyUI(
             shinydashboard::menuSubItem(text = "Micro View",    tabName = "swft_qfqm_tab_micro", icon = icon('microscope')),
             shinydashboard::menuSubItem(text = "Macro View",    tabName = "swft_qfqm_tab_macro", icon = icon('superpowers'))
         ),
-        shinydashboard::menuItem("TIS Maintenance",  tabName = "swft_maintenance_tab",icon = shiny::icon("wrench",         lib = "font-awesome")),
+        shinydashboard::menuItem("TIS OS Data",       tabName = "",       icon = shiny::icon("circle-notch",          lib = "font-awesome"),
+          startExpanded = FALSE,
+          collapsible = 
+            shinydashboard::menuSubItem(text = "", tabName = ""), # I have no idea why, but this first one never appears on the ui?
+            shinydashboard::menuSubItem(text = "Site Maintenance", tabName = "swft_maintenance_tab",     icon = icon('wrench',   lib = "font-awesome")),
+            shinydashboard::menuSubItem(text = "Obs Maintenance",  tabName = "swft_obs_maintenance_tab", icon = icon("globe",    lib = "font-awesome")),
+            shinydashboard::menuSubItem(text = "Dust Mass (dev)",        tabName = "swft_dust_mass_tab",       icon = icon('braille',  lib = "font-awesome")),
+            shinydashboard::menuSubItem(text = "Wet Dep (dev)",          tabName = "swft_wet_dep_tab",         icon = icon('vial',     lib = "font-awesome"))
+        ),
         shinydashboard::menuItem("", tabName = "no"),
         shinydashboard::menuItem("", tabName = "swft_hidden_tab")
       )
@@ -73,7 +87,7 @@ shiny::shinyUI(
         shinydashboard::tabItem(tabName = "swft_home_tab",
           
           # TODO: make this only appear if the update log was recently updated. Until then... uncomment :D                                
-          shiny::modalDialog(title = paste0("Swift was updated!"),size = "l", shiny::helpText(a("2021-07-21", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
+          shiny::modalDialog(title = paste0("Swift was updated!\nUpdated the Timestamp Checker!!"),size = "l", shiny::helpText(a("2021-10-18", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
 
           shinydashboard::box(width = 12,
               shiny::column(width = 7,
@@ -92,17 +106,19 @@ shiny::shinyUI(
               shiny::tags$b("Gas Cylinders"),
               shiny::h4("Check current cylinder pressures, delivery pressures, and average pressure loss overtime. Also features a table showing expected cylinder depletion rates based upon average pressure loss."),
               shiny::icon("atom", lib = "font-awesome"),
-              shiny::tags$b("CVAL Plotting"),
-              shiny::h4("This tab that uses `fst` files that renders all daily CVALs and visualizes all CVALs phase shifted by month!"),
+              shiny::tags$b("CalVals"),
+              shiny::h4("CalVal Plots - This tab that uses `fst` files that renders all daily CVALs and visualizes all CVALs phase shifted by month!"),
+              shiny::h4("Span Values - This tab provides historic gas cylinder installation information."),
               shiny::icon("sun", lib = "font-awesome"),
               shiny::tags$b("Eddy-Co Plotting"),
               shiny::h4("A tab that uses `fst` data files to render Eddy-Co data; from Co2 measurements, CSAT3 wind data, and measurement level flows."),
               shiny::icon("flask", lib = "font-awesome"),
               shiny::tags$b("Eddy QFQM"),
-              shiny::h4("This tab is for investigating the Quality Flag and Quality Metric data from eddy4R."),
+              shiny::h4("Micro View - This tab is for investigating recent Quality Flag and Quality Metric data from eddy4R."),
+              shiny::h4("Macro View - This tab provides a heat map of EC quality flags, useful for investigating systemic quality issues at any TIS site."),
               shiny::icon("wrench", lib = "font-awesome"),
               shiny::tags$b("TIS Maintenance"),
-              shiny::h4("\tLong promised, finally delivered, a reactive look at TIS maintenance data!")
+              shiny::h4("Long promised, finally delivered, a reactive look at TIS maintenance data!")
 
             ),
             shiny::column(width = 4, offset = 1,
@@ -122,7 +138,7 @@ shiny::shinyUI(
                   width='100%'
                 ),
                 shiny::dateRangeInput(inputId = "swft_lcservices_date_range", label = "Select Date Range for Plot [dev]",
-                      start = Sys.Date()-14, end = Sys.Date()+2, max = Sys.Date()+2
+                      start = Sys.Date()-8, end = Sys.Date()+2, max = Sys.Date()+2
                 ),
                 shiny::selectizeInput(inputId = "swft_lcservices_lc_number", label = "Select LC Number",  multiple = FALSE,
                                    choices = c(1,2)
@@ -134,11 +150,15 @@ shiny::shinyUI(
             ), # End Column
             shiny::column(width = 9,
               shiny::fluidRow(
-                shiny::radioButtons("swft_lcservices_radio_overall", "Select IS System",
-                                  choices = list("TIS" = 1, "AIS" = 2),selected = 1, inline = TRUE),
+                shiny::column(width = 6,
+                  shiny::radioButtons("swft_lcservices_radio_overall", "Select IS System",
+                                    choices = list("TIS" = 1, "AIS" = 2),selected = 1, inline = TRUE)
+                )
+              ),
+              shiny::fluidRow(
                 shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_lcnumber == 'cnc'",
                     shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 1",
-                      plotly::plotlyOutput("CnCUptimePlot") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
+                      plotly::plotlyOutput("CnCUptimePlot", height = "250px") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
                     ),
                     shiny::conditionalPanel(condition =  "input.swft_lcservices_radio_overall == 2",
                       plotly::plotlyOutput("CnCUptimePlotAquatics") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
@@ -186,26 +206,39 @@ shiny::shinyUI(
 
         shinydashboard::tabItem(tabName = "swft_timestamp_tab",
           shinydashboard::box(width = 12,
-            shiny::column(width = 4,
+            shiny::fluidRow(
+              shiny::h1("Timestamp Checker")
+            ),
+            shiny::fluidRow(
+              shiny::column(width = 4,
               shiny::fluidRow(
-                shiny::h1("Timestamp Checker"),
-                shiny::br(),
-                shiny::p("This tool checks the timestamp difference between 'Actual Time' and the LC's Timestamp for a sensor."),
-                shiny::p("Difference between actual UTC and the sensor's timestamp must be greater than 10 seconds to appear in this reports.")
+                shiny::p("This tool checks for any differences between the LC time and the smart sensor timestamps (G2131, L2130, Li7200). If there are large differences data could be flagged as the time periods will not line up with real time."),
+                                shiny::dateRangeInput(inputId = "swft_timestamp_date_range", label = "Select Date Range", start = Sys.Date()-4, end = Sys.Date(), max = Sys.Date()+1, min = "2021-08-01")
               )
-            ), # End Column 7
-            shiny::column(width = 4),
-            shiny::column(width = 4,
-              shiny::fluidRow(
-                shinydashboard::valueBoxOutput("swft_timestamp_last_update_box", width = 12),
-                shiny::br(),
-                shiny::br()
+              ), # End Column 7
+              shiny::column(width = 4,
+                shiny::p("If there is a timestamp difference greater than 10 seconds please sumbit a ticket (associate with the problem ticket PRB0040670) and put in an ITASK for ENG to resolve the issue ."),
+                shiny::h3(shiny::helpText(a("How to fix Picarro Timestamp Issues",href="./Picarro_Timestamp_Drift_Troubleshooting.pdf",target="_blank"))),
+                shiny::uiOutput(outputId = "swft_timestamp_site_select")
+              ),
+              shiny::column(width = 4,
+                shiny::fluidRow(
+                  shinydashboard::valueBoxOutput("swft_timestamp_last_update_box", width = 12)
+                )
               )
+            ),
+            
+            shiny::fluidRow(
+              shiny::column(width = 2,
+                # shiny::dateRangeInput(inputId = "swft_timestamp_date_range", label = "Select Date Range", start = Sys.Date()-4, end = Sys.Date(), max = Sys.Date()+1, min = "2021-08-01")
+              ),
             ),
             shinydashboard::box(width = 12,
               shiny::fluidRow(width = "100%",
                 shiny::fluidRow(
-                  shiny::plotOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
+                  # shiny::plotOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
+                  plotly::plotlyOutput("swft_timestamp_plot") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
+                  shiny::br(),
                   DT::dataTableOutput("swft_timestamp_table") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
                 ) # End fluidRow
               ) # End fluidRow
@@ -339,11 +372,9 @@ shiny::shinyUI(
                     shiny::fluidRow(
                       shiny::br(),
                       shiny::h2("Cval Table"),
-                      shiny::column(width = 2),
-                      shiny::column(width = 8,
+                      shiny::column(width = 12,
                         DT::dataTableOutput("table_co2_ecse", width = "100%") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
-                      ),
-                      shiny::column(width = 2)
+                      )
                     )
                   ) # End column
                 ) # End Cval Fast shiny::column for Conditional Panels
@@ -351,6 +382,22 @@ shiny::shinyUI(
             ) # End Cval Fst Tab Panel for Condtional panels
           ) # End Cval Fst box
         ), # End Cval Fst
+        
+        ###########################################                         Span Gas Table                        ############################################
+        
+        shinydashboard::tabItem(tabName = "swft_historic_span_table_tab",
+          shinydashboard::box(width = 12,
+            shiny::column(width = 12,
+              shiny::tabPanel("", width = 12,
+                shiny::fluidRow(
+                  shiny::h1("Historic Span Gas Assay Values Table"),
+                  shiny::p("This table can be filtered to look back in time at the historic span gas assay values."),
+                  DT::dataTableOutput(outputId = "swft_historic_span_table") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
+                )
+              )
+            )
+          )
+        ),
 
         ############################################                            EC Fast                           ############################################
 
@@ -414,6 +461,7 @@ shiny::shinyUI(
                                                     "ECTE Roll/Pitch/Azimuth Sensor - AMRS"  = "amrs",
                                                     "ECTE Relative Humidity Sensor - HMP155" = "HMP155",
                                                     "ECSE ML Flow Rate - MFM"                = "ecse.mfm",
+                                                    "ECSE ML/Hut MFM Pressures"              = "ecse.mfm.pressures",
                                                     "ECSE Pump Voltages - NEON Pump"         = "ecse.voltage",
                                                     "EC Temperatures - Comet/Others"         = "ec.temps"
                                                     ),
@@ -436,7 +484,11 @@ shiny::shinyUI(
                       ),
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'HMP155'",
                         shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_HMP155', multiple = FALSE, label = 'Sub Data Type', choices = c("Relative Humidity", "Temperature", "Dew Point"))
+                      ),
+                      shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'amrs'",
+                        shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_amrs', multiple = FALSE, label = 'Sub Data Type', choices = c("Level", "Time-Series"))
                       )
+                      
                     )
                   ),
                   shiny::column(width = 2,
@@ -480,9 +532,11 @@ shiny::shinyUI(
                     shiny::plotOutput("swft_ec_fast_plot", height = "600px") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
                   ) # End EC Fast shiny::column for Conditional Panels
                 ), # End EC Fst shiny::fluidRow for Condtional panels
+                shiny::br(),
                 shiny::fluidRow(
                   shiny::column(width = 2),
                   shiny::column(width = 8,
+                    shiny::p("Click the CSV button to download the data"),
                     DT::dataTableOutput("swft_ec_fast_table") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
                     shiny::p("Data is collected from an automated Presto pulled designed by IS Science and CI. Data is updated in the early morning (10:00:00 UTC)."),
                     shiny::p("Daily sensor files are then stored at an S3 bucket, and retrieved by a IS Science designed function. All data are 2-minute point data, meaning that what ever the values was at the 2 minute interval, is the value that is stored.")
@@ -494,7 +548,7 @@ shiny::shinyUI(
           ) # End EC Fst box
         ), # End EC Fst
         
-        ############################################                            TIS Maintenance                           ############################################
+        ############################################                            Maintenance                           ############################################
         
         shinydashboard::tabItem(tabName = "swft_maintenance_tab",
           shinydashboard::box(width = 12,
@@ -511,7 +565,7 @@ shiny::shinyUI(
               
               
             ),
-            shiny::column(width = 2,        
+            shiny::column(width = 3,        
               
               shinydashboard::valueBoxOutput(outputId = "swft_mtnc_first_bout", width = 12),
               shinydashboard::valueBoxOutput(outputId = "swft_mtnc_last_bout", width = 12)
@@ -703,6 +757,75 @@ shiny::shinyUI(
                     DT::dataTableOutput(outputId = "swft_mtnc_comments")
                   )
                 )
+              )
+            )
+          )
+        ),
+        
+        
+        ###########################################                            Observatory M                           ############################################
+        
+        shinydashboard::tabItem(tabName = "swft_obs_maintenance_tab",
+          shinydashboard::box(width = 12,
+            shiny::column(width = 12,
+              shiny::fluidRow(
+                shiny::h2("Monthly Maintenance Records"),
+                shiny::column(3,
+                  shiny::p("Total fulcrum maintenance records collected for each site during the month you select. If there is not a bar for a site, then no records were collected.")
+                ),
+                shiny::column(width = 3,
+                  shiny::uiOutput("swft_obsMaintenance_month_pick") 
+                ),
+                shiny::column(3),
+                shiny::column(width = 3,
+                  shinydashboard::valueBoxOutput(outputId = "swft_obsMaintenance_last_updated", width = 12),              
+                )
+              ),
+              shiny::fluidRow(
+                plotly::plotlyOutput(outputId = "swftObsMaintenance_plot")
+              )
+            ),
+            shiny::column(width = 12,
+              shiny::fluidRow(
+                shiny::column(width = 6,
+                  shiny::h2("Biweekly Bout Rate"),
+                  shiny::p("Frequency of biweekly maintenance bouts performed. The expected number of records is at least 1 per two weeks, so if the rate is at or greater than one, the expected number of records has been achieved")
+                ),
+                shiny::column(width = 3,
+                  shiny::br(),
+                  shiny::selectInput(inputId = "swft_obsMaintenance_rate_range", label = "How far back?", choices = c("Last month" = 30, "Last 2 months" = 60, "Last 6 months" = 365/2, "Last year" = 365))
+                )
+              ),
+              shiny::fluidRow(
+                plotly::plotlyOutput(outputId = "swft_obsMaintenance_rate_plot")
+              )
+            ) 
+          )
+        ),
+        
+        shinydashboard::tabItem(tabName = "swft_wet_dep_tab",
+          shinydashboard::box(width = 12,
+            shiny::fluidRow(
+              shiny::column(width = 3,
+                shiny::dateRangeInput(inputId = "swft_wet_dep_date_select", label = "Date Range", min = "2020-02-26", max = Sys.Date()+1, start = Sys.Date()-(4*7), end = Sys.Date()+1)
+              ),
+              shiny::column(9)
+            ),
+            shiny::fluidRow(
+              shiny::column(width = 3,
+                plotly::plotlyOutput(outputId = "swft_wet_dep_plot_2")
+              ),
+              shiny::column(width = 9,
+                plotly::plotlyOutput(outputId = "swft_wet_dep_plot_1")
+              )
+            ),
+            shiny::br(),
+            shiny::fluidRow(
+              shiny::column(width = 6,
+                plotly::plotlyOutput(outputId = "swft_wet_dep_plot_3")
+              ),
+              shiny::column(width = 6,
+                plotly::plotlyOutput(outputId = "swft_wet_dep_plot_4")
               )
             )
           )

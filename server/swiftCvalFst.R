@@ -42,122 +42,7 @@ shiny::observeEvent(input$menu, {
     
     ###                                     Span Gas Value Boxes and Associated Logics                                    ###
     
-    # Load in Value boxes based upon the Site/Sensor (ECSEvsECTE)
-    swiftCylAssayWideEcse <- shiny::reactive({
-      # TODO Make this dynamically select the cylinder that was likely installed.
-      # Will have to create a new data frame that creates a likely range the cylinders were installed
-      swiftCylAssay %>%
-        dplyr::filter(date == max(date) &
-                      siteID == input$swft_cval_site) %>% 
-        dplyr::select(date, siteID, `ECSE-LOW`, `ECSE-MEDIUM`, `ECSE-HIGH`, `ECSE-Archive`)
-    })
     
-    #### ECSE Span Gas Value Boxes
-    output$swiftEcseLow <- shinydashboard::renderValueBox({
-      shinydashboard::valueBox(
-        value = paste0("Low: ", swiftCylAssayWideEcse()$`ECSE-LOW`[1]),
-        subtitle = paste0("ECSE - ", swiftCylAssayWideEcse()$date[1]),
-        width = 12,
-        color = "orange"
-      )
-    })
-    #### ECSE Span Gas Value Boxes
-    output$swiftEcseLow2 <- shinydashboard::renderValueBox({
-      shinydashboard::valueBox(
-        value = paste0("Low: ", swiftCylAssayWideEcse()$`ECSE-LOW`[1]),
-        subtitle = paste0("ECSE - ", swiftCylAssayWideEcse()$date[1]),
-        width = 12,
-        color = "orange"
-      )
-    })
-    output$swiftEcseInt <- shinydashboard::renderValueBox({
-      shinydashboard::valueBox(
-        value = paste0("Int: ", swiftCylAssayWideEcse()$`ECSE-MEDIUM`[1]),
-        subtitle = paste0("ECSE - ", swiftCylAssayWideEcse()$date[1]),
-        width = 12,
-        color = "red"
-      )
-    })
-    output$swiftEcseInt2 <- shinydashboard::renderValueBox({
-      shinydashboard::valueBox(
-        value = paste0("Int: ", swiftCylAssayWideEcse()$`ECSE-MEDIUM`[1]),
-        subtitle = paste0("ECSE - ", swiftCylAssayWideEcse()$date[1]),
-        width = 12,
-        color = "red"
-      )
-    })
-    output$swiftEcseHigh <- shinydashboard::renderValueBox({
-      shinydashboard::valueBox(
-        value = paste0("High: ", swiftCylAssayWideEcse()$`ECSE-HIGH`[1]),
-        subtitle = paste0("ECSE - ", swiftCylAssayWideEcse()$date[1]),
-        width = 12,
-        color = "blue"
-      )
-    }) 
-    output$swiftEcseHigh2 <- shinydashboard::renderValueBox({
-      shinydashboard::valueBox(
-        value = paste0("High: ", swiftCylAssayWideEcse()$`ECSE-HIGH`[1]),
-        subtitle = paste0("ECSE - ", swiftCylAssayWideEcse()$date[1]),
-        width = 12,
-        color = "blue"
-      )
-    }) 
-    
-    #### ECTE Validation Value boxes
-    
-    swiftCylAssayWideEcte <- shiny::reactive({
-      swiftCylAssay %>%
-        dplyr::filter(date == max(date) &
-                      siteID == input$swft_cval_site)%>% 
-        dplyr::select(date, siteID, `ECTE-LOW`, `ECTE-MEDIUM`, `ECTE-HIGH`, `ECTE-Archive`)
-    })
-    #### Ecte Span Gas Value Boxes
-    output$swiftEcteLow <- shinydashboard::renderValueBox({
-      shinydashboard::valueBox(
-        value = paste0("Low: ", swiftCylAssayWideEcte()$`ECTE-LOW`),
-        subtitle = paste0("ECTE - ", swiftCylAssayWideEcte()$date[1]),
-        width = 12,
-        color = "orange"
-      )
-    })
-    output$swiftEcteInt <- shinydashboard::renderValueBox({
-      shinydashboard::valueBox(
-        value = paste0("Int: ", swiftCylAssayWideEcte()$`ECTE-MEDIUM`),
-        subtitle = paste0("ECTE - ", swiftCylAssayWideEcte()$date[1]),
-        width = 12,
-        color = "red"
-      )
-    })
-    output$swiftEcteHigh <- shinydashboard::renderValueBox({
-      shinydashboard::valueBox(
-        value = paste0("High: ", swiftCylAssayWideEcte()$`ECTE-HIGH`),
-        subtitle = paste0("ECTE - ", swiftCylAssayWideEcte()$date[1]),
-        width = 12,
-        color = "blue"
-      )
-    })
-    
-    output$table_ecse_span <- DT::renderDT(
-      DT::datatable(
-        data = swiftCylAssayWideEcse(),
-        filter = "none",
-        options = list(
-          deferRender = FALSE,
-          scrollY = 300,
-          scrollCollapse = TRUE,
-          scrollX = FALSE,
-          paging = FALSE),rownames = FALSE) 
-    )
-    output$table_ecte_span <- DT::renderDT(
-      DT::datatable(
-        data = swiftCylAssayWideEcte(),
-        filter = "none",
-        options = list(
-          deferRender = FALSE,
-          scrollY = 300,
-          scrollCollapse = TRUE,
-          paging = FALSE),rownames = FALSE) 
-    )
     
     ###                                     Total CVAL Counts and Associated Logics                                    ###
     
@@ -262,6 +147,130 @@ shiny::observeEvent(input$menu, {
         }
       })
       
+      
+      # Load in Value boxes based upon the Site/Sensor (ECSEvsECTE)
+    swiftCylAssayWideEcse <- shiny::reactive({
+      shiny::req(input$swft_cval_site, input$swft_cval_react_unique_cvals)
+      
+      # Get the closet date for which we have cval span gas values
+      swift_cyl_assay = swiftCylAssay %>%
+        dplyr::filter(siteID == input$swft_cval_site) %>% 
+        dplyr::mutate(closeness = difftime(base::as.Date(input$swft_cval_react_unique_cvals, orgin = "1970-01-01"), date, units = "days")) %>% 
+        dplyr::filter(closeness > 0) %>% 
+        dplyr::filter(closeness == min(closeness, na.rm = TRUE)) %>% 
+        dplyr::select(date, siteID, `ECSE-LOW`, `ECSE-MEDIUM`, `ECSE-HIGH`, `ECSE-Archive`)
+      
+    })
+    
+    #### ECSE Span Gas Value Boxes
+    output$swiftEcseLow <- shinydashboard::renderValueBox({
+      shinydashboard::valueBox(
+        value = paste0("Low: ", swiftCylAssayWideEcse()$`ECSE-LOW`[1]),
+        subtitle = paste0("ECSE - ", swiftCylAssayWideEcse()$date[1]),
+        width = 12,
+        color = "orange"
+      )
+    })
+    #### ECSE Span Gas Value Boxes
+    output$swiftEcseLow2 <- shinydashboard::renderValueBox({
+      shinydashboard::valueBox(
+        value = paste0("Low: ", swiftCylAssayWideEcse()$`ECSE-LOW`[1]),
+        subtitle = paste0("ECSE - ", swiftCylAssayWideEcse()$date[1]),
+        width = 12,
+        color = "orange"
+      )
+    })
+    output$swiftEcseInt <- shinydashboard::renderValueBox({
+      shinydashboard::valueBox(
+        value = paste0("Int: ", swiftCylAssayWideEcse()$`ECSE-MEDIUM`[1]),
+        subtitle = paste0("ECSE - ", swiftCylAssayWideEcse()$date[1]),
+        width = 12,
+        color = "red"
+      )
+    })
+    output$swiftEcseInt2 <- shinydashboard::renderValueBox({
+      shinydashboard::valueBox(
+        value = paste0("Int: ", swiftCylAssayWideEcse()$`ECSE-MEDIUM`[1]),
+        subtitle = paste0("ECSE - ", swiftCylAssayWideEcse()$date[1]),
+        width = 12,
+        color = "red"
+      )
+    })
+    output$swiftEcseHigh <- shinydashboard::renderValueBox({
+      shinydashboard::valueBox(
+        value = paste0("High: ", swiftCylAssayWideEcse()$`ECSE-HIGH`[1]),
+        subtitle = paste0("ECSE - ", swiftCylAssayWideEcse()$date[1]),
+        width = 12,
+        color = "blue"
+      )
+    }) 
+    output$swiftEcseHigh2 <- shinydashboard::renderValueBox({
+      shinydashboard::valueBox(
+        value = paste0("High: ", swiftCylAssayWideEcse()$`ECSE-HIGH`[1]),
+        subtitle = paste0("ECSE - ", swiftCylAssayWideEcse()$date[1]),
+        width = 12,
+        color = "blue"
+      )
+    }) 
+    
+    #### ECTE Validation Value boxes
+    
+    swiftCylAssayWideEcte <- shiny::reactive({
+      swiftCylAssay %>%
+        dplyr::filter(siteID == input$swft_cval_site) %>% 
+        dplyr::mutate(closeness = difftime(base::as.Date(input$swft_cval_react_unique_cvals, orgin = "1970-01-01"), date, units = "days")) %>% 
+        dplyr::filter(closeness > 0) %>% 
+        dplyr::filter(closeness == min(closeness, na.rm = TRUE)) %>% 
+        dplyr::select(date, siteID, `ECTE-LOW`, `ECTE-MEDIUM`, `ECTE-HIGH`, `ECTE-Archive`)
+    })
+    #### Ecte Span Gas Value Boxes
+    output$swiftEcteLow <- shinydashboard::renderValueBox({
+      shinydashboard::valueBox(
+        value = paste0("Low: ", swiftCylAssayWideEcte()$`ECTE-LOW`),
+        subtitle = paste0("ECTE - ", swiftCylAssayWideEcte()$date[1]),
+        width = 12,
+        color = "orange"
+      )
+    })
+    output$swiftEcteInt <- shinydashboard::renderValueBox({
+      shinydashboard::valueBox(
+        value = paste0("Int: ", swiftCylAssayWideEcte()$`ECTE-MEDIUM`),
+        subtitle = paste0("ECTE - ", swiftCylAssayWideEcte()$date[1]),
+        width = 12,
+        color = "red"
+      )
+    })
+    output$swiftEcteHigh <- shinydashboard::renderValueBox({
+      shinydashboard::valueBox(
+        value = paste0("High: ", swiftCylAssayWideEcte()$`ECTE-HIGH`),
+        subtitle = paste0("ECTE - ", swiftCylAssayWideEcte()$date[1]),
+        width = 12,
+        color = "blue"
+      )
+    })
+    
+    output$table_ecse_span <- DT::renderDT(
+      DT::datatable(
+        data = swiftCylAssayWideEcse(),
+        filter = "none",
+        options = list(
+          deferRender = FALSE,
+          scrollY = 300,
+          scrollCollapse = TRUE,
+          scrollX = FALSE,
+          paging = FALSE),rownames = FALSE) 
+    )
+    output$table_ecte_span <- DT::renderDT(
+      DT::datatable(
+        data = swiftCylAssayWideEcte(),
+        filter = "none",
+        options = list(
+          deferRender = FALSE,
+          scrollY = 300,
+          scrollCollapse = TRUE,
+          paging = FALSE),rownames = FALSE) 
+    )
+      
       #### ECSE Span Gas Value Boxes
       output$swft_cval_site_sensor_records <- shinydashboard::renderValueBox({
         shinydashboard::valueBox(
@@ -272,7 +281,6 @@ shiny::observeEvent(input$menu, {
         )
       })
       
-      
       cvalReadTime <- Sys.time()
       
       ###                                     Data Input From User and Associated Logics                                    ###
@@ -281,13 +289,15 @@ shiny::observeEvent(input$menu, {
         req(input$swft_cval_react_unique_cvals, input$swft_cval_sensor, input$swft_cval_site)
 
         file.pull = dateData() %>%
-          dplyr::filter(StartDateTime == input$swft_cval_react_unique_cvals)
+          dplyr::filter(StartDateTime == input$swft_cval_react_unique_cvals) %>% 
+          dplyr::distinct()
         
         message(paste0(file.pull$Key[1]))
         
         if(input$swft_cval_sensor == "G2131i"){
           if(is.na(file.pull$Key[1]) == FALSE){
             cval <- aws.s3::s3read_using(FUN = fst::read.fst, bucket = "research-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
+              dplyr::mutate(strm_name = ifelse(test = strm_name == "G2131_13Co2_wet", yes = "G2131_fwMoleCo2", no = strm_name)) %>% 
               dplyr::filter(strm_name == "G2131_fwMoleCo2") %>%
               dplyr::mutate(readout_val_double = round(readout_val_double, 3)) %>%
               dplyr::select(meas_strm_name, strm_name, readout_time, readout_val_double)
