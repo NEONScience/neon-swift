@@ -529,7 +529,8 @@
                 mean = round(mean(readout_val_double),3)
               ) %>% 
               dplyr::mutate(timestamp = lubridate::ymd_hms(timestamp)) %>% 
-              dplyr::select(SiteID, `Stream Name`, timestamp, mean)
+              dplyr::select(SiteID, `Stream Name`, timestamp, mean) %>% 
+              dplyr::arrange(timestamp)
                   
           }
           
