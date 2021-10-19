@@ -23,6 +23,11 @@ This app is deployable by Docker. This is the path we are headed down as this no
 * For dev:  `docker run -it -d -p 4782:3838 --name swift_dev neon-swift:dev`  
 * For prod: `docker run -it -d -p 4781:3838 --name swift neon-swift:prod`  
 
+5. Well these commands will stop and remove the old container
+* `sudo docker container stop swift`  
+* `sudo docker container rm swift`  
+* `sudo docker run -it -d -p 4781:3838 --name swift neon-swift:prod`  
+
 Note: We gather usage data.. I wonder if I just stored that in the app or if I needed to volume mount?
 
 5. You can now test the data, launch the app on the browser and the open up a bash into the container  
