@@ -537,7 +537,7 @@ shiny::shinyUI(
                   shiny::column(width = 2),
                   shiny::column(width = 8,
                     shiny::p("Click the CSV button to download the data"),
-                    DT::dataTableOutput("swft_ec_fast_table") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
+                    DT::dataTableOutput("swft_ec_fast_table"), # %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
                     shiny::p("Data is collected from an automated Presto pulled designed by IS Science and CI. Data is updated in the early morning (10:00:00 UTC)."),
                     shiny::p("Daily sensor files are then stored at an S3 bucket, and retrieved by a IS Science designed function. All data are 2-minute point data, meaning that what ever the values was at the 2 minute interval, is the value that is stored.")
                   ), 
