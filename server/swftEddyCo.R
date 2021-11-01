@@ -1223,8 +1223,13 @@
       })
       
       # Return the holy plot and data files!!
-      csv_file_download_name = c(input$swft_EddyCo_site[1], input$swft_EddyCo_data_type[1], input$swft_EddyCo_date_range[1], input$swft_EddyCo_date_range[2])
-      
+      csv_file_download_name = c(
+        input$swft_EddyCo_site[1],
+        input$swft_EddyCo_data_type[1],  
+        input$swft_EddyCo_date_range[1], 
+        input$swft_EddyCo_date_range[2]
+      )
+              
       swft.ec.list = list(swft_plot = swft.plot, swft_data = swft.data.out, swft_name = csv_file_download_name)
       swft.ec.list
       
@@ -1284,9 +1289,10 @@
                 swft_ec_fast_plot()$swft_name[1], "_", 
                 swft_ec_fast_plot()$swft_name[2], 
                 "_", 
-                base::as.Date(swft_ec_fast_plot()$swft_name[3], origin = "1970-01-01"), 
-                " to ", 
-                base::as.Date(swft_ec_fast_plot()$swft_name[4], origin = "1970-01-01")
+                as.Date(as.numeric(swft_ec_fast_plot()$swft_name[3]), origin = "1970-01-01")
+                , 
+                "_to_", 
+                as.Date(as.numeric(swft_ec_fast_plot()$swft_name[4]), origin = "1970-01-01")
                 )
                 )
                 ),
