@@ -87,13 +87,13 @@ shiny::shinyUI(
         shinydashboard::tabItem(tabName = "swft_home_tab",
           
           # TODO: make this only appear if the update log was recently updated. Until then... uncomment :D                                
-          shiny::modalDialog(title = paste0("Swift was updated!\nUpdated the Timestamp Checker!!"),size = "l", shiny::helpText(a("2021-10-18", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
+          # shiny::modalDialog(title = paste0("Swift was updated!\nUpdated the Timestamp Checker!!"),size = "l", shiny::helpText(a("2021-10-18", href="./Swift_Update_Log.pdf", target="_blank")), easyClose = TRUE),
 
           shinydashboard::box(width = 12,
               shiny::column(width = 7,
               shiny::h1("An Eddy-Covariance State of Health Dashboard"),
               shiny::tags$h2(
-                shiny::helpText(a("Swift Update Log",href="./Swift_Update_Log.pdf",target="_blank"))
+                shiny::helpText(a("Swift Update Log - Last updated: 2021-11-01",href="./Swift_Update_Log.pdf",target="_blank"))
               ),
               shiny::h4("Users can use this application to plot data from all TIS sites to identify Eddy-Co issues, view trends, and verify calibrations/validations."),
               shiny::icon("signal", lib = "font-awesome"),
@@ -537,7 +537,7 @@ shiny::shinyUI(
                   shiny::column(width = 2),
                   shiny::column(width = 8,
                     shiny::p("Click the CSV button to download the data"),
-                    DT::dataTableOutput("swft_ec_fast_table") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
+                    DT::dataTableOutput("swft_ec_fast_table"), # %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
                     shiny::p("Data is collected from an automated Presto pulled designed by IS Science and CI. Data is updated in the early morning (10:00:00 UTC)."),
                     shiny::p("Daily sensor files are then stored at an S3 bucket, and retrieved by a IS Science designed function. All data are 2-minute point data, meaning that what ever the values was at the 2 minute interval, is the value that is stored.")
                   ), 

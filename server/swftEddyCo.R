@@ -82,7 +82,7 @@
 
     # Plot Data
     swft_ec_fast_plot = shiny::eventReactive(input$swft_ec_fast_actionButton,{
-      shiny::req(input$swft_EddyCo_data_type, input$swft_EddyCo_site, input$swft_EddyCo_date_range)
+      # shiny::req(input$swft_EddyCo_data_type, input$swft_EddyCo_site, input$swft_EddyCo_date_range)
       
       #################################################                            Collecting Data Logic                            #################################################
       swft_ec_fast_collect_data_time_start = Sys.time()
@@ -674,7 +674,7 @@
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               scale_color_discrete() +
-              labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_G2131), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
               theme(strip.text.x = element_text(size = 14), text = element_text(color = "white", face = "bold", size = 20)) + guides(colour = guide_legend(override.aes = list(size=5, alpha = 1)))
             
@@ -690,7 +690,7 @@
               geom_point() +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
-              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_G2131), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
               theme(strip.text.x = element_text(size = 12), text = element_text(color = "white", face = "bold", size = 20)) + guides(colour = guide_legend(override.aes = list(size=5, alpha = 1)))
             
@@ -706,7 +706,7 @@
               geom_point() +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
-              labs(x = "", y = "Concentration", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "Concentration", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_G2131), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
               theme(strip.text.x = element_text(size = 12), text = element_text(color = "white", face = "bold", size = 20)) + guides(colour = guide_legend(override.aes = list(size=5, alpha = 1)))
             
@@ -720,7 +720,7 @@
               geom_text(data = swft.data.out, aes(x = `Valve Status`, y = Percentage, label = paste0(Percentage, "%"), vjust = -1), color = "white", size = 6) +
               scale_y_continuous(breaks = seq(from = 0, to = 100, by = 10), limits = c(0,115)) +
               scale_fill_manual(values = c("blue", "#ff69b4")) +
-              labs(x = "", y = "Counts", fill = "Valve\nStatus", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type),
+              labs(x = "", y = "Counts", fill = "Valve\nStatus", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_G2131),
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
               theme(text = element_text(color = "white", face = "bold", size = 20)) +
               facet_wrap(~`Stream Name`)
@@ -739,7 +739,7 @@
               geom_point() +
               scale_y_continuous(limits = c(swft.li840.co2.med - 100, swft.li840.co2.med + 100), breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
-              labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_Li840), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
               theme(strip.text.x = element_text(size = 12), text = element_text(color = "white", face = "bold", size = 20)) + guides(colour = guide_legend(override.aes = list(size=5, alpha = 1)))
             
@@ -754,7 +754,7 @@
               geom_point() +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
-              labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_Li840), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
               theme(strip.text.x = element_text(size = 12), text = element_text(color = "white", face = "bold", size = 20)) + guides(colour = guide_legend(override.aes = list(size=5, alpha = 1)))
             
@@ -767,7 +767,7 @@
               geom_text(data = swft.data.out, aes(x = `Valve Status`, y = Percentage, label = paste0(Percentage, "%"), vjust = -1), color = "white", size = 6) +
               scale_y_continuous(breaks = seq(from = 0, to = 100, by = 10), limits = c(0,115)) +
               scale_fill_manual(values = c("blue", "#ff69b4")) +
-              labs(x = "", y = "Counts", fill = "Valve\nStatus", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type),
+              labs(x = "", y = "Counts", fill = "Valve\nStatus", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_Li840),
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
               theme(text = element_text(color = "white", face = "bold", size = 20)) +
               facet_wrap(~`Stream Name`)
@@ -801,7 +801,7 @@
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "per mil", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "per mil", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_L2130), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+ guides(colour = guide_legend(override.aes = list(size=5, alpha = 1)))
           }
           if(input$swft_EddyCo_sub_data_type_L2130 == "H2O"){
@@ -812,7 +812,7 @@
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "Micromoles Per Mole", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "Micromoles Per Mole", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_L2130), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+ guides(colour = guide_legend(override.aes = list(size=5, alpha = 1)))
           }
           if(input$swft_EddyCo_sub_data_type_L2130 == "Sample Valves"){
@@ -823,7 +823,7 @@
               geom_text(data = swft.data.out, aes(x = `Valve Status`, y = Percentage, label = paste0(Percentage, "%"), vjust = -1), color = "white", size = 6) +
               scale_y_continuous(breaks = seq(from = 0, to = 100, by = 10), limits = c(0,115)) +
               scale_fill_manual(values = c("blue", "#ff69b4")) +
-              labs(x = "", y = "Counts", fill = "Valve\nStatus", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type),
+              labs(x = "", y = "Counts", fill = "Valve\nStatus", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_L2130),
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
               theme(text = element_text(color = "white", face = "bold", size = 20)) +
               facet_wrap(~`Stream Name`)
@@ -839,7 +839,7 @@
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_Li7200), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+
               facet_wrap(~`Stream Name`)
           }
@@ -851,7 +851,7 @@
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_Li7200), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+
               facet_wrap(~`Stream Name`)
           }
@@ -868,7 +868,7 @@
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_Li7200), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+
               facet_wrap(~`Stream Name`)
           }
@@ -885,7 +885,7 @@
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_Li7200), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+
               facet_wrap(~`Stream Name`)+ guides(colour = guide_legend(override.aes = list(size=4, alpha = 1)))
           }
@@ -908,7 +908,7 @@
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_Li7200), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+
               facet_wrap(~`Stream Name`)
           }
@@ -926,7 +926,7 @@
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_Li7200), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))
           }
           if(input$swft_EddyCo_sub_data_type_Li7200 == "Diagnostic"){
@@ -941,7 +941,7 @@
                    x = "", y = "Diagnostic",
                    color = "Diagnostic Code") +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_Li7200), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))
           } 
         }
@@ -1099,7 +1099,7 @@
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "%", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "%", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_HMP155), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))
           }
           if(input$swft_EddyCo_sub_data_type_HMP155 == "Temperature"){
@@ -1110,7 +1110,7 @@
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "Temperature (C)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "Temperature (C)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_HMP155), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))
           }
           if(input$swft_EddyCo_sub_data_type_HMP155 == "Dew Point"){
@@ -1121,7 +1121,7 @@
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
               theme(strip.text.x = element_text(size = 12), axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) +
-              labs(x = "", y = "Temperature (C)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type), 
+              labs(x = "", y = "Temperature (C)", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_HMP155), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))
           }
         }
@@ -1223,7 +1223,14 @@
       })
       
       # Return the holy plot and data files!!
-      swft.ec.list = list(swft_plot = swft.plot, swft_data = swft.data.out)
+      csv_file_download_name = c(
+        input$swft_EddyCo_site[1],
+        input$swft_EddyCo_data_type[1],  
+        input$swft_EddyCo_date_range[1], 
+        input$swft_EddyCo_date_range[2]
+      )
+              
+      swft.ec.list = list(swft_plot = swft.plot, swft_data = swft.data.out, swft_name = csv_file_download_name)
       swft.ec.list
       
     })
@@ -1264,36 +1271,39 @@
     })
     
     # Output Table
-    output$swft_ec_fast_table = DT::renderDataTable (server=FALSE,{
-      DT::datatable(
-        data = swft_ec_fast_plot()$swft_data,
-          filter = "top",
-          extensions = 'Buttons',
-          options = list(
-            pageLength = 25,
-            deferRender = TRUE,
-            scrollY = 600,
-            scrollCollapse = TRUE,
-            scrollX = FALSE,
-            paging = TRUE,
-            dom = 'Bfrtip',
-            buttons = list(list(extend = 'csv', filename = paste0(
-              input$swft_EddyCo_site[1], "_", 
-              input$swft_EddyCo_data_type[1], 
-              "_", 
-              input$swft_EddyCo_date_range[1], 
-              " to ", 
-              input$swft_EddyCo_date_range[2]
-              )
-              )
-              ),
-            pageLength=5, 
-            lengthMenu=c(3,5,10)
-          ),
-        rownames = FALSE
-        
-        )
-    })
+
+      output$swft_ec_fast_table = DT::renderDataTable(server=FALSE,{
+        DT::datatable(
+          data = swft_ec_fast_plot()$swft_data,
+            filter = "top",
+            extensions = 'Buttons',
+            options = list(
+              pageLength = 25,
+              deferRender = TRUE,
+              scrollY = 600,
+              scrollCollapse = TRUE,
+              scrollX = FALSE,
+              paging = TRUE,
+              dom = 'Bfrtip',
+              buttons = list(list(extend = 'csv', filename = paste0(
+                swft_ec_fast_plot()$swft_name[1], "_", 
+                swft_ec_fast_plot()$swft_name[2], 
+                "_", 
+                as.Date(as.numeric(swft_ec_fast_plot()$swft_name[3]), origin = "1970-01-01")
+                , 
+                "_to_", 
+                as.Date(as.numeric(swft_ec_fast_plot()$swft_name[4]), origin = "1970-01-01")
+                )
+                )
+                ),
+              pageLength=5, 
+              lengthMenu=c(3,5,10)
+            ),
+          rownames = FALSE
+          
+          )
+      })
+
     
 #   }
 # })

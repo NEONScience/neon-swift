@@ -9,18 +9,28 @@ The data within this app are sourced from multiple locations: L0 (Presto databas
 ## Docker
 This app is deployable by Docker. This is the path we are headed down as this not only makes our apps scalable through `shinyproxy`, but also encourages best practices and removes the reliance of a server administrator installing all the libraries and dependencies on the server. Instead you control your own destiny.   
   
-To build the image, first clone the repo (where doesn't really matter, but somewhere familiar):  
+1. To build the image, first clone the repo (where doesn't really matter, but somewhere familiar):  
 `git clone git@github.com:NEONScience/neon-swift.git`  
-Change directory to the repo
+  
+2. Change directory to the repo
 `cd neon-swift`  
-Build the image  
-For dev:  `docker build -t neon-swift:dev`  
-For prod: `docker build -t neon-swift:prod`  
-Once the image has finished building run the container (still need to define acceptable port ranges):  
-For dev:  `docker run -it -d -p 4781:3838 --name swift neon-swift:dev`  
-For prod: `docker run -it -d -p 4781:3838 --name swift neon-swift:prod`  
+  
+3. Build the image  
+* For dev:  `docker build -t neon-swift:dev .`  
+* For prod: `docker build -t neon-swift:prod .`  
 
-You can now test the data, launch the app on the browser and the open up a bash into the container  
+4. Once the image has finished building run the container (still need to define acceptable port ranges):  
+* For dev:  `docker run -it -d -p 4782:3838 --name swift_dev neon-swift:dev`  
+* For prod: `docker run -it -d -p 4781:3838 --name swift neon-swift:prod`  
+
+5. Well these commands will stop and remove the old container
+* `sudo docker container stop swift`  
+* `sudo docker container rm swift`  
+* `sudo docker run -it -d -p 4781:3838 --name swift neon-swift:prod`  
+
+Note: We gather usage data.. I wonder if I just stored that in the app or if I needed to volume mount?
+
+5. You can now test the data, launch the app on the browser and the open up a bash into the container  
 `docker exec -it swift bash`
   
 ## Style  
