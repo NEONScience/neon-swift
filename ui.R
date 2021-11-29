@@ -213,7 +213,7 @@ shiny::shinyUI(
               shiny::column(width = 4,
               shiny::fluidRow(
                 shiny::p("This tool checks for any differences between the LC time and the smart sensor timestamps (G2131, L2130, Li7200). If there are large differences data could be flagged as the time periods will not line up with real time."),
-                                shiny::dateRangeInput(inputId = "swft_timestamp_date_range", label = "Select Date Range", start = Sys.Date()-4, end = Sys.Date(), max = Sys.Date()+1, min = "2021-08-01")
+                                shiny::dateRangeInput(inputId = "swft_timestamp_date_range", label = "Select Date Range", start = Sys.Date()-4, end = Sys.Date(), min = "2021-08-01")
               )
               ), # End Column 7
               shiny::column(width = 4,
