@@ -20,10 +20,16 @@ This app is deployable by Docker. This is the path we are headed down as this no
 * For prod: `docker build -t neon-swift:prod .`  
 
 4. Once the image has finished building run the container (still need to define acceptable port ranges):  
-* For dev:  `docker run -it -d -p 4782:3838 --name swift_dev neon-swift:dev`  
+* For dev:  `docker run -it -d -p 4781:3838 --name swift_dev neon-swift:dev`  
 * For prod: `docker run -it -d -p 4781:3838 --name swift neon-swift:prod`  
 
 5. Well these commands will stop and remove the old container
+### DEV  
+* `sudo docker container stop swift_dev`  
+* `sudo docker container rm swift_dev`  
+* `sudo docker run -it -d -p 4781:3838 --name swift_dev neon-swift:dev`  
+
+### PROD  
 * `sudo docker container stop swift`  
 * `sudo docker container rm swift`  
 * `sudo docker run -it -d -p 4781:3838 --name swift neon-swift:prod`  
