@@ -138,7 +138,7 @@ shiny::shinyUI(
                   width='100%'
                 ),
                 shiny::dateRangeInput(inputId = "swft_lcservices_date_range", label = "Select Date Range for Plot [dev]",
-                      start = Sys.Date()-8, end = Sys.Date()+2, max = Sys.Date()+2
+                      start = Sys.Date()-8, end = Sys.Date()+2
                 ),
                 shiny::selectizeInput(inputId = "swft_lcservices_lc_number", label = "Select LC Number",  multiple = FALSE,
                                    choices = c(1,2)
@@ -259,7 +259,7 @@ shiny::shinyUI(
               ),
               shiny::column(width = 3,
                   shiny::dateRangeInput(inputId = "swft_spangas_date_range", label = "Select Date Range for Plot",
-                                        start = Sys.Date() - 28, end = Sys.Date() + 1, max = Sys.Date() + 1)
+                                        start = Sys.Date() - 28, end = Sys.Date() + 1)
               )
             ),
             # ), # End Column 7
@@ -434,7 +434,6 @@ shiny::shinyUI(
                     shiny::fluidRow(
                       shiny::dateRangeInput(inputId = "swft_EddyCo_date_range", label = "Select a Date Range",
                                             min = "2017-01-01",
-                                            max = Sys.Date(),
                                             start = Sys.Date()-7,
                                             end = Sys.Date())
                     )
@@ -554,7 +553,7 @@ shiny::shinyUI(
           shinydashboard::box(width = 12,
             shiny::column(width = 2,
               shiny::selectInput(inputId = "swft_mntc_site_select", label = "SiteID", choices = swft.tis.site.lookup$SiteID, selected = sample(swft.tis.site.lookup$SiteID, 1)), 
-              shiny::dateInput(inputId = "swft_mntc_date_select", label = "Filter to Dates after ", min = "2020-05-01", max = Sys.Date() + 1, value = Sys.Date() - 40), 
+              shiny::dateInput(inputId = "swft_mntc_date_select", label = "Filter to Dates after ", min = "2020-05-01", value = Sys.Date() - 40), 
               shiny::selectInput(inputId = "swft_mntc_data_select", label = "Maintenance Group", choices = c("Tower", "Soil", "Eddy", "DFIR", "Comments"), selected = "Tower")
             ),
             shiny::column(width = 4,
@@ -807,7 +806,7 @@ shiny::shinyUI(
           shinydashboard::box(width = 12,
             shiny::fluidRow(
               shiny::column(width = 3,
-                shiny::dateRangeInput(inputId = "swft_wet_dep_date_select", label = "Date Range", min = "2020-02-26", max = Sys.Date()+1, start = Sys.Date()-(4*7), end = Sys.Date()+1)
+                shiny::dateRangeInput(inputId = "swft_wet_dep_date_select", label = "Date Range", min = "2020-02-26", start = Sys.Date()-(4*7), end = Sys.Date()+1)
               ),
               shiny::column(9)
             ),
@@ -840,7 +839,7 @@ shiny::shinyUI(
                 shiny::selectInput(   inputId = "swft_qfqm_site_select", label = "SiteID", choices = swft.tis.site.lookup$SiteID, selected = sample(swft.tis.site.lookup$SiteID, 1))
               ),
               shiny::column(width = 2,
-                shiny::dateRangeInput(inputId = "swft_qfqm_date_select", label = "Date Range", min = "2020-08-08", max = Sys.Date() + 1, start = Sys.Date()-21, end = Sys.Date()-4)
+                shiny::dateRangeInput(inputId = "swft_qfqm_date_select", label = "Date Range", min = "2020-08-08", start = Sys.Date()-21, end = Sys.Date()-4)
               ),
               shiny::column(width = 2,
                 shiny::selectInput(inputId = "swft_qfqm_eddy4R_terms", label = "Terms", 
