@@ -3,17 +3,10 @@ swft.server.folder.path="./"
 
 Sys.setenv(
   "AWS_ACCESS_KEY_ID"     = "research-eddy-inquiry",
-  "AWS_SECRET_ACCESS_KEY" = base::readRDS("/srv/shiny-server/swift/secret.key.RDS"),
+  "AWS_SECRET_ACCESS_KEY" = base::readRDS(paste0(swft.server.folder.path, "secret.key.RDS")),
   "AWS_S3_ENDPOINT"       = "neonscience.org",
   "AWS_DEFAULT_REGION"    = "s3.data"
 )
-
-# if(file.exists("./data/user_log/user_log.RDS") == FALSE){
-#   empty_data = data.table::data.table()
-#   
-#   base::saveRDS(empty_data, file = "./data/user_log/user_log.RDS")
-#   
-# }
 
 # Defined server logic that loads each seperate tab from it's own server file. 
 server <- function(input, output, session) {
@@ -27,7 +20,7 @@ server <- function(input, output, session) {
     # Create new data.table
     users_data_in = data.table::data.table("Start" = server_start_time, "End" = server_end_time, "Total Time" = difftime(server_end_time, server_start_time, units = "secs"))
     # Read in master file
-    all_users_date = aws.s3::s3readRDS(object = "neon-swift/user_log.RDS", bucket = "research-eddy-inquiry")
+    all_users_data = aws.s3::s3readRDS(object = "neon-swift/user_log.RDS", bucket = "research-eddy-inquiry")
     # Combine the new data to the master
     users_data_out = data.table::rbindlist(l = list(all_users_data, users_data_in))
     # Save out the new file
