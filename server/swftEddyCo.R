@@ -1034,58 +1034,23 @@
             plot.min <- min(swft.data.out$timestamp, na.rm = TRUE)
             plot.max <- max(swft.data.out$timestamp, na.rm = TRUE)
             
-            swft_amrs_x_data = swft.data.out %>% dplyr::filter(`Stream Name` == "AMRS_x")
-            swft_amrs_y_data = swft.data.out %>% dplyr::filter(`Stream Name` == "AMRS_y")
-            swft_amrs_z_data = swft.data.out %>% dplyr::filter(`Stream Name` == "AMRS_z")
             
-            if(nrow(swft_amrs_x_data) > 0){
-              swft_amrs_x_plot = ggplot(swft_amrs_x_data, aes(x = timestamp, y= mean))+
-                annotate("rect", xmin = plot.min, xmax = plot.max, ymin = xInt - 1,     ymax = xInt + 1,   alpha = 0.5, fill = "#00cc00")+
-                annotate("rect", xmin = plot.min, xmax = plot.max, ymin = xInt + 1,     ymax = xInt + 5,   alpha = 0.5, fill = "yellow")+
-                annotate("rect", xmin = plot.min, xmax = plot.max, ymin = xInt - 1,     ymax = xInt - 5,   alpha = 0.5, fill = "yellow")+
-                geom_point(color = "cyan") +
-                labs(x = "", y = "")+
-                scale_x_datetime(breaks = scales::pretty_breaks(n = 5), date_labels = "%Y\n%m-%d") +
-                facet_wrap(~`Stream Name`, scales = "free_y", ncol = 1) +
-                theme(text = element_text(color = "white", face = "bold", size = 20), legend.position = "none")
-            } else {
-              swft_amrs_x_plot = ggplot()+
-                geom_text(label = "text")+
-                annotate("text", label = paste0("No data found\n X axis"), x = 0, y = 0, color = "white", size = 12)
-            }
-            if(nrow(swft_amrs_y_data) > 0){
-              swft_amrs_y_plot = ggplot(swft_amrs_y_data, aes(x = timestamp, y= mean))+
-                annotate("rect", xmin = plot.min, xmax = plot.max, ymin = yInt - 1,     ymax = yInt + 1,   alpha = 0.5, fill = "#00cc00")+
-                annotate("rect", xmin = plot.min, xmax = plot.max, ymin = yInt + 1,     ymax = yInt + 5,   alpha = 0.5, fill = "yellow")+
-                annotate("rect", xmin = plot.min, xmax = plot.max, ymin = yInt - 1,     ymax = yInt - 5,   alpha = 0.5, fill = "yellow")+
-                geom_point(color = "cyan") +
-                labs(x = "", y = "")+
-                scale_x_datetime(breaks = scales::pretty_breaks(n = 5), date_labels = "%Y\n%m-%d") +
-                facet_wrap(~`Stream Name`, scales = "free_y", ncol = 1) +
-                theme(text = element_text(color = "white", face = "bold", size = 20), legend.position = "none")
-            } else {
-              swft_amrs_y_plot = ggplot()+
-                geom_text(label = "text")+
-                annotate("text", label = paste0("No data found\n Y axis"), x = 0, y = 0, color = "white", size = 12)
-            }
-            if(nrow(swft_amrs_z_data) > 0){
-              swft_amrs_z_plot = ggplot(swft_amrs_z_data, aes(x = timestamp, y= mean))+
-                # annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 0 - 1,     ymax = 0 + 1,   alpha = 0.5, fill = "#00cc00")+
-                # annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 0 + 1,     ymax = 0 + 5,   alpha = 0.5, fill = "yellow")+
-                # annotate("rect", xmin = plot.min, xmax = plot.max, ymin = 0 - 1,     ymax = 0 - 5,   alpha = 0.5, fill = "yellow")+
-                geom_point(color = "cyan") +
-                labs(x = "", y = "")+
-                scale_x_datetime(breaks = scales::pretty_breaks(n = 5), date_labels = "%Y\n%m-%d") +
-                facet_wrap(~`Stream Name`, scales = "free_y", ncol = 1) +
-                theme(text = element_text(color = "white", face = "bold", size = 20), legend.position = "none")
-            } else {
-              swft_amrs_z_plot = ggplot()+
-                geom_text(label = "text")+
-                annotate("text", label = paste0("No data found\n Z axis"), x = 0, y = 0, color = "white", size = 12)
-            }
+            swft_amrs_x_y_z = data.table::data.table(
+              "Stream Name" = c("AMRS_x", "AMRS_y", "AMRS_z"),
+              "refe"        = c(xInt, yInt, NA)
+            ) %>%
+              dplyr::group_by(`Stream Name`)
             
-            swft.plot = gridExtra::grid.arrange(swft_amrs_x_plot, swft_amrs_y_plot,swft_amrs_z_plot, nrow = 1, top = paste0(swft.data.out$SiteID[1], ": AMRS Leveling Time Series"))
-
+            swft.plot = ggplot(data = swft.data.out) +
+              geom_hline(data = swft_amrs_x_y_z, aes(yintercept = refe),size = 1, linetype = "dashed", color = "white")+
+              geom_point(aes(x = timestamp, y = mean, color = `Stream Name`), size = 2) +
+              scale_y_continuous(breaks = scales::pretty_breaks(n = 8)) +
+              scale_x_datetime(breaks = scales::pretty_breaks(n = 4), date_labels = "%Y\n%m-%d") +
+              labs(x = "", y = "Angle", subtitle = "Averaged hourly values", caption = "AMRS Roll and Pitch must be leveled to with in 1 degree when installed.\nDo not adjust unless angles deviate more than 5 degrees and open a DQTT to record this issue\nThe dashed line indicates Science Requirement for the measurement plotted", title = paste0(input$swft_EddyCo_site, " - ", toupper(input$swft_EddyCo_data_type), " ", input$swft_EddyCo_sub_data_type_amrs)) +
+              facet_wrap(~`Stream Name`, scales = "free_y") + 
+              theme(legend.position = "top", strip.text.x = element_text(size = 12), text = element_text(color = "white", face = "bold", size = 20))
+            
+            # browser()
             
           }
           
@@ -1207,7 +1172,15 @@
         # If there are not rows in swft.data.out generate blank plot
         swft.plot = ggplot()+
           geom_text(label = "text")+
-          annotate("text", label = paste0("No data found: ", input$swft_EddyCo_site, "\nData not available..."), x = 0, y = 0, color = "white", size = 12)
+          ggdark::dark_theme_bw() +
+          scale_x_continuous(breaks = 0)+
+          scale_y_continuous(breaks = 0)+
+          labs(y = "", x = '') +
+          theme(
+            axis.text.x = element_text(color = "black", size = 0),
+            axis.text.y = element_text(color = "black", size = 0)
+          )+
+          annotate("text", label = paste0("No data found for ", input$swft_EddyCo_site, "\nData not available"), x = 0, y = 0, color = "white", size = 12)
       }
       
       swft_ec_fast_collect_data_time_finish = Sys.time()

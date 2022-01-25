@@ -26,8 +26,19 @@ swft.full.site.lookup = data.table::fread(paste0(swft.server.folder.path, "data/
 swft.ais.site.lookup  = data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.ais.site.lookup.csv"))
 swft.tis.site.lookup  = data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.tis.site.lookup.csv"))
 
-
 When_was_the_update_log_update = base::file.info(paste0(swft.server.folder.path,"www/Swift_Update_Log.pdf"))$mtime
+
+# qfqm_code_versions <- aws.s3::get_bucket_df(bucket = "research-eddy-inquiry", prefix = "qfqm_flux_shiny/", max = Inf) # Ideally this info is grabbed on a crontab every 5 minutes
+# in fact it has to
+# Ugh since that would take forever to code up now, we're going to hard code it for the time being
+qfqm_macro_code_versions = c( # the v prefix was removed, it is added in the server end
+  "20210104",
+  "20210223"
+)
+# Years for qfqm_macro
+qfqm_macro_years = base::seq.Date(from = as.Date("2017-01-01", origin = "1970-01-01"), to = Sys.Date(), by = "year") %>%
+  base::substr(0, 4) %>%
+  sort(decreasing = TRUE)
 
 # Define UI for application that draws a histogram
 shiny::shinyUI(
@@ -406,30 +417,32 @@ shiny::shinyUI(
             shiny::column(width = 12,
               shiny::tabPanel("", width = 12,
                 shiny::fluidRow(
-                  shiny::fluidRow(
-                    shiny::column(width = 12,
-                      shiny::h1("Eddy Covariance Plots"),
-                      shiny::tags$a(
-                        shinydashboard::valueBoxOutput("swft_ec_fast_ml_missing", width = 2), title = "An algorithm calculated for each site if each ML flow was above 2.0 SLPM, if this was the case, it was considered valid."
-                      ),
-                      shiny::tags$a(
-                        shinydashboard::valueBoxOutput("swft_ec_fast_li840_working", width = 2), title = "An algorithm calculated for each site if the sample MFC flow was within 0.8 and 1.2 SLPM and the CO2 values were between 200 and 1000."
-                      ),
-                      shiny::tags$a(
-                        shinydashboard::valueBoxOutput("swft_ec_fast_g2131_working", width = 2), title = "An algorithm calculated for each site if the CO2 values were between 200 and 1,000."
-                      ),
-                      shiny::tags$a(
-                        shinydashboard::valueBoxOutput("swft_ec_fast_l2130_working", width = 2), title = "An algorithm calculated for each site if the H2O values were between 0 and 50,000."
-                      ),
-                      shiny::tags$a(
-                        shinydashboard::valueBoxOutput("swft_ec_fast_li7200_working", width = 2), title = "An algorithm calculated for each site if the CO2 values were between 0 and 1,000, the diagnostic was between 8188 and 8191, the MFC flow was between 10.0 and 14.0 SLPM, and the differential cell temperature was between 2.0C and 6.0C."
-                      ),
-                      shiny::tags$a(
-                        shinydashboard::valueBoxOutput("swft_ec_fast_collect_data_time", width = 2), title = "Calculates how long it took to pull all the files and produce the plot."
-                      ),
-                      shiny::br()
+                  shiny::column(width = 12,
+                    shiny::tags$a(
+                      shinydashboard::valueBoxOutput("swft_ec_fast_ml_missing", width = 2), title = "An algorithm calculated for each site if each ML flow was above 2.0 SLPM, if this was the case, it was considered valid."
+                    ),
+                    shiny::tags$a(
+                      shinydashboard::valueBoxOutput("swft_ec_fast_li840_working", width = 2), title = "An algorithm calculated for each site if the sample MFC flow was within 0.8 and 1.2 SLPM and the CO2 values were between 200 and 1000."
+                    ),
+                    shiny::tags$a(
+                      shinydashboard::valueBoxOutput("swft_ec_fast_g2131_working", width = 2), title = "An algorithm calculated for each site if the CO2 values were between 200 and 1,000."
+                    ),
+                    shiny::tags$a(
+                      shinydashboard::valueBoxOutput("swft_ec_fast_l2130_working", width = 2), title = "An algorithm calculated for each site if the H2O values were between 0 and 50,000."
+                    ),
+                    shiny::tags$a(
+                      shinydashboard::valueBoxOutput("swft_ec_fast_li7200_working", width = 2), title = "An algorithm calculated for each site if the CO2 values were between 0 and 1,000, the diagnostic was between 8188 and 8191, the MFC flow was between 10.0 and 14.0 SLPM, and the differential cell temperature was between 2.0C and 6.0C."
+                    ),
+                    shiny::tags$a(
+                      shinydashboard::valueBoxOutput("swft_ec_fast_collect_data_time", width = 2), title = "Calculates how long it took to pull all the files and produce the plot."
                     )
-                  ),
+                  )
+                ),
+                shiny::br(),
+                shiny::br(),
+                shiny::br(),
+                shiny::br(),
+                shiny::fluidRow(
                   shiny::column(width = 3,
                     shiny::fluidRow(
                       shiny::dateRangeInput(inputId = "swft_EddyCo_date_range", label = "Select a Date Range",
@@ -438,36 +451,37 @@ shiny::shinyUI(
                                             end = Sys.Date())
                     )
                   ),
-                  shiny::column(width = 1,
+                  shiny::column(width = 2,
                     shiny::fluidRow(
                       shiny::selectizeInput(inputId = "swft_EddyCo_site", multiple = FALSE,
-                                        label = "Select Site",
-                                        choices = swft.tis.site.lookup$SiteID,
-                                        selected = sample(swft.tis.site.lookup$SiteID, 1))
+                                            label = "Select Site",
+                                            choices = swft.tis.site.lookup$SiteID,
+                                            selected = sample(swft.tis.site.lookup$SiteID, 1))
                     )
                   ),
                   shiny::column(width = 4,
                     shiny::fluidRow(
-                      shiny::selectizeInput(inputId = "swft_EddyCo_data_type", multiple = FALSE,
-                                         label = "Select Data",
-                                         choice = c("ECSE Isotopic Analyzer - G2131i"        = "G2131",
-                                                    "ECSE Isotopic Analyzer - L2130i"        = "L2130",
-                                                    "ECSE CO2/H2O Analyzer - Li840A"         = "Li840",
-                                                    "ECTE CO2/H2O Analyzer - Li7200"         = "Li7200",
-                                                    "All CO2"                                = "CO2",
-                                                    "All H2O"                                = "H2O",
-                                                    "ECTE 3D Wind Sensor - CSAT3"            = "CSAT3",
-                                                    "ECTE Roll/Pitch/Azimuth Sensor - AMRS"  = "amrs",
-                                                    "ECTE Relative Humidity Sensor - HMP155" = "HMP155",
-                                                    "ECSE ML Flow Rate - MFM"                = "ecse.mfm",
-                                                    "ECSE ML/Hut MFM Pressures"              = "ecse.mfm.pressures",
-                                                    "ECSE Pump Voltages - NEON Pump"         = "ecse.voltage",
-                                                    "EC Temperatures - Comet/Others"         = "ec.temps"
-                                                    ),
-                                         selected = sample(x = c("G2131", "L2130", "Li840", "Li7200", "CO2", "H2O", "CSAT3", "amrs", "HMP155", "ecse.mfm", "ecse.voltage", "ec.temps"),size = 1))
+                      shiny::selectizeInput(
+                        inputId = "swft_EddyCo_data_type", multiple = FALSE,
+                        label = "Select Data",
+                        choice = c("ECSE Iso Analyzer - G2131i"        = "G2131",
+                                   "ECSE Iso Analyzer - L2130i"        = "L2130",
+                                   "ECSE Gas Analyzer - Li840A"         = "Li840",
+                                   "ECTE Gas Analyzer - Li7200"         = "Li7200",
+                                   "All CO2"                                = "CO2",
+                                   "All H2O"                                = "H2O",
+                                   "ECTE 3D Wind - CSAT3"            = "CSAT3",
+                                   "ECTE AMRS"  = "amrs",
+                                   "ECTE HMP155" = "HMP155",
+                                   "ECSE ML Flow Rate"                = "ecse.mfm",
+                                   "ECSE ML/Hut MFM Pressures"              = "ecse.mfm.pressures",
+                                   "ECSE Pump Voltages"         = "ecse.voltage",
+                                   "Hut Temps - Comet/Others"         = "ec.temps"
+                        ),
+                        selected = sample(x = c("G2131", "L2130", "Li840", "Li7200", "CO2", "H2O", "CSAT3", "amrs", "HMP155", "ecse.mfm", "ecse.voltage", "ec.temps"),size = 1))
                     )
                   ),
-                  shiny::column(width = 2,
+                  shiny::column(width = 3,
                     shiny::fluidRow(
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'G2131'",
                         shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_G2131', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2","H2O", "Isotopes", "Sample Valves"))
@@ -487,12 +501,13 @@ shiny::shinyUI(
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'amrs'",
                         shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_amrs', multiple = FALSE, label = 'Sub Data Type', choices = c("Level", "Time-Series"))
                       )
-                      
                     )
-                  ),
-                  shiny::column(width = 2,
-                    shiny::radioButtons(inputId = "swft_EddyCo_radioButton", label = "Advanced Options",choices = c("Enabled", "Disabled"), selected = "Disabled")
                   )
+                ),
+                shiny::fluidRow(
+                  shiny::column(width = 2,
+                                shiny::radioButtons(inputId = "swft_EddyCo_radioButton", label = "Advanced Options",choices = c("Enabled", "Disabled"), selected = "Disabled")
+                  ) 
                 ),
                 shiny::fluidRow(
                   shiny::column(width = 5,
@@ -533,14 +548,12 @@ shiny::shinyUI(
                 ), # End EC Fst shiny::fluidRow for Condtional panels
                 shiny::br(),
                 shiny::fluidRow(
-                  shiny::column(width = 2),
-                  shiny::column(width = 8,
+                  shiny::column(width = 12,
                     shiny::p("Click the CSV button to download the data"),
                     DT::dataTableOutput("swft_ec_fast_table"), # %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white"),
                     shiny::p("Data is collected from an automated Presto pulled designed by IS Science and CI. Data is updated in the early morning (10:00:00 UTC)."),
                     shiny::p("Daily sensor files are then stored at an S3 bucket, and retrieved by a IS Science designed function. All data are 2-minute point data, meaning that what ever the values was at the 2 minute interval, is the value that is stored.")
-                  ), 
-                  shiny::column(width = 2)
+                  )
                 )
               ) # End blank tabPanel
             ) # End EC Fst Tab Panel for Condtional panels
@@ -876,10 +889,14 @@ shiny::shinyUI(
           shinydashboard::box(width = 12,
             shiny::fluidRow(
               shiny::column(width = 2,
+                shiny::selectInput(inputId = "swft_qfqm_macro_code_version_select", label = "Code Version", choices = qfqm_macro_code_versions, multiple = FALSE)
+              ),
+              shiny::column(width = 2,
                 shiny::selectInput(inputId = "swft_qfqm_macro_site_select", label = "SiteID", choices = swft.tis.site.lookup$SiteID, selected = sample(swft.tis.site.lookup$SiteID, 1))
               ),
               shiny::column(width = 2,
-                shiny::uiOutput('swft_qfqm_macro_year_select')
+                shiny::selectInput(inputId = "swft_qfqm_macro_year_select", label = "Year", choices = qfqm_macro_years, multiple = FALSE)
+                # shiny::uiOutput('swft_qfqm_macro_year_select')
               ),
               shiny::column(width = 2,
                 shiny::selectInput(inputId = "swft_qfqm_macro_system_select", label = "EC System", choices = "ECTE")
