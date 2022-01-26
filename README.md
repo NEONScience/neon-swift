@@ -17,7 +17,7 @@ This app is deployable by Docker. This is the path we are headed down as this no
   
 3. Build the image  
 * For dev:  `docker build -t neon-swift:dev .`  
-* For prod: `docker build -t neon-swift:prod .`  
+* For prod: `sudo docker build -t neon-swift:prod .`  
 
 4. Once the image has finished building run the container (still need to define acceptable port ranges):  
 * For dev:  `docker run -it -d -p 4781:3838 --name swift_dev neon-swift:dev`  
