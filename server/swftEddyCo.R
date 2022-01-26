@@ -521,16 +521,7 @@
           }
           if(input$swft_EddyCo_sub_data_type_amrs == "Time-Series"){
             swft.data.out <- swft.data.in  %>%
-              dplyr::filter(`Stream Name` != "AMRS_diag") %>% 
-              dplyr::mutate(timestamp = cut(readout_time, breaks = "60 mins")) %>%
-              dplyr::group_by(`Stream Name`, timestamp) %>%
-              dplyr::summarise(.groups = "drop",
-                SiteID = SiteID[1],
-                mean = round(mean(readout_val_double),3)
-              ) %>% 
-              dplyr::mutate(timestamp = lubridate::ymd_hms(timestamp)) %>% 
-              dplyr::select(SiteID, `Stream Name`, timestamp, mean) %>% 
-              dplyr::arrange(timestamp)
+              dplyr::filter(`Stream Name` != "AMRS_diag")
                   
           }
           
@@ -1031,9 +1022,8 @@
           }
           if(input$swft_EddyCo_sub_data_type_amrs == "Time-Series"){
             
-            plot.min <- min(swft.data.out$timestamp, na.rm = TRUE)
-            plot.max <- max(swft.data.out$timestamp, na.rm = TRUE)
-            
+            plot.min <- min(swft.data.out$readout_time, na.rm = TRUE)
+            plot.max <- max(swft.data.out$readout_time, na.rm = TRUE)
             
             swft_amrs_x_y_z = data.table::data.table(
               "Stream Name" = c("AMRS_x", "AMRS_y", "AMRS_z"),
@@ -1043,10 +1033,10 @@
             
             swft.plot = ggplot(data = swft.data.out) +
               geom_hline(data = swft_amrs_x_y_z, aes(yintercept = refe),size = 1, linetype = "dashed", color = "white")+
-              geom_point(aes(x = timestamp, y = mean, color = `Stream Name`), size = 2) +
+              geom_point(aes(x = readout_time, y = readout_val_double, color = `Stream Name`), size = 2) +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 8)) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 4), date_labels = "%Y\n%m-%d") +
-              labs(x = "", y = "Angle", subtitle = "Averaged hourly values", caption = "AMRS Roll and Pitch must be leveled to with in 1 degree when installed.\nDo not adjust unless angles deviate more than 5 degrees and open a DQTT to record this issue\nThe dashed line indicates Science Requirement for the measurement plotted", title = paste0(input$swft_EddyCo_site, " - ", toupper(input$swft_EddyCo_data_type), " ", input$swft_EddyCo_sub_data_type_amrs)) +
+              labs(x = "", y = "Angle", subtitle = "2 minute point data", caption = "AMRS Roll and Pitch must be leveled to with in 1 degree when installed.\nDo not adjust unless angles deviate more than 5 degrees and open a DQTT to record this issue\nThe dashed line indicates Science Requirement for the measurement plotted", title = paste0(input$swft_EddyCo_site, " - ", toupper(input$swft_EddyCo_data_type), " ", input$swft_EddyCo_sub_data_type_amrs)) +
               facet_wrap(~`Stream Name`, scales = "free_y") + 
               theme(legend.position = "top", strip.text.x = element_text(size = 12), text = element_text(color = "white", face = "bold", size = 20))
             
