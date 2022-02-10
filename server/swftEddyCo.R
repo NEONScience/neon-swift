@@ -442,6 +442,12 @@
             names(swft.data.out) = c("SiteID", "Stream Name", "Valve Status", "Percentage")
           }
           
+          # MD's were not complete with sample valve data (ks's fault)
+          if(sum(is.na(swft.data.out$SampleLevel)) == nrow(swft.data.out)){
+            swft.data.out = swft.data.out %>%
+              dplyr::mutate(SampleLevel = "Unknown")
+          }
+          
         } else if(input$swft_EddyCo_data_type == "Li7200"){
           
           if(input$swft_EddyCo_sub_data_type_Li7200 == "CO2"){
@@ -786,7 +792,7 @@
         if(input$swft_EddyCo_data_type == "L2130"){
           if(input$swft_EddyCo_sub_data_type_L2130 %in% c("Isotope - 2H", "Isotope - 18O")){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_L2130, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
-            
+
             swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = readout_val_double, color = SampleLevel)) +
               geom_point(alpha = .6) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +

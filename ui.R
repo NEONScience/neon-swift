@@ -455,7 +455,7 @@ shiny::shinyUI(
                     shiny::fluidRow(
                       shiny::selectizeInput(inputId = "swft_EddyCo_site", multiple = FALSE,
                                             label = "Select Site",
-                                            choices = swft.tis.site.lookup$SiteID,
+                                            choices = c(swft.tis.site.lookup$SiteID, "MD01"),
                                             selected = sample(swft.tis.site.lookup$SiteID, 1))
                     )
                   ),
