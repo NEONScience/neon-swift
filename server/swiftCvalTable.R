@@ -1,23 +1,13 @@
 shiny::observeEvent(input$menu, {
   if(input$menu == "swft_historic_span_table_tab"){
     
-    # Set S3 Endpoints for safety
-    base::Sys.setenv(
-      "AWS_S3_ENDPOINT"       = "neonscience.org",
-      "AWS_DEFAULT_REGION"    = "s3.data"
-    )
-    
     # Library
-    library(aws.s3)
-    library(aws.signature)
     library(DT)
     library(dplyr)
   
     # Source the base data pulling function
-    base::source(paste0(swft.server.folder.path, "R/read.eddy.inquiry.swift.R"))
-    
     # Cylinder Metadata
-    swft_historic_span = read.eddy.inquiry(dataType = "meta", sensor = "spanGas")
+    swft_historic_span = eddycopipe::neon_read_eddy_inquiry(dataType = "meta", sensor = "spanGas")
     
     swft_historic_span_summary = swft_historic_span %>% 
       dplyr::group_by(siteID, assetTag, name) %>% 

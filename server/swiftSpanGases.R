@@ -41,9 +41,9 @@ shiny::observeEvent(input$menu, {
     swft_span_in = shiny::reactive({
       
       # Sensor Name from DPID look up table
-      swft_span_lookup = aws.s3::s3readRDS(object = "lookup/SensorNames.RDS", bucket = "research-eddy-inquiry")
+      swft_span_lookup = eddycopipe::neon_gcs_get_rds(object = "lookup/SensorNames.RDS", bucket = "neon-eddy-inquiry")
       
-      swft_span_raw = aws.s3::s3readRDS(object = paste0("spanGas/master/", input$swft_spangas_site, ".RDS"), bucket = "research-eddy-inquiry") %>% 
+      swft_span_raw = eddycopipe::neon_gcs_get_rds(object = paste0("spanGas/master/", input$swft_spangas_site, ".RDS"), bucket = "neon-eddy-inquiry") %>% 
         dplyr::filter(StartTime >= input$swft_spangas_date_range[1]
                       & StartTime <= input$swft_spangas_date_range[2])%>% 
           dplyr::mutate(DPID = base::substr(meas_strm_name, 15, 100)) %>%
@@ -64,8 +64,8 @@ shiny::observeEvent(input$menu, {
     # swft.spangas.overall.in <- fst::read.fst(paste0(swft.server.folder.path, "data/spanGas/swft.span.gas.master.fst"))
     # swft.spangas.differential.in <- fst::read.fst(paste0(swft.server.folder.path, "data/spanGas/swft.span.gas.differntial.master.fst"))
     
-    swft.spangas.overall.in <- aws.s3::s3read_using(FUN = fst::read.fst, bucket = "research-eddy-inquiry", object = "spanGas/master/swft.span.gas.master.fst")
-    swft.spangas.differential.in <- aws.s3::s3read_using(FUN = fst::read.fst, bucket = "research-eddy-inquiry", object = "spanGas/master/swft.span.gas.differntial.master.fst")
+    swft.spangas.overall.in <- eddycopipe::neon_gcs_get_fst(bucket = "neon-eddy-inquiry", object = "spanGas/master/swft.span.gas.master.fst")
+    swft.spangas.differential.in <- eddycopipe::neon_gcs_get_fst(bucket = "neon-eddy-inquiry", object = "spanGas/master/swft.span.gas.differntial.master.fst")
     
     swft_spangas_overall_plot <- shiny::reactive({
       shiny::req(input$swft_spangas_site)

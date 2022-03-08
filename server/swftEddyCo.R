@@ -9,14 +9,12 @@
     
     # Lets make this as simple as possible
     
-    base::source(paste0(swft.server.folder.path, "R/read.eddy.inquiry.swift.R"))
-    
     
     # Value Boxes Load First
     
     output$swft_ec_fast_ml_missing <- shinydashboard::renderValueBox({
       
-      swft.ml.missing = aws.s3::s3readRDS(object = "swft_daily_stats/ml.missing.RDS", bucket = "research-eddy-inquiry")
+      swft.ml.missing = eddycopipe::neon_gcs_get_rds(object = "swft_daily_stats/ml.missing.RDS", bucket = "neon-eddy-inquiry")
       
       shinydashboard::valueBox(
         value = paste0(swft.ml.missing$sites.with.all.levels[1], "%"),
@@ -28,7 +26,7 @@
     
     output$swft_ec_fast_li840_working <- shinydashboard::renderValueBox({
       
-      swft.li840.working = aws.s3::s3readRDS(object = "swft_daily_stats/li840_working.RDS", bucket = "research-eddy-inquiry")
+      swft.li840.working = eddycopipe::neon_gcs_get_rds(object = "swft_daily_stats/li840_working.RDS", bucket = "neon-eddy-inquiry")
       
       shinydashboard::valueBox(
         value = paste0(swft.li840.working$percent.li840.valid[1], "%"),
@@ -41,7 +39,7 @@
     
     output$swft_ec_fast_g2131_working <- shinydashboard::renderValueBox({
       
-      swft.g2131.working = aws.s3::s3readRDS(object = "swft_daily_stats/g2131_working.RDS", bucket = "research-eddy-inquiry")
+      swft.g2131.working = eddycopipe::neon_gcs_get_rds(object = "swft_daily_stats/g2131_working.RDS", bucket = "neon-eddy-inquiry")
       
       shinydashboard::valueBox(
         value = paste0(swft.g2131.working$percent.valid[1], "%"),
@@ -55,7 +53,7 @@
     
     output$swft_ec_fast_l2130_working <- shinydashboard::renderValueBox({
       
-      swft.l2130.working = aws.s3::s3readRDS(object = "swft_daily_stats/l2130_working.RDS", bucket = "research-eddy-inquiry")
+      swft.l2130.working = eddycopipe::neon_gcs_get_rds(object = "swft_daily_stats/l2130_working.RDS", bucket = "neon-eddy-inquiry")
       
       shinydashboard::valueBox(
         value = paste0(swft.l2130.working$percent.valid[1], "%"),
@@ -67,7 +65,7 @@
     
     output$swft_ec_fast_li7200_working <- shinydashboard::renderValueBox({
       
-      swft.li7200.working = aws.s3::s3readRDS(object = "swft_daily_stats/li7200_working.RDS", bucket = "research-eddy-inquiry")
+      swft.li7200.working = eddycopipe::neon_gcs_get_rds(object = "swft_daily_stats/li7200_working.RDS", bucket = "neon-eddy-inquiry")
       
       shinydashboard::valueBox(
         value = paste0(swft.li7200.working$percent.valid[1], "%"),
@@ -91,7 +89,7 @@
       if(input$swft_EddyCo_data_type != "CO2" & input$swft_EddyCo_data_type != "H2O"){
       # Pull data from S3
       message(input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2], paste0(" Swft Data Gather Starting ... "))
-      swft.data.in = read.eddy.inquiry(dataType  = "2min", 
+      swft.data.in = eddycopipe::neon_read_eddy_inquiry(dataType  = "2min", 
                                        sensor    = input$swft_EddyCo_data_type, 
                                        siteID    = input$swft_EddyCo_site,
                                        startDate = as.Date(input$swft_EddyCo_date_range[1]), 
@@ -106,21 +104,21 @@
       message("Data pull Finished")
       } else if(input$swft_EddyCo_data_type == "CO2") {
         
-        li840.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
+        li840.data <- eddycopipe::neon_read_eddy_inquiry(dataType = "2min", sensor = "Li840", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(li840.data) > 0){
           li840.data <- li840.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "Li840_CO2_fwMole") 
         } else {
           li840.data = data.table::data.table()
         }
-        g2131.data <- read.eddy.inquiry(dataType = "2min", sensor = "G2131", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
+        g2131.data <- eddycopipe::neon_read_eddy_inquiry(dataType = "2min", sensor = "G2131", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(g2131.data) > 0){
           g2131.data <- g2131.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "G2131_fwMoleCo2")
         } else {
           g2131.data = data.table::data.table()
         }
-        li7200.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li7200", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
+        li7200.data <- eddycopipe::neon_read_eddy_inquiry(dataType = "2min", sensor = "Li7200", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(li7200.data) > 0){
           li7200.data <- li7200.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "Li7200_CO2")
@@ -133,24 +131,24 @@
         
       } else if(input$swft_EddyCo_data_type == "H2O") {
         
-        li840.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
-        # li840.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li840", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)
+        li840.h2o.data <- eddycopipe::neon_read_eddy_inquiry(dataType = "2min", sensor = "Li840", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
+        # li840.h2o.data <- eddycopipe::neon_read_eddy_inquiry(dataType = "2min", sensor = "Li840", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)
         if(nrow(li840.h2o.data) > 0){
           li840.h2o.data <- li840.h2o.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "Li840_H2O_fwMole")
         } else {
           li840.h2o.data = data.table::data.table()
         }
-        # g2131.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "G2131", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)
-        g2131.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "G2131", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
+        # g2131.h2o.data <- eddycopipe::neon_read_eddy_inquiry(dataType = "2min", sensor = "G2131", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)
+        g2131.h2o.data <- eddycopipe::neon_read_eddy_inquiry(dataType = "2min", sensor = "G2131", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(g2131.h2o.data) > 0){
           g2131.h2o.data <- g2131.h2o.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "G2131_percentFwMoleH2O")
         } else {
           g2131.h2o.data = data.table::data.table()
         }
-        # li7200.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li7200", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)
-        li7200.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "Li7200", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
+        # li7200.h2o.data <- eddycopipe::neon_read_eddy_inquiry(dataType = "2min", sensor = "Li7200", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)
+        li7200.h2o.data <- eddycopipe::neon_read_eddy_inquiry(dataType = "2min", sensor = "Li7200", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(li7200.h2o.data) > 0){
           li7200.h2o.data <- li7200.h2o.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "Li7200_fdMoleH2O")
@@ -158,8 +156,8 @@
           li7200.h2o.data = data.table::data.table()
         }
         
-        # l2130.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "L2130", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)
-        l2130.h2o.data <- read.eddy.inquiry(dataType = "2min", sensor = "L2130", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
+        # l2130.h2o.data <- eddycopipe::neon_read_eddy_inquiry(dataType = "2min", sensor = "L2130", siteID = "BARR", startDate = Sys.Date()-13, endDate = Sys.Date(), silent = TRUE)
+        l2130.h2o.data <- eddycopipe::neon_read_eddy_inquiry(dataType = "2min", sensor = "L2130", siteID = input$swft_EddyCo_site, startDate = input$swft_EddyCo_date_range[1], endDate = input$swft_EddyCo_date_range[2], silent = TRUE)
         if(nrow(l2130.h2o.data) > 0){
           l2130.h2o.data <- l2130.h2o.data %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) %>%
             dplyr::filter(`Stream Name` == "L2130_H2O")
@@ -175,7 +173,7 @@
       }
       
       # # For Function Testing
-      # swft.data.in = read.eddy.inquiry(dataType  = "2min",
+      # swft.data.in = eddycopipe::neon_read_eddy_inquiry(dataType  = "2min",
       #                                  sensor    = "amrs",
       #                                  siteID    = "STER",
       #                                  startDate = Sys.Date()-7,
@@ -267,14 +265,14 @@
           if(input$swft_EddyCo_sub_data_type_Li840 %in% c("CO2","H2O")){
             
             # Pull Valve Data Too
-            swft.li840.valves = read.eddy.inquiry(dataType  = "2min", 
+            swft.li840.valves = eddycopipe::neon_read_eddy_inquiry(dataType  = "2min", 
                                                   sensor    = "Li840.valves", 
                                                   siteID    = input$swft_EddyCo_site,
                                                   startDate = input$swft_EddyCo_date_range[1], 
                                                   endDate   = input$swft_EddyCo_date_range[2],
                                                   silent    = TRUE
             )
-            # swft.li840.valves = read.eddy.inquiry(dataType  = "2min",
+            # swft.li840.valves = eddycopipe::neon_read_eddy_inquiry(dataType  = "2min",
             #                                       sensor    = "Li840.valves",
             #                                       siteID    = "STER",
             #                                       startDate = Sys.Date()-7,
@@ -331,7 +329,7 @@
             # WARNING There is some redundancy here, as we pull the Li840 Data too... Could make an excpetion...
             # However oddly enough there is not much difference in overall plotting time, go figure.
             
-            swft.li840.valves = read.eddy.inquiry(dataType  = "2min", 
+            swft.li840.valves = eddycopipe::neon_read_eddy_inquiry(dataType  = "2min", 
                                                   sensor    = "Li840.valves", 
                                                   siteID    = input$swft_EddyCo_site,
                                                   startDate = input$swft_EddyCo_date_range[1], 
@@ -374,7 +372,7 @@
           } else if(input$swft_EddyCo_sub_data_type_Li840 == "Flow Rate"){
             
             # Read flow data
-            swft.data.out = read.eddy.inquiry(dataType  = "2min", 
+            swft.data.out = eddycopipe::neon_read_eddy_inquiry(dataType  = "2min", 
                                               sensor    = "ecse.sample.mfc", 
                                               siteID    = input$swft_EddyCo_site,
                                               startDate = input$swft_EddyCo_date_range[1], 

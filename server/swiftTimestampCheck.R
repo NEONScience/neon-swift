@@ -6,8 +6,8 @@ shiny::observeEvent(input$menu, {
     library(dplyr)
     library(data.table)
     library(ggplot2)
-    library(aws.s3)
-    library(aws.signature)
+    
+    
     library(lubridate)
     library(plotly)
     
@@ -15,16 +15,10 @@ shiny::observeEvent(input$menu, {
     ggplot2::theme_set(ggdark::dark_theme_bw()) 
     
     # S3 Bucket
-    timestamp_bucket = "research-eddy-inquiry"
+    timestamp_bucket = "neon-eddy-inquiry"
     
-    # S3 Environment
-    base::Sys.setenv(
-      "AWS_ACCESS_KEY_ID"     = timestamp_bucket,
-      "AWS_S3_ENDPOINT"       = "neonscience.org",
-      "AWS_DEFAULT_REGION"    = "s3.data"
-    )
     # List files in the timestamp docker folder
-    timestamp_files_lookup = aws.s3::get_bucket_df(bucket = timestamp_bucket, prefix = "sensor_timestamp_check_docker/main", max = Inf) %>% 
+    timestamp_files_lookup = eddycopipe::neon_gcs_list_objects(bucket = timestamp_bucket, prefix = "sensor_timestamp_check_docker/main", max = Inf) %>% 
       dplyr::mutate(date = base::as.Date(base::substr(Key, 36, 45), origin = "1970-01-01"))
     
 
@@ -38,7 +32,7 @@ shiny::observeEvent(input$menu, {
       
       timestamp_data = data.table::data.table()
       for(i in base::seq_along(timestamp_files_lookup_filtered$Key)){
-        timestamp_data_in = aws.s3::s3readRDS(object = timestamp_files_lookup_filtered$Key[i], bucket = timestamp_bucket) 
+        timestamp_data_in = eddycopipe::neon_gcs_get_rds(object = timestamp_files_lookup_filtered$Key[i], bucket = timestamp_bucket) 
         
         timestamp_data = data.table::rbindlist(l = base::list(timestamp_data, timestamp_data_in), fill = TRUE)
       }

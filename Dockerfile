@@ -16,6 +16,7 @@ RUN apt-get install -y libssl-dev
 RUN apt-get install -y libxml2-dev 
 RUN apt-get install -y libicu-dev
 
+copy /eddycopipe_0.2.2.tar.gz /tmp/
 COPY ./docker_r_lib_install.R /tmp/requirements.R 
 ## install required libs on container
 RUN Rscript /tmp/requirements.R

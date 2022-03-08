@@ -1,11 +1,11 @@
 # swiftQfQmMacro
 
-swft_ei_bucket = "research-eddy-inquiry"
+swft_ei_bucket = "neon-eddy-inquiry"
 ## Commented out because we don't really need reactivate here either
 # qfqm_macro_avail_data = shiny::reactive({
 #   shiny::req(input$swft_qfqm_macro_site_select)
 #   system.time(
-#     data_in <- aws.s3::get_bucket_df(bucket = swft_ei_bucket, prefix = paste0("qfqm_flux_shiny/v", input$swft_qfqm_macro_code_version_select,"/", input$swft_qfqm_macro_site_select, "/"), max = Inf)
+#     data_in <- eddycopipe::neon_gcs_list_objects(bucket = swft_ei_bucket, prefix = paste0("qfqm_flux_shiny/v", input$swft_qfqm_macro_code_version_select,"/", input$swft_qfqm_macro_site_select, "/"), max = Inf)
 #   )
 #   
 #   browser()
@@ -21,7 +21,7 @@ swft_ei_bucket = "research-eddy-inquiry"
 #   }
 #   
 #   ### Testing Code
-#   # aws.s3::get_bucket_df(bucket = swft_ei_bucket, prefix = paste0("qfqm_flux_shiny/v20210223/YELL/"), max = Inf) %>% 
+#   # eddycopipe::neon_gcs_list_objects(bucket = swft_ei_bucket, prefix = paste0("qfqm_flux_shiny/v20210223/YELL/"), max = Inf) %>% 
 #   #   tidyr::separate(col = Key, remove = FALSE, into = c("folder", "version", "site", "file"), sep =  "/") %>% 
 #   #   tidyr::separate(col = file, sep = "_", into = c("year", "type", "stream", "id")) %>% 
 #   #   dplyr::filter(type == "plot")
@@ -55,9 +55,9 @@ swft_qfqm_macro_plot = shiny::reactive({
   
   macro_plot_object = paste0("qfqm_flux_shiny/v", input$swft_qfqm_macro_code_version_select ,"/", input$swft_qfqm_macro_site_select, "/", input$swft_qfqm_macro_year_select, "_plot_", input$swft_qfqm_macro_terms, "_dqmp.RDS")
   
-  if(aws.s3::object_exists(object = macro_plot_object, bucket = swft_ei_bucket)){
+  if(eddycopipe::neon_gcs_object_exists(object = macro_plot_object, bucket = swft_ei_bucket)){
   
-    aws.s3::s3readRDS(
+    eddycopipe::neon_gcs_get_rds(
       object =macro_plot_object ,
       bucket = swft_ei_bucket
     ) 

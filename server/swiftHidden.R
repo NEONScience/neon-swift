@@ -1,14 +1,8 @@
 shiny::observeEvent(input$menu, {
   if(input$menu == "swft_hidden_tab"){
-    # S3 Read creds
-    Sys.setenv(
-      "AWS_ACCESS_KEY_ID"     = "research-eddy-inquiry",
-      "AWS_S3_ENDPOINT"       = "neonscience.org",
-      "AWS_DEFAULT_REGION"    = "s3.data"
-    )
-    
+
     # Read/clean data
-    swft_hidden_data = aws.s3::s3readRDS(object = "neon-swift/user_log.RDS", bucket = "research-eddy-inquiry") %>% 
+    swft_hidden_data = eddycopipe::neon_gcs_get_rds(object = "neon-swift/user_log.RDS", bucket = "neon-eddy-inquiry") %>% 
       dplyr::distinct() %>%
       dplyr::mutate(day = as.Date(cut(Start, breaks = "1 day"), origin = "1970-01-01")) %>%
       dplyr::filter(day > Sys.Date() - 14) %>% 

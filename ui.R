@@ -12,13 +12,11 @@ library(shinydashboard)
 library(viridis)
 library(stringr)
 library(scales)
-library(aws.signature)
-library(aws.s3)
 library(lubridate)
 library(dashboardthemes)
 library(ggdark)
 library(shinyWidgets)
-
+library(eddycopipe)
 swft.server.folder.path = "./"
 
 # Essential Site Lookup Tables
@@ -314,7 +312,7 @@ shiny::shinyUI(
                                             selected = sample(swft.tis.site.lookup$SiteID, 1)),
                       shiny::selectizeInput(inputId = "swft_cval_sensor", multiple = FALSE,
                                          label = "Select Cal/Val to Render",
-                                         choices = c("G2131 Validations" = "G2131i","Li840 CVALs" = "Li840A", "Li7200 Validations" = "Li7200", "L2130-i Validations" = "L2130i"))
+                                         choices = c("G2131" = "G2131i","Li840" = "Li840A", "Li7200" = "Li7200", "L2130-i" = "L2130i"))
                     )
                   ),
                   shiny::column(width = 7,

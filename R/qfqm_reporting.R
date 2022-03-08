@@ -17,7 +17,6 @@ qfqm_reporting = function(site = NULL, start_date = NULL, end_date = NULL){
   }
   
   # Libraries
-  library(aws.s3)
   library(dplyr)
   library(tidyr)
   library(data.table)
@@ -28,13 +27,7 @@ qfqm_reporting = function(site = NULL, start_date = NULL, end_date = NULL){
   
   # Bucket we are connecting too
   sae.bucket = "neon-sae-files"
-  
-  # S3 Connection
-  Sys.setenv(
-    "AWS_ACCESS_KEY_ID"     = sae.bucket,
-    "AWS_S3_ENDPOINT"       = "neonscience.org",
-    "AWS_DEFAULT_REGION"    = "s3.data"
-  )
+
   
   # Days to query for QFQM data
   days = seq.Date(from = as.Date(start_date, origin = "1970-01-01"), to = as.Date(end_date, origin = "1970-01-01"), by = "1 day")
@@ -48,12 +41,12 @@ qfqm_reporting = function(site = NULL, start_date = NULL, end_date = NULL){
     # Convert from index to date
     day = as.Date(days[[i]], origin = "1970-01-01")
     # See what data is available
-    qfqm_avail = aws.s3::get_bucket_df(bucket = sae.bucket, prefix = paste0("ods/qfqmRpt/", day, "/", site, "/")) %>% 
+    qfqm_avail = eddycopipe::neon_gcs_list_objects(bucket = sae.bucket, prefix = paste0("ods/qfqmRpt/", day, "/", site, "/")) %>% 
       dplyr::filter(stringr::str_detect(string = Key, pattern = ".rds") == TRUE) 
     # If the single RDS file is in the folder, read it in
     if(nrow(qfqm_avail) == 1){
       # Grab the ith day's QFQM report data
-      qfqm_all = aws.s3::s3readRDS(object = qfqm_avail$Key[1], bucket = sae.bucket) %>% 
+      qfqm_all = eddycopipe::neon_gcs_get_rds(object = qfqm_avail$Key[1], bucket = sae.bucket) %>% 
         dplyr::mutate(date = as.Date(date, origin = "1970-01-01")) %>% 
         dplyr::select(site, date, dp, levlTowr, metric, var, value, qmQfFinl,qfFinlTotl, qmQfAlphFinl)
       # Join to the "empty" data.table

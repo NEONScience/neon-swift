@@ -6,33 +6,27 @@ shiny::observeEvent(input$menu, {
     # Read in Fulcrum TIS Maintenance Data
     library(ggplot2)
     library(dplyr)
-    library(aws.s3)
+    
     library(data.table)
     library(fst)
     library(plotly)
     
     
     ggplot2::theme_set(theme_bw())
-    ei_bucket = "research-eddy-inquiry"
+    ei_bucket = "neon-eddy-inquiry"
     
-    # S3 connection
-    Sys.setenv(
-      "AWS_ACCESS_KEY_ID"     = ei_bucket,
-      "AWS_S3_ENDPOINT"       = "neonscience.org",
-      "AWS_DEFAULT_REGION"    = "s3.data")
-    
-    last_updated = lubridate::ymd_hms(max(aws.s3::get_bucket_df(bucket = ei_bucket, prefix = "maintenance_app")$LastModified))
+    last_updated = lubridate::ymd_hms(max(eddycopipe::neon_gcs_list_objects(bucket = ei_bucket, prefix = "maintenance_app")$LastModified))
     
     output$swft_obsMaintenance_last_updated = shinydashboard::renderValueBox({
       shinydashboard::valueBox(value = last_updated, subtitle = "Last Updated (UTC)", color = "aqua", width = 12)
     })
     
-    data.in = aws.s3::s3read_using(FUN = fst::read.fst, object = "maintenance_app/all_data.fst", bucket = ei_bucket)%>%
+    data.in = eddycopipe::neon_gcs_get_fst(object = "maintenance_app/all_data.fst", bucket = ei_bucket)%>%
       dplyr::mutate(date = as.Date(date, origin = "1970-01-01")) %>% 
       dplyr::mutate(cut = cut(date, breaks = "1 month")) %>% 
       dplyr::arrange(dplyr::desc(cut))
     
-    meta.data = aws.s3::s3readRDS(object = "lookup/swft.full.site.lookup.RDS", bucket = "research-eddy-inquiry") %>%
+    meta.data = eddycopipe::neon_gcs_get_rds(object = "lookup/swft.full.site.lookup.RDS", bucket = "neon-eddy-inquiry") %>%
       dplyr::filter(Type == "TIS") %>%
       dplyr::mutate(domainid = Domain) %>%
       dplyr::mutate(siteid = factor(SiteID, levels = SiteID)) %>%

@@ -7,8 +7,8 @@ shiny::observeEvent(input$menu, {
     library(ggplot2)
     library(dplyr)
     library(data.table)
-    library(aws.s3)
-    library(aws.signature)
+    
+    
 
     # Aesthetics
     ggplot2::theme_set(ggdark::dark_theme_gray())
@@ -19,9 +19,7 @@ shiny::observeEvent(input$menu, {
     swft.lcservices.user.data <- shiny::reactive({
       shiny::req(input$swft_lcservices_date_range, input$swft_lcservices_site)
 
-      base::source(paste0(swft.server.folder.path, "R/read.eddy.inquiry.swift.R"))
-
-      read.eddy.inquiry(dataType = "CnC", siteID = input$swft_lcservices_site, startDate = input$swft_lcservices_date_range[1], endDate = input$swft_lcservices_date_range[2]) %>%
+      eddycopipe::neon_read_eddy_inquiry(dataType = "CnC", siteID = input$swft_lcservices_site, startDate = input$swft_lcservices_date_range[1], endDate = input$swft_lcservices_date_range[2]) %>%
       dplyr::filter(LCNumber == input$swft_lcservices_lc_number) %>%
         dplyr::mutate(`CnC Status` = as.integer(cnc)) %>%
         dplyr::mutate(`RTU Status` = as.integer(rtu)) %>%
@@ -108,38 +106,38 @@ shiny::observeEvent(input$menu, {
 
     ## Summary Panel Plots
     # Plot TIS CnC Summary
-    CnCUptimePlot <- aws.s3::s3readRDS(object = "CnC/plots/swft.tis.cnc.plot.RDS", bucket = "research-eddy-inquiry")
+    CnCUptimePlot <- eddycopipe::neon_gcs_get_rds(object = "CnC/plots/swft.tis.cnc.plot.RDS", bucket = "neon-eddy-inquiry")
 
     output$CnCUptimePlot <- plotly::renderPlotly({
       suppressWarnings(CnCUptimePlot)
     })
 
     # Plot TIS RTU Summary
-    RTUUptimePlot <- aws.s3::s3readRDS(object = "CnC/plots/swft.tis.rtu.plot.RDS", bucket = "research-eddy-inquiry")
+    RTUUptimePlot <- eddycopipe::neon_gcs_get_rds(object = "CnC/plots/swft.tis.rtu.plot.RDS", bucket = "neon-eddy-inquiry")
     output$RTUUptimePlot <- plotly::renderPlotly({
       suppressWarnings(RTUUptimePlot)
     })
 
     # Plot TIS HornetQ Summary
-    HQUptimePlot <- aws.s3::s3readRDS(object = "CnC/plots/swft.tis.hornetq.plot.RDS", bucket = "research-eddy-inquiry")
+    HQUptimePlot <- eddycopipe::neon_gcs_get_rds(object = "CnC/plots/swft.tis.hornetq.plot.RDS", bucket = "neon-eddy-inquiry")
     output$HornetQUptimePlot <- plotly::renderPlotly({
       suppressWarnings(HQUptimePlot)
     })
 
     # Plot AIS CnC Summary
-    CnCUptimePlotAquatics <- aws.s3::s3readRDS(object = "CnC/plots/swft.ais.cnc.plot.RDS", bucket = "research-eddy-inquiry")
+    CnCUptimePlotAquatics <- eddycopipe::neon_gcs_get_rds(object = "CnC/plots/swft.ais.cnc.plot.RDS", bucket = "neon-eddy-inquiry")
     output$CnCUptimePlotAquatics <- plotly::renderPlotly({
       suppressWarnings(CnCUptimePlotAquatics)
     })
 
     # Plot AIS RTU Summary
-    RTUUptimePlotAquatics <- aws.s3::s3readRDS(object = "CnC/plots/swft.ais.rtu.plot.RDS", bucket = "research-eddy-inquiry")
+    RTUUptimePlotAquatics <- eddycopipe::neon_gcs_get_rds(object = "CnC/plots/swft.ais.rtu.plot.RDS", bucket = "neon-eddy-inquiry")
     output$RTUUptimePlotAquatics <- plotly::renderPlotly({
       suppressWarnings(RTUUptimePlotAquatics)
     })
 
     # Summarize AIS HornetQ
-    HQUptimePlotAquatics <- aws.s3::s3readRDS(object = "CnC/plots/swft.ais.hornetq.plot.RDS", bucket = "research-eddy-inquiry")
+    HQUptimePlotAquatics <- eddycopipe::neon_gcs_get_rds(object = "CnC/plots/swft.ais.hornetq.plot.RDS", bucket = "neon-eddy-inquiry")
     output$HornetQUptimePlotAquatics <- plotly::renderPlotly({
       suppressWarnings(HQUptimePlotAquatics)
     })

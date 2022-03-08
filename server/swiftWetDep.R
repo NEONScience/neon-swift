@@ -4,24 +4,14 @@ shiny::observeEvent(input$menu, {
     # Libraries  
     library(dplyr)
     library(tidyr)
-    library(aws.s3)
+    
     library(fst)
     library(ggplot2)
     library(ggdark)
-    
-    # S3 Connection
-    Sys.unsetenv("AWS_SECRET_ACCESS_KEY")
-    Sys.unsetenv("AWS_S3_ENDPOINT")
-    Sys.unsetenv("AWS_DEFAULT_REGION")
-    ei_bucket = "research-eddy-inquiry"
-    Sys.setenv(
-      "AWS_ACCESS_KEY_ID"     = ei_bucket,
-      "AWS_S3_ENDPOINT"       = "neonscience.org",
-      "AWS_DEFAULT_REGION"    = "s3.data"
-    )
+  
   
     # Read Data from File
-    wet_dep_raw = aws.s3::s3read_using(FUN = fst::read_fst, object = "fulcurm/wet_dep/main.fst", bucket = ei_bucket)
+    wet_dep_raw = eddycopipe::neon_gcs_get_fst(object = "fulcurm/wet_dep/main.fst", bucket = ei_bucket)
     
     # Input date reactive wet dep data
     reactive_wet_dep_data = shiny::reactive({
@@ -38,10 +28,10 @@ shiny::observeEvent(input$menu, {
         dplyr::group_by(domainid, siteid) %>% 
         dplyr::count()
     
-      wet_sites = data.table::data.table("siteid" = aws.s3::s3readRDS(object = "lookup/wet_dep_sites.RDS", bucket = ei_bucket))
+      wet_sites = data.table::data.table("siteid" = eddycopipe::neon_gcs_get_rds(object = "lookup/wet_dep_sites.RDS", bucket = ei_bucket))
       
       
-      meta.data.1 = aws.s3::s3readRDS(object = "lookup/swft.full.site.lookup.RDS", bucket = "research-eddy-inquiry") %>%
+      meta.data.1 = eddycopipe::neon_gcs_get_rds(object = "lookup/swft.full.site.lookup.RDS", bucket = "neon-eddy-inquiry") %>%
         dplyr::mutate(domainid = Domain) %>%
         dplyr::mutate(siteid = factor(SiteID, levels = SiteID)) %>%
         dplyr::select(domainid, siteid, Type) %>%

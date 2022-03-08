@@ -1,17 +1,8 @@
 shiny::observeEvent(input$menu, {
   if(input$menu == "swft_cvalfast_tab"){
     
-    # Set S3 Endpoints for safety
-    base::Sys.setenv(
-      "AWS_S3_ENDPOINT"       = "neonscience.org",
-      "AWS_DEFAULT_REGION"    = "s3.data"
-    )
-    
-    # Source the base data pulling function
-    base::source(paste0(swft.server.folder.path, "R/read.eddy.inquiry.swift.R"))
-    
     # Cylinder Metadata
-    swiftCylAssay = read.eddy.inquiry(dataType = "meta", sensor = "spanGas")  %>%
+    swiftCylAssay = eddycopipe::neon_read_eddy_inquiry(dataType = "meta", sensor = "spanGas")  %>%
       reshape2::dcast(date + siteID ~ name, value.var = "conc") %>%
       dplyr::select(date,siteID,`ECSE-LOW`,`ECSE-MEDIUM`,`ECSE-HIGH`,`ECSE-Archive`,`ECTE-LOW`,`ECTE-MEDIUM`,`ECTE-HIGH`,`ECTE-Archive`)
     
@@ -47,7 +38,7 @@ shiny::observeEvent(input$menu, {
     ###                                     Total CVAL Counts and Associated Logics                                    ###
     
     # Display total CVAL's on file
-    uniqueDates = read.eddy.inquiry(dataType = "meta", sensor = "cval")
+    uniqueDates = eddycopipe::neon_read_eddy_inquiry(dataType = "meta", sensor = "cval")
     
     #### Total CVALS on record
     output$swft_cval_total_records <- shinydashboard::renderValueBox({
@@ -296,7 +287,7 @@ shiny::observeEvent(input$menu, {
         
         if(input$swft_cval_sensor == "G2131i"){
           if(is.na(file.pull$Key[1]) == FALSE){
-            cval <- aws.s3::s3read_using(FUN = fst::read.fst, bucket = "research-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
+            cval <- eddycopipe::neon_gcs_get_fst(bucket = "neon-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
               dplyr::mutate(strm_name = ifelse(test = strm_name == "G2131_13Co2_wet", yes = "G2131_fwMoleCo2", no = strm_name)) %>% 
               dplyr::filter(strm_name == "G2131_fwMoleCo2") %>%
               dplyr::mutate(readout_val_double = round(readout_val_double, 3)) %>%
@@ -308,7 +299,7 @@ shiny::observeEvent(input$menu, {
         }
         if(input$swft_cval_sensor == "Li840A"){
           if(is.na(file.pull$Key[1]) == FALSE){
-            cval <- aws.s3::s3read_using(FUN = fst::read.fst, bucket = "research-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
+            cval <- eddycopipe::neon_gcs_get_fst(bucket = "neon-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
               dplyr::filter(strm_name == "Li840_CO2_fwMole") %>%
               dplyr::mutate(readout_val_double = round(readout_val_double, 2))%>%
               dplyr::select(meas_strm_name, strm_name, readout_time, readout_val_double)
@@ -320,7 +311,7 @@ shiny::observeEvent(input$menu, {
         if(input$swft_cval_sensor == "L2130i"){
           if(is.na(file.pull$Key[1]) == FALSE){
             # Read in all the data here, no need for filtering
-            cval <- aws.s3::s3read_using(FUN = fst::read.fst, bucket = "research-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
+            cval <- eddycopipe::neon_gcs_get_fst(bucket = "neon-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
               dplyr::mutate(readout_time = cut(readout_time, breaks = "10 secs")) %>%
               dplyr::mutate(readout_time = lubridate::ymd_hms(readout_time)) %>%
               dplyr::mutate(readout_val_double = round(readout_val_double, 2)) %>%
@@ -337,7 +328,7 @@ shiny::observeEvent(input$menu, {
         if(input$swft_cval_sensor == "Li7200"){
           if(is.na(file.pull$Key[1]) == FALSE){
             # Read in all the data here, no need for filtering
-            cval <- aws.s3::s3read_using(FUN = fst::read.fst, bucket = "research-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
+            cval <- eddycopipe::neon_gcs_get_fst(bucket = "neon-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
               dplyr::filter(strm_name %in% c("Li7200_CO2","Li7200_MFCSampleFlow", "Li7200_leakCheckValve")) %>%
               dplyr::mutate(readout_val_double = round(mean, 2)) %>%
               dplyr::select(-mean)
