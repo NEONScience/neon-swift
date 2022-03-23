@@ -27,7 +27,7 @@ This app is deployable by Docker. This is the path we are headed down as this no
 ### DEV  
 * `docker container stop swift_dev`  
 * `docker container rm swift_dev`  
-* `docker run -it -d -p 4781:3838 --name swift_dev neon-swift:dev`  
+* `docker run -it -d -p 4782:3838 --name swift_dev neon-swift:dev`  
 
 ### PROD  
 * `sudo docker container stop swift`  
