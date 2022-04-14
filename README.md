@@ -16,28 +16,28 @@ This app is deployable by Docker. This is the path we are headed down as this no
 `cd neon-swift`  
   
 3. Build the image  
-* For dev:  `docker build -t neon-swift:dev .`  
-* For prod: `sudo docker build -t neon-swift:prod .`  
+* For dev:  `sudo podman build -t neon-swift:dev .`  
+* For prod: `sudo podman build -t neon-swift:prod .`  
 
 4. Once the image has finished building run the container (still need to define acceptable port ranges):  
-* For dev:  `docker run -it -d -p 4782:3838 --name swift_dev neon-swift:dev`  
-* For prod: `docker run -it -d -p 4781:3838 --name swift neon-swift:prod`  
+* For dev:  `sudo podman run -it -d -p 4782:3838 --name swift_dev neon-swift:dev`  
+* For prod: `sudo podman run -it -d -p 4781:3838 --name swift neon-swift:prod`  
 
 5. Well these commands will stop and remove the old container
 ### DEV  
-* `docker container stop swift_dev`  
-* `docker container rm swift_dev`  
-* `docker run -it -d -p 4782:3838 --name swift_dev neon-swift:dev`  
+* `podman container stop swift_dev`  
+* `podman container rm swift_dev`  
+* `podman run -it -d -p 4782:3838 --name swift_dev neon-swift:dev`  
 
 ### PROD  
-* `sudo docker container stop swift`  
-* `sudo docker container rm swift`  
-* `sudo docker run -it -d -p 4781:3838 --name swift neon-swift:prod`  
+* `sudo podman container stop swift`  
+* `sudo podman container rm swift`  
+* `sudo podman run -it -d -p 4781:3838 --name swift neon-swift:prod`  
 
 Note: We gather usage data.. I wonder if I just stored that in the app or if I needed to volume mount?
 
 5. You can now test the data, launch the app on the browser and the open up a bash into the container  
-`docker exec -it swift bash`
+`podman exec -it swift bash`
   
 ## Style  
 
