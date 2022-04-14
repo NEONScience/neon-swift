@@ -1,7 +1,9 @@
 # Git Ignore
-
 data/fst/stacked/
 data/fst/cval/
 .Rproj.user
 .Rpoj
 R/win10/
+service-auth.json
+.Rhistory
+.RData
