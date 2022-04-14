@@ -22,7 +22,7 @@ swft.server.folder.path = "./"
 # Essential Site Lookup Tables
 swft.full.site.lookup = data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.full.site.lookup.csv"))
 swft.ais.site.lookup  = data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.ais.site.lookup.csv"))
-swft.tis.site.lookup  = data.table::fread(paste0(swft.server.folder.path, "data/lookup/swft.tis.site.lookup.csv"))
+swft.tis.site.lookup  = eddycopipe::tis_site_lookup
 
 When_was_the_update_log_update = base::file.info(paste0(swft.server.folder.path,"www/Swift_Update_Log.pdf"))$mtime
 
