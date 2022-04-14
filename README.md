@@ -25,9 +25,9 @@ This app is deployable by Docker. This is the path we are headed down as this no
 
 5. Well these commands will stop and remove the old container
 ### DEV  
-* `podman container stop swift_dev`  
-* `podman container rm swift_dev`  
-* `podman run -it -d -p 4782:3838 --name swift_dev neon-swift:dev`  
+* `sudo podman container stop swift_dev`  
+* `sudo podman container rm swift_dev`  
+* `sudo podman run -it -d -p 4782:3838 --name swift_dev neon-swift:dev`  
 
 ### PROD  
 * `sudo podman container stop swift`  
