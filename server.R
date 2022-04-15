@@ -1,7 +1,8 @@
 # Specified path to the server folder for Swift
 swft.server.folder.path="./"
 
-eddycopipe::neon_gcs_connect_to_bucket(creds_json = "/srv/shiny-server/swift/service-auth.json")
+# eddycopipe::neon_gcs_connect_to_bucket(creds_json = "/srv/shiny-server/swift/service-auth.json")
+eddycopipe::neon_gcs_connect_to_bucket(creds_json = "~/neon-swift/service-auth.json")
 
 # Defined server logic that loads each seperate tab from it's own server file. 
 server <- function(input, output, session) {
@@ -19,7 +20,7 @@ server <- function(input, output, session) {
     # Combine the new data to the master
     users_data_out = data.table::rbindlist(l = list(all_users_data, users_data_in))
     # Save out the new file
-    eddycopipe::wrap_neon_gcs_upload(x = all_users_data, bucket = "neon-eddy-inquiry", object = "neon-swift/user_log.RDS")
+    eddycopipe::wrap_neon_gcs_upload(x = users_data_out, bucket = "neon-eddy-inquiry", object = "neon-swift/user_log.RDS")
   })
   
   base::source(file='./server/swiftCvalFst.R',           local = TRUE)
@@ -34,4 +35,5 @@ server <- function(input, output, session) {
   base::source(file='./server/swiftQfQmMacro.R',         local = TRUE)
   base::source(file='./server/swiftHidden.R',            local = TRUE)
   base::source(file='./server/swiftWetDep.R',            local = TRUE)
+  base::source(file='./server/swiftPostGres.R',          local = TRUE)
 }

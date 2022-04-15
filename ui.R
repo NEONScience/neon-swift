@@ -78,7 +78,8 @@ shiny::shinyUI(
             shinydashboard::menuSubItem(text = "Wet Dep (dev)",          tabName = "swft_wet_dep_tab",         icon = icon('vial',     lib = "font-awesome"))
         ),
         shinydashboard::menuItem("", tabName = "no"),
-        shinydashboard::menuItem("", tabName = "swft_hidden_tab")
+        shinydashboard::menuItem("", tabName = "swft_hidden_tab"),
+        shinydashboard::menuItem("", tabName = "swft_postgres_tab")
       )
     ),
     # Body
@@ -928,13 +929,93 @@ shiny::shinyUI(
               plotly::plotlyOutput(outputId = "swft_hidden_plot_durations")
             )
           )
-        )
-
+        ),
+        
+        ############################################                            PostGresDB                          ############################################
+        
+        shinydashboard::tabItem(tabName = "swft_postgres_tab",
+          shinydashboard::box(width = 12, 
+            shiny::fluidRow(
+              shiny::column(width = 3,
+                shiny::fluidRow(
+                  shiny::dateRangeInput(inputId = "swft_postgres_date_range", label = "Select a Date Range",
+                                        min = "2017-01-01",
+                                        start = Sys.Date()-7,
+                                        end = Sys.Date())
+                )
+              ),
+              shiny::column(width = 2,
+                shiny::fluidRow(
+                  shiny::selectizeInput(inputId = "swft_postgres_site", multiple = FALSE,
+                                        label = "Select Site",
+                                        choice = c("WREF", "ABBY")
+                  )
+                                        # choices = c(swft.tis.site.lookup$SiteID, "MD01"),
+                                        # selected = sample(swft.tis.site.lookup$SiteID, 1))
+                )
+              ),
+              shiny::column(width = 4,
+                shiny::fluidRow(
+                  shiny::selectizeInput(
+                    inputId = "swft_postgres_data_type", multiple = FALSE,
+                    label = "Select Data",
+                    choice = c("ECSE Iso Analyzer - G2131i"         = "G2131",
+                               "ECSE Iso Analyzer - L2130i"         = "L2130",
+                               "ECSE Gas Analyzer - Li840A"         = "Li840",
+                               "ECTE Gas Analyzer - Li7200"         = "Li7200",
+                               "All CO2"                            = "CO2",
+                               "All H2O"                            = "H2O",
+                               "ECTE 3D Wind - CSAT3"               = "CSAT3",
+                               "ECTE AMRS"                          = "amrs",
+                               "ECTE HMP155"                        = "HMP155",
+                               "ECSE ML Flow Rate"                  = "ecse.mfm",
+                               "ECSE ML/Hut MFM Pressures"          = "ecse.mfm.pressures",
+                               "ECSE Pump Voltages"                 = "ecse.voltage",
+                               "Hut Temps - Comet/Others"           = "ec.temps"
+                    ),
+                    selected = sample(x = c("G2131", "L2130", "Li840", "Li7200", "CO2", "H2O", "CSAT3", "amrs", "HMP155", "ecse.mfm", "ecse.voltage", "ec.temps"),size = 1)
+                  )
+                )
+              ),
+              shiny::column(width = 3,
+                shiny::fluidRow(
+                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'G2131'",
+                    shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_G2131', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2","H2O", "Isotopes", "Sample Valves"))
+                  ),
+                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'Li840'",
+                    shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_Li840', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2", "H2O", "Sample Valves", "Flow Rate"))
+                  ),
+                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'L2130'",
+                    shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_L2130', multiple = FALSE, label = 'Sub Data Type', choices = c("Isotope - 2H", "Isotope - 18O", "H2O", "Sample Valves"))
+                  ),
+                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'Li7200'",
+                    shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_Li7200', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2", "H2O", "Flow", "Signal Strength", "Cell Temp", "Pressure Differential", "Diagnostic" ))
+                  ),
+                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'HMP155'",
+                    shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_HMP155', multiple = FALSE, label = 'Sub Data Type', choices = c("Relative Humidity", "Temperature", "Dew Point"))
+                  ),
+                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'amrs'",
+                    shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_amrs', multiple = FALSE, label = 'Sub Data Type', choices = c("Level", "Time-Series"))
+                  )
+                )
+              )
+            ),
+            shiny::fluidRow(
+              shiny::column(width = 3,
+                shiny::actionButton(inputId = "swft_postgres_actionButton", label = "  Start Plotting!", icon = icon(name = "play-circle"))
+              )
+            ),
+            shiny::fluidRow(
+              shiny::column(width = 12,
+                shiny::plotOutput(outputId = "swft_postgres_plot", height = "600px") %>% shinycssloaders::withSpinner(color="white", type="6", color.background = "white")
+              )
+            )
+            
+          ) # End swft_postgres_tab box
+        ) # End swft_postgres_tab tab
         
       ) # End Tab Items
-      
     ) # End Dashboard Body
-    
   ) # End of Page
   
 ) # End of UI
