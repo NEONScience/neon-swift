@@ -156,7 +156,7 @@ shiny::observeEvent(input$menu, {
           
           swift_cyl_assay = data.table::data.table(
             "date"         = Sys.Date()-1,
-            # "siteid"       = input$swft_cval_site,
+            "siteid"       = input$swft_cval_site,
             "ECSE-LOW"     = 363.575,
             "ECSE-MEDIUM"  = 446.934, 
             "ECSE-HIGH"    = 508.524,   

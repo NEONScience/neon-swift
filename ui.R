@@ -940,7 +940,7 @@ shiny::shinyUI(
                 shiny::fluidRow(
                   shiny::dateRangeInput(inputId = "swft_postgres_date_range", label = "Select a Date Range",
                                         min = "2017-01-01",
-                                        start = Sys.Date()-7,
+                                        start = Sys.Date()-21,
                                         end = Sys.Date())
                 )
               ),
@@ -959,9 +959,9 @@ shiny::shinyUI(
                   shiny::selectizeInput(
                     inputId = "swft_postgres_data_type", multiple = FALSE,
                     label = "Select Data",
-                    choice = c("ECSE Iso Analyzer - G2131i"         = "G2131",
-                               "ECSE Iso Analyzer - L2130i"         = "L2130",
-                               "ECSE Gas Analyzer - Li840A"         = "Li840",
+                    choice = c("ECSE Iso Analyzer - G2131i"         = "G2131-I",
+                               "ECSE Iso Analyzer - L2130i"         = "L2130-I",
+                               "ECSE Gas Analyzer - Li840A"         = "Li-840",
                                "ECTE Gas Analyzer - Li7200"         = "Li7200",
                                "All CO2"                            = "CO2",
                                "All H2O"                            = "H2O",
@@ -973,23 +973,23 @@ shiny::shinyUI(
                                "ECSE Pump Voltages"                 = "ecse.voltage",
                                "Hut Temps - Comet/Others"           = "ec.temps"
                     ),
-                    selected = sample(x = c("G2131", "L2130", "Li840", "Li7200", "CO2", "H2O", "CSAT3", "amrs", "HMP155", "ecse.mfm", "ecse.voltage", "ec.temps"),size = 1)
+                    selected = sample(x = c("G2131-I", "L2130-I", "Li-840", "Li7200", "CO2", "H2O", "CSAT3", "amrs", "HMP155", "ecse.mfm", "ecse.voltage", "ec.temps"),size = 1)
                   )
                 )
               ),
               shiny::column(width = 3,
                 shiny::fluidRow(
-                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'G2131'",
+                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'G2131-I'",
                     shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_G2131', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2","H2O", "Isotopes", "Sample Valves"))
                   ),
-                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'Li840'",
+                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'Li-840'",
                     shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_Li840', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2", "H2O", "Sample Valves", "Flow Rate"))
                   ),
-                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'L2130'",
+                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'L2130-I'",
                     shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_L2130', multiple = FALSE, label = 'Sub Data Type', choices = c("Isotope - 2H", "Isotope - 18O", "H2O", "Sample Valves"))
                   ),
                   shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'Li7200'",
-                    shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_Li7200', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2", "H2O", "Flow", "Signal Strength", "Cell Temp", "Pressure Differential", "Diagnostic" ))
+                    shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_Li7200', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2", "H2O", "Flow", "Signal Strength", "Cell Temp", "Pressure Differential", "Diagnostic"))
                   ),
                   shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'HMP155'",
                     shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_HMP155', multiple = FALSE, label = 'Sub Data Type', choices = c("Relative Humidity", "Temperature", "Dew Point"))
