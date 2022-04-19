@@ -992,10 +992,7 @@ shiny::shinyUI(
                     shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_Li7200', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2", "H2O", "Flow", "Signal Strength", "Cell Temp", "Pressure Differential", "Diagnostic"))
                   ),
                   shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'HMP155'",
-                    shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_HMP155', multiple = FALSE, label = 'Sub Data Type', choices = c("Relative Humidity", "Temperature", "Dew Point"))
-                  ),
-                  shiny::conditionalPanel(condition = "input.swft_postgres_data_type == 'amrs'",
-                    shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_amrs', multiple = FALSE, label = 'Sub Data Type', choices = c("Level", "Time-Series"))
+                    shiny::selectizeInput(inputId = 'swft_postgres_sub_data_type_HMP155', multiple = FALSE, label = 'Sub Data Type', choices = c("Relative Humidity", "Temperature", "Dew Point", "Diagnostic"))
                   )
                 )
               )

@@ -26,6 +26,7 @@ shiny::observeEvent(input$menu, {
         streams_to_pull = c('ML1_MFM_FlowRate', 'ML2_MFM_FlowRate', 'ML3_MFM_FlowRate', 'ML4_MFM_FlowRate','ML5_MFM_FlowRate','ML6_MFM_FlowRate','ML7_MFM_FlowRate','ML8_MFM_FlowRate')
         valves_are_available = FALSE
         plot_labs = labs(x = "", y = "Flowrate (SLPM)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+        facet_rules = facet_wrap(~Stream)
       }
       #######              G2131 Picarro               ####### 
       if(input$swft_postgres_data_type == "G2131-I"){
@@ -33,21 +34,25 @@ shiny::observeEvent(input$menu, {
           streams_to_pull = c('G2131_fwMoleCo2')
           valves_are_available = TRUE
           plot_labs = labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_G2131), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_G2131 == "H2O"){                                                                 
           streams_to_pull = c('G2131_percentFwMoleH2O')
           valves_are_available = TRUE
           plot_labs = labs(x = "", y = "", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_G2131), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_G2131 == "Isotopes"){                                                                 
           streams_to_pull = c('G2131_13C_isotope')
           valves_are_available = TRUE
           plot_labs = labs(x = "", y = "Concentration", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_G2131), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_G2131 == "Sample Valves"){                                                                 
           streams_to_pull = c('G2131-I_Valve_1', 'G2131-I_Valve_2', 'G2131-I_Valve_3' , 'G2131-I_Valve_4', 'G2131-I_Valve_5', 'G2131-I_Valve_6', 'G2131-I_Valve_7', 'G2131-I_Valve_8')
           valves_are_available = FALSE
           plot_labs = labs(x = "", y = "Valve Status (1 = open, 0 = closed)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_G2131), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
       }
       #######              L2130 Picarro               ####### 
@@ -56,21 +61,25 @@ shiny::observeEvent(input$menu, {
           streams_to_pull = c('L2130_2H_isotope')
           valves_are_available = TRUE
           plot_labs = labs(x = "", y = "per mil", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_L2130), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_L2130 == "Isotope - 18O"){                                                                 
           streams_to_pull = c('L2130_18O_isotope')
           valves_are_available = TRUE
           plot_labs = labs(x = "", y = "per mil", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_L2130), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_L2130 == "H2O"){                                                                 
           streams_to_pull = c('L2130_H2O')
           valves_are_available = TRUE
           plot_labs = labs(x = "", y = "Micromoles Per Mole", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_L2130), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_L2130 == "Sample Valves"){                                                                 
           streams_to_pull = c('L2130-I_Valve_1', 'L2130-I_Valve_2', 'L2130-I_Valve_3' , 'L2130-I_Valve_4', 'L2130-I_Valve_5', 'L2130-I_Valve_6', 'L2130-I_Valve_7', 'L2130-I_Valve_8')
           valves_are_available = FALSE
           plot_labs = labs(x = "", y = "Valve Status (1 = open, 0 = closed)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_L2130), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
       }
       
@@ -80,21 +89,25 @@ shiny::observeEvent(input$menu, {
           streams_to_pull = c('Li840_CO2_fwMole')
           valves_are_available = TRUE
           plot_labs = labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li840), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_Li840 == "H2O"){                                                                 
           streams_to_pull = c('Li840_H2O_fwMole')
           valves_are_available = TRUE
           plot_labs = labs(x = "", y = "per mil", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li840), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_Li840 == "Sample Valves"){      
           streams_to_pull = c('Li-840_Valve_1', 'Li-840_Valve_2', 'Li-840_Valve_3' , 'Li-840_Valve_4', 'Li-840_Valve_5', 'Li-840_Valve_6', 'Li-840_Valve_7', 'Li-840_Valve_8')
           valves_are_available = FALSE
           plot_labs = labs(x = "", y = "Micromoles Per Mole", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li840), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_Li840 == "Flow Rate"){                                                                 
           streams_to_pull = c('ECSE_SampleMFC_FlowRate')
           valves_are_available = TRUE
           plot_labs = labs(x = "", y = "Valve Status (1 = open, 0 = closed)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li840), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
       }
       #######              Li7200 ECTE IRGA               ####### 
@@ -103,36 +116,43 @@ shiny::observeEvent(input$menu, {
           streams_to_pull = c('Li7200_CO2')
           valves_are_available = FALSE
           plot_labs = labs(x = "", y = "Concentration (ppm)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li7200), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_Li7200 == "H2O"){                                                                 
           streams_to_pull = c('Li7200_fdMoleH2O')
           valves_are_available = FALSE
           plot_labs = labs(x = "", y = "per mil", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li7200), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_Li7200 == "Flow"){      
           streams_to_pull = c('Li7200_MFCSampleFlow')
           valves_are_available = FALSE
           plot_labs = labs(x = "", y = "Flowrate (SLPM)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li7200), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_Li7200 == "Signal Strength"){                                                                 
           streams_to_pull = c('Li7200_CO2SglStr','Li7200_H2oSglStr')
           valves_are_available = FALSE
           plot_labs = labs(x = "", y = "Strength %", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li7200), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_Li7200 == "Cell Temp"){                                                                 
           streams_to_pull = c('Li7200_cellTempIn', 'Li7200_cellTempOut')
           valves_are_available = FALSE
           plot_labs = labs(x = "", y = "Temperature C", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li7200), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_Li7200 == "Pressure Differential"){                                                                 
           streams_to_pull = c('Li7200_pDiff')
           valves_are_available = FALSE
           plot_labs = labs(x = "", y = "Pressure (kPa)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li7200), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
         if(input$swft_postgres_sub_data_type_Li7200 == "Diagnostic"){                                                                 
           streams_to_pull = c('Li7200_Diag')
           valves_are_available = FALSE
           plot_labs = labs(x = "", y = "Diagnostic", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li7200), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          facet_rules = facet_wrap(~Stream)
         }
       }
       
@@ -141,25 +161,79 @@ shiny::observeEvent(input$menu, {
         streams_to_pull = c('Li7200_CO2', 'G2131_fwMoleCo2', 'Li840_CO2_fwMole')
         valves_are_available = FALSE
         plot_labs = labs(x = "", y = "CO2 (ppm)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2]))
+        facet_rules = facet_wrap(~Stream)
       }
+      #######              ALL H2O                 ####### 
       if(input$swft_postgres_data_type == "H2O"){
         streams_to_pull = c('Li7200_H2O', 'G2131_percentFwMoleH2O', 'Li840_H2O_fwMole', 'L2130_H2O')
         valves_are_available = FALSE
         plot_labs = labs(x = "", y = "H2O (ppm)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2]))
+        facet_rules = facet_wrap(~Stream)
       }
       
+      # 2022-04-19 - Data not currently available
+      if(input$swft_postgres_data_type == "CSAT3"){
+        streams_to_pull = c('csat3_x')
+        valves_are_available = FALSE
+        plot_labs = labs(x = "", y = "Wind Speed (m/s)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2]))
+        facet_rules = facet_wrap(~Stream)
+      }
+      if(input$swft_postgres_data_type == "amrs"){
+        streams_to_pull = c('AMRS_y', 'AMRS_x', 'AMRS_z')
+        valves_are_available = FALSE
+        plot_labs = labs(x = "", y = "Angle (degrees)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2]))
+        facet_rules = facet_wrap(~Stream, scales = "free_y")
+      }
       
-      if(input$swft_postgres_data_type == ""){
+      #######               HMP155                  ####### 
+      if(input$swft_postgres_data_type == "HMP155"){
+        if(input$swft_postgres_sub_data_type_HMP155 == "Relative Humidity"){        
+          streams_to_pull = c('HMP155_RH')
+          valves_are_available = FALSE
+          plot_labs = labs(x = "", y = "Relavtive Humidity (%)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_HMP155), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2]))
+          facet_rules = facet_wrap(~Stream)
+        }
+        if(input$swft_postgres_sub_data_type_HMP155 == "Temperature"){      
+          streams_to_pull = c('HMP155_temp')
+          valves_are_available = FALSE
+          plot_labs = labs(x = "", y = "C", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_HMP155), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2]))
+          facet_rules = facet_wrap(~Stream)
+        }
+        if(input$swft_postgres_sub_data_type_HMP155 == "Dew Point"){                  
+          streams_to_pull = c('HMP155_DewPoint')
+          valves_are_available = FALSE
+          plot_labs = labs(x = "", y = "C", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_HMP155), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2]))
+          facet_rules = facet_wrap(~Stream)
+        }
+        if(input$swft_postgres_sub_data_type_HMP155 == "Diagnostic"){                  
+          streams_to_pull = c('HMP155_diag')
+          valves_are_available = FALSE
+          plot_labs = labs(x = "", y = "", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_HMP155), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2]))
+          facet_rules = facet_wrap(~Stream)
+        }
       }
-      if(input$swft_postgres_data_type == ""){
+      #######               ECSE Sample MFM Pressures                  ####### 
+      if(input$swft_postgres_data_type == "ecse.mfm.pressures"){
+        
+        streams_to_pull = c('ML1_MFM_Pressure', 'ML2_MFM_Pressure', 'ML3_MFM_Pressure', 'ML4_MFM_Pressure','ML5_MFM_Pressure','ML6_MFM_Pressure','ML7_MFM_Pressure','ML8_MFM_Pressure',
+                            'ML1_Inlet_Pressure', 'ML2_Inlet_Pressure', 'ML3_Inlet_Pressure', 'ML4_Inlet_Pressure','ML5_Inlet_Pressure','ML6_Inlet_Pressure','ML7_Inlet_Pressure','ML8_Inlet_Pressure',
+                            'ECSE_SampleMFC_Pressure')
+        valves_are_available = FALSE
+        plot_labs = labs(x = "", y = "Pressure (Kpa)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+        facet_rules = facet_wrap(~Location)
+        
       }
-      if(input$swft_postgres_data_type == ""){
+      if(input$swft_postgres_data_type == "ecse.voltage"){
+        streams_to_pull = c('Li840_PumpVoltage', 'ML1_PumpVoltage', 'ML2_PumpVoltage', 'ML3_PumpVoltage', 'ML4_PumpVoltage', 'ML5_PumpVoltage', 'ML6_PumpVoltage', 'ML7_PumpVoltage', 'ML8_PumpVoltage', 'Li7200_Pump')
+        valves_are_available = FALSE
+        plot_labs = labs(x = "", y = "Voltage", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2]))
+        facet_rules = facet_wrap(~Stream)
       }
-      if(input$swft_postgres_data_type == ""){
-      }
-      if(input$swft_postgres_data_type == ""){
-      }
-      if(input$swft_postgres_data_type == ""){
+      if(input$swft_postgres_data_type == "ec.temps"){
+        streams_to_pull = c('ecte_mfc_sample_tempC', 'ecse_mfc_valid_tempC', 'ecse_comet_tempHut', 'ecte_mfc_valid_tempC', 'HMP155_temp', 'HMP155_temp_sp3', 'ecse_mfc_sample_tempC', 'ecse_comet_H2OMixRatio')
+        valves_are_available = FALSE
+        plot_labs = labs(x = "", y = "Temperature (C)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2]))
+        facet_rules = facet_wrap(~ec.system)
       }
       
       
@@ -270,6 +344,30 @@ shiny::observeEvent(input$menu, {
           dplyr::mutate(readout_val_double = ifelse(test = strm_name == "L2130_H2O", yes = readout_val_double/1000, no = readout_val_double)) 
       }
       
+      # Special cases
+      if(input$swft_postgres_data_type == "ecse.mfm.pressures"){
+        output = output %>%
+          tidyr::separate(col = strm_name, into = c("ML", "Location", "useless"), sep = "_", remove = FALSE) %>% dplyr::select(-useless) %>%
+          dplyr::mutate(strm_name = ML)
+      }
+      
+      # Special Cases
+      if(input$swft_postgres_data_type == "ec.temps"){
+         output = output %>%
+            dplyr::group_by(strm_name) %>%
+            dplyr::filter(strm_name != "ecse_comet_H2OMixRatio") %>%
+            tidyr::separate(col = strm_name, into = c("ec.system", "sensor","type","na"), sep = "_", remove = FALSE) %>%
+            dplyr::select(-na) %>%
+            dplyr::mutate(type = ifelse(test = type == "tempHut", yes = "comet", no = type)) %>%
+            dplyr::mutate(type = ifelse(test = type == "tempC", yes = "comet", no = type)) %>%
+            dplyr::mutate(ec.system = ifelse(test = ec.system == "ecse", yes = "Instrument Hut", no = "Environmental Enclosure")) %>%
+            dplyr::mutate(ec.system = ifelse(test = stringr::str_detect(string = strm_name, pattern = "HMP155_temp"), yes = "Ambient", no = ec.system)) %>%
+            dplyr::mutate(strm_name = gsub(x = strm_name, pattern = "_temp", replacement = "")) %>%
+            dplyr::mutate(strm_name = gsub(x = strm_name, pattern = "C", replacement = "")) %>%
+            dplyr::mutate(strm_name = gsub(x = strm_name, pattern = "ecse_cometHut", replacement = "ecse_comet")) %>%
+            dplyr::mutate(type = ifelse(test = strm_name == "HMP155", yes = "tower.top", no = type))
+      }
+      
       if(aggregate_the_data){ # Should we aggregate the data based upon how many days were requested
         
         output_cleaned = output %>%
@@ -329,7 +427,7 @@ shiny::observeEvent(input$menu, {
         
         if(aggregate_the_data){ # Aggregated data plot
           plot_output = ggplot(output_cleaned, aes(x = timestamp, y = Value, color = Stream)) +
-            geom_point() +
+            geom_point(alpha = .5) +
             # geom_line() +
             scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
             scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y\n%m-%d") +
@@ -342,11 +440,11 @@ shiny::observeEvent(input$menu, {
               axis.text.y = element_text(color = "white", face = "bold", size = 20)
             ) +
             guides(color = guide_legend(override.aes = list(size = 5, alpha = 1))) + 
-            facet_wrap(~Stream)
+            facet_rules
         } else {
           if(valves_are_available){ # Non-aggregated plots with valves
             plot_output = ggplot(output_cleaned, aes(x = timestamp, y = Value, color = SampleLevel)) +
-              geom_point() +
+              geom_point(alpha = .5) +
               # geom_line() +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y\n%m-%d") +
@@ -359,10 +457,10 @@ shiny::observeEvent(input$menu, {
                 axis.text.y = element_text(color = "white", face = "bold", size = 20)
               ) +
               guides(color = guide_legend(override.aes = list(size = 5, alpha = 1))) +
-              facet_wrap(~Stream)
+              facet_rules
           } else { # Non-aggregated plots withOUT valves
             plot_output = ggplot(output_cleaned, aes(x = timestamp, y = Value, color = Stream)) +
-              geom_point() +
+              geom_point(alpha = .5) +
               # geom_line() +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
               scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y\n%m-%d") +
@@ -375,7 +473,7 @@ shiny::observeEvent(input$menu, {
                 axis.text.y = element_text(color = "white", face = "bold", size = 20)
               ) +
               guides(color = guide_legend(override.aes = list(size = 5, alpha = 1))) + 
-              facet_wrap(~Stream)
+              facet_rules
           }
         }
       } else { # If no data, produce a blank plot
