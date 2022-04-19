@@ -5,6 +5,22 @@ shiny::observeEvent(input$menu, {
       
       db_con = eddycopipe::build_postgres_connection()
       
+      
+      
+      ################################################################################################
+      ################################################################################################
+      ################################################################################################
+      ########                                                                                ########
+      ########                                                                                ########
+      ########                                                                                ########
+      ########                            Format the query!                                   ########
+      ########                                                                                ########
+      ########                                                                                ########
+      ########                                                                                ########
+      ################################################################################################
+      ################################################################################################
+      ################################################################################################
+      
       #######              ECSE MFM Flows              ####### 
       if(input$swft_postgres_data_type == "ecse.mfm"){
         streams_to_pull = c('ML1_MFM_FlowRate', 'ML2_MFM_FlowRate', 'ML3_MFM_FlowRate', 'ML4_MFM_FlowRate','ML5_MFM_FlowRate','ML6_MFM_FlowRate','ML7_MFM_FlowRate','ML8_MFM_FlowRate')
@@ -101,7 +117,7 @@ shiny::observeEvent(input$menu, {
         if(input$swft_postgres_sub_data_type_Li7200 == "Signal Strength"){                                                                 
           streams_to_pull = c('Li7200_CO2SglStr','Li7200_H2oSglStr')
           valves_are_available = FALSE
-          plot_labs = labs(x = "", y = "Strenght %", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li7200), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
+          plot_labs = labs(x = "", y = "Strength %", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type, " ", input$swft_postgres_sub_data_type_Li7200), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2])) 
         }
         if(input$swft_postgres_sub_data_type_Li7200 == "Cell Temp"){                                                                 
           streams_to_pull = c('Li7200_cellTempIn', 'Li7200_cellTempOut')
@@ -120,24 +136,46 @@ shiny::observeEvent(input$menu, {
         }
       }
       
+      #######              ALL CO2                 ####### 
+      if(input$swft_postgres_data_type == "CO2"){
+        streams_to_pull = c('Li7200_CO2', 'G2131_fwMoleCo2', 'Li840_CO2_fwMole')
+        valves_are_available = FALSE
+        plot_labs = labs(x = "", y = "CO2 (ppm)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2]))
+      }
+      if(input$swft_postgres_data_type == "H2O"){
+        streams_to_pull = c('Li7200_H2O', 'G2131_percentFwMoleH2O', 'Li840_H2O_fwMole', 'L2130_H2O')
+        valves_are_available = FALSE
+        plot_labs = labs(x = "", y = "H2O (ppm)", title = paste0(input$swft_postgres_site, " - ", input$swft_postgres_data_type), subtitle = paste0(input$swft_postgres_date_range[1], " to ", input$swft_postgres_date_range[2]))
+      }
       
       
+      if(input$swft_postgres_data_type == ""){
+      }
+      if(input$swft_postgres_data_type == ""){
+      }
+      if(input$swft_postgres_data_type == ""){
+      }
+      if(input$swft_postgres_data_type == ""){
+      }
+      if(input$swft_postgres_data_type == ""){
+      }
+      if(input$swft_postgres_data_type == ""){
+      }
       
       
-      if(input$swft_postgres_data_type == ""){
-      }
-      if(input$swft_postgres_data_type == ""){
-      }
-      if(input$swft_postgres_data_type == ""){
-      }
-      if(input$swft_postgres_data_type == ""){
-      }
-      if(input$swft_postgres_data_type == ""){
-      }
-      if(input$swft_postgres_data_type == ""){
-      }
-      if(input$swft_postgres_data_type == ""){
-      }
+      ################################################################################################
+      ################################################################################################
+      ################################################################################################
+      ########                                                                                ########
+      ########                                                                                ########
+      ########                                                                                ########
+      ########                            Query the  data!                                    ########
+      ########                                                                                ########
+      ########                                                                                ########
+      ########                                                                                ########
+      ################################################################################################
+      ################################################################################################
+      ################################################################################################
       
       # Determine if aggregation is needed
       days_requested_for_plotting = as.numeric(difftime(input$swft_postgres_date_range[2], input$swft_postgres_date_range[1], units = "days"))
@@ -196,25 +234,54 @@ shiny::observeEvent(input$menu, {
         
       }
 
+      # Start query timer
+      start_time = Sys.time() 
       
-      start_time = Sys.time()
       ################            QUERY            ################
       res = RPostgres::dbSendQuery(conn = db_con, statement = so_query)
       output = RPostgres::dbFetch(res)
       ################            QUERY            ################
-      end_time = Sys.time()
-      message(paste0(difftime(end_time, start_time, units = "secs")))
       
-      # Quickly clean the data
-      if(aggregate_the_data){
+      # Stop query timer
+      end_time = Sys.time()
+      postgres_query_time = difftime(end_time, start_time, units = "secs")
+      message(paste0(Sys.time(), ": ", postgres_query_time))
+      
+      
+      ################################################################################################
+      ################################################################################################
+      ################################################################################################
+      ########                                                                                ########
+      ########                                                                                ########
+      ########                                                                                ########
+      ########                            Clean the  data!                                    ########
+      ########                                                                                ########
+      ########                                                                                ########
+      ########                                                                                ########
+      ################################################################################################
+      ################################################################################################
+      ################################################################################################
+      
+      # Special case here for H2O values from L2130 are not in same units as other h2o streams
+      if(input$swft_postgres_data_type == "H2O"){
+        output = output %>%
+          dplyr::mutate(strm_name = base::trimws(strm_name)) %>%
+          dplyr::mutate(readout_val_double = ifelse(test = strm_name == "G2131_percentFwMoleH2O", yes = readout_val_double*10, no = readout_val_double)) %>%
+          dplyr::mutate(readout_val_double = ifelse(test = strm_name == "L2130_H2O", yes = readout_val_double/1000, no = readout_val_double)) 
+      }
+      
+      if(aggregate_the_data){ # Should we aggregate the data based upon how many days were requested
+        
         output_cleaned = output %>%
           tidyr::unite(col = "date", c(year, month, day), sep = "-") %>% 
           dplyr::mutate(date = as.Date(date, origin = "1970-01-01")) %>%
           tidyr::unite(col = timestamp, c(date, hour), sep = " ") %>%
-          dplyr::mutate(timestamp = lubridate::ymd_h(timestamp))
+          dplyr::mutate(timestamp = lubridate::ymd_h(timestamp)) %>%
+          dplyr::rename(Stream = strm_name, Value = readout_val_double)
+        
       } else {
         
-        if(valves_are_available){
+        if(valves_are_available){ # If valves are available, join them to the table (non-aggregation only)
           
           valve_data = output %>%
             dplyr::filter(stringr::str_detect(string = strm_name, pattern = "_Valve_") == TRUE) %>%
@@ -230,47 +297,88 @@ shiny::observeEvent(input$menu, {
             
           output_cleaned = dplyr::left_join(x = non_valve_data, y = valve_data, by = "readout_time")  %>%
             dplyr::rename(timestamp = readout_time) %>%
-            dplyr::mutate(SampleLevel = ifelse(test = is.na(SampleLevel) == TRUE, yes = "Validation", no = SampleLevel)) 
+            dplyr::mutate(SampleLevel = ifelse(test = is.na(SampleLevel) == TRUE, yes = "Validation", no = SampleLevel))  %>%
+            dplyr::rename(Stream = strm_name, Value = readout_val_double)
           
-        } else {
+        } else { # If valves are not available, just clean the data
+          
           output_cleaned = output %>%
-            dplyr::rename(timestamp = readout_time)
+            dplyr::rename(timestamp = readout_time) %>%
+            dplyr::rename(Stream = strm_name, Value = readout_val_double)
+          
         }
         
       }
       
+      
+      ################################################################################################
+      ################################################################################################
+      ################################################################################################
+      ########                                                                                ########
+      ########                                                                                ########
+      ########                                                                                ########
+      ########                            Plot the the data!                                  ########
+      ########                                                                                ########
+      ########                                                                                ########
+      ########                                                                                ########
+      ################################################################################################
+      ################################################################################################
+      ################################################################################################
+      
       if(nrow(output_cleaned) > 0){
-        if(aggregate_the_data){
-          plot_output = ggplot(output_cleaned, aes(x = timestamp, y = readout_val_double, color = strm_name)) +
+        
+        if(aggregate_the_data){ # Aggregated data plot
+          plot_output = ggplot(output_cleaned, aes(x = timestamp, y = Value, color = Stream)) +
             geom_point() +
             # geom_line() +
             scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
-            scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
+            scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y\n%m-%d") +
             plot_labs +
-            theme(axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) + # Option to angle the facet grid y panel text
-            facet_wrap(~strm_name)
+            ggdark::dark_theme_bw() + 
+            theme(
+              text = element_text(color = "white", face = "bold", size = 20), 
+              legend.position = "top", 
+              axis.text.x = element_text(color = "white", face = "bold", size = 20),
+              axis.text.y = element_text(color = "white", face = "bold", size = 20)
+            ) +
+            guides(color = guide_legend(override.aes = list(size = 5, alpha = 1))) + 
+            facet_wrap(~Stream)
         } else {
-          if(valves_are_available){
-            plot_output = ggplot(output_cleaned, aes(x = timestamp, y = readout_val_double, color = SampleLevel)) +
+          if(valves_are_available){ # Non-aggregated plots with valves
+            plot_output = ggplot(output_cleaned, aes(x = timestamp, y = Value, color = SampleLevel)) +
               geom_point() +
               # geom_line() +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
-              scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
+              scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y\n%m-%d") +
               plot_labs +
-              theme(axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) + # Option to angle the facet grid y panel text
-              facet_wrap(~strm_name)
-          } else {
-            plot_output = ggplot(output_cleaned, aes(x = timestamp, y = readout_val_double, color = strm_name)) +
+              ggdark::dark_theme_bw() + 
+              theme(
+                text = element_text(color = "white", face = "bold", size = 20), 
+                legend.position = "top", 
+                axis.text.x = element_text(color = "white", face = "bold", size = 20),
+                axis.text.y = element_text(color = "white", face = "bold", size = 20)
+              ) +
+              guides(color = guide_legend(override.aes = list(size = 5, alpha = 1))) +
+              facet_wrap(~Stream)
+          } else { # Non-aggregated plots withOUT valves
+            plot_output = ggplot(output_cleaned, aes(x = timestamp, y = Value, color = Stream)) +
               geom_point() +
               # geom_line() +
               scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
-              scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
+              scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y\n%m-%d") +
               plot_labs +
-              theme(axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) + # Option to angle the facet grid y panel text
-              facet_wrap(~strm_name)
+              ggdark::dark_theme_bw() + 
+              theme(
+                text = element_text(color = "white", face = "bold", size = 20), 
+                legend.position = "top", 
+                axis.text.x = element_text(color = "white", face = "bold", size = 20),
+                axis.text.y = element_text(color = "white", face = "bold", size = 20)
+              ) +
+              guides(color = guide_legend(override.aes = list(size = 5, alpha = 1))) + 
+              facet_wrap(~Stream)
           }
         }
-      } else {
+      } else { # If no data, produce a blank plot
         plot_output = ggplot()+
           geom_text(label = "text")+
           ggdark::dark_theme_bw() +
@@ -287,9 +395,11 @@ shiny::observeEvent(input$menu, {
       end_time = Sys.time()
       message(paste0(difftime(end_time, start_time, units = "secs")))
       
+      # Output shiny object to Reactive
       plot_output
     })
     
+    # Output shiny object to UI
     output$swft_postgres_plot = shiny::renderPlot({
       swft_postgres_plot()
     })
