@@ -158,8 +158,8 @@ shiny::observeEvent(input$menu, {
             "date"         = Sys.Date()-1,
             "siteid"       = input$swft_cval_site,
             "ECSE-LOW"     = 363.575,
-            "ECSE-MEDIUM"  = 446.934, 
-            "ECSE-HIGH"    = 508.524,   
+            "ECSE-MEDIUM"  = 440.322, 
+            "ECSE-HIGH"    = 512.099,   
             "ECSE-Archive" = 434.384, 
             
             "ECTE-LOW"     = 364.166,    
