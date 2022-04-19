@@ -86,7 +86,7 @@ shiny::observeEvent(input$menu, {
     # Check how many rows of data were pulled
     output$swft_timestamp_last_update_box <- shinydashboard::renderValueBox({
       shinydashboard::valueBox(
-        value = lubridate::ymd_hms(base::max(timestamp_files_lookup$LastModified, na.rm = TRUE)),
+        value = lubridate::ymd_hms(base::max(timestamp_files_lookup$updated, na.rm = TRUE)),
         subtitle = "Last Updated (UTC)",
         width = 12,
         color = "black"
