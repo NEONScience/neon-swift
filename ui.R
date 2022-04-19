@@ -103,7 +103,7 @@ shiny::shinyUI(
               shiny::column(width = 7,
               shiny::h1("An Eddy-Covariance State of Health Dashboard"),
               shiny::tags$h2(
-                shiny::helpText(a("Swift Update Log - Last updated: 2021-11-01",href="./Swift_Update_Log.pdf",target="_blank"))
+                shiny::helpText(a("Swift Update Log - Last updated: 2022-04-19",href="./Swift_Update_Log.pdf",target="_blank"))
               ),
               shiny::h4("Users can use this application to plot data from all TIS sites to identify Eddy-Co issues, view trends, and verify calibrations/validations."),
               shiny::icon("signal", lib = "font-awesome"),
