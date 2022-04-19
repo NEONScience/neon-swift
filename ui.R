@@ -867,7 +867,7 @@ shiny::shinyUI(
             shiny::fluidRow(
               shiny::column(width = 5,
                 shiny::actionButton(inputId = "swft_qfqm_actionButton", label = "Gather QFQM data"),
-                shiny::helpText("Press button once per query.\nThis takes roughly 3 seconds per week of data gathered. If the variable box is greyed out, you know that the code is still processing your request.")
+                shiny::helpText("Press button once per query. All of the metrics for that time period are pulled together. So enter your query, then you can change Terms as much as you like. Only requery when changing the date range or site.\nThis takes roughly 20 seconds per week of data gathered. If the variable box is greyed out, you know that the code is still processing your request.")
               ),
               shiny::column(width = 2),
               shiny::column(width = 5)
