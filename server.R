@@ -1,8 +1,7 @@
 # Specified path to the server folder for Swift
 swft.server.folder.path="./"
 
-# eddycopipe::neon_gcs_connect_to_bucket(creds_json = "/srv/shiny-server/swift/service-auth.json")
-eddycopipe::neon_gcs_connect_to_bucket(creds_json = "~/neon-swift/service-auth.json")
+eddycopipe::neon_gcs_connect_to_bucket(creds_json = "./service-auth.json")
 
 # Defined server logic that loads each seperate tab from it's own server file. 
 server <- function(input, output, session) {

@@ -3,7 +3,7 @@ shiny::observeEvent(input$menu, {
     
     swft_postgres_plot = shiny::eventReactive(input$swft_postgres_actionButton,{
       
-      db_con = eddycopipe::build_postgres_connection()
+      db_con = eddycopipe::build_postgres_connection(db_password = base::readRDS("./postgres_pw.RDS"))
       
       
       
