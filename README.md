@@ -23,6 +23,34 @@ This app is deployable by Docker. This is the path we are headed down as this no
 * For dev:  `sudo podman run -it -d -p 4782:3838 --name swift_dev neon-swift:dev`  
 * For prod: `sudo podman run -it -d -p 4781:3838 --name swift neon-swift:prod`  
 
+6. Set up gsutil (this is fun!)
+* The setup is based upon [this SO post](https://stackoverflow.com/a/71605401) so bare with me.  
+* To authenticate to the public gs data, you must have a user authenticated to access the data otherwise you get an error similar to this when trying to run `gsutil` commands.  
+* `> ServiceException: 401 Anonymous caller does not have storage.objects.list access to the Google Cloud Storage bucket.`  
+* So to authenticate you must first install the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install-sdk) on your local machine, following along there.  
+* On your local machine after you've install GC CLI, you will run `gcloud init`, where you will authenticate by following the prompts and logining in through google, allowing GSUtil to have access.  
+* Now that you're set up on Windows, you can set up the container's permissions. Assumming you've already started the container, enter the container using the following command (container name may vary)  
+* `podman exec -it swift bash`  
+* Now that you are in the container as root, we must switch to the shiny user.
+* `su shiny`  
+* Verify you are the shiny user  
+* `whoami`  
+* Run `gcloud auth login` as the shiny user and you should see the following pop up. 
+```
+gcloud auth login --remote-bootstrap="https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=****.apps.googleusercontent.com&scope=openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fappengine.admin+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcompute+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faccounts.reauth&state=****&access_type=offline&code_challenge=****&code_challenge_method=S256&token_usage=remote"
+```  
+* Copy the whole output and paste that into a local `cmd` terminal and run it  
+* This should take you to the same authentication page from before. Accept and move throught the prompts
+* ![image](https://user-images.githubusercontent.com/45089457/164304070-c386555e-a334-40be-84ff-cd8c05c90eb7.png)  
+* ![image](https://user-images.githubusercontent.com/45089457/164304289-2388f43c-dc84-4f23-a841-8c9d2e9d5d88.png)
+* Once you see that you've been authenticated ![image](https://user-images.githubusercontent.com/45089457/164303207-50d1c10e-0598-4662-81fb-f37adb9a670d.png)  
+* You should see a new output in the local `cmd` terminal window.  
+```
+https://localhost:8085/?state=****&code=****&scope=email%20openid%20https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/cloud-platform%20https://www.googleapis.com/auth/appengine.admin%20https://www.googleapis.com/auth/compute%20https://www.googleapis.com/auth/accounts.reauth&authuser=0&hd=****&prompt=consent
+```  
+* Copy and paste this into your docker terminal where you are the shiny user from before and press ENTER.
+* Congrats! 
+
 5. Well these commands will stop and remove the old container
 ### DEV  
 * `sudo podman container stop swift_dev`  
