@@ -47,18 +47,22 @@ RUN R -e "install.packages('viridis', dependencies=TRUE, repos='http://cran.rstu
 RUN R -e "install.packages('viridisLite', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('gridExtra', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 RUN R -e "install.packages('googleCloudStorageR', dependencies=TRUE, repos='http://cran.rstudio.com/')"
+RUN R -e "install.packages('RPostgres', dependencies=TRUE, repos='http://cran.rstudio.com/')"
 
 COPY /eddycopipe_0.3.5.tar.gz /tmp/
 RUN R -e "devtools::install_local('/tmp/eddycopipe_0.3.5.tar.gz')"
 
 COPY /iRobert.base_0.4.3.tar.gz /tmp/
 RUN R -e "devtools::install_local('/tmp/iRobert.base_0.4.3.tar.gz')"
+
+# Install GSutil
+RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+RUN apt-get install apt-transport-https ca-certificates gnupg curl -y
+RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+RUN apt-get update && apt-get install google-cloud-sdk -y
+
 ## Copy your working files over
 ## The $USER defaults to `rstudio` but you can change this at runtime
 COPY . / /srv/shiny-server/swift/
-
-RUN chmod 777 /srv/shiny-server/swift/data/user_log/user_log.RDS
-
-# COPY ./data /home/$USER/Data
 
 CMD ["/usr/bin/shiny-server"]
