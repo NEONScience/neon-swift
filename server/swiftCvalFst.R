@@ -231,12 +231,33 @@ shiny::observeEvent(input$menu, {
     #### ECTE Validation Value boxes
     
     swiftCylAssayWideEcte <- shiny::reactive({
-      swiftCylAssay %>%
-        dplyr::filter(siteID == input$swft_cval_site) %>% 
-        dplyr::mutate(closeness = difftime(base::as.Date(input$swft_cval_react_unique_cvals, orgin = "1970-01-01"), date, units = "days")) %>% 
-        dplyr::filter(closeness > 0) %>% 
-        dplyr::filter(closeness == min(closeness, na.rm = TRUE)) %>% 
-        dplyr::select(date, siteID, `ECTE-LOW`, `ECTE-MEDIUM`, `ECTE-HIGH`, `ECTE-Archive`)
+      
+      if(!grepl(input$swft_cval_site, pattern = "MD")){
+        swiftCylAssay %>%
+          dplyr::filter(siteID == input$swft_cval_site) %>% 
+          dplyr::mutate(closeness = difftime(base::as.Date(input$swft_cval_react_unique_cvals, orgin = "1970-01-01"), date, units = "days")) %>% 
+          dplyr::filter(closeness > 0) %>% 
+          dplyr::filter(closeness == min(closeness, na.rm = TRUE)) %>% 
+          dplyr::select(date, siteID, `ECTE-LOW`, `ECTE-MEDIUM`, `ECTE-HIGH`, `ECTE-Archive`)
+      } else {
+        if(input$swft_cval_site == "MD03"){
+          
+          swift_cyl_assay = data.table::data.table(
+            "date"         = Sys.Date()-1,
+            "siteid"       = input$swft_cval_site,
+            "ECTE-LOW"     = 364.166,    
+            "ECTE-MEDIUM"  = 405.065,  
+            "ECTE-HIGH"    = 543.866,    
+            "ECTE-Archive" = 433.138
+          )
+          
+        } else {
+          
+        }
+      
+      }
+      
+      
     })
     #### Ecte Span Gas Value Boxes
     output$swiftEcteLow <- shinydashboard::renderValueBox({
@@ -351,6 +372,7 @@ shiny::observeEvent(input$menu, {
         }
         if(input$swft_cval_sensor == "Li7200"){
           if(is.na(file.pull$Key[1]) == FALSE){
+
             # Read in all the data here, no need for filtering
             cval <- eddycopipe::neon_gcs_get_fst(bucket = "neon-eddy-inquiry", object = paste0(file.pull$Key[1])) %>%
               dplyr::filter(strm_name %in% c("Li7200_CO2","Li7200_MFCSampleFlow", "Li7200_leakCheckValve")) %>%
@@ -456,20 +478,30 @@ shiny::observeEvent(input$menu, {
         if(input$swft_cval_sensor == "Li7200"){
           # Data must be available and greater than 0
           if(input$swft_cval_react_unique_cvals > as.Date("2021-01-01") & nrow(cvalFstInput()) > 0){
+
             cval.test.take.1 = cvalFstInput() %>%
               dplyr::filter(strm_name %in% c("Li7200_MFCSampleFlow","Li7200_leakCheckValve")) %>%
-              reshape2::dcast(timestamp ~ strm_name, value.var = "readout_val_double") %>%
+              reshape2::dcast(timestamp ~ strm_name, value.var = "readout_val_double") 
+            
+            if("Li7200_leakCheckValve" %in% names(cval.test.take.1)){
+              cval.test.take.1 = cval.test.take.1 %>%
               dplyr::filter(Li7200_leakCheckValve == 1) %>%
               reshape2::melt(id.vars = "timestamp",value.name = "readout_val_double") 
-            
-            ggplot(cval.test.take.1)+
-              geom_line(aes(x=timestamp, y=readout_val_double, color = variable)) +
-              scale_x_datetime(date_breaks = "2 mins", date_labels = "%H:%M")+
-              scale_y_continuous(breaks = scales::pretty_breaks(n = 9)) +
-              geom_hline(yintercept = 0, color = "white", linetype = "dashed") +
-              theme(legend.position = "none") +
-              labs(x="",y="Flow Rate (SLPM) \t\t Valve Status",color = "Stream Type",title = paste0(input$swft_cval_site," ", input$swft_cval_sensor, " Leak Check ", input$swft_cval_react_unique_cvals)) +
-              facet_wrap(~variable, scales = "free")
+              
+              ggplot(cval.test.take.1)+
+                geom_line(aes(x=timestamp, y=readout_val_double, color = variable)) +
+                scale_x_datetime(date_breaks = "2 mins", date_labels = "%H:%M")+
+                scale_y_continuous(breaks = scales::pretty_breaks(n = 9)) +
+                geom_hline(yintercept = 0, color = "white", linetype = "dashed") +
+                theme(legend.position = "none") +
+                labs(x="",y="Flow Rate (SLPM) \t\t Valve Status",color = "Stream Type",title = paste0(input$swft_cval_site," ", input$swft_cval_sensor, " Leak Check ", input$swft_cval_react_unique_cvals)) +
+                facet_wrap(~variable, scales = "free")
+              
+            } else {
+              ggplot()+
+                geom_text(label = "text")+
+                annotate("text", label = "No Validation Check data for this time period", x = 0, y = 0, color = "white", size = 12)
+            }
           } else {
             # If data is not available or = to zero, provide this plot
             ggplot()+
