@@ -372,13 +372,17 @@
           } else if(input$swft_EddyCo_sub_data_type_Li840 == "Flow Rate"){
             
             # Read flow data
-            swft.data.out = eddycopipe::neon_read_eddy_inquiry(dataType  = "2min", 
+            swft.data.mfc = eddycopipe::neon_read_eddy_inquiry(dataType  = "2min", 
                                               sensor    = "ecse.sample.mfc", 
                                               siteID    = input$swft_EddyCo_site,
                                               startDate = input$swft_EddyCo_date_range[1], 
                                               endDate   = input$swft_EddyCo_date_range[2],
                                               silent    = TRUE
-            )
+            ) 
+            if(nrow(swft.data.mfc) > 0){
+              swft.data.out = swft.data.mfc %>%
+                dplyr::filter(strm_name == "ECSE_SampleMFC_FlowRate")
+            }
             
           } else {
             swft.data.out = data.table::data.table()
