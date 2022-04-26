@@ -390,65 +390,74 @@
           
         } else if(input$swft_EddyCo_data_type == "L2130"){
           
-          swft.l2130.valves = swft.data.in %>%
-            dplyr::filter(stringr::str_detect(string = `Stream Name`, pattern = "_Valve") )%>%
-            dplyr::distinct() %>%
-            tidyr::separate(col = `Stream Name`, into = c("Sensor", "Delete", "SampleLevel"), sep = "_") %>%
-            dplyr::mutate(Sensor = ifelse (Sensor == "L2130", yes = "L2130-I", no = Sensor))  %>%
-            dplyr::mutate(SampleLevel = ifelse (SampleLevel == "Valve", yes = "Validation", no = SampleLevel)) %>%
-            dplyr::filter(readout_val_double == 1) %>%
-            dplyr::select(readout_time, SampleLevel)
-          
-          if(input$swft_EddyCo_sub_data_type_L2130 == "Isotope - 2H"){
+          if(input$swft_EddyCo_sub_data_type_L2130 == "N2 Flag"){
+
             swft.data.out = swft.data.in %>%
-              dplyr::filter(`Stream Name` == "L2130_2H_isotope") %>%
-              dplyr::left_join(y = swft.l2130.valves, by = "readout_time") %>%
-              dplyr::filter(readout_val_double <= 0 & readout_val_double > -1000)
+              dplyr::filter(`Stream Name` == "L2130_n2Flag")
             
-          }
-          if(input$swft_EddyCo_sub_data_type_L2130 == "Isotope - 18O"){
-            swft.data.out = swft.data.in %>%
-              dplyr::filter(`Stream Name` == "L2130_18O_isotope") %>%
-              dplyr::left_join(y = swft.l2130.valves, by = "readout_time") %>%
-              dplyr::filter(readout_val_double <= 0 & readout_val_double > -50)
-          }
-          if(input$swft_EddyCo_sub_data_type_L2130 == "H2O"){
-            swft.data.out = swft.data.in %>%
-              dplyr::filter(`Stream Name` == "L2130_H2O") %>%
-              dplyr::left_join(y = swft.l2130.valves, by = "readout_time")
-          }
-          if(input$swft_EddyCo_sub_data_type_L2130 == "Sample Valves"){
-            swft.data.out = swft.data.in %>%
-              dplyr::filter(stringr::str_detect(string = `Stream Name`, pattern = "_Valve"))%>%
+          } else {
+            swft.l2130.valves = swft.data.in %>%
+              dplyr::filter(stringr::str_detect(string = `Stream Name`, pattern = "_Valve") )%>%
+              dplyr::distinct() %>%
               tidyr::separate(col = `Stream Name`, into = c("Sensor", "Delete", "SampleLevel"), sep = "_") %>%
               dplyr::mutate(Sensor = ifelse (Sensor == "L2130", yes = "L2130-I", no = Sensor))  %>%
               dplyr::mutate(SampleLevel = ifelse (SampleLevel == "Valve", yes = "Validation", no = SampleLevel)) %>%
-              dplyr::mutate(`Stream Name` = paste0("ML ", SampleLevel, " Solenoid ") )  %>%
-              dplyr::mutate(`Stream Name` = ifelse(test = `Stream Name` == "ML Validation Solenoid ", yes = "Validation Solenoid", no = `Stream Name`)) %>% 
-              dplyr::group_by(SiteID, `Stream Name`) %>%
-              dplyr::add_tally() %>%
-              dplyr::summarise(
-                n = n[1],
-                Open  = sum(readout_val_double, na.rm = TRUE),
-                Closed = n - Open
-              ) %>% 
-              dplyr::mutate(Open =  paste0(100*round((Open/n),3), "%")) %>% 
-              dplyr::mutate(Closed = paste0(100*round((Closed/n),3), "%")) %>% 
-              reshape2::melt(id.vars = c("SiteID","Stream Name")) %>% 
-              dplyr::filter(variable != "n") %>%
-              dplyr::mutate(Percentage = as.numeric(gsub(x = value, pattern = "%", replacement = ""))) %>% 
-              dplyr::mutate(`Valve Status` = variable) %>% 
-              dplyr::select(SiteID, `Stream Name`, `Valve Status`, Percentage) %>%
-              dplyr::arrange(`Stream Name`)
+              dplyr::filter(readout_val_double == 1) %>%
+              dplyr::select(readout_time, SampleLevel)
             
-            names(swft.data.out) = c("SiteID", "Stream Name", "Valve Status", "Percentage")
+            if(input$swft_EddyCo_sub_data_type_L2130 == "Isotope - 2H"){
+              swft.data.out = swft.data.in %>%
+                dplyr::filter(`Stream Name` == "L2130_2H_isotope") %>%
+                dplyr::left_join(y = swft.l2130.valves, by = "readout_time") %>%
+                dplyr::filter(readout_val_double <= 0 & readout_val_double > -1000)
+              
+            }
+            if(input$swft_EddyCo_sub_data_type_L2130 == "Isotope - 18O"){
+              swft.data.out = swft.data.in %>%
+                dplyr::filter(`Stream Name` == "L2130_18O_isotope") %>%
+                dplyr::left_join(y = swft.l2130.valves, by = "readout_time") %>%
+                dplyr::filter(readout_val_double <= 0 & readout_val_double > -50)
+            }
+            if(input$swft_EddyCo_sub_data_type_L2130 == "H2O"){
+              swft.data.out = swft.data.in %>%
+                dplyr::filter(`Stream Name` == "L2130_H2O") %>%
+                dplyr::left_join(y = swft.l2130.valves, by = "readout_time")
+            }
+            if(input$swft_EddyCo_sub_data_type_L2130 == "Sample Valves"){
+              swft.data.out = swft.data.in %>%
+                dplyr::filter(stringr::str_detect(string = `Stream Name`, pattern = "_Valve"))%>%
+                tidyr::separate(col = `Stream Name`, into = c("Sensor", "Delete", "SampleLevel"), sep = "_") %>%
+                dplyr::mutate(Sensor = ifelse (Sensor == "L2130", yes = "L2130-I", no = Sensor))  %>%
+                dplyr::mutate(SampleLevel = ifelse (SampleLevel == "Valve", yes = "Validation", no = SampleLevel)) %>%
+                dplyr::mutate(`Stream Name` = paste0("ML ", SampleLevel, " Solenoid ") )  %>%
+                dplyr::mutate(`Stream Name` = ifelse(test = `Stream Name` == "ML Validation Solenoid ", yes = "Validation Solenoid", no = `Stream Name`)) %>% 
+                dplyr::group_by(SiteID, `Stream Name`) %>%
+                dplyr::add_tally() %>%
+                dplyr::summarise(
+                  n = n[1],
+                  Open  = sum(readout_val_double, na.rm = TRUE),
+                  Closed = n - Open
+                ) %>% 
+                dplyr::mutate(Open =  paste0(100*round((Open/n),3), "%")) %>% 
+                dplyr::mutate(Closed = paste0(100*round((Closed/n),3), "%")) %>% 
+                reshape2::melt(id.vars = c("SiteID","Stream Name")) %>% 
+                dplyr::filter(variable != "n") %>%
+                dplyr::mutate(Percentage = as.numeric(gsub(x = value, pattern = "%", replacement = ""))) %>% 
+                dplyr::mutate(`Valve Status` = variable) %>% 
+                dplyr::select(SiteID, `Stream Name`, `Valve Status`, Percentage) %>%
+                dplyr::arrange(`Stream Name`)
+              
+              names(swft.data.out) = c("SiteID", "Stream Name", "Valve Status", "Percentage")
+            }
+            
+            # MD's were not complete with sample valve data (ks's fault)
+            if(sum(is.na(swft.data.out$SampleLevel)) == nrow(swft.data.out)){
+              swft.data.out = swft.data.out %>%
+                dplyr::mutate(SampleLevel = "Unknown")
+            }
           }
           
-          # MD's were not complete with sample valve data (ks's fault)
-          if(sum(is.na(swft.data.out$SampleLevel)) == nrow(swft.data.out)){
-            swft.data.out = swft.data.out %>%
-              dplyr::mutate(SampleLevel = "Unknown")
-          }
+
           
         } else if(input$swft_EddyCo_data_type == "Li7200"){
           
@@ -814,6 +823,19 @@
               labs(x = "", y = "Micromoles Per Mole", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_L2130), 
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+ guides(colour = guide_legend(override.aes = list(size=5, alpha = 1)))
           }
+          
+          if(input$swft_EddyCo_sub_data_type_L2130 == "N2 Flag"){
+            message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_L2130, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
+
+            swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = readout_val_double, color = strm_name)) +
+              geom_point(alpha = 1, shape = 1,color = "white") +
+              scale_x_datetime(breaks = scales::pretty_breaks(n = 10), date_labels = "%m-%d\n%Y") +
+              scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
+              theme(strip.text.x = element_text(size = 12), text = element_text(color = "white", face = "bold", size = 20), legend.position = "none") +
+              labs(x = "", y = "Flag", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_L2130), 
+                   subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2]))+ guides(colour = guide_legend(override.aes = list(size=5, alpha = 1)))
+          }
+          
           if(input$swft_EddyCo_sub_data_type_L2130 == "Sample Valves"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_L2130, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             

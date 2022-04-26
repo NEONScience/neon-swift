@@ -463,19 +463,19 @@ shiny::shinyUI(
                       shiny::selectizeInput(
                         inputId = "swft_EddyCo_data_type", multiple = FALSE,
                         label = "Select Data",
-                        choice = c("ECSE Iso Analyzer - G2131i"        = "G2131",
-                                   "ECSE Iso Analyzer - L2130i"        = "L2130",
+                        choice = c("ECSE Iso Analyzer - G2131i"         = "G2131",
+                                   "ECSE Iso Analyzer - L2130i"         = "L2130",
                                    "ECSE Gas Analyzer - Li840A"         = "Li840",
                                    "ECTE Gas Analyzer - Li7200"         = "Li7200",
-                                   "All CO2"                                = "CO2",
-                                   "All H2O"                                = "H2O",
-                                   "ECTE 3D Wind - CSAT3"            = "CSAT3",
-                                   "ECTE AMRS"  = "amrs",
-                                   "ECTE HMP155" = "HMP155",
-                                   "ECSE ML Flow Rate"                = "ecse.mfm",
-                                   "ECSE ML/Hut MFM Pressures"              = "ecse.mfm.pressures",
-                                   "ECSE Pump Voltages"         = "ecse.voltage",
-                                   "Hut Temps - Comet/Others"         = "ec.temps"
+                                   "All CO2"                            = "CO2",
+                                   "All H2O"                            = "H2O",
+                                   "ECTE 3D Wind - CSAT3"               = "CSAT3",
+                                   "ECTE AMRS"                          = "amrs",
+                                   "ECTE HMP155"                        = "HMP155",
+                                   "ECSE ML Flow Rate"                  = "ecse.mfm",
+                                   "ECSE ML/Hut MFM Pressures"          = "ecse.mfm.pressures",
+                                   "ECSE Pump Voltages"                 = "ecse.voltage",
+                                   "Hut Temps - Comet/Others"           = "ec.temps"
                         ),
                         selected = sample(x = c("G2131", "L2130", "Li840", "Li7200", "CO2", "H2O", "CSAT3", "amrs", "HMP155", "ecse.mfm", "ecse.voltage", "ec.temps"),size = 1))
                     )
@@ -489,7 +489,7 @@ shiny::shinyUI(
                         shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_Li840', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2", "H2O", "Sample Valves", "Flow Rate"))
                       ),
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'L2130'",
-                        shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_L2130', multiple = FALSE, label = 'Sub Data Type', choices = c("Isotope - 2H", "Isotope - 18O", "H2O", "Sample Valves"))
+                        shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_L2130', multiple = FALSE, label = 'Sub Data Type', choices = c("Isotope - 2H", "Isotope - 18O", "H2O", "N2 Flag", "Sample Valves"))
                       ),
                       shiny::conditionalPanel(condition = "input.swft_EddyCo_data_type == 'Li7200'",
                         shiny::selectizeInput(inputId = 'swft_EddyCo_sub_data_type_Li7200', multiple = FALSE, label = 'Sub Data Type', choices = c("CO2", "H2O", "Flow", "Signal Strength", "Cell Temp", "Pressure Differential", "Diagnostic" ))
