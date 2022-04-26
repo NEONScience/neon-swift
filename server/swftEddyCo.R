@@ -237,24 +237,7 @@
             swft.data.out = swft.data.in %>%
               dplyr::filter(stringr::str_detect(string = `Stream Name`, pattern = "_Valve_")) %>%
               tidyr::separate(col = `Stream Name`, into = c("Sensor", "Delete", "SampleLevel"), sep = "_") %>%
-              dplyr::mutate(`Stream Name` = paste0("ML Solenoid ", SampleLevel) )  %>%
-              dplyr::group_by(SiteID, `Stream Name`) %>%
-              dplyr::add_tally() %>%
-              dplyr::summarise(
-                n = n[1],
-                Open  = sum(readout_val_double, na.rm = TRUE),
-                Closed = n - Open
-              ) %>% 
-              dplyr::mutate(Open =  paste0(100*round((Open/n),3), "%")) %>% 
-              dplyr::mutate(Closed = paste0(100*round((Closed/n),3), "%")) %>% 
-              reshape2::melt(id.vars = c("SiteID","Stream Name")) %>% 
-              dplyr::filter(variable != "n") %>%
-              dplyr::mutate(Percentage = as.numeric(gsub(x = value, pattern = "%", replacement = ""))) %>% 
-              dplyr::mutate(`Valve Status` = variable) %>% 
-              dplyr::select(SiteID, `Stream Name`, `Valve Status`, Percentage) %>%
-              dplyr::arrange(`Stream Name`)
-            
-            names(swft.data.out) = c("SiteID", "Stream Name", "Valve Status", "Percentage")
+              dplyr::select(SiteID, readout_time, Sensor, SampleLevel, readout_val_double)
             
           } else {
             swft.data.out = data.table::data.table()
@@ -272,14 +255,6 @@
                                                   endDate   = input$swft_EddyCo_date_range[2],
                                                   silent    = TRUE
             )
-            # swft.li840.valves = eddycopipe::neon_read_eddy_inquiry(dataType  = "2min",
-            #                                       sensor    = "Li840.valves",
-            #                                       siteID    = "STER",
-            #                                       startDate = Sys.Date()-7,
-            #                                       endDate   = Sys.Date(),
-            #                                       silent    = TRUE
-            # )
-            # swft.data.in = swft.data.in %>% dplyr::mutate(`Stream Name` = strm_name) %>% dplyr::select(-strm_name) 
             
             if(nrow(swft.li840.valves) > 0 ){
               swft.li840.valves.clean = swft.li840.valves %>%
@@ -692,15 +667,14 @@
           if(input$swft_EddyCo_sub_data_type_G2131 == "Sample Valves"){
             message(paste0("Plot: ", input$swft_EddyCo_data_type, " - ", input$swft_EddyCo_sub_data_type_G2131, " for ", input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2]))
             
-            swft.plot = ggplot() +
-              geom_col(data = swft.data.out, aes(x = `Valve Status`, y = Percentage, fill = `Valve Status`)) +
-              geom_text(data = swft.data.out, aes(x = `Valve Status`, y = Percentage, label = paste0(Percentage, "%"), vjust = -1), color = "white", size = 6) +
-              scale_y_continuous(breaks = seq(from = 0, to = 100, by = 10), limits = c(0,115)) +
-              scale_fill_manual(values = c("blue", "#ff69b4")) +
+            swft.plot = ggplot(swft.data.out, aes(x = readout_time, y = readout_val_double, color = SampleLevel)) +
+              geom_point()+
+              scale_y_continuous(breaks = c(0, 1), labels = c("Closed", "Open")) +
               labs(x = "", y = "Counts", fill = "Valve\nStatus", title = paste0(input$swft_EddyCo_site, " - ", input$swft_EddyCo_data_type, " ", input$swft_EddyCo_sub_data_type_G2131),
                    subtitle = paste0(input$swft_EddyCo_date_range[1], " to ", input$swft_EddyCo_date_range[2])) +
-              theme(text = element_text(color = "white", face = "bold", size = 20)) +
-              facet_wrap(~`Stream Name`)
+              theme(text = element_text(color = "white", face = "bold", size = 20), legend.position = "none") +
+              facet_wrap(~`SampleLevel`)
+            
           }
         }
         
