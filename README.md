@@ -28,7 +28,7 @@ This app is deployable by Docker. This is the path we are headed down as this no
 * To authenticate to the public gs data, you must have a user authenticated to access the data otherwise you get an error similar to this when trying to run `gsutil` commands.  
 * `> ServiceException: 401 Anonymous caller does not have storage.objects.list access to the Google Cloud Storage bucket.`  
 * So to authenticate you must first install the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install-sdk) on your local machine, following along there.  
-* On your local machine after you've install GC CLI, you will run `gcloud init`, where you will authenticate by following the prompts and logining in through google, allowing GSUtil to have access.  
+* (only do this on your first time) On your local machine after you've install GC CLI, you will run `gcloud init`, where you will authenticate by following the prompts and logining in through google, allowing GSUtil to have access.  
 * Now that you're set up on Windows, you can set up the container's permissions. Assumming you've already started the container, enter the container using the following command (container name may vary)  
 * `podman exec -it swift bash`  
 * Now that you are in the container as root, we must switch to the shiny user.
