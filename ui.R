@@ -470,6 +470,7 @@ shiny::shinyUI(
                                    "All CO2"                            = "CO2",
                                    "All H2O"                            = "H2O",
                                    "ECTE 3D Wind - CSAT3"               = "CSAT3",
+                                   "Drizzle Precip"                     = "Precip",
                                    "ECTE AMRS"                          = "amrs",
                                    "ECTE HMP155"                        = "HMP155",
                                    "ECSE ML Flow Rate"                  = "ecse.mfm",

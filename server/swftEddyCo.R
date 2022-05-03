@@ -85,8 +85,7 @@
       #################################################                            Collecting Data Logic                            #################################################
       swft_ec_fast_collect_data_time_start = Sys.time()
       
-      
-      if(input$swft_EddyCo_data_type != "CO2" & input$swft_EddyCo_data_type != "H2O"){
+      if(input$swft_EddyCo_data_type != "CO2" & input$swft_EddyCo_data_type != "H2O" & input$swft_EddyCo_data_type != "Precip"){
       # Pull data from S3
       message(input$swft_EddyCo_site, " from ", input$swft_EddyCo_date_range[1], " - ", input$swft_EddyCo_date_range[2], paste0(" Swft Data Gather Starting ... "))
       swft.data.in = eddycopipe::neon_read_eddy_inquiry(dataType  = "2min", 
@@ -170,6 +169,31 @@
           dplyr::mutate(readout_val_double = ifelse(test = `Stream Name` == "L2130_H2O", yes = readout_val_double/1000, no = readout_val_double)) 
         
         rm(li840.h2o.data, g2131.h2o.data, li7200.h2o.data)
+      } else if(input$swft_EddyCo_data_type == "Precip"){
+        
+        all_drizzle_aggs = eddycopipe::neon_gcs_list_objects(bucket = "neon-is-sensor-health-data", prefix = "drizzle/aggregated/") %>%
+          dplyr::mutate(date = base::as.Date(tools::file_path_sans_ext(base::basename(Key)), origin = "1970-01-01"))
+        
+        
+        drizzle_two_weeks = all_drizzle_aggs %>%
+          dplyr::filter(date >= as.Date(input$swft_EddyCo_date_range[1]) & date <= as.Date(input$swft_EddyCo_date_range[2])) 
+        
+        swft.data.in = data.table::data.table()
+        for(i in base::seq_along(drizzle_two_weeks$Key)){
+          data_raw = eddycopipe::wrap_neon_gcs_read(bucket = "neon-is-sensor-health-data", object = drizzle_two_weeks$Key[i])
+          
+          data_in_dt = data.table::data.table()
+          for(j in names(data_raw)){
+            data_in = data_raw[[j]] %>%
+              dplyr::mutate(SiteID = j) %>%
+              dplyr::mutate(Date = as.Date(Date, origin = "1970-01-01"))
+            data_in_dt = data.table::rbindlist(l = list(data_in_dt, data_in))
+          }
+          
+          swft.data.in = data.table::rbindlist(l = list(swft.data.in, data_in_dt)) %>% 
+            dplyr::filter(SiteID %in% input$swft_EddyCo_site)
+        }
+        
       }
       
       # # For Function Testing
@@ -598,6 +622,11 @@
             dplyr::mutate(`Stream Name` = gsub(x = `Stream Name`, pattern = "C", replacement = "")) %>%
             dplyr::mutate(`Stream Name` = gsub(x = `Stream Name`, pattern = "ecse_cometHut", replacement = "ecse_comet")) %>%
             dplyr::mutate(type = ifelse(test = `Stream Name` == "HMP155", yes = "tower.top", no = type))
+          
+          
+        } else if(input$swft_EddyCo_data_type == "Precip"){
+          
+          swft.data.out = swft.data.in
           
         } else {
           swft.data.out = data.table::data.table()
@@ -1124,6 +1153,20 @@
             facet_wrap(~ec.system)
           
         }
+        
+        if(input$swft_EddyCo_data_type == "Precip") {
+          
+          swft.plot <- ggplot(swft.data.out, aes(x = Date, y = Value, color = SiteID, group = SiteID))+
+            geom_line()+
+            geom_point() +
+            scale_y_continuous(breaks = scales::pretty_breaks(n = 6), sec.axis = dup_axis(name = "")) +
+            scale_x_date(breaks = scales::pretty_breaks(n = 10), date_labels = "%Y-%m-%d") +
+            geom_hline(yintercept = 0, alpha = 0)+
+            labs(title = paste0(swft.data.out$SiteID[1], ": Aggregated Precipitation"), x = "", y = "CM") +
+            theme(axis.text.x = element_text(angle = 270), text = element_text(color = "white", face = "bold", size = 20)) 
+          
+        }
+        
       } else { 
         # If there are not rows in swft.data.out generate blank plot
         swft.plot = ggplot()+
