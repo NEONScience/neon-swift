@@ -7,3 +7,5 @@ R/win10/
 service-auth.json
 .Rhistory
 .RData
+postgres_pw.RDS
+swift-service-auth.json
