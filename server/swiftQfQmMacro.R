@@ -60,7 +60,8 @@ swft_qfqm_macro_plot = shiny::reactive({
     eddycopipe::neon_gcs_get_rds(
       object =macro_plot_object ,
       bucket = swft_ei_bucket
-    ) 
+    ) +
+      ggdark::dark_theme_bw()
     
   } else {
     # Create a blank plot
