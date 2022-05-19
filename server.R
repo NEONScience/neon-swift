@@ -1,7 +1,7 @@
 # Specified path to the server folder for Swift
 swft.server.folder.path="./"
 
-eddycopipe::neon_gcs_connect_to_bucket(creds_json = "./service-auth.json")
+eddycopipe::neon_gcs_connect_to_bucket(creds_json = "./swift-service-auth.json")
 
 # Defined server logic that loads each seperate tab from it's own server file. 
 server <- function(input, output, session) {
@@ -25,7 +25,7 @@ server <- function(input, output, session) {
   base::source(file='./server/swiftCvalFst.R',           local = TRUE)
   base::source(file='./server/swiftCvalTable.R',         local = TRUE)
   base::source(file='./server/swftEddyCo.R',             local = TRUE)
-  base::source(file='./server/swiftLcServices.R',        local = TRUE)
+  # base::source(file='./server/swiftLcServices.R',        local = TRUE)
   base::source(file='./server/swiftTimestampCheck.R',    local = TRUE)
   base::source(file='./server/swiftSpanGases.R',         local = TRUE)
   base::source(file="./server/swiftMaintenance.R",       local = TRUE)
