@@ -58,14 +58,7 @@ shiny::observeEvent(input$menu, {
       
     })
     
-    
-
-    # Read in all Gas Cylinder Data
-    # swft.spangas.overall.in <- fst::read.fst(paste0(swft.server.folder.path, "data/spanGas/swft.span.gas.master.fst"))
-    # swft.spangas.differential.in <- fst::read.fst(paste0(swft.server.folder.path, "data/spanGas/swft.span.gas.differntial.master.fst"))
-    
     swft.spangas.overall.in <- eddycopipe::neon_gcs_get_fst(bucket = "neon-eddy-inquiry", object = "spanGas/master/swft.span.gas.master.fst")
-    swft.spangas.differential.in <- eddycopipe::neon_gcs_get_fst(bucket = "neon-eddy-inquiry", object = "spanGas/master/swft.span.gas.differntial.master.fst")
     
     swft_spangas_overall_plot <- shiny::reactive({
       shiny::req(input$swft_spangas_site)
@@ -145,52 +138,7 @@ shiny::observeEvent(input$menu, {
     output$swft_spangas_delivery_plot <- plotly::renderPlotly({
       swft_spangas_delivery_plot()
     })
-    
-    swft_spangas_loss_plot <- shiny::reactive({
-      
-      shiny::req(input$swft_spangas_site)
-      
-      if(is.null(input$swft_spangas_site) == FALSE){
-        swft.spangas.loss.out = swft.spangas.differential.in %>%
-          dplyr::filter(SiteID %in% input$swft_spangas_site) %>%
-          # dplyr::filter(SiteID %in% "UNDE")  %>%
-          dplyr::filter(date >= input$swft_spangas_date_range[1]
-                        & date <= input$swft_spangas_date_range[2]) %>%
-          dplyr::group_by(SiteID, Cylinder, assetTag) %>%
-          dplyr::filter(stringr::str_detect(string = Cylinder, pattern = "Archive") == FALSE) %>% 
-          dplyr::summarise(.groups="drop",
-                           `Average Loss` = round(mean(meanDifferential, na.rm = TRUE),2)
-          )
-  
-        if(nrow(swft.spangas.loss.out) > 0){
-          swft.spangas.loss.plot = ggplot2::ggplot(data = swft.spangas.loss.out, 
-            ggplot2::aes(x = Cylinder, y = `Average Loss`, text = paste0(Cylinder, " is losing: ", round(-`Average Loss`, 2), " PSI Per Day"))) +
-            ggplot2::geom_bar(aes(color = Cylinder, fill = Cylinder), stat = "identity") +                                                # Make bars
-            ggplot2::scale_fill_manual(values= swft.spangas.linefills, aesthetics = "color") +                                            # Make color same as cylinder color
-            ggplot2::scale_fill_manual(values= swft.spangas.linefills, aesthetics = "fill") +                                             # Make fill same as cylinder color
-            ggplot2::geom_hline(yintercept = -4, linetype = "dashed") +
-            ggplot2::labs(x= "",  y="PSI", color = "Cylinder Type", fill = "", linetype = "",
-                          title = paste0("Cylinder Pressure Loss from: ", input$swft_spangas_date_range[1], " to ", input$swft_spangas_date_range[2])) +    
-            ggplot2::facet_grid(~SiteID) +                                                                                                # Facet by site ID
-            ggplot2::theme(axis.text.x = element_text(angle = 270, size = 12))                                       # Change axis text to Battelle Blue
-          plotly::ggplotly(swft.spangas.loss.plot, tooltip = c("text")) %>% plotly::config(displayModeBar = F)                                  # Specify Tool tips and remove display bar
-        } else {
-          ggplot2::ggplot()+
-            ggplot2::geom_text(label = "text")+
-            ggplot2::annotate("text", label = "NO DATA\n(Input plot terms above)", x = 0, y = 0, color = "white", size = 12)
-        }
-      } else {
-        ggplot2::ggplot()+
-          ggplot2::geom_text(label = "text")+
-          ggplot2::annotate("text", label = paste0("NO DATA: \n(No Data Within Date Range Specified)"), x = 0, y = 0, color = "white", size = 12)
-      }
-    }) 
-    
-    swft_spangas_loss_plot_d <- shiny::debounce(swft_spangas_loss_plot, 1000)
-    # Output the data
-    output$swft_spangas_loss_plot <- plotly::renderPlotly({
-      swft_spangas_loss_plot_d()
-    })
+
 
     ########################################################## COVID 19 Table  ########################################################################### 
    
