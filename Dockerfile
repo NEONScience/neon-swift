@@ -65,4 +65,8 @@ RUN apt-get update && apt-get install google-cloud-sdk -y
 ## The $USER defaults to `rstudio` but you can change this at runtime
 COPY . / /srv/shiny-server/swift/
 
+# This switches to the shiny user, then runs the authentication for the sa.json
+USER shiny
+RUN gcloud auth activate-service-account --key-file=/srv/shiny-server/swift/swift-service-auth.json
+
 CMD ["/usr/bin/shiny-server"]
