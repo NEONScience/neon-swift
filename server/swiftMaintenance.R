@@ -26,7 +26,7 @@ shiny::observeEvent(input$menu, {
         
         shinydashboard::valueBox(
           value = swft_mntc_input_data()$meta_statistics$`2 Week Bout Frequency - All Time`,
-          subtitle = paste0("Average PM Bouts performed every 2 weeks (All-Time"),
+          subtitle = paste0("Average PM Bouts performed every 2 weeks (All-Time)"),
           width = 12,
           color = "green"
         )
