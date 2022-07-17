@@ -122,7 +122,7 @@ shiny::observeEvent(input$menu, {
       } else {
         analysisPlot <- ggplot2::ggplot()+
           ggplot2::geom_text(label = "text")+
-          ggplot2::annotate("text", label = base::paste0("NO DATA: \n(No Timestamp Issues Identified)"), x = 0, y = 0, color = "white", size = 17) +
+          ggplot2::annotate("text", label = base::paste0("No Timestamp Issues Identified"), x = 0, y = 0, color = "white", size = 17) +
           ggplot2::labs(x = "", y = "")
           ggplot2::theme(text = ggplot2::element_text(size = 20))
       }
