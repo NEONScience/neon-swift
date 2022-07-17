@@ -51,30 +51,34 @@ shiny::observeEvent(input$menu, {
           dplyr::mutate(site_mac = base::paste0(siteID, " ", MacAddress))
         
         # If the last 4 hours are fine, don't alert?
-        check_issue_resolved = busted_sensors %>% 
-          dplyr::mutate(cut_time = lubridate::ymd_hms(cut(TimeStamp, breaks = "4 hours"))) %>% 
-          dplyr::group_by(site_mac, cut_time) %>% 
-          dplyr::summarise(.groups = "drop",
-            PullDate = PullDate[1],
-            busted_threshold = base::ifelse(test = timestamp_drift >= 10, yes = TRUE, no = FALSE),
-            percent_busted =  sum (busted_threshold) / length(busted_threshold) 
-          ) %>% 
-          dplyr::group_by(PullDate, site_mac) %>% 
-          dplyr::summarise(.groups = "drop",
-            percent_busted =  sum (busted_threshold) / length(busted_threshold) 
-          ) %>%
-          reshape2::dcast(PullDate ~ site_mac, value.var = "percent_busted")
-                
-        timestamp_data_named = busted_sensors %>%
-          dplyr::left_join(y = smart_sensor_lookup, by = "MacAddress") %>% 
-          dplyr::filter(site_mac %in% names(check_issue_resolved)) %>% 
-          dplyr::mutate(SiteID = siteID) %>%
-          dplyr::mutate(`Raw Time Difference` = Actual_Time_Difference) %>% dplyr::select(-Actual_Time_Difference) %>% 
-          dplyr::mutate(`Median Site Time Difference` = median_site_time_diff) %>% dplyr::select(-median_site_time_diff) %>% 
-          dplyr::mutate(`Calculated Timestamp Drift` = timestamp_drift) %>% dplyr::select(-timestamp_drift) %>% 
-          dplyr::mutate(SurveyTime = TimeStamp) %>% dplyr::select(-TimeStamp) %>% 
-          dplyr::mutate(Sensor_UID = base::paste0(SiteID, " ", Sensor)) %>% 
-          dplyr::select(PullDate, SurveyTime, SiteID, Sensor, Sensor_UID, MacAddress, `Raw Time Difference`, `Median Site Time Difference`, `Calculated Timestamp Drift`)
+        if(nrow(busted_sensors) > 0){
+          check_issue_resolved = busted_sensors %>% 
+            dplyr::mutate(cut_time = lubridate::ymd_hms(cut(TimeStamp, breaks = "4 hours"))) %>% 
+            dplyr::group_by(site_mac, cut_time) %>% 
+            dplyr::summarise(.groups = "drop",
+              PullDate = PullDate[1],
+              busted_threshold = base::ifelse(test = timestamp_drift >= 10, yes = TRUE, no = FALSE),
+              percent_busted =  sum (busted_threshold) / length(busted_threshold) 
+            ) %>% 
+            dplyr::group_by(PullDate, site_mac) %>% 
+            dplyr::summarise(.groups = "drop",
+              percent_busted =  sum (busted_threshold) / length(busted_threshold) 
+            ) %>%
+            reshape2::dcast(PullDate ~ site_mac, value.var = "percent_busted")
+                  
+          timestamp_data_named = busted_sensors %>%
+            dplyr::left_join(y = smart_sensor_lookup, by = "MacAddress") %>% 
+            dplyr::filter(site_mac %in% names(check_issue_resolved)) %>% 
+            dplyr::mutate(SiteID = siteID) %>%
+            dplyr::mutate(`Raw Time Difference` = Actual_Time_Difference) %>% dplyr::select(-Actual_Time_Difference) %>% 
+            dplyr::mutate(`Median Site Time Difference` = median_site_time_diff) %>% dplyr::select(-median_site_time_diff) %>% 
+            dplyr::mutate(`Calculated Timestamp Drift` = timestamp_drift) %>% dplyr::select(-timestamp_drift) %>% 
+            dplyr::mutate(SurveyTime = TimeStamp) %>% dplyr::select(-TimeStamp) %>% 
+            dplyr::mutate(Sensor_UID = base::paste0(SiteID, " ", Sensor)) %>% 
+            dplyr::select(PullDate, SurveyTime, SiteID, Sensor, Sensor_UID, MacAddress, `Raw Time Difference`, `Median Site Time Difference`, `Calculated Timestamp Drift`)
+        } else {
+          timestamp_data_named = data.table::data.table()
+        }
       
       } else {
         timestamp_data_named = data.table::data.table()
