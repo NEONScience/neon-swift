@@ -2,6 +2,11 @@
 
 Front end and back end code for Swift Shiny App
 
+# This runs on prod-1~
+## Run Smart Sensor Timestamp Checker Container
+10 * * * * docker run -d --rm smart_sensor_time_checker:prod
+
+
 ## Background  
 The `swift` shiny application's main goal is to provide useful and actionable data to NEON staff members. Data driven desision making is key to ensuring we deliver high quality data to the NEON Data Portal.  
 The data within this app are sourced from multiple locations: L0 (Presto database), the TIS LC's, CVAL (Mike Pursley data), and Maximo (asset management software). These data are sourced, cleaned, and saved to an S3 bucket that is readible to anyone on the network. This allows the app to not store any important credentials in it's directory or elsewhere.  
